@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khuyến mãi - VietLinker | Cộng đồng người Việt tại Mỹ</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* Header Styles */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #2196F3;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Promo Tabs */
+        .promo-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .promo-tab {
+            padding: 0.75rem 2rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .promo-tab:hover {
+            border-color: #2196F3;
+            transform: translateY(-2px);
+        }
+
+        .promo-tab.active {
+            background: #2196F3;
+            color: white;
+            border-color: #2196F3;
+        }
+
+        /* Active Promotions Grid */
+        .promotions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .promo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .promo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .promo-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #FF6B6B;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+
+        .promo-badge.hot {
+            background: #FF6B6B;
+        }
+
+        .promo-badge.new {
+            background: #4CAF50;
+        }
+
+        .promo-badge.ending {
+            background: #FFC107;
+            color: #333;
+        }
+
+        .promo-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .promo-icon {
+            font-size: 4rem;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .promo-content {
+            padding: 1.5rem;
+        }
+
+        .promo-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .promo-sponsor {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .promo-description {
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .promo-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2196F3;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .countdown-timer {
+            background: #FFF3CD;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .time-block {
+            background: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            min-width: 50px;
+        }
+
+        .time-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FF6B6B;
+        }
+
+        .time-unit {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .promo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+
+        .btn-secondary:hover {
+            background: #E3F2FD;
+        }
+
+        /* Lucky Spin Wheel */
+        .spin-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        .spin-section.active {
+            display: block;
+        }
+
+        .spin-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 2rem auto;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #333;
+            box-shadow: 0 0 0 8px #fff, 0 0 20px rgba(0,0,0,0.3);
+            transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: right bottom;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
+
+        .wheel-segment:nth-child(1) { transform: rotate(0deg); background: #FF6B6B; }
+        .wheel-segment:nth-child(2) { transform: rotate(45deg); background: #4ECDC4; }
+        .wheel-segment:nth-child(3) { transform: rotate(90deg); background: #45B7D1; }
+        .wheel-segment:nth-child(4) { transform: rotate(135deg); background: #96CEB4; }
+        .wheel-segment:nth-child(5) { transform: rotate(180deg); background: #FECA57; }
+        .wheel-segment:nth-child(6) { transform: rotate(225deg); background: #FF9FF3; }
+        .wheel-segment:nth-child(7) { transform: rotate(270deg); background: #54A0FF; }
+        .wheel-segment:nth-child(8) { transform: rotate(315deg); background: #48DBFB; }
+
+        .wheel-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .wheel-text span {
+            position: absolute;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .spin-arrow {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #333;
+            z-index: 10;
+        }
+
+        .spin-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .spin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Entry Form Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #333;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        /* Winners Section */
+        .winners-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        .winners-section.active {
+            display: block;
+        }
+
+        .winners-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .winners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .winner-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .winner-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .winner-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .winner-prize {
+            color: #2196F3;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .winner-date {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Rules Section */
+        .rules-section {
+            background: #E3F2FD;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+            display: none;
+        }
+
+        .rules-section.active {
+            display: block;
+        }
+
+        .rules-section h2 {
+            color: #1976D2;
+            margin-bottom: 1.5rem;
+        }
+
+        .rules-list {
+            list-style: none;
+            color: #333;
+        }
+
+        .rules-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .rules-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            background: #1976D2;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .promotions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .spin-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .promo-stats {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #4CAF50;
+        }
+
+        .toast.error {
+            background: #FF6B6B;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">VietLinker</a>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="jobs.html">Việc làm</a></li>
+                    <li><a href="classifieds.html">Rao vặt</a></li>
+                    <li><a href="services.html">Dịch vụ</a></li>
+                    <li><a href="realestate.html">Bất động sản</a></li>
+                    <li><a href="marketplace.html">Chợ</a></li>
+                    <li><a href="promotions.html" class="active">Khuyến mãi</a></li>
+                    <li><a href="login.html">Đăng nhập</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>🎁 Khuyến mãi & Quà tặng</h1>
+            <p>Tham gia các chương trình khuyến mãi hấp dẫn từ cộng đồng doanh nghiệp Việt</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Promo Tabs -->
+        <div class="promo-tabs">
+            <button class="promo-tab active" data-tab="active">
+                <i class="fas fa-fire"></i> Đang diễn ra
+            </button>
+            <button class="promo-tab" data-tab="spin">
+                <i class="fas fa-dice"></i> Vòng quay may mắn
+            </button>
+            <button class="promo-tab" data-tab="winners">
+                <i class="fas fa-trophy"></i> Người chiến thắng
+            </button>
+            <button class="promo-tab" data-tab="rules">
+                <i class="fas fa-book"></i> Thể lệ
+            </button>
+        </div>
+
+        <!-- Active Promotions -->
+        <div class="tab-content active" id="active-tab">
+            <div class="promotions-grid" id="promotionsGrid">
+                <!-- Promotions will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Lucky Spin Wheel -->
+        <div class="spin-section tab-content" id="spin-tab">
+            <h2>Vòng quay may mắn hàng ngày</h2>
+            <p>Quay để nhận ngay phần quà hấp dẫn! Mỗi tài khoản được quay 1 lần/ngày.</p>
+            
+            <div class="spin-container">
+                <div class="spin-arrow"></div>
+                <div class="wheel" id="wheel">
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-segment"></div>
+                    <div class="wheel-text">
+                        <span style="transform: rotate(22.5deg) translateY(-140px);">$5 OFF</span>
+                        <span style="transform: rotate(67.5deg) translateY(-140px);">10% OFF</span>
+                        <span style="transform: rotate(112.5deg) translateY(-140px);">FREE SHIP</span>
+                        <span style="transform: rotate(157.5deg) translateY(-140px);">$10 OFF</span>
+                        <span style="transform: rotate(202.5deg) translateY(-140px);">15% OFF</span>
+                        <span style="transform: rotate(247.5deg) translateY(-140px);">$20 OFF</span>
+                        <span style="transform: rotate(292.5deg) translateY(-140px);">CHÚC MAY MẮN</span>
+                        <span style="transform: rotate(337.5deg) translateY(-140px);">25% OFF</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="spin-btn" id="spinBtn" onclick="spinWheel()">
+                <i class="fas fa-play"></i> QUAY NGAY
+            </button>
+            
+            <div style="margin-top: 2rem; color: #666;">
+                <p><i class="fas fa-info-circle"></i> Phần quà sẽ được gửi vào email đăng ký của bạn</p>
+            </div>
+        </div>
+
+        <!-- Winners Section -->
+        <div class="winners-section tab-content" id="winners-tab">
+            <h2>🏆 Danh sách người chiến thắng</h2>
+            <div class="winners-grid" id="winnersGrid">
+                <!-- Winners will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Rules Section -->
+        <div class="rules-section tab-content" id="rules-tab">
+            <h2>📋 Thể lệ chương trình</h2>
+            <ul class="rules-list">
+                <li>Mỗi tài khoản chỉ được tham gia 1 lần cho mỗi chương trình khuyến mãi</li>
+                <li>Người tham gia phải là thành viên đã đăng ký của VietLinker</li>
+                <li>Thông tin đăng ký phải chính xác và đầy đủ</li>
+                <li>Giải thưởng không được quy đổi thành tiền mặt</li>
+                <li>Ban tổ chức có quyền thay đổi thể lệ mà không cần báo trước</li>
+                <li>Kết quả của ban tổ chức là quyết định cuối cùng</li>
+                <li>Nhân viên của các nhà tài trợ không được tham gia</li>
+                <li>Giải thưởng sẽ được thông báo qua email trong vòng 7 ngày làm việc</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Entry Form Modal -->
+    <div class="modal" id="entryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Đăng ký tham gia</h2>
+                <button class="close-modal" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="entryForm">
+                <div class="form-group">
+                    <label for="fullName">Họ và tên *</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại *</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="zipcode">ZIP Code *</label>
+                    <input type="text" id="zipcode" required>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="newsletter" checked>
+                    <label for="newsletter">Nhận thông tin khuyến mãi qua email</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">Tôi đồng ý với điều khoản và thể lệ *</label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-check"></i> Xác nhận tham gia
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Về VietLinker</h3>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Điều khoản sử dụng</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Dịch vụ</h3>
+                <ul>
+                    <li><a href="jobs.html">Việc làm</a></li>
+                    <li><a href="classifieds.html">Rao vặt</a></li>
+                    <li><a href="services.html">Dịch vụ</a></li>
+                    <li><a href="realestate.html">Bất động sản</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Hỗ trợ</h3>
+                <ul>
+                    <li><a href="#">Hướng dẫn đăng tin</a></li>
+                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                    <li><a href="#">Liên hệ hỗ trợ</a></li>
+                    <li><a href="#">Phản hồi</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Kết nối</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> info@vietlinker.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 VietLinker. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample promotions data
+        const promotionsData = [
+            {
+                id: 1,
+                title: "Rút thăm iPhone 15 Pro Max",
+                sponsor: "Saigon Mobile",
+                description: "Cơ hội sở hữu iPhone 15 Pro Max 256GB trị giá $1,199. Chỉ cần đăng ký tham gia!",
+                prize: "$1,199",
+                participants: 3456,
+                endDate: new Date('2024-12-31'),
+                badge: 'hot',
+                icon: 'fa-mobile-alt'
+            },
+            {
+                id: 2,
+                title: "Voucher ăn uống $100",
+                sponsor: "Phở Saigon Restaurant",
+                description: "20 voucher trị giá $100 cho các khách hàng may mắn. Áp dụng tại tất cả chi nhánh.",
+                prize: "$100 x 20",
+                participants: 1234,
+                endDate: new Date('2024-12-25'),
+                badge: 'new',
+                icon: 'fa-utensils'
+            },
+            {
+                id: 3,
+                title: "Giảm 50% dịch vụ làm đẹp",
+                sponsor: "Paris Nails & Spa",
+                description: "50 suất giảm giá 50% cho tất cả dịch vụ. Giá trị lên đến $200.",
+                prize: "50% OFF",
+                participants: 892,
+                endDate: new Date('2024-12-20'),
+                badge: 'ending',
+                icon: 'fa-spa'
+            },
+            {
+                id: 4,
+                title: "Tặng bảo hiểm xe 6 tháng",
+                sponsor: "Việt Insurance Agency",
+                description: "5 suất bảo hiểm xe miễn phí 6 tháng cho khách hàng mới.",
+                prize: "$600 x 5",
+                participants: 567,
+                endDate: new Date('2024-12-28'),
+                badge: 'hot',
+                icon: 'fa-car'
+            },
+            {
+                id: 5,
+                title: "Gift Card $500 mua sắm",
+                sponsor: "Little Saigon Plaza",
+                description: "10 gift cards trị giá $500 để mua sắm tại Little Saigon Plaza.",
+                prize: "$500 x 10",
+                participants: 2103,
+                endDate: new Date('2025-01-15'),
+                badge: 'new',
+                icon: 'fa-shopping-bag'
+            },
+            {
+                id: 6,
+                title: "Vé máy bay về Việt Nam",
+                sponsor: "Golden Travel Agency",
+                description: "2 vé khứ hồi Houston - Saigon cho dịp Tết 2025.",
+                prize: "$3,000",
+                participants: 4521,
+                endDate: new Date('2025-01-05'),
+                badge: 'hot',
+                icon: 'fa-plane'
+            }
+        ];
+
+        // Sample winners data
+        const winnersData = [
+            {
+                name: "Nguyễn Văn A",
+                prize: "iPhone 14 Pro",
+                date: "15/11/2024",
+                promotion: "Rút thăm tháng 11"
+            },
+            {
+                name: "Trần Thị B",
+                prize: "$500 Gift Card",
+                date: "01/11/2024",
+                promotion: "Halloween Lucky Draw"
+            },
+            {
+                name: "Lê Văn C",
+                prize: "Vé máy bay VN",
+                date: "20/10/2024",
+                promotion: "Quà tặng mùa thu"
+            },
+            {
+                name: "Phạm Thị D",
+                prize: "$200 Voucher",
+                date: "15/10/2024",
+                promotion: "Sinh nhật VietLinker"
+            },
+            {
+                name: "Hoàng Văn E",
+                prize: "iPad Air",
+                date: "30/09/2024",
+                promotion: "Back to School"
+            },
+            {
+                name: "Võ Thị F",
+                prize: "6 tháng bảo hiểm",
+                date: "15/09/2024",
+                promotion: "Khuyến mãi tháng 9"
+            }
+        ];
+
+        // Global variables
+        let currentPromotion = null;
+        let isSpinning = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPromotions();
+            loadWinners();
+            setupEventListeners();
+            updateCountdowns();
+            setInterval(updateCountdowns, 1000);
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu toggle
+            document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+                document.getElementById('navMenu').classList.toggle('active');
+            });
+
+            // Tab switching
+            document.querySelectorAll('.promo-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+
+            // Entry form
+            document.getElementById('entryForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitEntry();
+            });
+        }
+
+        // Load promotions
+        function loadPromotions() {
+            const grid = document.getElementById('promotionsGrid');
+            grid.innerHTML = '';
+
+            promotionsData.forEach(promo => {
+                const card = createPromotionCard(promo);
+                grid.appendChild(card);
+            });
+        }
+
+        // Create promotion card
+        function createPromotionCard(promo) {
+            const card = document.createElement('div');
+            card.className = 'promo-card';
+            
+            const daysLeft = Math.ceil((promo.endDate - new Date()) / (1000 * 60 * 60 * 24));
+            
+            card.innerHTML = `
+                <span class="promo-badge ${promo.badge}">${getBadgeText(promo.badge)}</span>
+                <div class="promo-image">
+                    <i class="fas ${promo.icon} promo-icon"></i>
+                </div>
+                <div class="promo-content">
+                    <h3 class="promo-title">${promo.title}</h3>
+                    <div class="promo-sponsor">
+                        <i class="fas fa-store"></i> ${promo.sponsor}
+                    </div>
+                    <p class="promo-description">${promo.description}</p>
+                    
+                    <div class="promo-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${promo.prize}</div>
+                            <div class="stat-label">Giá trị</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${promo.participants.toLocaleString()}</div>
+                            <div class="stat-label">Người tham gia</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${daysLeft}</div>
+                            <div class="stat-label">Ngày còn lại</div>
+                        </div>
+                    </div>
+                    
+                    <div class="countdown-timer">
+                        <div class="countdown-label">Thời gian còn lại</div>
+                        <div class="countdown" data-end="${promo.endDate.toISOString()}">
+                            <div class="time-block">
+                                <div class="time-value days">00</div>
+                                <div class="time-unit">Ngày</div>
+                            </div>
+                            <div class="time-block">
+                                <div class="time-value hours">00</div>
+                                <div class="time-unit">Giờ</div>
+                            </div>
+                            <div class="time-block">
+                                <div class="time-value minutes">00</div>
+                                <div class="time-unit">Phút</div>
+                            </div>
+                            <div class="time-block">
+                                <div class="time-value seconds">00</div>
+                                <div class="time-unit">Giây</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-actions">
+                        <button class="btn btn-primary" onclick="openEntryModal(${JSON.stringify(promo).replace(/"/g, '&quot;')})">
+                            <i class="fas fa-gift"></i> Tham gia ngay
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-share"></i> Chia sẻ
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Get badge text
+        function getBadgeText(badge) {
+            switch(badge) {
+                case 'hot': return 'HOT';
+                case 'new': return 'MỚI';
+                case 'ending': return 'SẮP KẾT THÚC';
+                default: return '';
+            }
+        }
+
+        // Update countdowns
+        function updateCountdowns() {
+            document.querySelectorAll('.countdown').forEach(countdown => {
+                const endDate = new Date(countdown.dataset.end);
+                const now = new Date();
+                const diff = endDate - now;
+
+                if (diff > 0) {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    countdown.querySelector('.days').textContent = String(days).padStart(2, '0');
+                    countdown.querySelector('.hours').textContent = String(hours).padStart(2, '0');
+                    countdown.querySelector('.minutes').textContent = String(minutes).padStart(2, '0');
+                    countdown.querySelector('.seconds').textContent = String(seconds).padStart(2, '0');
+                } else {
+                    countdown.innerHTML = '<div style="color: #FF6B6B;">Đã kết thúc</div>';
+                }
+            });
+        }
+
+        // Load winners
+        function loadWinners() {
+            const grid = document.getElementById('winnersGrid');
+            grid.innerHTML = '';
+
+            winnersData.forEach(winner => {
+                const card = document.createElement('div');
+                card.className = 'winner-card';
+                card.innerHTML = `
+                    <div class="winner-avatar">${winner.name.charAt(0)}</div>
+                    <div class="winner-name">${winner.name}</div>
+                    <div class="winner-prize">${winner.prize}</div>
+                    <div class="winner-date">${winner.date}</div>
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">${winner.promotion}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Switch tab
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.promo-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabName);
+            });
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.toggle('active', content.id === `${tabName}-tab`);
+            });
+        }
+
+        // Spin wheel
+        function spinWheel() {
+            if (isSpinning) return;
+
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            
+            isSpinning = true;
+            spinBtn.disabled = true;
+            
+            // Random spin amount (5-10 full rotations + random position)
+            const spins = Math.floor(Math.random() * 5 + 5);
+            const finalAngle = Math.floor(Math.random() * 360);
+            const totalRotation = spins * 360 + finalAngle;
+            
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            setTimeout(() => {
+                // Determine prize based on final angle
+                const segmentAngle = 45; // 360/8 segments
+                const normalizedAngle = finalAngle % 360;
+                const segmentIndex = Math.floor(normalizedAngle / segmentAngle);
+                
+                const prizes = [
+                    "$5 OFF", "10% OFF", "FREE SHIP", "$10 OFF",
+                    "15% OFF", "$20 OFF", "CHÚC MAY MẮN", "25% OFF"
+                ];
+                
+                const prize = prizes[segmentIndex];
+                
+                if (prize !== "CHÚC MAY MẮN") {
+                    showToast(`Chúc mừng! Bạn đã trúng ${prize}!`, 'success');
+                } else {
+                    showToast('Chúc bạn may mắn lần sau!', 'error');
+                }
+                
+                isSpinning = false;
+                spinBtn.disabled = false;
+                
+                // Reset for next spin (in real app, would limit to once per day)
+                setTimeout(() => {
+                    wheel.style.transition = 'none';
+                    wheel.style.transform = 'rotate(0deg)';
+                    setTimeout(() => {
+                        wheel.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    }, 50);
+                }, 2000);
+            }, 4000);
+        }
+
+        // Open entry modal
+        function openEntryModal(promotion) {
+            currentPromotion = promotion;
+            document.getElementById('modalTitle').textContent = `Đăng ký: ${promotion.title}`;
+            document.getElementById('entryModal').style.display = 'flex';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('entryModal').style.display = 'none';
+            document.getElementById('entryForm').reset();
+        }
+
+        // Submit entry
+        function submitEntry() {
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                zipcode: document.getElementById('zipcode').value,
+                newsletter: document.getElementById('newsletter').checked,
+                promotion: currentPromotion
+            };
+
+            // In real app, would send to server
+            console.log('Entry submitted:', formData);
+            
+            showToast('Đăng ký thành công! Chúc bạn may mắn!', 'success');
+            closeModal();
+            
+            // Update participant count
+            if (currentPromotion) {
+                currentPromotion.participants++;
+                loadPromotions();
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal on outside click
+        window.addEventListener('click', function(e) {
+            if (e.target.id === 'entryModal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

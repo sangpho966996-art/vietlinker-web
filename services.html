@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch vụ - VietLinker | Cộng đồng người Việt tại Mỹ</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* Header Styles */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #2196F3;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 2rem;
+            margin: -2rem auto 2rem;
+            max-width: 1200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-container {
+            display: grid;
+            grid-template-columns: 1fr 300px 200px 120px;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input,
+        .category-select,
+        .distance-select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .search-input:focus,
+        .category-select:focus,
+        .distance-select:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+
+        .search-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #1976D2;
+        }
+
+        /* Main Content Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar Filters */
+        .filters-sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+        }
+
+        .filter-checkbox input {
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+
+        .filter-checkbox label {
+            cursor: pointer;
+            color: #555;
+        }
+
+        .rating-filter {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .star {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+
+        .star.active {
+            color: #FFC107;
+        }
+
+        /* Services Grid */
+        .services-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .results-header {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-count {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            background: #f5f5f5;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: #2196F3;
+            color: white;
+        }
+
+        /* Service Cards */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .service-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .service-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-category {
+            display: inline-block;
+            background: #E3F2FD;
+            color: #1976D2;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .stars {
+            color: #FFC107;
+        }
+
+        .rating-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .service-body {
+            padding: 1.5rem;
+        }
+
+        .service-info {
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: #555;
+        }
+
+        .info-item i {
+            width: 20px;
+            color: #2196F3;
+            margin-right: 0.75rem;
+        }
+
+        .service-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .call-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .call-btn:hover {
+            background: #45a049;
+        }
+
+        .map-btn {
+            background: white;
+            color: #2196F3;
+            border: 1px solid #2196F3;
+        }
+
+        .map-btn:hover {
+            background: #E3F2FD;
+        }
+
+        /* Map View */
+        .map-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: 500px;
+            display: none;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2196F3;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .no-results h3 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-results p {
+            color: #999;
+        }
+
+        /* Footer */
+        footer {
+            background: #1976D2;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .search-container {
+                grid-template-columns: 1fr 200px;
+                gap: 0.75rem;
+            }
+
+            .distance-select {
+                grid-column: 1;
+            }
+
+            .search-btn {
+                grid-column: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .search-container {
+                grid-template-columns: 1fr;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-sidebar {
+                display: none;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* Add Business Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1976D2;
+        }
+
+        /* Add Business Button */
+        .add-business-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(76,175,80,0.3);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .add-business-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76,175,80,0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">VietLinker</a>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="jobs.html">Việc làm</a></li>
+                    <li><a href="classifieds.html">Rao vặt</a></li>
+                    <li><a href="services.html" class="active">Dịch vụ</a></li>
+                    <li><a href="realestate.html">Bất động sản</a></li>
+                    <li><a href="marketplace.html">Chợ</a></li>
+                    <li><a href="promotions.html">Khuyến mãi</a></li>
+                    <li><a href="login.html">Đăng nhập</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Dịch vụ cộng đồng</h1>
+        <p>Tìm kiếm dịch vụ uy tín từ cộng đồng người Việt</p>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <form class="search-container" id="searchForm">
+            <input type="text" class="search-input" placeholder="Tìm kiếm dịch vụ..." id="searchInput">
+            <select class="category-select" id="categorySelect">
+                <option value="">Tất cả danh mục</option>
+                <option value="doctor">Bác sĩ / Y tế</option>
+                <option value="lawyer">Luật sư</option>
+                <option value="insurance">Bảo hiểm</option>
+                <option value="nail-supply">Nail Supply</option>
+                <option value="restaurant-supply">Restaurant Supply</option>
+                <option value="auto">Sửa xe / Auto</option>
+                <option value="education">Giáo dục / Tutoring</option>
+                <option value="beauty">Làm đẹp / Spa</option>
+                <option value="accounting">Kế toán / Thuế</option>
+                <option value="travel">Du lịch</option>
+                <option value="shipping">Vận chuyển / Gửi hàng</option>
+                <option value="other">Khác</option>
+            </select>
+            <select class="distance-select" id="distanceSelect">
+                <option value="">Khoảng cách</option>
+                <option value="5">5 miles</option>
+                <option value="10">10 miles</option>
+                <option value="25">25 miles</option>
+                <option value="50">50 miles</option>
+                <option value="100">100+ miles</option>
+            </select>
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i> Tìm kiếm
+            </button>
+        </form>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+            <div class="filter-section">
+                <h3>Danh mục</h3>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-doctor" value="doctor">
+                    <label for="filter-doctor">Bác sĩ / Y tế</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-lawyer" value="lawyer">
+                    <label for="filter-lawyer">Luật sư</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-insurance" value="insurance">
+                    <label for="filter-insurance">Bảo hiểm</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-nail" value="nail-supply">
+                    <label for="filter-nail">Nail Supply</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-restaurant" value="restaurant-supply">
+                    <label for="filter-restaurant">Restaurant Supply</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-auto" value="auto">
+                    <label for="filter-auto">Sửa xe / Auto</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-education" value="education">
+                    <label for="filter-education">Giáo dục</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Đánh giá</h3>
+                <div class="rating-filter" id="ratingFilter">
+                    <span class="star" data-rating="1"><i class="fas fa-star"></i></span>
+                    <span class="star" data-rating="2"><i class="fas fa-star"></i></span>
+                    <span class="star" data-rating="3"><i class="fas fa-star"></i></span>
+                    <span class="star" data-rating="4"><i class="fas fa-star"></i></span>
+                    <span class="star" data-rating="5"><i class="fas fa-star"></i></span>
+                    <span style="margin-left: 0.5rem; color: #666;">trở lên</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Giờ làm việc</h3>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-open-now">
+                    <label for="filter-open-now">Đang mở cửa</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filter-open-weekend">
+                    <label for="filter-open-weekend">Mở cuối tuần</label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Services Content -->
+        <div class="services-content">
+            <!-- Results Header -->
+            <div class="results-header">
+                <div class="results-count">
+                    Tìm thấy <span id="resultsCount">24</span> dịch vụ
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" id="gridView">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" id="mapView">
+                        <i class="fas fa-map"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="services-grid" id="servicesGrid">
+                <!-- Service cards will be dynamically loaded here -->
+            </div>
+
+            <!-- Map Container -->
+            <div class="map-container" id="mapContainer">
+                <div id="map"></div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Đang tải dữ liệu...</p>
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Không tìm thấy kết quả</h3>
+                <p>Vui lòng thử lại với từ khóa khác</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Business Button -->
+    <button class="add-business-btn" id="addBusinessBtn">
+        <i class="fas fa-plus"></i> Thêm dịch vụ
+    </button>
+
+    <!-- Add Business Modal -->
+    <div class="modal" id="addBusinessModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm dịch vụ mới</h2>
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addBusinessForm">
+                <div class="form-group">
+                    <label for="businessName">Tên dịch vụ *</label>
+                    <input type="text" id="businessName" required>
+                </div>
+                <div class="form-group">
+                    <label for="businessCategory">Danh mục *</label>
+                    <select id="businessCategory" required>
+                        <option value="">Chọn danh mục</option>
+                        <option value="doctor">Bác sĩ / Y tế</option>
+                        <option value="lawyer">Luật sư</option>
+                        <option value="insurance">Bảo hiểm</option>
+                        <option value="nail-supply">Nail Supply</option>
+                        <option value="restaurant-supply">Restaurant Supply</option>
+                        <option value="auto">Sửa xe / Auto</option>
+                        <option value="education">Giáo dục / Tutoring</option>
+                        <option value="beauty">Làm đẹp / Spa</option>
+                        <option value="accounting">Kế toán / Thuế</option>
+                        <option value="travel">Du lịch</option>
+                        <option value="shipping">Vận chuyển / Gửi hàng</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="businessPhone">Số điện thoại *</label>
+                    <input type="tel" id="businessPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="businessAddress">Địa chỉ *</label>
+                    <input type="text" id="businessAddress" required>
+                </div>
+                <div class="form-group">
+                    <label for="businessWebsite">Website</label>
+                    <input type="url" id="businessWebsite">
+                </div>
+                <div class="form-group">
+                    <label for="businessDescription">Mô tả</label>
+                    <textarea id="businessDescription" rows="4"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Đăng dịch vụ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Về VietLinker</h3>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Điều khoản sử dụng</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Dịch vụ</h3>
+                <ul>
+                    <li><a href="jobs.html">Việc làm</a></li>
+                    <li><a href="classifieds.html">Rao vặt</a></li>
+                    <li><a href="services.html">Dịch vụ</a></li>
+                    <li><a href="realestate.html">Bất động sản</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Hỗ trợ</h3>
+                <ul>
+                    <li><a href="#">Hướng dẫn đăng tin</a></li>
+                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                    <li><a href="#">Liên hệ hỗ trợ</a></li>
+                    <li><a href="#">Phản hồi</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Kết nối</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> info@vietlinker.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 VietLinker. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Sample service data
+        const servicesData = [
+            {
+                id: 1,
+                name: "Phòng khám Nha khoa Sài Gòn",
+                category: "doctor",
+                categoryName: "Nha khoa",
+                phone: "(713) 123-4567",
+                address: "9200 Bellaire Blvd, Houston, TX 77036",
+                website: "www.saigondental.com",
+                rating: 4.8,
+                reviews: 256,
+                description: "Phòng khám nha khoa uy tín với đội ngũ bác sĩ kinh nghiệm. Chuyên điều trị tổng quát, implant, và thẩm mỹ.",
+                lat: 29.7059,
+                lng: -95.5461,
+                hours: "Mon-Fri: 9AM-6PM, Sat: 9AM-2PM"
+            },
+            {
+                id: 2,
+                name: "Văn phòng Luật sư Nguyễn & Associates",
+                category: "lawyer",
+                categoryName: "Luật sư",
+                phone: "(281) 555-0123",
+                address: "11360 Bellaire Blvd, Houston, TX 77072",
+                website: "www.nguyenlaw.com",
+                rating: 4.9,
+                reviews: 189,
+                description: "Chuyên về luật di trú, doanh nghiệp, và bất động sản. Tư vấn miễn phí cho lần đầu.",
+                lat: 29.7008,
+                lng: -95.5989,
+                hours: "Mon-Fri: 9AM-5PM"
+            },
+            {
+                id: 3,
+                name: "Bảo hiểm Phương Nam",
+                category: "insurance",
+                categoryName: "Bảo hiểm",
+                phone: "(832) 888-9999",
+                address: "6929 Long Point Rd, Houston, TX 77055",
+                website: "www.phuongnaminsurance.com",
+                rating: 4.7,
+                reviews: 143,
+                description: "Đại lý bảo hiểm đa dạng: xe, nhà, sức khỏe, nhân thọ. Giá cả cạnh tranh.",
+                lat: 29.7826,
+                lng: -95.4885,
+                hours: "Mon-Fri: 9AM-6PM, Sat: 10AM-2PM"
+            },
+            {
+                id: 4,
+                name: "T&T Nail Supply",
+                category: "nail-supply",
+                categoryName: "Nail Supply",
+                phone: "(469) 234-5678",
+                address: "2600 W Pioneer Pkwy, Grand Prairie, TX 75051",
+                website: "www.ttnailsupply.com",
+                rating: 4.6,
+                reviews: 312,
+                description: "Nhà phân phối đồ nail chuyên nghiệp. Giá sỉ cho tiệm. Free shipping cho đơn trên $500.",
+                lat: 32.7105,
+                lng: -97.0219,
+                hours: "Mon-Sat: 9AM-7PM, Sun: 10AM-5PM"
+            },
+            {
+                id: 5,
+                name: "Garage Sửa xe Minh Phát",
+                category: "auto",
+                categoryName: "Sửa xe",
+                phone: "(214) 333-4444",
+                address: "10725 Audelia Rd, Dallas, TX 75238",
+                website: "",
+                rating: 4.9,
+                reviews: 278,
+                description: "Sửa chữa và bảo dưỡng xe hơi uy tín. Nhận tất cả các loại xe. Giá cả hợp lý.",
+                lat: 32.8667,
+                lng: -96.7177,
+                hours: "Mon-Sat: 8AM-6PM"
+            },
+            {
+                id: 6,
+                name: "Trung tâm Gia sư Thăng Long",
+                category: "education",
+                categoryName: "Giáo dục",
+                phone: "(972) 111-2222",
+                address: "3030 LBJ Fwy, Dallas, TX 75234",
+                website: "www.thanglong-tutoring.com",
+                rating: 4.8,
+                reviews: 167,
+                description: "Dạy kèm Toán, Lý, Hóa, Anh văn. SAT/ACT prep. Giáo viên kinh nghiệm.",
+                lat: 32.9294,
+                lng: -96.8994,
+                hours: "Mon-Fri: 3PM-9PM, Sat-Sun: 9AM-6PM"
+            },
+            {
+                id: 7,
+                name: "Spa Làm đẹp Hồng Nhung",
+                category: "beauty",
+                categoryName: "Làm đẹp",
+                phone: "(346) 777-8888",
+                address: "8388 W Sam Houston Pkwy S, Houston, TX 77072",
+                website: "www.hongnhungspa.com",
+                rating: 4.7,
+                reviews: 234,
+                description: "Facial, massage, waxing, eyelash extensions. Khuyến mãi cho khách mới.",
+                lat: 29.6870,
+                lng: -95.5916,
+                hours: "Tue-Sun: 10AM-7PM"
+            },
+            {
+                id: 8,
+                name: "Văn phòng Kế toán Việt Mỹ",
+                category: "accounting",
+                categoryName: "Kế toán",
+                phone: "(713) 999-8888",
+                address: "12320 Bellaire Blvd, Houston, TX 77072",
+                website: "www.vietmytax.com",
+                rating: 4.9,
+                reviews: 421,
+                description: "Khai thuế cá nhân và doanh nghiệp. Tư vấn miễn phí. E-file nhanh chóng.",
+                lat: 29.6994,
+                lng: -95.6182,
+                hours: "Mon-Fri: 9AM-6PM, Sat: 10AM-3PM"
+            },
+            {
+                id: 9,
+                name: "Du lịch Mekong Tours",
+                category: "travel",
+                categoryName: "Du lịch",
+                phone: "(832) 666-7777",
+                address: "6938 Harwin Dr, Houston, TX 77036",
+                website: "www.mekongtours.com",
+                rating: 4.6,
+                reviews: 156,
+                description: "Vé máy bay giá rẻ về Việt Nam. Tour du lịch trong và ngoài nước.",
+                lat: 29.7211,
+                lng: -95.5045,
+                hours: "Mon-Sat: 9AM-6PM"
+            },
+            {
+                id: 10,
+                name: "Dịch vụ Gửi hàng Sài Gòn Express",
+                category: "shipping",
+                categoryName: "Vận chuyển",
+                phone: "(281) 222-3333",
+                address: "11209 Bellaire Blvd, Houston, TX 77072",
+                website: "www.saigonexpress.com",
+                rating: 4.7,
+                reviews: 289,
+                description: "Gửi hàng về Việt Nam nhanh chóng, an toàn. Nhận ship door to door.",
+                lat: 29.7012,
+                lng: -95.5951,
+                hours: "Mon-Sat: 9AM-7PM, Sun: 10AM-5PM"
+            }
+        ];
+
+        // Global variables
+        let map = null;
+        let markers = [];
+        let currentView = 'grid';
+        let filteredServices = [...servicesData];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadServices();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu toggle
+            document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+                document.getElementById('navMenu').classList.toggle('active');
+            });
+
+            // Search form
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                filterServices();
+            });
+
+            // View toggle
+            document.getElementById('gridView').addEventListener('click', function() {
+                showGridView();
+            });
+
+            document.getElementById('mapView').addEventListener('click', function() {
+                showMapView();
+            });
+
+            // Category filters
+            const checkboxes = document.querySelectorAll('.filter-checkbox input');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', filterServices);
+            });
+
+            // Rating filter
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                star.addEventListener('click', function() {
+                    setRatingFilter(index + 1);
+                    filterServices();
+                });
+            });
+
+            // Add business modal
+            document.getElementById('addBusinessBtn').addEventListener('click', function() {
+                document.getElementById('addBusinessModal').style.display = 'flex';
+            });
+
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('addBusinessModal').style.display = 'none';
+            });
+
+            document.getElementById('addBusinessModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+
+            // Add business form
+            document.getElementById('addBusinessForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Here you would normally send the data to a server
+                alert('Dịch vụ đã được gửi để xét duyệt!');
+                document.getElementById('addBusinessModal').style.display = 'none';
+                this.reset();
+            });
+        }
+
+        // Load services
+        function loadServices() {
+            const servicesGrid = document.getElementById('servicesGrid');
+            servicesGrid.innerHTML = '';
+
+            if (filteredServices.length === 0) {
+                document.getElementById('noResults').style.display = 'block';
+                document.getElementById('resultsCount').textContent = '0';
+                return;
+            }
+
+            document.getElementById('noResults').style.display = 'none';
+            document.getElementById('resultsCount').textContent = filteredServices.length;
+
+            filteredServices.forEach(service => {
+                const serviceCard = createServiceCard(service);
+                servicesGrid.appendChild(serviceCard);
+            });
+        }
+
+        // Create service card
+        function createServiceCard(service) {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            card.innerHTML = `
+                <div class="service-header">
+                    <h3 class="service-name">${service.name}</h3>
+                    <span class="service-category">${service.categoryName}</span>
+                    <div class="service-rating">
+                        <span class="stars">${generateStars(service.rating)}</span>
+                        <span class="rating-count">${service.rating} (${service.reviews} đánh giá)</span>
+                    </div>
+                </div>
+                <div class="service-body">
+                    <div class="service-info">
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <span>${service.phone}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${service.address}</span>
+                        </div>
+                        ${service.website ? `
+                        <div class="info-item">
+                            <i class="fas fa-globe"></i>
+                            <span>${service.website}</span>
+                        </div>
+                        ` : ''}
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${service.hours}</span>
+                        </div>
+                    </div>
+                    <p class="service-description">${service.description}</p>
+                </div>
+                <div class="service-actions">
+                    <button class="action-btn call-btn" onclick="callBusiness('${service.phone}')">
+                        <i class="fas fa-phone"></i> Gọi ngay
+                    </button>
+                    <button class="action-btn map-btn" onclick="showOnMap(${service.lat}, ${service.lng})">
+                        <i class="fas fa-map-marker-alt"></i> Xem bản đồ
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
+        // Generate stars HTML
+        function generateStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            return stars;
+        }
+
+        // Filter services
+        function filterServices() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categorySelect').value;
+            const selectedCategories = Array.from(document.querySelectorAll('.filter-checkbox input:checked'))
+                .map(cb => cb.value);
+            const minRating = getSelectedRating();
+
+            filteredServices = servicesData.filter(service => {
+                // Search term filter
+                const matchesSearch = !searchTerm || 
+                    service.name.toLowerCase().includes(searchTerm) ||
+                    service.description.toLowerCase().includes(searchTerm) ||
+                    service.address.toLowerCase().includes(searchTerm);
+
+                // Category filter
+                const matchesCategory = !categoryFilter || service.category === categoryFilter;
+                const matchesCheckbox = selectedCategories.length === 0 || 
+                    selectedCategories.includes(service.category);
+
+                // Rating filter
+                const matchesRating = !minRating || service.rating >= minRating;
+
+                return matchesSearch && matchesCategory && matchesCheckbox && matchesRating;
+            });
+
+            loadServices();
+        }
+
+        // Rating filter
+        function setRatingFilter(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function getSelectedRating() {
+            const activeStars = document.querySelectorAll('.star.active');
+            return activeStars.length;
+        }
+
+        // View functions
+        function showGridView() {
+            document.getElementById('gridView').classList.add('active');
+            document.getElementById('mapView').classList.remove('active');
+            document.getElementById('servicesGrid').style.display = 'grid';
+            document.getElementById('mapContainer').style.display = 'none';
+            currentView = 'grid';
+        }
+
+        function showMapView() {
+            document.getElementById('mapView').classList.add('active');
+            document.getElementById('gridView').classList.remove('active');
+            document.getElementById('servicesGrid').style.display = 'none';
+            document.getElementById('mapContainer').style.display = 'block';
+            currentView = 'map';
+            initializeMap();
+        }
+
+        // Map functions
+        function initializeMap() {
+            if (!map) {
+                map = L.map('map').setView([29.7604, -95.3698], 10); // Houston center
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+            }
+
+            // Clear existing markers
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+
+            // Add markers for filtered services
+            filteredServices.forEach(service => {
+                const marker = L.marker([service.lat, service.lng])
+                    .addTo(map)
+                    .bindPopup(`
+                        <strong>${service.name}</strong><br>
+                        ${service.categoryName}<br>
+                        ${service.phone}<br>
+                        <a href="tel:${service.phone}">Gọi ngay</a>
+                    `);
+                markers.push(marker);
+            });
+
+            // Fit map to show all markers
+            if (markers.length > 0) {
+                const group = L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
+        }
+
+        function showOnMap(lat, lng) {
+            showMapView();
+            map.setView([lat, lng], 15);
+            
+            // Find and open the corresponding marker popup
+            markers.forEach(marker => {
+                if (marker.getLatLng().lat === lat && marker.getLatLng().lng === lng) {
+                    marker.openPopup();
+                }
+            });
+        }
+
+        // Action functions
+        function callBusiness(phone) {
+            window.location.href = `tel:${phone}`;
+        }
+    </script>
+</body>
+</html>
