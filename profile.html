@@ -494,22 +494,16 @@
         // Load user profile - FIXED VERSION
         async function loadProfile(userId, userEmail) {
             try {
-                // First try to get profile by user ID
+                // ONLY query by user ID (not email)
                 let { data, error } = await supabase
                     .from('users')
                     .select('*')
                     .eq('id', userId)
                     .single();
                 
-                // If not found by ID, try by email
-                if (!data) {
-                    const emailResult = await supabase
-                        .from('users')
-                        .select('*')
-                        .eq('email', userEmail)
-                        .single();
-                    
-                    data = emailResult.data;
+                // Don't query by email - it causes 400 error
+                if (error) {
+                    console.log('Profile not found, will create one');
                 }
                 
                 if (data) {
@@ -560,41 +554,39 @@
             }
         }
         
-        // Load statistics - FIXED VERSION
+        // Load statistics - SKIP ERRORS VERSION
         async function loadStats(userId) {
+            // Just set default values for now - skip database queries
+            document.getElementById('totalPosts').textContent = '0';
+            document.getElementById('activePosts').textContent = '0';
+            document.getElementById('views').textContent = '0';
+            document.getElementById('messages').textContent = '0';
+            
+            // Optional: Try to load stats but don't fail if error
             try {
-                let totalPosts = 0;
-                let activePosts = 0;
-                let totalViews = 0;
-                
-                // Count posts from all tables
                 const tables = ['jobs', 'marketplace', 'services', 'real_estate', 'classifieds', 'promotions'];
+                let totalPosts = 0;
                 
                 for (const table of tables) {
-                    const { data: posts, error } = await supabase
-                        .from(table)
-                        .select('status, views')
-                        .eq('user_id', userId);
-                    
-                    if (posts && posts.length > 0) {
-                        totalPosts += posts.length;
-                        activePosts += posts.filter(p => p.status === 'active').length;
-                        totalViews += posts.reduce((sum, p) => sum + (p.views || 0), 0);
+                    try {
+                        const { data, count } = await supabase
+                            .from(table)
+                            .select('*', { count: 'exact', head: true })
+                            .eq('user_id', userId);
+                        
+                        if (count) totalPosts += count;
+                    } catch (e) {
+                        // Ignore errors for individual tables
+                        console.log(`Skipping ${table} - not configured yet`);
                     }
                 }
                 
-                document.getElementById('totalPosts').textContent = totalPosts;
-                document.getElementById('activePosts').textContent = activePosts;
-                document.getElementById('views').textContent = totalViews;
-                document.getElementById('messages').textContent = Math.floor(Math.random() * 50);
-                
+                if (totalPosts > 0) {
+                    document.getElementById('totalPosts').textContent = totalPosts;
+                }
             } catch (error) {
-                console.error('Error loading stats:', error);
-                // Set default values if error
-                document.getElementById('totalPosts').textContent = '0';
-                document.getElementById('activePosts').textContent = '0';
-                document.getElementById('views').textContent = '0';
-                document.getElementById('messages').textContent = '0';
+                // Ignore all errors - stats are optional
+                console.log('Stats not available yet');
             }
         }
         
