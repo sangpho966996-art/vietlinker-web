@@ -703,9 +703,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="imageUrl">Link hình ảnh (tùy chọn)</label>
-                        <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
-                        <small>Dán link hình ảnh từ internet (imgur, imgbb, v.v...)</small>
+                        <label for="imageFile">Hình ảnh sản phẩm</label>
+                        <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                        <div id="imageUploadArea" style="border: 2px dashed #dc143c; padding: 30px; text-align: center; border-radius: 8px; cursor: pointer; background: #fff5f5;">
+                            <div id="uploadPlaceholder">
+                                <div style="font-size: 48px; margin-bottom: 10px;">📷</div>
+                                <p style="color: #dc143c; font-weight: 600;">Click để chọn hình</p>
+                                <p style="color: #666; font-size: 0.9em;">Hoặc kéo thả hình vào đây</p>
+                                <small style="color: #999;">JPG, PNG, GIF - Tối đa 5MB</small>
+                            </div>
+                            <div id="imagePreview" style="display: none;">
+                                <img id="previewImg" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                                <p style="margin-top: 10px;">
+                                    <button type="button" class="btn" style="background: #dc143c; padding: 8px 16px;" onclick="changeImage()">Đổi hình khác</button>
+                                </p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="uploadedImageUrl">
+                        <small id="uploadStatus" style="color: #28a745; display: none;">✅ Đã upload hình thành công!</small>
                     </div>
 
                     <div class="form-group">
@@ -804,6 +819,11 @@
         function closeModal() {
             document.getElementById('itemModal').style.display = 'none';
             document.getElementById('itemForm').reset();
+            // Reset image upload
+            selectedFile = null;
+            document.getElementById('uploadPlaceholder').style.display = 'block';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('uploadStatus').style.display = 'none';
         }
         window.closeModal = closeModal;
 
@@ -938,6 +958,108 @@
             }
         }
 
+        // Image upload handling
+        let selectedFile = null;
+        
+        const imageUploadArea = document.getElementById('imageUploadArea');
+        const imageFile = document.getElementById('imageFile');
+        
+        imageUploadArea.addEventListener('click', () => {
+            imageFile.click();
+        });
+        
+        imageUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.background = '#ffe5e5';
+        });
+        
+        imageUploadArea.addEventListener('dragleave', () => {
+            imageUploadArea.style.background = '#fff5f5';
+        });
+        
+        imageUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.background = '#fff5f5';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleImageSelect(files[0]);
+            }
+        });
+        
+        imageFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleImageSelect(e.target.files[0]);
+            }
+        });
+        
+        function handleImageSelect(file) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Hình ảnh phải nhỏ hơn 5MB!');
+                return;
+            }
+            
+            if (!file.type.startsWith('image/')) {
+                alert('Vui lòng chọn file hình ảnh!');
+                return;
+            }
+            
+            selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+                document.getElementById('imagePreview').style.display = 'block';
+                document.getElementById('uploadStatus').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        window.changeImage = function() {
+            imageFile.click();
+        }
+        
+        async function uploadImage() {
+            if (!selectedFile) return null;
+            
+            try {
+                // Tạo tên file unique và đơn giản
+                const fileExt = selectedFile.name.split('.').pop();
+                const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+                
+                console.log('Uploading:', fileName);
+                console.log('File size:', selectedFile.size);
+                
+                // Upload file trực tiếp không dùng subfolder
+                const { data, error } = await supabase.storage
+                    .from('marketplace')
+                    .upload(fileName, selectedFile);
+                
+                if (error) {
+                    console.error('Upload error:', error);
+                    alert('Lỗi upload: ' + error.message);
+                    return null;
+                }
+                
+                console.log('Upload success:', data);
+                
+                // Build public URL theo format chuẩn của Supabase
+                const publicUrl = `https://wwlmvcsozavqfvwlxkrt.supabase.co/storage/v1/object/public/marketplace/${fileName}`;
+                
+                console.log('Image URL:', publicUrl);
+                
+                // Hiển thị thông báo thành công
+                document.getElementById('uploadStatus').style.display = 'block';
+                document.getElementById('uploadStatus').innerHTML = `✅ Upload thành công! <a href="${publicUrl}" target="_blank">Xem hình</a>`;
+                
+                return publicUrl;
+                
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                alert('Lỗi không xác định: ' + err.message);
+                return null;
+            }
+        }
+
         // Submit form
         document.getElementById('itemForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -947,28 +1069,39 @@
                 return;
             }
 
-            const imageUrl = document.getElementById('imageUrl').value;
-            const itemData = {
-                user_id: currentUser.id,
-                title: document.getElementById('title').value,
-                category: document.getElementById('category').value,
-                price: parseFloat(document.getElementById('price').value),
-                description: document.getElementById('description').value,
-                condition: document.getElementById('condition').value,
-                location: document.getElementById('location').value,
-                city: document.getElementById('city').value,
-                zipcode: document.getElementById('zipcode').value,
-                contact: document.getElementById('contact').value,
-                status: 'active',
-                views: 0
-            };
-            
-            // Add image_url if provided
-            if (imageUrl && imageUrl.trim() !== '') {
-                itemData.image_url = imageUrl.trim();
-            }
+            // Show loading
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Đang xử lý...';
+            submitBtn.disabled = true;
 
             try {
+                // Upload image first if selected
+                let imageUrl = null;
+                if (selectedFile) {
+                    imageUrl = await uploadImage();
+                }
+
+                const itemData = {
+                    user_id: currentUser.id,
+                    title: document.getElementById('title').value,
+                    category: document.getElementById('category').value,
+                    price: parseFloat(document.getElementById('price').value),
+                    description: document.getElementById('description').value,
+                    condition: document.getElementById('condition').value,
+                    location: document.getElementById('location').value,
+                    city: document.getElementById('city').value,
+                    zipcode: document.getElementById('zipcode').value,
+                    contact: document.getElementById('contact').value,
+                    status: 'active',
+                    views: 0
+                };
+                
+                // Add image_url if available
+                if (imageUrl) {
+                    itemData.image_url = imageUrl;
+                }
+
                 const { data, error } = await supabase
                     .from('marketplace')
                     .insert([itemData]);
@@ -981,6 +1114,9 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('Lỗi: ' + error.message);
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
 
