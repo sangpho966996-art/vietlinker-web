@@ -486,6 +486,9 @@
         </div>
     </footer>
 
+    <!-- Supabase Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
         // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
@@ -503,6 +506,18 @@
         const loadingOverlay = document.getElementById('loadingOverlay');
         const errorAlert = document.getElementById('errorAlert');
         const successAlert = document.getElementById('successAlert');
+
+        // Khởi tạo Supabase
+        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        
+        let supabaseClient;
+        setTimeout(() => {
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('Supabase đã khởi tạo thành công!');
+            }
+        }, 500);
 
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -525,36 +540,52 @@
             // Show loading
             loadingOverlay.style.display = 'flex';
             
-            // Simulate API call
-            setTimeout(() => {
+            try {
+                // Đăng nhập với Supabase
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
                 loadingOverlay.style.display = 'none';
                 
-                // Mock authentication
-                if (email === 'demo@vietlinker.com' && password === 'demo123') {
-                    // Save user session
+                if (error) {
+                    if (error.message.includes('Invalid login credentials')) {
+                        showError('Email hoặc mật khẩu không đúng');
+                    } else if (error.message.includes('Email not confirmed')) {
+                        showError('Vui lòng xác nhận email trước khi đăng nhập');
+                    } else {
+                        showError('Lỗi: ' + error.message);
+                    }
+                } else {
+                    // Lưu thông tin user
                     const user = {
-                        email: email,
-                        name: 'Demo User',
-                        id: '12345'
+                        email: data.user.email,
+                        id: data.user.id,
+                        name: data.user.user_metadata?.name || data.user.email
                     };
                     
                     if (rememberMe) {
                         localStorage.setItem('vietlinker_user', JSON.stringify(user));
+                        localStorage.setItem('supabase_token', data.session.access_token);
                     } else {
                         sessionStorage.setItem('vietlinker_user', JSON.stringify(user));
+                        sessionStorage.setItem('supabase_token', data.session.access_token);
                     }
                     
                     showSuccess('Đăng nhập thành công! Đang chuyển hướng...');
                     
-                    // Redirect to profile or previous page
+                    // Redirect
                     setTimeout(() => {
                         const returnUrl = new URLSearchParams(window.location.search).get('return') || 'profile.html';
                         window.location.href = returnUrl;
                     }, 1500);
-                } else {
-                    showError('Email hoặc mật khẩu không đúng');
                 }
-            }, 1500);
+            } catch (err) {
+                loadingOverlay.style.display = 'none';
+                console.error('Lỗi:', err);
+                showError('Có lỗi xảy ra. Vui lòng thử lại!');
+            }
         });
 
         // Social login handlers
@@ -591,20 +622,16 @@
             successAlert.style.display = 'block';
         }
 
-        // Check if user is already logged in
-        const existingUser = localStorage.getItem('vietlinker_user') || sessionStorage.getItem('vietlinker_user');
-        if (existingUser) {
-            const returnUrl = new URLSearchParams(window.location.search).get('return') || 'profile.html';
-            window.location.href = returnUrl;
-        }
-
-        // Auto-fill for demo
-        document.addEventListener('DOMContentLoaded', function() {
-            const demoHint = document.createElement('div');
-            demoHint.style.cssText = 'text-align: center; margin-top: 10px; color: #666; font-size: 14px;';
-            demoHint.innerHTML = '<i class="fas fa-info-circle"></i> Demo: demo@vietlinker.com / demo123';
-            document.querySelector('.login-card').appendChild(demoHint);
-        });
+        // Check if user is already logged in với Supabase
+        setTimeout(async () => {
+            if (supabaseClient) {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    const returnUrl = new URLSearchParams(window.location.search).get('return') || 'profile.html';
+                    window.location.href = returnUrl;
+                }
+            }
+        }, 1000);
     </script>
 </body>
 </html>
