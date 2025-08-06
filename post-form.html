@@ -638,16 +638,22 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Import Supabase
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        
         // Supabase Configuration
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // State Management
         let currentStep = 1;
         let selectedCategory = null;
         let uploadedImages = [];
         let formData = {};
+        let currentUserId = null;
 
         // Dynamic field configurations for each category
         const categoryFields = {
@@ -772,26 +778,39 @@
             setupEventListeners();
         });
 
-        // Check authentication
+        // Check authentication - FIXED to use Supabase session
         async function checkAuth() {
-            const token = localStorage.getItem('supabase_token');
-            const userEmail = localStorage.getItem('user_email');
-            
-            if (!token || !userEmail) {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    alert('Vui lòng đăng nhập để đăng tin');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                currentUserId = session.user.id;
+                const userEmail = session.user.email;
+                
+                document.getElementById('userInfo').innerHTML = `
+                    <span style="margin-right: 15px;">👤 ${userEmail}</span>
+                    <a href="#" onclick="logout()" style="color: white;">Đăng xuất</a>
+                `;
+            } catch (error) {
+                console.error('Auth error:', error);
                 alert('Vui lòng đăng nhập để đăng tin');
                 window.location.href = 'login.html';
-                return;
             }
-            
-            document.getElementById('userInfo').innerHTML = `
-                <span style="margin-right: 15px;">👤 ${userEmail}</span>
-                <a href="#" onclick="logout()" style="color: white;">Đăng xuất</a>
-            `;
         }
 
-        function logout() {
-            localStorage.clear();
-            window.location.href = 'index.html';
+        // Logout function - FIXED to use Supabase auth
+        window.logout = async function() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                    window.location.href = 'index.html';
+                }
+            }
         }
 
         // Setup Event Listeners
@@ -927,7 +946,7 @@
         }
 
         // Remove image
-        function removeImage(index) {
+        window.removeImage = function(index) {
             uploadedImages.splice(index, 1);
             displayImages();
         }
@@ -956,7 +975,7 @@
             document.getElementById('previewContent').innerHTML = previewHTML;
         }
 
-        // Collect form data
+        // Collect form data - FIXED to use user_id from session
         function collectFormData() {
             formData = {
                 title: document.getElementById('title').value,
@@ -964,7 +983,7 @@
                 city: document.getElementById('city').value,
                 contact: document.getElementById('contact').value,
                 category: selectedCategory,
-                user_id: localStorage.getItem('user_id'),
+                user_id: currentUserId, // Use user_id from session
                 created_at: new Date().toISOString()
             };
             
@@ -1048,7 +1067,7 @@
             return names[category] || category;
         }
 
-        // Submit post
+        // Submit post - FIXED to use Supabase client
         async function submitPost() {
             const loading = document.getElementById('loading');
             const submitBtn = document.getElementById('submitPost');
@@ -1057,11 +1076,17 @@
             submitBtn.disabled = true;
             
             try {
-                const token = localStorage.getItem('supabase_token');
+                // Get current session
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    throw new Error('Session expired. Please login again.');
+                }
                 
                 // Prepare data for submission
                 const postData = {
                     ...formData,
+                    user_id: session.user.id, // Use user_id from session
                     status: 'active',
                     views: 0
                 };
@@ -1071,25 +1096,17 @@
                     postData[key] === undefined && delete postData[key]
                 );
                 
-                // Submit to Supabase
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/${selectedCategory}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(postData)
-                });
+                // Submit to Supabase using client
+                const { data, error } = await supabase
+                    .from(selectedCategory)
+                    .insert([postData]);
                 
-                if (response.ok) {
-                    // Show success message
-                    document.getElementById('section3').style.display = 'none';
-                    document.getElementById('successMessage').style.display = 'block';
-                } else {
-                    const error = await response.json();
-                    throw new Error(error.message || 'Có lỗi xảy ra');
-                }
+                if (error) throw error;
+                
+                // Show success message
+                document.getElementById('section3').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                
             } catch (error) {
                 console.error('Error:', error);
                 alert('Lỗi: ' + error.message);
