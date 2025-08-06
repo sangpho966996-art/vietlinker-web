@@ -832,9 +832,13 @@
 
         // Upload to Supabase Storage
         async function uploadImage(file) {
-            console.log('📤 Uploading image...');
+            console.log('📤 Uploading image...', file.name, file.size);
             
-            const fileName = `jobs/${Date.now()}_${file.name}`;
+            // Tạo tên file unique
+            const fileExt = file.name.split('.').pop();
+            const fileName = `jobs/${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+            
+            console.log('📁 File path:', fileName);
             
             const { data, error } = await supabase.storage
                 .from('marketplace')
@@ -847,10 +851,13 @@
 
             console.log('✅ Upload successful:', data);
 
+            // Get public URL
             const { data: urlData } = supabase.storage
                 .from('marketplace')
                 .getPublicUrl(fileName);
 
+            console.log('🔗 Public URL:', urlData.publicUrl);
+            
             return urlData.publicUrl;
         }
 
@@ -871,6 +878,8 @@
             selectedFile = null;
             uploadPreview.style.display = 'none';
             uploadText.style.display = 'block';
+            uploadPreview.innerHTML = '';
+            console.log('🔄 Modal closed and form reset');
         }
         window.closeModal = closeModal;
 
@@ -902,6 +911,7 @@
             }
 
             console.log('📝 Submitting job form...');
+            console.log('📷 Selected file:', selectedFile);
 
             const submitBtn = e.target.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
@@ -911,7 +921,11 @@
                 let imageUrl = null;
                 
                 if (selectedFile) {
+                    console.log('🔄 Starting image upload...');
                     imageUrl = await uploadImage(selectedFile);
+                    console.log('✅ Image uploaded successfully:', imageUrl);
+                } else {
+                    console.log('ℹ️ No image selected');
                 }
 
                 const jobData = {
@@ -934,11 +948,15 @@
 
                 const { data, error } = await supabase
                     .from('jobs')
-                    .insert([jobData]);
+                    .insert([jobData])
+                    .select();
 
-                if (error) throw error;
+                if (error) {
+                    console.error('❌ Database error:', error);
+                    throw error;
+                }
 
-                console.log('✅ Job posted successfully');
+                console.log('✅ Job posted successfully:', data);
                 alert('Đăng tin thành công!');
                 closeModal();
                 loadJobs();
