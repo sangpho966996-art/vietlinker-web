@@ -219,10 +219,71 @@
             color: #1e3c72;
             box-shadow: 0 4px 15px rgba(255,215,0,0.3);
         }
+
+        /* New Post Button in Header */
+        .btn-post {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+        }
         
-        .btn-auth:hover {
+        .btn-auth:hover, .btn-post:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Floating Post Button */
+        .floating-post-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 4px 20px rgba(220,20,60,0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .floating-post-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(220,20,60,0.6);
+        }
+
+        .floating-post-btn::after {
+            content: 'Đăng tin';
+            position: absolute;
+            right: 75px;
+            background: #333;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .floating-post-btn:hover::after {
+            opacity: 1;
         }
         
         /* Navigation Professional */
@@ -783,6 +844,19 @@
             .user-name {
                 display: none;
             }
+
+            .floating-post-btn {
+                width: 55px;
+                height: 55px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 24px;
+            }
+
+            .btn-post {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -817,7 +891,7 @@
                         <a href="my-posts.html" class="dropdown-item">
                             📝 Quản Lý Tin Đăng
                         </a>
-                        <a href="marketplace.html" class="dropdown-item">
+                        <a href="post-form.html" class="dropdown-item">
                             ➕ Đăng Tin Mới
                         </a>
                         <a href="#" onclick="signOut()" class="dropdown-item signout">
@@ -826,6 +900,9 @@
                     </div>
                 </div>
                 <div class="auth-buttons" id="authButtons">
+                    <a href="post-form.html" class="btn-post">
+                        ✍️ Đăng tin
+                    </a>
                     <a href="login.html" class="btn-auth btn-login">Đăng Nhập</a>
                     <a href="register.html" class="btn-auth btn-register">Đăng Ký Ngay</a>
                 </div>
@@ -1063,6 +1140,11 @@
             <p>&copy; 2024 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</p>
         </div>
     </footer>
+
+    <!-- Floating Post Button -->
+    <a href="post-form.html" class="floating-post-btn">
+        ➕
+    </a>
     
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
