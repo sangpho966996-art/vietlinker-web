@@ -947,6 +947,7 @@
                 return;
             }
 
+            const imageUrl = document.getElementById('imageUrl').value;
             const itemData = {
                 user_id: currentUser.id,
                 title: document.getElementById('title').value,
@@ -954,7 +955,6 @@
                 price: parseFloat(document.getElementById('price').value),
                 description: document.getElementById('description').value,
                 condition: document.getElementById('condition').value,
-                image_url: document.getElementById('imageUrl').value || null,
                 location: document.getElementById('location').value,
                 city: document.getElementById('city').value,
                 zipcode: document.getElementById('zipcode').value,
@@ -962,6 +962,11 @@
                 status: 'active',
                 views: 0
             };
+            
+            // Add image_url if provided
+            if (imageUrl && imageUrl.trim() !== '') {
+                itemData.image_url = imageUrl.trim();
+            }
 
             try {
                 const { data, error } = await supabase
@@ -1063,19 +1068,22 @@
                     if (item.zipcode) locationInfo.push(item.zipcode);
                     const fullLocation = locationInfo.join(', ');
 
+                    // Debug log
+                    console.log('Item:', item.title, 'Image URL:', item.image_url);
+
                     return `
                         <div class="item-card" onclick="window.showItemDetail(window.allItems[${index}])">
                             ${item.condition === 'new' ? '<div class="item-badge">MỚI</div>' : ''}
                             <div class="item-image">
-                                ${item.image_url ? 
-                                    `<img src="${item.image_url}" alt="${item.title}" onerror="this.style.display='none'; this.parentElement.innerHTML='${categoryIcons[item.category] || '📦'}'">` : 
+                                ${item.image_url && item.image_url.trim() !== '' ? 
+                                    `<img src="${item.image_url}" alt="${item.title}" onerror="this.parentElement.innerHTML='${categoryIcons[item.category] || '📦'}'">` : 
                                     categoryIcons[item.category] || '📦'
                                 }
                             </div>
                             <div class="item-body">
                                 <div class="item-category">${item.category || 'Khác'}</div>
                                 <div class="item-title">${item.title}</div>
-                                <div class="item-price">$${item.price.toLocaleString()}</div>
+                                <div class="item-price">${item.price.toLocaleString()}</div>
                                 <div class="item-details">
                                     ${item.condition ? `
                                         <div class="item-detail">
