@@ -10,695 +10,582 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
         }
-        
-        /* Header với gradient chính xác */
-        header {
+
+        /* Header */
+        .header {
             background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            padding: 1rem 0;
-            position: relative;
-            overflow: hidden;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: -20px -20px 30px -20px;
         }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
+
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            z-index: 1;
         }
-        
-        /* Logo SVG Network Design */
+
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
-            text-decoration: none;
-        }
-        
-        .logo svg {
-            width: 50px;
-            height: 50px;
-        }
-        
-        .logo-text {
             color: white;
-            font-size: 24px;
+            text-decoration: none;
+            font-size: 1.5rem;
             font-weight: bold;
         }
-        
-        /* Navigation Style Chính Xác */
-        nav {
-            background: #1e3c72;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
         }
-        
-        .nav-container {
+
+        .user-info {
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Navigation */
+        .nav {
+            background: #1e3c72;
+            padding: 1rem 0;
+            margin: -30px -20px 30px -20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-        
-        .nav-links {
             display: flex;
-            gap: 10px;
-            padding: 15px 0;
+            gap: 2rem;
+            justify-content: center;
         }
-        
-        .nav-links a {
+
+        .nav-link {
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
         }
-        
-        .nav-links a:hover {
-            background: rgba(220, 20, 60, 0.3);
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.1);
         }
-        
-        .nav-links a.active {
-            background: #dc143c;
-        }
-        
-        /* Main Container */
+
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        
+
+        /* Page Header */
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
         }
-        
+
         .page-title {
-            font-size: 32px;
+            font-size: 2rem;
             color: #1e3c72;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-weight: bold;
         }
-        
-        /* Button với gradient chính xác */
-        .btn-new {
+
+        .btn-new-post {
             background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
             color: white;
             padding: 12px 30px;
-            border-radius: 8px;
+            border-radius: 25px;
             text-decoration: none;
-            font-weight: 500;
-            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
-            transition: all 0.3s;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
         }
-        
-        .btn-new:hover {
+
+        .btn-new-post:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
         }
-        
-        /* Tabs */
-        .tabs-container {
-            background: white;
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .tabs {
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
             display: flex;
-            gap: 10px;
-            border-bottom: 2px solid #f0f0f0;
-            overflow-x: auto;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0;
         }
-        
-        .tab {
-            padding: 12px 24px;
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
             background: none;
             border: none;
             color: #666;
-            font-size: 16px;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s;
-            white-space: nowrap;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
         }
-        
-        .tab.active {
+
+        .filter-tab:hover {
+            color: #1e3c72;
+        }
+
+        .filter-tab.active {
             color: #dc143c;
             font-weight: 600;
+            border-bottom-color: #dc143c;
         }
-        
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #dc143c;
-            border-radius: 3px 3px 0 0;
+
+        /* Posts List */
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-        
-        .tab:hover {
-            color: #dc143c;
-        }
-        
-        .tab-badge {
-            background: #dc143c;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
-        
-        /* Posts Grid */
-        .posts-container {
-            display: grid;
-            gap: 20px;
-        }
-        
-        /* Post Card với hover effect chính xác */
+
         .post-card {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            padding: 20px;
-            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1.5rem;
             display: grid;
             grid-template-columns: auto 1fr auto;
-            gap: 20px;
+            gap: 1.5rem;
             align-items: center;
+            transition: all 0.3s;
         }
-        
+
         .post-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
-        
-        .post-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+
+        .post-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            font-size: 2rem;
             color: white;
         }
-        
-        .icon-job { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
-        .icon-marketplace { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); }
-        .icon-service { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); }
-        .icon-realestate { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); }
-        
+
         .post-details {
             flex: 1;
         }
-        
+
         .post-title {
-            font-size: 18px;
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #1e3c72;
-            margin-bottom: 8px;
         }
-        
+
         .post-meta {
             display: flex;
-            gap: 15px;
+            gap: 1rem;
             color: #666;
-            font-size: 14px;
-            flex-wrap: wrap;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
         }
-        
-        .meta-item {
-            display: flex;
+
+        .post-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .post-status {
+            display: inline-flex;
             align-items: center;
             gap: 5px;
-        }
-        
-        .status-badge {
             padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
             font-weight: 500;
         }
-        
+
         .status-active {
             background: #d4edda;
             color: #155724;
         }
-        
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         .status-pending {
             background: #fff3cd;
             color: #856404;
         }
-        
-        .status-expired {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
+
         .post-actions {
             display: flex;
-            gap: 10px;
+            gap: 0.5rem;
         }
-        
-        .action-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+
+        .btn-action {
+            padding: 8px 16px;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
-        
+
         .btn-edit {
-            background: #e3f2fd;
-            color: #1e3c72;
+            background: #ffc107;
+            color: #333;
         }
-        
+
+        .btn-edit:hover {
+            background: #ffb300;
+        }
+
         .btn-delete {
-            background: #ffebee;
-            color: #dc143c;
+            background: #dc3545;
+            color: white;
         }
-        
-        .action-btn:hover {
-            transform: scale(1.1);
+
+        .btn-delete:hover {
+            background: #c82333;
         }
-        
+
+        .btn-view {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #138496;
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        
-        .empty-icon {
-            font-size: 72px;
-            margin-bottom: 20px;
-        }
-        
-        .empty-title {
-            font-size: 24px;
-            color: #1e3c72;
-            margin-bottom: 10px;
-        }
-        
-        .empty-text {
+            padding: 4rem 2rem;
             color: #666;
-            margin-bottom: 30px;
         }
-        
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .empty-description {
+            margin-bottom: 2rem;
+        }
+
         /* Loading */
         .loading {
             text-align: center;
-            padding: 60px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            padding: 3rem;
+            color: #666;
         }
-        
+
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #dc143c;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #dc143c;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 1rem;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
             .page-header {
                 flex-direction: column;
-                gap: 20px;
+                gap: 1rem;
+                text-align: center;
             }
-            
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
             .post-card {
                 grid-template-columns: 1fr;
                 text-align: center;
             }
-            
-            .post-icon {
-                margin: 0 auto;
-            }
-            
-            .post-meta {
-                justify-content: center;
-            }
-            
+
             .post-actions {
                 justify-content: center;
             }
-            
-            .tabs {
+
+            .filter-tabs {
                 overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header với gradient -->
-    <header>
+    <!-- Header -->
+    <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
-                    <circle cx="50" cy="25" r="8" fill="#dc143c"/>
-                    <circle cx="25" cy="50" r="8" fill="#FFD700"/>
-                    <circle cx="75" cy="50" r="8" fill="#FFD700"/>
-                    <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
-                    <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
-                    <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
-                    <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
-                    <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                <svg viewBox="0 0 24 24" fill="white">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                 </svg>
-                <span class="logo-text">VietLinker</span>
+                VietLinker
             </a>
-        </div>
-    </header>
-    
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="nav-links">
-                <a href="index.html">🏠 Trang Chủ</a>
-                <a href="profile.html">👤 Hồ Sơ</a>
-                <a href="my-posts.html" class="active">📝 Tin Đăng</a>
-                <a href="marketplace.html">🛒 Mua Bán</a>
-                <a href="jobs.html">💼 Việc Làm</a>
-                <a href="services.html">🔧 Dịch Vụ</a>
+            <div class="user-info">
+                <span id="userEmail">user@example.com</span>
+                <a href="#" onclick="logout()" class="btn-logout">Đăng xuất</a>
             </div>
         </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+            <a href="profile.html" class="nav-link">👤 Hồ sơ</a>
+            <a href="my-posts.html" class="nav-link active">📝 Tin đăng</a>
+            <a href="marketplace.html" class="nav-link">🛒 Mua bán</a>
+        </div>
     </nav>
-    
-    <!-- Main Content -->
+
+    <!-- Main Container -->
     <div class="container">
+        <!-- Page Header -->
         <div class="page-header">
             <h1 class="page-title">📝 Quản Lý Tin Đăng</h1>
-            <a href="marketplace.html" class="btn-new">
+            <a href="post-form.html" class="btn-new-post">
                 ➕ Đăng Tin Mới
             </a>
         </div>
-        
-        <!-- Tabs -->
-        <div class="tabs-container">
-            <div class="tabs">
-                <button class="tab active" onclick="filterPosts('all')">
-                    Tất Cả
-                    <span class="tab-badge" id="countAll">0</span>
-                </button>
-                <button class="tab" onclick="filterPosts('jobs')">
-                    💼 Việc Làm
-                    <span class="tab-badge" id="countJobs">0</span>
-                </button>
-                <button class="tab" onclick="filterPosts('marketplace')">
-                    🛒 Mua Bán
-                    <span class="tab-badge" id="countMarketplace">0</span>
-                </button>
-                <button class="tab" onclick="filterPosts('services')">
-                    🔧 Dịch Vụ
-                    <span class="tab-badge" id="countServices">0</span>
-                </button>
-                <button class="tab" onclick="filterPosts('real_estate')">
-                    🏠 BĐS & Tiệm
-                    <span class="tab-badge" id="countRealEstate">0</span>
-                </button>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalPosts">0</div>
+                <div class="stat-label">Tổng tin đăng</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                <div class="stat-number" id="activePosts">0</div>
+                <div class="stat-label">Đang hiển thị</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+                <div class="stat-number" id="pendingPosts">0</div>
+                <div class="stat-label">Chờ duyệt</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+                <div class="stat-number" id="totalViews">0</div>
+                <div class="stat-label">Lượt xem</div>
             </div>
         </div>
-        
-        <!-- Loading State -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Đang tải tin đăng của bạn...</p>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterPosts('all')">Tất cả</button>
+            <button class="filter-tab" onclick="filterPosts('active')">Đang hiển thị</button>
+            <button class="filter-tab" onclick="filterPosts('pending')">Chờ duyệt</button>
+            <button class="filter-tab" onclick="filterPosts('expired')">Hết hạn</button>
         </div>
-        
-        <!-- Posts Container -->
-        <div class="posts-container" id="postsContainer" style="display: none;">
+
+        <!-- Posts List -->
+        <div class="posts-list" id="postsList">
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Đang tải tin đăng...</p>
+            </div>
+
+            <!-- Empty State (hidden by default) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">📭</div>
+                <h2 class="empty-title">Chưa có tin đăng nào</h2>
+                <p class="empty-description">Bắt đầu đăng tin để kết nối với cộng đồng người Việt</p>
+                <a href="post-form.html" class="btn-new-post">
+                    ➕ Đăng tin đầu tiên
+                </a>
+            </div>
+
             <!-- Posts will be loaded here -->
         </div>
-        
-        <!-- Empty State -->
-        <div class="empty-state" id="emptyState" style="display: none;">
-            <div class="empty-icon">📭</div>
-            <h3 class="empty-title">Chưa có tin đăng nào</h3>
-            <p class="empty-text">Hãy bắt đầu đăng tin để kết nối với cộng đồng người Việt!</p>
-            <a href="marketplace.html" class="btn-new">
-                ➕ Đăng Tin Đầu Tiên
-            </a>
-        </div>
     </div>
-    
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-        
-        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        let allPosts = [];
-        let currentFilter = 'all';
-        let currentUser = null;
-        
+
+    <script>
         // Check authentication
-        async function checkAuth() {
-            const { data: { user } } = await supabase.auth.getUser();
+        function checkAuth() {
+            const token = localStorage.getItem('supabase_token');
+            const userEmail = localStorage.getItem('user_email');
             
-            if (!user) {
+            if (!token || !userEmail) {
+                alert('Vui lòng đăng nhập để xem trang này');
                 window.location.href = 'login.html';
-                return;
+                return false;
             }
             
-            // Get user details
-            const { data: userData } = await supabase
-                .from('users')
-                .select('*')
-                .eq('email', user.email)
-                .single();
-            
-            if (userData) {
-                currentUser = userData;
-                loadAllPosts();
+            document.getElementById('userEmail').textContent = userEmail;
+            return true;
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                localStorage.clear();
+                window.location.href = 'index.html';
             }
         }
-        
-        // Load all posts
-        async function loadAllPosts() {
+
+        // Load posts (mock data for now)
+        function loadPosts() {
             const loading = document.getElementById('loading');
-            const postsContainer = document.getElementById('postsContainer');
             const emptyState = document.getElementById('emptyState');
+            const postsList = document.getElementById('postsList');
             
-            loading.style.display = 'block';
-            postsContainer.style.display = 'none';
-            emptyState.style.display = 'none';
-            
-            allPosts = [];
-            
-            // Define tables with their properties
-            const tables = [
-                { name: 'jobs', icon: '💼', type: 'job', color: 'icon-job' },
-                { name: 'marketplace', icon: '🛒', type: 'marketplace', color: 'icon-marketplace' },
-                { name: 'services', icon: '🔧', type: 'service', color: 'icon-service' },
-                { name: 'real_estate', icon: '🏠', type: 'realestate', color: 'icon-realestate' }
-            ];
-            
-            // Load posts from each table
-            for (const table of tables) {
-                const { data } = await supabase
-                    .from(table.name)
-                    .select('*')
-                    .eq('user_id', currentUser.id)
-                    .order('created_at', { ascending: false });
+            // Simulate loading
+            setTimeout(() => {
+                loading.style.display = 'none';
                 
-                if (data) {
-                    data.forEach(post => {
-                        post.postType = table.type;
-                        post.postIcon = table.icon;
-                        post.postColor = table.color;
-                        post.tableName = table.name;
-                    });
-                    allPosts = [...allPosts, ...data];
+                // Mock data - replace with actual Supabase query later
+                const mockPosts = [
+                    {
+                        id: 1,
+                        title: 'iPhone 14 Pro Max 256GB',
+                        category: 'marketplace',
+                        status: 'active',
+                        date: '2024-01-15',
+                        views: 234,
+                        price: '$899',
+                        city: 'Houston'
+                    },
+                    {
+                        id: 2,
+                        title: 'Cần tuyển nhân viên nail',
+                        category: 'jobs',
+                        status: 'active',
+                        date: '2024-01-14',
+                        views: 567,
+                        salary: '$5000/tháng',
+                        city: 'Dallas'
+                    },
+                    {
+                        id: 3,
+                        title: 'Cho thuê nhà 3PN 2WC',
+                        category: 'real_estate',
+                        status: 'pending',
+                        date: '2024-01-13',
+                        views: 123,
+                        price: '$1500/tháng',
+                        city: 'Austin'
+                    }
+                ];
+
+                if (mockPosts.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    // Update stats
+                    document.getElementById('totalPosts').textContent = mockPosts.length;
+                    document.getElementById('activePosts').textContent = mockPosts.filter(p => p.status === 'active').length;
+                    document.getElementById('pendingPosts').textContent = mockPosts.filter(p => p.status === 'pending').length;
+                    document.getElementById('totalViews').textContent = mockPosts.reduce((sum, p) => sum + p.views, 0);
+                    
+                    // Render posts
+                    const postsHTML = mockPosts.map(post => createPostCard(post)).join('');
+                    postsList.innerHTML = postsHTML;
                 }
-            }
-            
-            // Sort all posts by date
-            allPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            
-            // Update counts
-            updateCounts();
-            
-            // Display posts
-            displayPosts();
-            
-            loading.style.display = 'none';
+            }, 1000);
         }
-        
-        // Update tab counts
-        function updateCounts() {
-            document.getElementById('countAll').textContent = allPosts.length;
-            document.getElementById('countJobs').textContent = 
-                allPosts.filter(p => p.tableName === 'jobs').length;
-            document.getElementById('countMarketplace').textContent = 
-                allPosts.filter(p => p.tableName === 'marketplace').length;
-            document.getElementById('countServices').textContent = 
-                allPosts.filter(p => p.tableName === 'services').length;
-            document.getElementById('countRealEstate').textContent = 
-                allPosts.filter(p => p.tableName === 'real_estate').length;
-        }
-        
-        // Display posts
-        function displayPosts() {
-            const postsContainer = document.getElementById('postsContainer');
-            const emptyState = document.getElementById('emptyState');
-            
-            let filteredPosts = allPosts;
-            if (currentFilter !== 'all') {
-                filteredPosts = allPosts.filter(p => p.tableName === currentFilter);
-            }
-            
-            if (filteredPosts.length === 0) {
-                postsContainer.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
-            
-            postsContainer.style.display = 'grid';
-            emptyState.style.display = 'none';
-            
-            postsContainer.innerHTML = filteredPosts.map(post => {
-                const date = new Date(post.created_at);
-                const formattedDate = date.toLocaleDateString('vi-VN');
-                const status = post.status || 'active';
-                const statusClass = status === 'active' ? 'status-active' : 
-                                   status === 'pending' ? 'status-pending' : 'status-expired';
-                const statusText = status === 'active' ? 'Đang hiển thị' :
-                                  status === 'pending' ? 'Chờ duyệt' : 'Hết hạn';
-                
-                // Format price
-                let priceText = 'Thỏa thuận';
-                if (post.price) {
-                    priceText = '$' + parseInt(post.price).toLocaleString();
-                } else if (post.salary) {
-                    priceText = '$' + parseInt(post.salary).toLocaleString() + '/tháng';
-                }
-                
-                return `
-                    <div class="post-card">
-                        <div class="post-icon ${post.postColor}">
-                            ${post.postIcon}
-                        </div>
-                        <div class="post-details">
-                            <h3 class="post-title">${post.title || 'Không có tiêu đề'}</h3>
-                            <div class="post-meta">
-                                <span class="meta-item">📅 ${formattedDate}</span>
-                                <span class="meta-item">📍 ${post.city || 'Chưa xác định'}</span>
-                                <span class="meta-item">💰 ${priceText}</span>
-                                <span class="status-badge ${statusClass}">${statusText}</span>
-                            </div>
-                        </div>
-                        <div class="post-actions">
-                            <button class="action-btn btn-edit" onclick="editPost('${post.tableName}', '${post.id}')" title="Chỉnh sửa">
-                                ✏️
-                            </button>
-                            <button class="action-btn btn-delete" onclick="deletePost('${post.tableName}', '${post.id}')" title="Xóa">
-                                🗑️
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Filter posts by category
-        window.filterPosts = function(type) {
-            currentFilter = type;
-            
-            // Update active tab
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.closest('.tab').classList.add('active');
-            
-            displayPosts();
-        }
-        
-        // Edit post
-        window.editPost = function(table, id) {
-            alert('Chức năng chỉnh sửa đang được phát triển!');
-            // TODO: Implement edit functionality
-        }
-        
-        // Delete post
-        window.deletePost = async function(table, id) {
-            if (!confirm('Bạn có chắc chắn muốn xóa tin này không?')) return;
-            
-            const { error } = await supabase
-                .from(table)
-                .delete()
-                .eq('id', id);
-            
-            if (error) {
-                alert('❌ Lỗi khi xóa: ' + error.message);
-            } else {
-                alert('✅ Đã xóa tin thành công!');
-                loadAllPosts();
-            }
-        }
-        
-        // Initialize
-        checkAuth();
-    </script>
-</body>
-</html>
+
+        // Create post card HTML
+        function createPostCard(post) {
+            const categoryIcons = {
+                marketplace: '🛒',
+                jobs: '💼',
+                real_estate: '🏠',
+                services: '🔧',
+                classifieds: '📋',
+                promotions: '🎁'
+            };
+
+            const statusClasses = {
+                active: 
