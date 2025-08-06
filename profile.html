@@ -461,110 +461,177 @@
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
         let currentUser = null;
+        let currentUserId = null;
         
-        // Check authentication
+        // Check authentication - FIXED VERSION
         async function checkAuth() {
-            const { data: { user } } = await supabase.auth.getUser();
-            
-            if (!user) {
+            try {
+                // Get current session
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    console.log('No session found, redirecting to login');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Get user from session
+                const user = session.user;
+                console.log('User found:', user.email);
+                
+                currentUserId = user.id;
+                
+                // Load profile with user ID and email
+                await loadProfile(user.id, user.email);
+                await loadStats(user.id);
+                
+            } catch (error) {
+                console.error('Auth check error:', error);
                 window.location.href = 'login.html';
-                return;
-            }
-            
-            loadProfile(user.email);
-            loadStats(user.email);
-        }
-        
-        // Load user profile
-        async function loadProfile(email) {
-            const { data, error } = await supabase
-                .from('users')
-                .select('*')
-                .eq('email', email)
-                .single();
-            
-            if (data) {
-                currentUser = data;
-                
-                // Update display
-                document.getElementById('displayName').textContent = data.full_name || 'Chưa cập nhật';
-                document.getElementById('displayEmail').textContent = data.email;
-                
-                // Update avatar
-                const firstLetter = data.full_name ? data.full_name.charAt(0).toUpperCase() : 'U';
-                document.getElementById('userAvatar').textContent = firstLetter;
-                
-                // Fill form
-                document.getElementById('email').value = data.email || '';
-                document.getElementById('full_name').value = data.full_name || '';
-                document.getElementById('phone').value = data.phone || '';
-                document.getElementById('address').value = data.address || '';
-                document.getElementById('city').value = data.city || '';
-                document.getElementById('zipcode').value = data.zipcode || '';
             }
         }
         
-        // Load statistics
-        async function loadStats(email) {
-            // Get user from users table first
-            const { data: userData } = await supabase
-                .from('users')
-                .select('id')
-                .eq('email', email)
-                .single();
-            
-            if (!userData) return;
-            
-            let totalPosts = 0;
-            let activePosts = 0;
-            
-            // Count posts from all tables
-            const tables = ['jobs', 'marketplace', 'services', 'real_estate'];
-            
-            for (const table of tables) {
-                const { count: total } = await supabase
-                    .from(table)
-                    .select('*', { count: 'exact', head: true })
-                    .eq('user_id', userData.id);
+        // Load user profile - FIXED VERSION
+        async function loadProfile(userId, userEmail) {
+            try {
+                // First try to get profile by user ID
+                let { data, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', userId)
+                    .single();
                 
-                const { count: active } = await supabase
-                    .from(table)
-                    .select('*', { count: 'exact', head: true })
-                    .eq('user_id', userData.id)
-                    .eq('status', 'active');
+                // If not found by ID, try by email
+                if (!data) {
+                    const emailResult = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('email', userEmail)
+                        .single();
+                    
+                    data = emailResult.data;
+                }
                 
-                if (total) totalPosts += total;
-                if (active) activePosts += active;
+                if (data) {
+                    currentUser = data;
+                    
+                    // Update display
+                    document.getElementById('displayName').textContent = data.full_name || data.name || 'Chưa cập nhật';
+                    document.getElementById('displayEmail').textContent = userEmail; // Use actual email from auth
+                    
+                    // Update avatar
+                    const firstLetter = (data.full_name || data.name || userEmail).charAt(0).toUpperCase();
+                    document.getElementById('userAvatar').textContent = firstLetter;
+                    
+                    // Fill form
+                    document.getElementById('email').value = userEmail;
+                    document.getElementById('full_name').value = data.full_name || data.name || '';
+                    document.getElementById('phone').value = data.phone || '';
+                    document.getElementById('address').value = data.address || '';
+                    document.getElementById('city').value = data.city || '';
+                    document.getElementById('zipcode').value = data.zipcode || '';
+                } else {
+                    // No profile exists yet, create one
+                    console.log('Creating new profile for user');
+                    
+                    const newProfile = {
+                        id: userId,
+                        email: userEmail,
+                        created_at: new Date().toISOString()
+                    };
+                    
+                    const { error: insertError } = await supabase
+                        .from('users')
+                        .insert([newProfile]);
+                    
+                    if (!insertError) {
+                        currentUser = newProfile;
+                        document.getElementById('displayName').textContent = 'Chưa cập nhật';
+                        document.getElementById('displayEmail').textContent = userEmail;
+                        document.getElementById('email').value = userEmail;
+                        document.getElementById('userAvatar').textContent = userEmail.charAt(0).toUpperCase();
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                // Still show email from auth even if profile load fails
+                document.getElementById('displayEmail').textContent = userEmail;
+                document.getElementById('email').value = userEmail;
             }
-            
-            document.getElementById('totalPosts').textContent = totalPosts;
-            document.getElementById('activePosts').textContent = activePosts;
-            document.getElementById('views').textContent = Math.floor(Math.random() * 1000);
-            document.getElementById('messages').textContent = Math.floor(Math.random() * 50);
         }
         
-        // Handle form submission
+        // Load statistics - FIXED VERSION
+        async function loadStats(userId) {
+            try {
+                let totalPosts = 0;
+                let activePosts = 0;
+                let totalViews = 0;
+                
+                // Count posts from all tables
+                const tables = ['jobs', 'marketplace', 'services', 'real_estate', 'classifieds', 'promotions'];
+                
+                for (const table of tables) {
+                    const { data: posts, error } = await supabase
+                        .from(table)
+                        .select('status, views')
+                        .eq('user_id', userId);
+                    
+                    if (posts && posts.length > 0) {
+                        totalPosts += posts.length;
+                        activePosts += posts.filter(p => p.status === 'active').length;
+                        totalViews += posts.reduce((sum, p) => sum + (p.views || 0), 0);
+                    }
+                }
+                
+                document.getElementById('totalPosts').textContent = totalPosts;
+                document.getElementById('activePosts').textContent = activePosts;
+                document.getElementById('views').textContent = totalViews;
+                document.getElementById('messages').textContent = Math.floor(Math.random() * 50);
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                // Set default values if error
+                document.getElementById('totalPosts').textContent = '0';
+                document.getElementById('activePosts').textContent = '0';
+                document.getElementById('views').textContent = '0';
+                document.getElementById('messages').textContent = '0';
+            }
+        }
+        
+        // Handle form submission - FIXED VERSION
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            if (!currentUser || !currentUserId) {
+                showMessage('error', 'Lỗi: Không tìm thấy thông tin người dùng');
+                return;
+            }
+            
             const updateData = {
                 full_name: document.getElementById('full_name').value,
+                name: document.getElementById('full_name').value, // Also update name field
                 phone: document.getElementById('phone').value,
                 address: document.getElementById('address').value,
                 city: document.getElementById('city').value,
-                zipcode: document.getElementById('zipcode').value
+                zipcode: document.getElementById('zipcode').value,
+                updated_at: new Date().toISOString()
             };
             
             const { error } = await supabase
                 .from('users')
                 .update(updateData)
-                .eq('id', currentUser.id);
+                .eq('id', currentUserId); // Use user ID from auth
             
             if (error) {
+                console.error('Update error:', error);
                 showMessage('error', 'Lỗi: ' + error.message);
             } else {
                 showMessage('success', '✅ Cập nhật thông tin thành công!');
-                loadProfile(currentUser.email);
+                // Reload profile to show updated data
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    await loadProfile(session.user.id, session.user.email);
+                }
             }
         });
         
@@ -582,11 +649,13 @@
             }, 5000);
         }
         
-        // Logout
+        // Logout - FIXED VERSION
         window.logout = async function() {
             if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                await supabase.auth.signOut();
-                window.location.href = 'index.html';
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                    window.location.href = 'index.html';
+                }
             }
         }
         
