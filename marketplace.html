@@ -778,6 +778,7 @@
 
         let currentUser = null;
         window.allItems = []; // Make it global
+        let selectedFile = null; // QUAN TRỌNG: Phải khai báo global
 
         // Check auth
         async function checkAuth() {
@@ -958,41 +959,44 @@
             }
         }
 
-        // Image upload handling
-        let selectedFile = null;
-        
+        // Image upload handling - Đảm bảo selectedFile được set đúng
         const imageUploadArea = document.getElementById('imageUploadArea');
         const imageFile = document.getElementById('imageFile');
         
-        imageUploadArea.addEventListener('click', () => {
-            imageFile.click();
-        });
-        
-        imageUploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            imageUploadArea.style.background = '#ffe5e5';
-        });
-        
-        imageUploadArea.addEventListener('dragleave', () => {
-            imageUploadArea.style.background = '#fff5f5';
-        });
-        
-        imageUploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            imageUploadArea.style.background = '#fff5f5';
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleImageSelect(files[0]);
-            }
-        });
-        
-        imageFile.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleImageSelect(e.target.files[0]);
-            }
-        });
+        if (imageUploadArea && imageFile) {
+            imageUploadArea.addEventListener('click', () => {
+                imageFile.click();
+            });
+            
+            imageUploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                imageUploadArea.style.background = '#ffe5e5';
+            });
+            
+            imageUploadArea.addEventListener('dragleave', () => {
+                imageUploadArea.style.background = '#fff5f5';
+            });
+            
+            imageUploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                imageUploadArea.style.background = '#fff5f5';
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleImageSelect(files[0]);
+                }
+            });
+            
+            imageFile.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    console.log('File selected via input:', e.target.files[0].name);
+                    handleImageSelect(e.target.files[0]);
+                }
+            });
+        }
         
         function handleImageSelect(file) {
+            console.log('handleImageSelect called with:', file.name, file.size);
+            
             if (file.size > 5 * 1024 * 1024) {
                 alert('Hình ảnh phải nhỏ hơn 5MB!');
                 return;
@@ -1003,13 +1007,16 @@
                 return;
             }
             
-            selectedFile = file;
+            selectedFile = file; // Set global variable
+            console.log('selectedFile set to:', selectedFile);
+            
             const reader = new FileReader();
             reader.onload = (e) => {
                 document.getElementById('previewImg').src = e.target.result;
                 document.getElementById('uploadPlaceholder').style.display = 'none';
                 document.getElementById('imagePreview').style.display = 'block';
                 document.getElementById('uploadStatus').style.display = 'none';
+                console.log('Image preview shown');
             };
             reader.readAsDataURL(file);
         }
