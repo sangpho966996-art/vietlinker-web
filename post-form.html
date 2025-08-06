@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Tin - VietLinker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 100px auto 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* Form Header */
+        .form-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            opacity: 0.9;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 4px;
+            width: 33%;
+            transition: width 0.3s ease;
+        }
+
+        /* Form Steps */
+        .form-steps {
+            display: flex;
+            justify-content: space-around;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .step.active {
+            color: #dc143c;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .step.active .step-number {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+        }
+
+        /* Form Content */
+        .form-content {
+            padding: 2rem;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group label span.required {
+            color: #dc143c;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-card {
+            padding: 1.5rem;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .category-card.selected {
+            border-color: #dc143c;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Dynamic Fields */
+        .dynamic-fields {
+            display: none;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .dynamic-fields.show {
+            display: block;
+        }
+
+        /* Image Upload */
+        .image-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .image-upload-area:hover {
+            border-color: #dc143c;
+            background: #fff;
+        }
+
+        .image-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .image-preview {
+            position: relative;
+            padding-bottom: 100%;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #dc143c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .preview-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .preview-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .preview-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .preview-images {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .preview-images img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #dc143c;
+            border: 2px solid #dc143c;
+        }
+
+        .btn-outline:hover {
+            background: #dc143c;
+            color: white;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .success-message h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #dc143c;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 80px 10px 20px;
+            }
+
+            .form-steps {
+                padding: 1rem;
+            }
+
+            .step span {
+                display: none;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24" fill="white">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                VietLinker
+            </a>
+            <div id="userInfo" style="color: white;"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Form Header -->
+        <div class="form-header">
+            <h1>Đăng Tin Miễn Phí</h1>
+            <p>Kết nối cộng đồng người Việt tại Mỹ</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Form Steps -->
+        <div class="form-steps">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <span>Chọn danh mục</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <span>Thông tin chi tiết</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <span>Xem trước & Đăng tin</span>
+            </div>
+        </div>
+
+        <!-- Form Content -->
+        <div class="form-content">
+            <!-- Step 1: Choose Category -->
+            <div class="form-section active" id="section1">
+                <h2 style="margin-bottom: 1.5rem;">Chọn danh mục đăng tin</h2>
+                <div class="category-grid">
+                    <div class="category-card" data-category="jobs">
+                        <div class="category-icon">💼</div>
+                        <div>Việc Làm</div>
+                    </div>
+                    <div class="category-card" data-category="marketplace">
+                        <div class="category-icon">🛒</div>
+                        <div>Mua Bán</div>
+                    </div>
+                    <div class="category-card" data-category="services">
+                        <div class="category-icon">🔧</div>
+                        <div>Dịch Vụ</div>
+                    </div>
+                    <div class="category-card" data-category="real_estate">
+                        <div class="category-icon">🏠</div>
+                        <div>BĐS & Sang Tiệm</div>
+                    </div>
+                    <div class="category-card" data-category="classifieds">
+                        <div class="category-icon">📢</div>
+                        <div>Rao Vặt</div>
+                    </div>
+                    <div class="category-card" data-category="promotions">
+                        <div class="category-icon">🎁</div>
+                        <div>Khuyến Mãi</div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <a href="index.html" class="btn btn-outline">Hủy</a>
+                    <button class="btn btn-primary" id="nextToStep2" disabled>Tiếp tục</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Details -->
+            <div class="form-section" id="section2">
+                <h2 style="margin-bottom: 1.5rem;">Thông tin chi tiết</h2>
+                
+                <!-- Common Fields -->
+                <div class="form-group">
+                    <label>Tiêu đề <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="title" placeholder="Nhập tiêu đề tin đăng">
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả chi tiết <span class="required">*</span></label>
+                    <textarea class="form-control" id="description" placeholder="Mô tả chi tiết về tin đăng của bạn"></textarea>
+                </div>
+
+                <!-- Dynamic Fields Container -->
+                <div id="dynamicFields" class="dynamic-fields"></div>
+
+                <!-- Location Fields -->
+                <div class="form-group">
+                    <label>Thành phố <span class="required">*</span></label>
+                    <select class="form-control" id="city">
+                        <option value="">Chọn thành phố</option>
+                        <option value="Houston">Houston</option>
+                        <option value="Dallas">Dallas</option>
+                        <option value="Austin">Austin</option>
+                        <option value="San Antonio">San Antonio</option>
+                        <option value="Los Angeles">Los Angeles</option>
+                        <option value="San Francisco">San Francisco</option>
+                        <option value="San Jose">San Jose</option>
+                        <option value="Orange County">Orange County</option>
+                        <option value="New York">New York</option>
+                        <option value="Chicago">Chicago</option>
+                        <option value="Philadelphia">Philadelphia</option>
+                        <option value="Washington DC">Washington DC</option>
+                        <option value="Atlanta">Atlanta</option>
+                        <option value="Seattle">Seattle</option>
+                        <option value="Boston">Boston</option>
+                        <option value="Other">Khác</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Liên hệ</label>
+                    <input type="tel" class="form-control" id="contact" placeholder="Số điện thoại liên hệ">
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label>Hình ảnh (Tối đa 5 ảnh)</label>
+                    <div class="image-upload-area" onclick="document.getElementById('imageInput').click()">
+                        <div>📷</div>
+                        <p>Click để chọn ảnh hoặc kéo thả vào đây</p>
+                        <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+                    </div>
+                    <div class="image-preview-container" id="imagePreview"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="backToStep1">Quay lại</button>
+                    <button class="btn btn-primary" id="nextToStep3">Xem trước</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Preview -->
+            <div class="form-section" id="section3">
+                <h2 style="margin-bottom: 1.5rem;">Xem trước tin đăng</h2>
+                
+                <div class="preview-section">
+                    <div class="preview-card" id="previewContent">
+                        <!-- Preview content will be generated here -->
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="backToStep2">Chỉnh sửa</button>
+                    <button class="btn btn-primary" id="submitPost">Đăng tin</button>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 1rem;">Đang xử lý...</p>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">✅</div>
+                <h2>Đăng tin thành công!</h2>
+                <p>Tin của bạn đã được đăng tải thành công.</p>
+                <div class="button-group" style="justify-content: center;">
+                    <a href="my-posts.html" class="btn btn-primary">Xem tin đã đăng</a>
+                    <button class="btn btn-outline" onclick="location.reload()">Đăng tin mới</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+
+        // State Management
+        let currentStep = 1;
+        let selectedCategory = null;
+        let uploadedImages = [];
+        let formData = {};
+
+        // Dynamic field configurations for each category
+        const categoryFields = {
+            jobs: `
+                <h3 style="margin-bottom: 1rem;">Thông tin việc làm</h3>
+                <div class="form-group">
+                    <label>Loại công việc</label>
+                    <select class="form-control" id="jobType">
+                        <option value="full-time">Full-time</option>
+                        <option value="part-time">Part-time</option>
+                        <option value="contract">Contract</option>
+                        <option value="temporary">Temporary</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mức lương</label>
+                    <input type="text" class="form-control" id="salary" placeholder="VD: $15-20/giờ hoặc $50,000/năm">
+                </div>
+                <div class="form-group">
+                    <label>Công ty</label>
+                    <input type="text" class="form-control" id="company" placeholder="Tên công ty">
+                </div>
+            `,
+            marketplace: `
+                <h3 style="margin-bottom: 1rem;">Thông tin sản phẩm</h3>
+                <div class="form-group">
+                    <label>Giá <span class="required">*</span></label>
+                    <input type="number" class="form-control" id="price" placeholder="Nhập giá ($)">
+                </div>
+                <div class="form-group">
+                    <label>Tình trạng</label>
+                    <select class="form-control" id="condition">
+                        <option value="new">Mới</option>
+                        <option value="like-new">Như mới</option>
+                        <option value="good">Tốt</option>
+                        <option value="fair">Khá</option>
+                    </select>
+                </div>
+            `,
+            services: `
+                <h3 style="margin-bottom: 1rem;">Thông tin dịch vụ</h3>
+                <div class="form-group">
+                    <label>Loại dịch vụ</label>
+                    <select class="form-control" id="serviceType">
+                        <option value="repair">Sửa chữa</option>
+                        <option value="beauty">Làm đẹp</option>
+                        <option value="health">Y tế</option>
+                        <option value="education">Giáo dục</option>
+                        <option value="legal">Pháp lý</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Giá dịch vụ</label>
+                    <input type="text" class="form-control" id="servicePrice" placeholder="VD: $50/lần hoặc Liên hệ">
+                </div>
+            `,
+            real_estate: `
+                <h3 style="margin-bottom: 1rem;">Thông tin bất động sản</h3>
+                <div class="form-group">
+                    <label>Loại BĐS</label>
+                    <select class="form-control" id="propertyType">
+                        <option value="house">Nhà</option>
+                        <option value="apartment">Căn hộ</option>
+                        <option value="condo">Condo</option>
+                        <option value="land">Đất</option>
+                        <option value="commercial">Thương mại</option>
+                        <option value="business">Sang tiệm</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Giá</label>
+                    <input type="number" class="form-control" id="propertyPrice" placeholder="Nhập giá ($)">
+                </div>
+                <div class="form-group">
+                    <label>Diện tích</label>
+                    <input type="text" class="form-control" id="area" placeholder="VD: 1,500 sqft">
+                </div>
+                <div class="form-group">
+                    <label>Số phòng ngủ / phòng tắm</label>
+                    <input type="text" class="form-control" id="rooms" placeholder="VD: 3 ngủ / 2 tắm">
+                </div>
+            `,
+            classifieds: `
+                <h3 style="margin-bottom: 1rem;">Thông tin rao vặt</h3>
+                <div class="form-group">
+                    <label>Phân loại</label>
+                    <select class="form-control" id="classifiedType">
+                        <option value="for-sale">Cần bán</option>
+                        <option value="wanted">Cần mua</option>
+                        <option value="free">Cho free</option>
+                        <option value="lost-found">Thất lạc</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+            `,
+            promotions: `
+                <h3 style="margin-bottom: 1rem;">Thông tin khuyến mãi</h3>
+                <div class="form-group">
+                    <label>Loại khuyến mãi</label>
+                    <select class="form-control" id="promoType">
+                        <option value="discount">Giảm giá</option>
+                        <option value="bogo">Mua 1 tặng 1</option>
+                        <option value="coupon">Coupon</option>
+                        <option value="special">Ưu đãi đặc biệt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Thời hạn</label>
+                    <input type="date" class="form-control" id="validUntil">
+                </div>
+                <div class="form-group">
+                    <label>Mã giảm giá (nếu có)</label>
+                    <input type="text" class="form-control" id="promoCode" placeholder="VD: SAVE20">
+                </div>
+            `
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            setupEventListeners();
+        });
+
+        // Check authentication
+        async function checkAuth() {
+            const token = localStorage.getItem('supabase_token');
+            const userEmail = localStorage.getItem('user_email');
+            
+            if (!token || !userEmail) {
+                alert('Vui lòng đăng nhập để đăng tin');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            document.getElementById('userInfo').innerHTML = `
+                <span style="margin-right: 15px;">👤 ${userEmail}</span>
+                <a href="#" onclick="logout()" style="color: white;">Đăng xuất</a>
+            `;
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Category selection
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedCategory = this.dataset.category;
+                    document.getElementById('nextToStep2').disabled = false;
+                });
+            });
+
+            // Navigation buttons
+            document.getElementById('nextToStep2').addEventListener('click', () => {
+                if (selectedCategory) {
+                    showStep(2);
+                    loadDynamicFields();
+                }
+            });
+
+            document.getElementById('backToStep1').addEventListener('click', () => showStep(1));
+            document.getElementById('nextToStep3').addEventListener('click', () => {
+                if (validateStep2()) {
+                    showStep(3);
+                    generatePreview();
+                }
+            });
+            document.getElementById('backToStep2').addEventListener('click', () => showStep(2));
+            document.getElementById('submitPost').addEventListener('click', submitPost);
+
+            // Image upload
+            document.getElementById('imageInput').addEventListener('change', handleImageUpload);
+        }
+
+        // Show step
+        function showStep(step) {
+            currentStep = step;
+            
+            // Update progress
+            document.getElementById('progressBar').style.width = `${step * 33}%`;
+            
+            // Update step indicators
+            document.querySelectorAll('.step').forEach((s, index) => {
+                if (index < step) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+            
+            // Show/hide sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`section${step}`).classList.add('active');
+        }
+
+        // Load dynamic fields based on category
+        function loadDynamicFields() {
+            const container = document.getElementById('dynamicFields');
+            if (categoryFields[selectedCategory]) {
+                container.innerHTML = categoryFields[selectedCategory];
+                container.classList.add('show');
+            } else {
+                container.classList.remove('show');
+            }
+        }
+
+        // Validate Step 2
+        function validateStep2() {
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const city = document.getElementById('city').value;
+            
+            if (!title || !description || !city) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc');
+                return false;
+            }
+            
+            // Validate category-specific required fields
+            if (selectedCategory === 'marketplace') {
+                const price = document.getElementById('price')?.value;
+                if (!price) {
+                    alert('Vui lòng nhập giá sản phẩm');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Handle image upload
+        function handleImageUpload(e) {
+            const files = Array.from(e.target.files);
+            const maxFiles = 5;
+            
+            if (uploadedImages.length + files.length > maxFiles) {
+                alert(`Chỉ được upload tối đa ${maxFiles} ảnh`);
+                return;
+            }
+            
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadedImages.push({
+                            file: file,
+                            url: e.target.result
+                        });
+                        displayImages();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Display uploaded images
+        function displayImages() {
+            const container = document.getElementById('imagePreview');
+            container.innerHTML = '';
+            
+            uploadedImages.forEach((img, index) => {
+                const preview = document.createElement('div');
+                preview.className = 'image-preview';
+                preview.innerHTML = `
+                    <img src="${img.url}" alt="Preview ${index + 1}">
+                    <button class="remove-btn" onclick="removeImage(${index})">×</button>
+                `;
+                container.appendChild(preview);
+            });
+        }
+
+        // Remove image
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            displayImages();
+        }
+
+        // Generate preview
+        function generatePreview() {
+            collectFormData();
+            
+            const previewHTML = `
+                <div class="preview-title">${formData.title}</div>
+                <div class="preview-meta">
+                    <span>📍 ${formData.city}</span>
+                    <span>📁 ${getCategoryName(selectedCategory)}</span>
+                    <span>📅 ${new Date().toLocaleDateString('vi-VN')}</span>
+                </div>
+                <div class="preview-description">${formData.description}</div>
+                ${uploadedImages.length > 0 ? `
+                    <div class="preview-images">
+                        ${uploadedImages.map(img => `<img src="${img.url}" alt="Preview">`).join('')}
+                    </div>
+                ` : ''}
+                ${generateCategorySpecificPreview()}
+                ${formData.contact ? `<p><strong>Liên hệ:</strong> ${formData.contact}</p>` : ''}
+            `;
+            
+            document.getElementById('previewContent').innerHTML = previewHTML;
+        }
+
+        // Collect form data
+        function collectFormData() {
+            formData = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                city: document.getElementById('city').value,
+                contact: document.getElementById('contact').value,
+                category: selectedCategory,
+                user_id: localStorage.getItem('user_id'),
+                created_at: new Date().toISOString()
+            };
+            
+            // Collect category-specific data
+            switch(selectedCategory) {
+                case 'jobs':
+                    formData.job_type = document.getElementById('jobType')?.value;
+                    formData.salary = document.getElementById('salary')?.value;
+                    formData.company = document.getElementById('company')?.value;
+                    break;
+                case 'marketplace':
+                    formData.price = document.getElementById('price')?.value;
+                    formData.condition = document.getElementById('condition')?.value;
+                    break;
+                case 'services':
+                    formData.service_type = document.getElementById('serviceType')?.value;
+                    formData.price = document.getElementById('servicePrice')?.value;
+                    break;
+                case 'real_estate':
+                    formData.property_type = document.getElementById('propertyType')?.value;
+                    formData.price = document.getElementById('propertyPrice')?.value;
+                    formData.area = document.getElementById('area')?.value;
+                    formData.bedrooms = document.getElementById('rooms')?.value;
+                    break;
+                case 'classifieds':
+                    formData.type = document.getElementById('classifiedType')?.value;
+                    break;
+                case 'promotions':
+                    formData.promotion_type = document.getElementById('promoType')?.value;
+                    formData.valid_until = document.getElementById('validUntil')?.value;
+                    formData.promo_code = document.getElementById('promoCode')?.value;
+                    break;
+            }
+        }
+
+        // Generate category-specific preview
+        function generateCategorySpecificPreview() {
+            let html = '<div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #dee2e6;">';
+            
+            switch(selectedCategory) {
+                case 'jobs':
+                    if (formData.job_type) html += `<p><strong>Loại:</strong> ${formData.job_type}</p>`;
+                    if (formData.salary) html += `<p><strong>Lương:</strong> ${formData.salary}</p>`;
+                    if (formData.company) html += `<p><strong>Công ty:</strong> ${formData.company}</p>`;
+                    break;
+                case 'marketplace':
+                    if (formData.price) html += `<p><strong>Giá:</strong> $${formData.price}</p>`;
+                    if (formData.condition) html += `<p><strong>Tình trạng:</strong> ${formData.condition}</p>`;
+                    break;
+                case 'services':
+                    if (formData.service_type) html += `<p><strong>Loại dịch vụ:</strong> ${formData.service_type}</p>`;
+                    if (formData.price) html += `<p><strong>Giá:</strong> ${formData.price}</p>`;
+                    break;
+                case 'real_estate':
+                    if (formData.property_type) html += `<p><strong>Loại BĐS:</strong> ${formData.property_type}</p>`;
+                    if (formData.price) html += `<p><strong>Giá:</strong> $${formData.price}</p>`;
+                    if (formData.area) html += `<p><strong>Diện tích:</strong> ${formData.area}</p>`;
+                    if (formData.bedrooms) html += `<p><strong>Phòng:</strong> ${formData.bedrooms}</p>`;
+                    break;
+                case 'promotions':
+                    if (formData.promotion_type) html += `<p><strong>Loại KM:</strong> ${formData.promotion_type}</p>`;
+                    if (formData.valid_until) html += `<p><strong>Hạn:</strong> ${formData.valid_until}</p>`;
+                    if (formData.promo_code) html += `<p><strong>Mã:</strong> ${formData.promo_code}</p>`;
+                    break;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        // Get category name
+        function getCategoryName(category) {
+            const names = {
+                jobs: 'Việc Làm',
+                marketplace: 'Mua Bán',
+                services: 'Dịch Vụ',
+                real_estate: 'BĐS & Sang Tiệm',
+                classifieds: 'Rao Vặt',
+                promotions: 'Khuyến Mãi'
+            };
+            return names[category] || category;
+        }
+
+        // Submit post
+        async function submitPost() {
+            const loading = document.getElementById('loading');
+            const submitBtn = document.getElementById('submitPost');
+            
+            loading.style.display = 'block';
+            submitBtn.disabled = true;
+            
+            try {
+                const token = localStorage.getItem('supabase_token');
+                
+                // Prepare data for submission
+                const postData = {
+                    ...formData,
+                    status: 'active',
+                    views: 0
+                };
+                
+                // Remove undefined values
+                Object.keys(postData).forEach(key => 
+                    postData[key] === undefined && delete postData[key]
+                );
+                
+                // Submit to Supabase
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${selectedCategory}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(postData)
+                });
+                
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('section3').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Có lỗi xảy ra');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Lỗi: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
