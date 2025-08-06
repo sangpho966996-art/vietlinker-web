@@ -3,16 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chợ xe & đồ - VietLinker | Cộng đồng người Việt tại Mỹ</title>
-    
-    <!-- Google Fonts -->
+    <title>Chợ Xe & Đồ - VietLinker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -28,395 +22,258 @@
 
         /* Header Styles */
         header {
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: #2196F3;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .header-container {
+        nav {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: #2196F3;
+            color: white;
             text-decoration: none;
         }
 
-        .nav-menu {
+        .nav-links {
             display: flex;
             list-style: none;
             gap: 2rem;
+            align-items: center;
         }
 
-        .nav-menu a {
+        .nav-links a {
+            color: white;
             text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
+            transition: opacity 0.3s;
         }
 
-        .nav-menu a:hover,
-        .nav-menu a.active {
-            color: #2196F3;
+        .nav-links a:hover {
+            opacity: 0.8;
         }
 
-        .mobile-menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            color: #333;
-            cursor: pointer;
-        }
-
-        /* Page Header */
-        .page-header {
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        .btn-post {
+            background: #4CAF50;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
             color: white;
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        .page-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .page-header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Category Tabs */
-        .category-tabs-section {
-            background: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 70px;
-            z-index: 100;
-        }
-
-        .category-tabs {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            gap: 2rem;
-        }
-
-        .category-tab {
-            padding: 0.75rem 2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #666;
-            position: relative;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .category-tab.active {
-            color: #2196F3;
-        }
-
-        .category-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #2196F3;
-        }
-
-        .category-tab i {
-            font-size: 1.3rem;
-        }
-
-        /* Search Section */
-        .search-section {
-            background: #f8f9fa;
-            padding: 2rem 0;
-        }
-
-        .search-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: 1fr 200px 200px 120px;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .search-input,
-        .category-select,
-        .condition-select {
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-family: 'Roboto', sans-serif;
-            background: white;
-        }
-
-        .search-input:focus,
-        .category-select:focus,
-        .condition-select:focus {
-            outline: none;
-            border-color: #2196F3;
-        }
-
-        .search-btn {
-            background: #2196F3;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
             transition: background 0.3s;
         }
 
-        .search-btn:hover {
-            background: #1976D2;
+        .btn-post:hover {
+            background: #45a049;
+            opacity: 1 !important;
         }
 
-        /* Main Content Layout */
-        .main-container {
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Categories */
+        .categories {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+            margin: -30px auto 30px;
+            padding: 0 20px;
             display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
         }
 
-        /* Sidebar Filters */
-        .filters-sidebar {
+        .category-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            height: fit-content;
-            position: sticky;
-            top: 150px;
-        }
-
-        .filter-section {
-            margin-bottom: 2rem;
-        }
-
-        .filter-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .filter-section h3 {
-            margin-bottom: 1rem;
-            color: #333;
-            font-size: 1.1rem;
-        }
-
-        .price-range {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .price-input {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-
-        .filter-checkbox {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.75rem;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             cursor: pointer;
-        }
-
-        .filter-checkbox input {
-            margin-right: 0.5rem;
-            cursor: pointer;
-        }
-
-        .filter-checkbox label {
-            cursor: pointer;
-            color: #555;
-            font-size: 0.95rem;
-        }
-
-        /* Products Grid */
-        .products-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .results-header {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .results-count {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .view-options {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .sort-select {
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .view-toggle {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .view-btn {
-            background: #f5f5f5;
-            border: none;
-            padding: 0.5rem 0.75rem;
-            border-radius: 4px;
-            cursor: pointer;
-            color: #666;
             transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
         }
 
-        .view-btn.active {
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .category-card.active {
             background: #2196F3;
             color: white;
         }
 
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #2196F3;
+        }
+
+        .category-card.active .category-icon {
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-section {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-box select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .search-box button {
+            padding: 12px 30px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background: #1976D2;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+
+        .filter-group h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .price-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .price-range input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
         /* Product Grid */
-        .products-grid {
+        .products-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            gap: 20px;
         }
 
-        .products-grid.list-view {
-            grid-template-columns: 1fr;
-        }
-
-        /* Product Card */
         .product-card {
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
             cursor: pointer;
-            position: relative;
         }
 
         .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
         }
 
         .product-image {
-            position: relative;
+            width: 100%;
             height: 200px;
-            overflow: hidden;
+            object-fit: cover;
             background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 3rem;
         }
 
         .product-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .product-card:hover .product-image img {
-            transform: scale(1.05);
-        }
-
-        .product-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #FF6B6B;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .product-badge.new {
-            background: #4CAF50;
-        }
-
-        .product-badge.featured {
-            background: #FFC107;
-            color: #333;
-        }
-
-        .favorite-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255,255,255,0.9);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .favorite-btn:hover {
-            background: white;
-            transform: scale(1.1);
-        }
-
-        .favorite-btn.active {
-            color: #FF6B6B;
         }
 
         .product-info {
-            padding: 1rem;
+            padding: 15px;
         }
 
         .product-title {
             font-size: 1.1rem;
-            font-weight: 600;
+            margin-bottom: 5px;
             color: #333;
-            margin-bottom: 0.5rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -425,238 +282,195 @@
 
         .product-price {
             font-size: 1.3rem;
-            font-weight: 700;
             color: #2196F3;
-            margin-bottom: 0.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
-        .product-details {
+        .product-meta {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .detail-item {
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.25rem;
-        }
-
-        .product-location {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
             color: #666;
             font-size: 0.9rem;
-            margin-bottom: 1rem;
         }
 
-        .product-actions {
-            display: flex;
-            gap: 0.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .chat-btn {
+        .product-condition {
             background: #4CAF50;
             color: white;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
         }
 
-        .chat-btn:hover {
-            background: #45a049;
+        .sold-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f44336;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
         }
 
-        .save-btn {
-            background: white;
-            color: #666;
-            border: 1px solid #ddd;
-        }
-
-        .save-btn:hover {
-            background: #f5f5f5;
-            border-color: #2196F3;
-            color: #2196F3;
-        }
-
-        /* List View Styles */
-        .products-grid.list-view .product-card {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-        }
-
-        .products-grid.list-view .product-image {
-            height: 150px;
-        }
-
-        .products-grid.list-view .product-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* Chat Modal */
+        /* Post Modal */
         .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: rgba(0,0,0,0.5);
             z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            overflow-y: auto;
         }
 
-        .chat-modal {
+        .modal-content {
             background: white;
-            width: 90%;
-            max-width: 500px;
-            height: 600px;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            max-width: 700px;
+            margin: 50px auto;
+            border-radius: 10px;
+            position: relative;
         }
 
-        .chat-header {
+        .modal-header {
             background: #2196F3;
             color: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
         }
 
-        .chat-header h3 {
-            margin: 0;
-        }
-
-        .close-modal {
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
             background: none;
             border: none;
-            color: white;
-            font-size: 1.5rem;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .image-upload {
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .chat-product-info {
-            padding: 1rem;
-            background: #f8f9fa;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .chat-product-image {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
+        .image-upload:hover {
+            border-color: #2196F3;
             background: #f5f5f5;
         }
 
-        .message {
-            margin-bottom: 1rem;
+        .image-preview {
             display: flex;
-            gap: 0.5rem;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
         }
 
-        .message.sent {
-            flex-direction: row-reverse;
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
         }
 
-        .message-bubble {
-            max-width: 70%;
-            padding: 0.75rem 1rem;
-            border-radius: 16px;
-            background: white;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .message.sent .message-bubble {
-            background: #2196F3;
+        .btn-submit {
+            background: #4CAF50;
             color: white;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: #999;
-            margin-top: 0.25rem;
-        }
-
-        .chat-input-area {
-            padding: 1rem;
-            background: white;
-            border-top: 1px solid #ddd;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .send-btn {
-            background: #2196F3;
-            color: white;
+            padding: 12px 30px;
             border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: background 0.3s;
         }
 
-        .send-btn:hover {
-            background: #1976D2;
+        .btn-submit:hover {
+            background: #45a049;
         }
 
-        /* Loading & No Results */
+        .btn-cancel {
+            background: #f44336;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        /* Loading */
         .loading {
             text-align: center;
-            padding: 3rem;
+            padding: 40px;
             color: #666;
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #2196F3;
-            border-radius: 50%;
+            display: inline-block;
             width: 40px;
             height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2196F3;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
         }
 
         @keyframes spin {
@@ -664,169 +478,69 @@
             100% { transform: rotate(360deg); }
         }
 
-        .no-results {
-            text-align: center;
-            padding: 3rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Alert */
+        .alert {
+            padding: 12px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        .no-results i {
-            font-size: 3rem;
-            color: #ddd;
-            margin-bottom: 1rem;
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
-        /* Sell Button */
-        .sell-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(76,175,80,0.3);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            z-index: 100;
-        }
-
-        .sell-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(76,175,80,0.4);
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
         /* Footer */
         footer {
-            background: #1976D2;
+            background: #333;
             color: white;
-            padding: 3rem 0 1rem;
-            margin-top: 4rem;
+            padding: 40px 0 20px;
+            margin-top: 80px;
         }
 
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-section a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
+            padding: 0 20px;
             text-align: center;
-            padding: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.8);
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .search-container {
-                grid-template-columns: 1fr 150px;
-            }
-
-            .condition-select {
-                grid-column: 1;
-            }
-
-            .search-btn {
-                grid-column: 2;
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .nav-menu {
+            .nav-links {
                 display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: white;
-                flex-direction: column;
-                padding: 1rem;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
 
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .page-header h1 {
+            .hero h1 {
                 font-size: 2rem;
             }
 
-            .category-tabs {
-                gap: 1rem;
-            }
-
-            .category-tab {
-                padding: 0.5rem 1rem;
-                font-size: 1rem;
-            }
-
-            .search-container {
-                grid-template-columns: 1fr;
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .main-container {
                 grid-template-columns: 1fr;
             }
 
-            .filters-sidebar {
+            .sidebar {
                 display: none;
             }
 
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 1rem;
+            .products-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
 
-            .products-grid.list-view {
+            .form-row {
                 grid-template-columns: 1fr;
-            }
-
-            .products-grid.list-view .product-card {
-                grid-template-columns: 120px 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
             }
         }
     </style>
@@ -834,776 +548,525 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="header-container">
-            <a href="index.html" class="logo">VietLinker</a>
-            <nav>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html">Trang chủ</a></li>
-                    <li><a href="jobs.html">Việc làm</a></li>
-                    <li><a href="classifieds.html">Rao vặt</a></li>
-                    <li><a href="services.html">Dịch vụ</a></li>
-                    <li><a href="realestate.html">Bất động sản</a></li>
-                    <li><a href="marketplace.html" class="active">Chợ</a></li>
-                    <li><a href="promotions.html">Khuyến mãi</a></li>
-                    <li><a href="login.html">Đăng nhập</a></li>
-                </ul>
-            </nav>
-            <div class="mobile-menu-toggle" id="mobileMenuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-        </div>
+        <nav>
+            <a href="../index.html" class="logo">VietLinker</a>
+            <ul class="nav-links">
+                <li><a href="../pages/jobs.html">Việc Làm</a></li>
+                <li><a href="../pages/services.html">Dịch Vụ</a></li>
+                <li><a href="../pages/marketplace.html" style="text-decoration: underline;">Chợ Xe & Đồ</a></li>
+                <li><a href="../pages/realestate.html">Bất Động Sản</a></li>
+                <li><a href="../pages/classifieds.html">Rao Vặt</a></li>
+                <li><a href="#" class="btn-post" id="postBtn"><i class="fas fa-plus"></i> Đăng Tin</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Page Header -->
-    <section class="page-header">
-        <h1>Chợ xe & đồ</h1>
-        <p>Mua bán xe hơi, đồ điện tử, gia dụng và nhiều hơn nữa</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Chợ Mua Bán Xe & Đồ</h1>
+        <p>Mua bán xe cũ, đồ điện tử, furniture và nhiều hơn nữa</p>
     </section>
 
-    <!-- Category Tabs -->
-    <section class="category-tabs-section">
-        <div class="category-tabs">
-            <button class="category-tab active" data-category="vehicles">
-                <i class="fas fa-car"></i> Xe cộ
-            </button>
-            <button class="category-tab" data-category="items">
-                <i class="fas fa-box"></i> Đồ dùng
-            </button>
-        </div>
-    </section>
+    <!-- Categories -->
+    <div class="categories">
+        <a href="#" class="category-card active" data-category="all">
+            <div class="category-icon"><i class="fas fa-th"></i></div>
+            <div>Tất cả</div>
+        </a>
+        <a href="#" class="category-card" data-category="car">
+            <div class="category-icon"><i class="fas fa-car"></i></div>
+            <div>Xe hơi</div>
+        </a>
+        <a href="#" class="category-card" data-category="electronics">
+            <div class="category-icon"><i class="fas fa-tv"></i></div>
+            <div>Điện tử</div>
+        </a>
+        <a href="#" class="category-card" data-category="furniture">
+            <div class="category-icon"><i class="fas fa-couch"></i></div>
+            <div>Furniture</div>
+        </a>
+        <a href="#" class="category-card" data-category="clothing">
+            <div class="category-icon"><i class="fas fa-tshirt"></i></div>
+            <div>Quần áo</div>
+        </a>
+        <a href="#" class="category-card" data-category="other">
+            <div class="category-icon"><i class="fas fa-box"></i></div>
+            <div>Khác</div>
+        </a>
+    </div>
 
     <!-- Search Section -->
-    <section class="search-section">
-        <form class="search-container" id="searchForm">
-            <input type="text" class="search-input" placeholder="Tìm kiếm sản phẩm..." id="searchInput">
-            <select class="category-select" id="categorySelect">
-                <option value="">Tất cả danh mục</option>
-                <optgroup label="Xe cộ" id="vehicleOptions">
-                    <option value="car">Xe hơi</option>
-                    <option value="truck">Xe tải/Van</option>
-                    <option value="motorcycle">Xe máy</option>
-                    <option value="parts">Phụ tùng</option>
-                </optgroup>
-                <optgroup label="Đồ dùng" id="itemOptions" style="display: none;">
-                    <option value="electronics">Điện tử</option>
-                    <option value="furniture">Nội thất</option>
-                    <option value="appliances">Gia dụng</option>
-                    <option value="clothing">Quần áo</option>
-                    <option value="toys">Đồ chơi</option>
-                    <option value="other">Khác</option>
-                </optgroup>
+    <div class="search-section">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+            <select id="locationSelect">
+                <option value="">Tất cả địa điểm</option>
+                <option value="Houston">Houston</option>
+                <option value="Dallas">Dallas</option>
+                <option value="Austin">Austin</option>
+                <option value="San Antonio">San Antonio</option>
             </select>
-            <select class="condition-select" id="conditionSelect">
-                <option value="">Tình trạng</option>
-                <option value="new">Mới</option>
-                <option value="like-new">Như mới</option>
-                <option value="good">Tốt</option>
-                <option value="fair">Bình thường</option>
-            </select>
-            <button type="submit" class="search-btn">
-                <i class="fas fa-search"></i> Tìm
-            </button>
-        </form>
-    </section>
+            <button id="searchBtn"><i class="fas fa-search"></i> Tìm kiếm</button>
+        </div>
+    </div>
 
     <!-- Main Content -->
-    <div class="main-container">
-        <!-- Filters Sidebar -->
-        <aside class="filters-sidebar">
-            <div class="filter-section">
-                <h3>Khoảng giá</h3>
+    <main class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="filter-group">
+                <h4>Giá</h4>
                 <div class="price-range">
-                    <input type="number" class="price-input" placeholder="Từ" id="priceMin">
-                    <input type="number" class="price-input" placeholder="Đến" id="priceMax">
-                </div>
-                <button class="search-btn" style="width: 100%;" onclick="filterProducts()">
-                    Áp dụng
-                </button>
-            </div>
-
-            <div class="filter-section" id="vehicleFilters">
-                <h3>Loại xe</h3>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-sedan" value="sedan">
-                    <label for="filter-sedan">Sedan</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-suv" value="suv">
-                    <label for="filter-suv">SUV</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-truck" value="truck">
-                    <label for="filter-truck">Truck/Van</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-hybrid" value="hybrid">
-                    <label for="filter-hybrid">Hybrid/Electric</label>
+                    <input type="number" id="priceMin" placeholder="Từ">
+                    <span>-</span>
+                    <input type="number" id="priceMax" placeholder="Đến">
                 </div>
             </div>
 
-            <div class="filter-section" id="itemFilters" style="display: none;">
-                <h3>Danh mục</h3>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-electronics" value="electronics">
-                    <label for="filter-electronics">Điện tử</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-furniture" value="furniture">
-                    <label for="filter-furniture">Nội thất</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-appliances" value="appliances">
-                    <label for="filter-appliances">Gia dụng</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-clothing" value="clothing">
-                    <label for="filter-clothing">Quần áo</label>
-                </div>
+            <div class="filter-group">
+                <h4>Tình trạng</h4>
+                <label><input type="checkbox" value="new"> Mới</label>
+                <label><input type="checkbox" value="like-new"> Như mới</label>
+                <label><input type="checkbox" value="good"> Tốt</label>
+                <label><input type="checkbox" value="fair"> Trung bình</label>
             </div>
 
-            <div class="filter-section">
-                <h3>Tình trạng</h3>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-new" value="new">
-                    <label for="filter-new">Mới</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filter-used" value="used">
-                    <label for="filter-used">Đã qua sử dụng</label>
-                </div>
-            </div>
-
-            <div class="filter-section">
-                <h3>Khu vực</h3>
-                <input type="text" class="price-input" placeholder="Nhập ZIP code" id="zipcodeFilter" style="width: 100%; margin-bottom: 1rem;">
-                <select class="condition-select" id="locationFilter" style="width: 100%; margin-bottom: 1rem;">
-                    <option value="">Tất cả thành phố</option>
-                    <optgroup label="Houston Area">
-                        <option value="houston">Houston</option>
-                        <option value="sugar-land">Sugar Land</option>
-                        <option value="katy">Katy</option>
-                        <option value="pearland">Pearland</option>
-                        <option value="bellaire">Bellaire</option>
-                    </optgroup>
-                    <optgroup label="Dallas Area">
-                        <option value="dallas">Dallas</option>
-                        <option value="plano">Plano</option>
-                        <option value="irving">Irving</option>
-                        <option value="garland">Garland</option>
-                        <option value="richardson">Richardson</option>
-                    </optgroup>
-                    <optgroup label="Other Cities">
-                        <option value="austin">Austin</option>
-                        <option value="san-antonio">San Antonio</option>
-                        <option value="fort-worth">Fort Worth</option>
-                    </optgroup>
+            <div class="filter-group">
+                <h4>Sắp xếp</h4>
+                <select id="sortSelect" style="width: 100%; padding: 8px;">
+                    <option value="newest">Mới nhất</option>
+                    <option value="oldest">Cũ nhất</option>
+                    <option value="price-low">Giá thấp nhất</option>
+                    <option value="price-high">Giá cao nhất</option>
                 </select>
-                <div style="margin-top: 1rem;">
-                    <label style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; display: block;">Bán kính tìm kiếm:</label>
-                    <select class="condition-select" id="radiusFilter" style="width: 100%;">
-                        <option value="">Chính xác</option>
-                        <option value="5">+ 5 miles</option>
-                        <option value="10">+ 10 miles</option>
-                        <option value="25">+ 25 miles</option>
-                        <option value="50">+ 50 miles</option>
-                    </select>
-                </div>
             </div>
+
+            <button class="btn-submit" style="width: 100%;" id="applyFilters">
+                <i class="fas fa-filter"></i> Áp dụng lọc
+            </button>
         </aside>
 
-        <!-- Products Content -->
-        <div class="products-content">
-            <!-- Results Header -->
-            <div class="results-header">
-                <div class="results-count">
-                    Tìm thấy <span id="resultsCount">24</span> sản phẩm
-                </div>
-                <div class="view-options">
-                    <select class="sort-select" id="sortSelect">
-                        <option value="newest">Mới nhất</option>
-                        <option value="price-low">Giá thấp đến cao</option>
-                        <option value="price-high">Giá cao đến thấp</option>
-                        <option value="popular">Phổ biến</option>
-                    </select>
-                    <div class="view-toggle">
-                        <button class="view-btn active" id="gridView">
-                            <i class="fas fa-th"></i>
-                        </button>
-                        <button class="view-btn" id="listView">
-                            <i class="fas fa-list"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Products Grid -->
-            <div class="products-grid" id="productsGrid">
-                <!-- Products will be dynamically loaded here -->
-            </div>
-
-            <!-- Loading State -->
-            <div class="loading" id="loading" style="display: none;">
+        <!-- Products Grid -->
+        <div class="products-container" id="productsGrid">
+            <div class="loading">
                 <div class="spinner"></div>
-                <p>Đang tải dữ liệu...</p>
+                <p>Đang tải sản phẩm...</p>
             </div>
+        </div>
+    </main>
 
-            <!-- No Results -->
-            <div class="no-results" id="noResults" style="display: none;">
-                <i class="fas fa-search"></i>
-                <h3>Không tìm thấy kết quả</h3>
-                <p>Vui lòng thử lại với từ khóa khác</p>
+    <!-- Post Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Đăng Tin Bán</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert success" id="successAlert"></div>
+                <div class="alert error" id="errorAlert"></div>
+
+                <form id="postForm">
+                    <div class="form-group">
+                        <label for="title">Tiêu đề *</label>
+                        <input type="text" id="title" required placeholder="VD: iPhone 13 Pro Max 256GB">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Danh mục *</label>
+                            <select id="category" required>
+                                <option value="">Chọn danh mục</option>
+                                <option value="car">Xe hơi</option>
+                                <option value="electronics">Điện tử</option>
+                                <option value="furniture">Furniture</option>
+                                <option value="clothing">Quần áo</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="condition">Tình trạng</label>
+                            <select id="condition">
+                                <option value="new">Mới</option>
+                                <option value="like-new">Như mới</option>
+                                <option value="good">Tốt</option>
+                                <option value="fair">Trung bình</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price">Giá ($) *</label>
+                            <input type="number" id="price" required placeholder="VD: 800">
+                        </div>
+                        <div class="form-group">
+                            <label for="negotiable">
+                                <input type="checkbox" id="negotiable">
+                                Có thể thương lượng
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Mô tả chi tiết *</label>
+                        <textarea id="description" required placeholder="Mô tả tình trạng, lý do bán, thông tin chi tiết..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="images">Hình ảnh</label>
+                        <div class="image-upload" id="imageUpload">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #999;"></i>
+                            <p>Click để upload hình</p>
+                            <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+                        </div>
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Địa điểm *</label>
+                            <input type="text" id="location" required placeholder="VD: Houston, TX">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại</label>
+                            <input type="tel" id="phone" placeholder="123-456-7890">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn-submit">Đăng tin</button>
+                        <button type="button" class="btn-cancel" id="cancelBtn">Hủy</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <!-- Chat Modal -->
-    <div class="modal" id="chatModal">
-        <div class="chat-modal">
-            <div class="chat-header">
-                <h3>Chat với người bán</h3>
-                <button class="close-modal" onclick="closeChatModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chat-product-info" id="chatProductInfo">
-                <!-- Product info will be inserted here -->
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div class="message">
-                    <div class="message-bubble">
-                        Chào bạn! Tôi quan tâm đến sản phẩm này.
-                        <div class="message-time">10:30 AM</div>
-                    </div>
-                </div>
-                <div class="message sent">
-                    <div class="message-bubble">
-                        Chào bạn! Sản phẩm vẫn còn. Bạn muốn biết thêm thông tin gì?
-                        <div class="message-time">10:32 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="chat-input-area">
-                <input type="text" class="chat-input" placeholder="Nhập tin nhắn..." id="chatInput">
-                <button class="send-btn" onclick="sendMessage()">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sell Button -->
-    <button class="sell-btn" id="sellBtn">
-        <i class="fas fa-camera"></i> Đăng bán
-    </button>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>Về VietLinker</h3>
-                <ul>
-                    <li><a href="#">Giới thiệu</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                    <li><a href="#">Điều khoản sử dụng</a></li>
-                    <li><a href="#">Chính sách bảo mật</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Dịch vụ</h3>
-                <ul>
-                    <li><a href="jobs.html">Việc làm</a></li>
-                    <li><a href="classifieds.html">Rao vặt</a></li>
-                    <li><a href="services.html">Dịch vụ</a></li>
-                    <li><a href="realestate.html">Bất động sản</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Hỗ trợ</h3>
-                <ul>
-                    <li><a href="#">Hướng dẫn đăng tin</a></li>
-                    <li><a href="#">Câu hỏi thường gặp</a></li>
-                    <li><a href="#">Liên hệ hỗ trợ</a></li>
-                    <li><a href="#">Phản hồi</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Kết nối</h3>
-                <ul>
-                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
-                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="#"><i class="fas fa-envelope"></i> info@vietlinker.com</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 VietLinker. All rights reserved.</p>
+            <p>&copy; 2024 VietLinker. Kết nối cộng đồng người Việt tại Mỹ.</p>
         </div>
     </footer>
 
+    <!-- Supabase Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        // Sample products data
-        const vehiclesData = [
-            {
-                id: 1,
-                category: 'vehicles',
-                subcategory: 'car',
-                title: 'Honda Accord 2020',
-                price: 22500,
-                condition: 'like-new',
-                conditionText: 'Như mới',
-                image: 'https://via.placeholder.com/400x300/4A90E2/FFFFFF?text=Honda+Accord',
-                mileage: '35,000 miles',
-                year: 2020,
-                location: 'Houston, TX',
-                city: 'houston',
-                zipcode: '77072',
-                description: 'Xe còn rất mới, bảo dưỡng định kỳ tại hãng',
-                posted: '2 ngày trước',
-                seller: 'Nguyễn Văn A',
-                featured: true
-            },
-            {
-                id: 2,
-                category: 'vehicles',
-                subcategory: 'car',
-                title: 'Toyota Camry 2019',
-                price: 19800,
-                condition: 'good',
-                conditionText: 'Tốt',
-                image: 'https://via.placeholder.com/400x300/FF6B6B/FFFFFF?text=Toyota+Camry',
-                mileage: '45,000 miles',
-                year: 2019,
-                location: 'Dallas, TX',
-                city: 'dallas',
-                zipcode: '75243',
-                description: 'Xe gia đình, không hút thuốc, 1 chủ từ mới',
-                posted: '1 tuần trước',
-                seller: 'Trần Thị B'
-            },
-            {
-                id: 3,
-                category: 'vehicles',
-                subcategory: 'truck',
-                title: 'Ford F-150 2021',
-                price: 35000,
-                condition: 'new',
-                conditionText: 'Mới',
-                image: 'https://via.placeholder.com/400x300/4ECDC4/FFFFFF?text=Ford+F150',
-                mileage: '12,000 miles',
-                year: 2021,
-                location: 'Sugar Land, TX',
-                city: 'sugar-land',
-                zipcode: '77479',
-                description: 'Truck mạnh mẽ, phù hợp cho công việc và gia đình',
-                posted: '3 ngày trước',
-                seller: 'Lê Văn C',
-                badge: 'new'
-            },
-            {
-                id: 4,
-                category: 'vehicles',
-                subcategory: 'motorcycle',
-                title: 'Honda PCX 150',
-                price: 3200,
-                condition: 'like-new',
-                conditionText: 'Như mới',
-                image: 'https://via.placeholder.com/400x300/FFD93D/333333?text=Honda+PCX',
-                mileage: '5,000 miles',
-                year: 2022,
-                location: 'Austin, TX',
-                city: 'austin',
-                zipcode: '78701',
-                description: 'Xe tay ga tiết kiệm xăng, còn bảo hành',
-                posted: '5 ngày trước',
-                seller: 'Phạm Văn D'
-            }
-        ];
+        // Khởi tạo Supabase
+        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        
+        let supabaseClient;
+        let currentUser = null;
+        let allProducts = [];
+        let currentCategory = 'all';
 
-        const itemsData = [
-            {
-                id: 5,
-                category: 'items',
-                subcategory: 'electronics',
-                title: 'iPhone 13 Pro Max 256GB',
-                price: 850,
-                condition: 'like-new',
-                conditionText: 'Như mới',
-                image: 'https://via.placeholder.com/400x300/1A1A1A/FFFFFF?text=iPhone+13',
-                location: 'Bellaire, Houston, TX',
-                city: 'bellaire',
-                zipcode: '77401',
-                description: 'Máy zin, fullbox, còn bảo hành Apple Care',
-                posted: '1 ngày trước',
-                seller: 'Hoàng Văn E',
-                featured: true
-            },
-            {
-                id: 6,
-                category: 'items',
-                subcategory: 'furniture',
-                title: 'Bộ sofa da cao cấp',
-                price: 1200,
-                condition: 'good',
-                conditionText: 'Tốt',
-                image: 'https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Sofa+Set',
-                location: 'Plano, TX',
-                city: 'plano',
-                zipcode: '75023',
-                description: 'Sofa da thật, màu nâu, 3 chỗ + 2 ghế đơn',
-                posted: '4 ngày trước',
-                seller: 'Ngô Thị F'
-            },
-            {
-                id: 7,
-                category: 'items',
-                subcategory: 'appliances',
-                title: 'Tủ lạnh Samsung 2 cửa',
-                price: 600,
-                condition: 'good',
-                conditionText: 'Tốt',
-                image: 'https://via.placeholder.com/400x300/C0C0C0/333333?text=Samsung+Fridge',
-                location: 'Katy, TX',
-                city: 'katy',
-                zipcode: '77450',
-                description: 'Tủ lạnh còn mới 90%, tiết kiệm điện',
-                posted: '6 ngày trước',
-                seller: 'Võ Văn G',
-                badge: 'featured'
-            },
-            {
-                id: 8,
-                category: 'items',
-                subcategory: 'electronics',
-                title: 'MacBook Pro M1 2020',
-                price: 1100,
-                condition: 'like-new',
-                conditionText: 'Như mới',
-                image: 'https://via.placeholder.com/400x300/606060/FFFFFF?text=MacBook+Pro',
-                location: 'Richardson, TX',
-                city: 'richardson',
-                zipcode: '75080',
-                description: '8GB RAM, 256GB SSD, pin còn 95%',
-                posted: '3 ngày trước',
-                seller: 'Đinh Văn H'
-            }
-        ];
-
-        // Combine all products
-        const allProducts = [...vehiclesData, ...itemsData];
-
-        // Global variables
-        let currentCategory = 'vehicles';
-        let filteredProducts = vehiclesData;
-        let currentView = 'grid';
-        let savedProducts = JSON.parse(localStorage.getItem('savedProducts') || '[]');
+        // DOM Elements
+        const postBtn = document.getElementById('postBtn');
+        const postModal = document.getElementById('postModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const postForm = document.getElementById('postForm');
+        const productsGrid = document.getElementById('productsGrid');
+        const searchBtn = document.getElementById('searchBtn');
+        const applyFilters = document.getElementById('applyFilters');
+        const imageUpload = document.getElementById('imageUpload');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', async () => {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            // Check if user is logged in
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+            }
+            
+            // Load products
             loadProducts();
+            
+            // Setup event listeners
             setupEventListeners();
         });
 
         // Setup event listeners
         function setupEventListeners() {
-            // Mobile menu toggle
-            document.getElementById('mobileMenuToggle').addEventListener('click', function() {
-                document.getElementById('navMenu').classList.toggle('active');
+            // Post button
+            postBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!currentUser) {
+                    if (confirm('Bạn cần đăng nhập để đăng tin. Đăng nhập ngay?')) {
+                        window.location.href = 'login.html?return=marketplace.html';
+                    }
+                    return;
+                }
+                postModal.style.display = 'block';
             });
 
-            // Category tabs
-            document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    currentCategory = this.dataset.category;
-                    switchCategory();
+            // Modal controls
+            closeModal.addEventListener('click', () => {
+                postModal.style.display = 'none';
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                postModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === postModal) {
+                    postModal.style.display = 'none';
+                }
+            });
+
+            // Form submission
+            postForm.addEventListener('submit', handlePostProduct);
+
+            // Category filters
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    currentCategory = card.dataset.category;
+                    filterProducts();
                 });
             });
 
-            // Search form
-            document.getElementById('searchForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                filterProducts();
+            // Search
+            searchBtn.addEventListener('click', handleSearch);
+            document.getElementById('searchInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSearch();
             });
 
-            // View toggle
-            document.getElementById('gridView').addEventListener('click', function() {
-                setView('grid');
-            });
-
-            document.getElementById('listView').addEventListener('click', function() {
-                setView('list');
-            });
-
-            // Sort select
+            // Filters
+            applyFilters.addEventListener('click', filterProducts);
             document.getElementById('sortSelect').addEventListener('change', sortProducts);
 
-            // Filter checkboxes and inputs
-            document.querySelectorAll('.filter-checkbox input').forEach(checkbox => {
-                checkbox.addEventListener('change', filterProducts);
-            });
-
-            // Location filters
-            document.getElementById('zipcodeFilter').addEventListener('input', filterProducts);
-            document.getElementById('locationFilter').addEventListener('change', filterProducts);
-            document.getElementById('radiusFilter').addEventListener('change', filterProducts);
-
-            // Sell button
-            document.getElementById('sellBtn').addEventListener('click', function() {
-                alert('Vui lòng đăng nhập để đăng bán sản phẩm!');
-                window.location.href = 'login.html';
-            });
-
-            // Chat input
-            document.getElementById('chatInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-        }
-
-        // Switch category
-        function switchCategory() {
-            // Update search options
-            const vehicleOptions = document.getElementById('vehicleOptions');
-            const itemOptions = document.getElementById('itemOptions');
-            const vehicleFilters = document.getElementById('vehicleFilters');
-            const itemFilters = document.getElementById('itemFilters');
-
-            if (currentCategory === 'vehicles') {
-                vehicleOptions.style.display = 'block';
-                itemOptions.style.display = 'none';
-                vehicleFilters.style.display = 'block';
-                itemFilters.style.display = 'none';
-                filteredProducts = vehiclesData;
-            } else {
-                vehicleOptions.style.display = 'none';
-                itemOptions.style.display = 'block';
-                vehicleFilters.style.display = 'none';
-                itemFilters.style.display = 'block';
-                filteredProducts = itemsData;
-            }
-
-            // Reset filters
-            document.getElementById('categorySelect').value = '';
-            document.getElementById('conditionSelect').value = '';
-            document.getElementById('searchInput').value = '';
-
-            loadProducts();
+            // Image upload
+            imageUpload.addEventListener('click', () => imageInput.click());
+            imageInput.addEventListener('change', handleImageSelect);
         }
 
         // Load products
-        function loadProducts() {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = '';
+        async function loadProducts() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('marketplace')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false });
 
-            if (filteredProducts.length === 0) {
-                document.getElementById('noResults').style.display = 'block';
-                document.getElementById('resultsCount').textContent = '0';
+                if (error) throw error;
+
+                allProducts = data || [];
+                displayProducts(allProducts);
+            } catch (err) {
+                console.error('Error loading products:', err);
+                productsGrid.innerHTML = '<p class="empty-state">Có lỗi xảy ra khi tải sản phẩm.</p>';
+            }
+        }
+
+        // Display products
+        function displayProducts(products) {
+            if (products.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Chưa có sản phẩm nào</h3>
+                        <p>Hãy là người đầu tiên đăng bán!</p>
+                    </div>
+                `;
                 return;
             }
 
-            document.getElementById('noResults').style.display = 'none';
-            document.getElementById('resultsCount').textContent = filteredProducts.length;
+            productsGrid.innerHTML = products.map(product => {
+                const conditionText = {
+                    'new': 'Mới',
+                    'like-new': 'Như mới',
+                    'good': 'Tốt',
+                    'fair': 'Trung bình'
+                }[product.condition] || product.condition;
 
-            filteredProducts.forEach(product => {
-                const productCard = createProductCard(product);
-                productsGrid.appendChild(productCard);
-            });
+                const imageHtml = product.images && product.images.length > 0
+                    ? `<img src="${product.images[0]}" alt="${product.title}">`
+                    : `<i class="fas fa-image"></i>`;
+
+                return `
+                    <div class="product-card" onclick="viewProduct('${product.id}')" style="position: relative;">
+                        ${product.is_sold ? '<div class="sold-badge">ĐÃ BÁN</div>' : ''}
+                        <div class="product-image">
+                            ${imageHtml}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${product.title}</h3>
+                            <div class="product-price">
+                                $${product.price.toLocaleString()}
+                                ${product.price_negotiable ? ' (TL)' : ''}
+                            </div>
+                            <div class="product-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> ${product.location}</span>
+                                <span class="product-condition">${conditionText}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        // Create product card
-        function createProductCard(product) {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            
-            const isSaved = savedProducts.includes(product.id);
-            const badge = product.badge || (product.featured ? 'featured' : '');
+        // Handle post product
+        async function handlePostProduct(e) {
+            e.preventDefault();
 
-            card.innerHTML = `
-                <div class="product-image">
-                    <img src="${product.image}" alt="${product.title}">
-                    ${badge ? `<span class="product-badge ${badge}">${badge === 'new' ? 'MỚI' : 'NỔI BẬT'}</span>` : ''}
-                    <button class="favorite-btn ${isSaved ? 'active' : ''}" onclick="toggleSave(${product.id})">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">${product.title}</h3>
-                    <div class="product-price">$${product.price.toLocaleString()}</div>
-                    <div class="product-details">
-                        ${product.mileage ? `<span class="detail-item"><i class="fas fa-tachometer-alt"></i> ${product.mileage}</span>` : ''}
-                        <span class="detail-item"><i class="fas fa-tag"></i> ${product.conditionText}</span>
-                    </div>
-                    <div class="product-location">
-                        <i class="fas fa-map-marker-alt"></i> ${product.location}
-                        <span style="color: #999; font-size: 0.85rem;">(${product.zipcode})</span>
-                    </div>
-                    <div class="product-actions">
-                        <button class="action-btn chat-btn" onclick="openChat(${JSON.stringify(product).replace(/"/g, '&quot;')})">
-                            <i class="fas fa-comment"></i> Chat
-                        </button>
-                        <button class="action-btn save-btn" onclick="toggleSave(${product.id})">
-                            <i class="fas fa-bookmark"></i> Lưu
-                        </button>
-                    </div>
-                </div>
-            `;
+            const submitBtn = postForm.querySelector('.btn-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang đăng...';
 
-            return card;
+            try {
+                const productData = {
+                    user_id: currentUser.id,
+                    title: document.getElementById('title').value,
+                    category: document.getElementById('category').value,
+                    condition: document.getElementById('condition').value,
+                    price: parseFloat(document.getElementById('price').value),
+                    price_negotiable: document.getElementById('negotiable').checked,
+                    description: document.getElementById('description').value,
+                    location: document.getElementById('location').value,
+                    contact_phone: document.getElementById('phone').value,
+                    contact_email: currentUser.email,
+                    images: [] // TODO: Handle image upload
+                };
+
+                const { error } = await supabaseClient
+                    .from('marketplace')
+                    .insert([productData]);
+
+                if (error) throw error;
+
+                showSuccess('Đăng tin thành công!');
+                postForm.reset();
+                imagePreview.innerHTML = '';
+                setTimeout(() => {
+                    postModal.style.display = 'none';
+                    loadProducts();
+                }, 2000);
+            } catch (err) {
+                console.error('Error posting product:', err);
+                showError('Có lỗi xảy ra. Vui lòng thử lại!');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Đăng tin';
+            }
         }
 
         // Filter products
         function filterProducts() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const categoryFilter = document.getElementById('categorySelect').value;
-            const conditionFilter = document.getElementById('conditionSelect').value;
+            let filtered = [...allProducts];
+
+            // Filter by category
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+
+            // Filter by price
             const priceMin = parseFloat(document.getElementById('priceMin').value) || 0;
             const priceMax = parseFloat(document.getElementById('priceMax').value) || Infinity;
-            
-            // Location filters
-            const zipcodeFilter = document.getElementById('zipcodeFilter').value;
-            const locationFilter = document.getElementById('locationFilter').value;
-            const radiusFilter = document.getElementById('radiusFilter').value;
+            filtered = filtered.filter(p => p.price >= priceMin && p.price <= priceMax);
 
-            const baseProducts = currentCategory === 'vehicles' ? vehiclesData : itemsData;
+            // Filter by condition
+            const checkedConditions = Array.from(document.querySelectorAll('.sidebar input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+            if (checkedConditions.length > 0) {
+                filtered = filtered.filter(p => checkedConditions.includes(p.condition));
+            }
 
-            filteredProducts = baseProducts.filter(product => {
-                const matchesSearch = !searchTerm || 
-                    product.title.toLowerCase().includes(searchTerm) ||
-                    product.description.toLowerCase().includes(searchTerm);
+            displayProducts(filtered);
+        }
 
-                const matchesCategory = !categoryFilter || product.subcategory === categoryFilter;
-                const matchesCondition = !conditionFilter || product.condition === conditionFilter;
-                const matchesPrice = product.price >= priceMin && product.price <= priceMax;
-                
-                // Location matching
-                let matchesLocation = true;
-                if (zipcodeFilter) {
-                    // Simple zipcode matching (in real app would calculate distance)
-                    matchesLocation = product.zipcode.startsWith(zipcodeFilter);
-                } else if (locationFilter) {
-                    matchesLocation = product.city === locationFilter;
-                }
+        // Search products
+        function handleSearch() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const location = document.getElementById('locationSelect').value.toLowerCase();
 
-                return matchesSearch && matchesCategory && matchesCondition && matchesPrice && matchesLocation;
+            const filtered = allProducts.filter(product => {
+                const matchKeyword = !keyword || 
+                    product.title.toLowerCase().includes(keyword) ||
+                    product.description.toLowerCase().includes(keyword);
+
+                const matchLocation = !location || 
+                    product.location.toLowerCase().includes(location);
+
+                return matchKeyword && matchLocation;
             });
 
-            loadProducts();
+            displayProducts(filtered);
         }
 
         // Sort products
         function sortProducts() {
             const sortBy = document.getElementById('sortSelect').value;
+            let sorted = [...allProducts];
 
-            filteredProducts.sort((a, b) => {
-                switch(sortBy) {
-                    case 'newest':
-                        return 0; // Default order
-                    case 'price-low':
-                        return a.price - b.price;
-                    case 'price-high':
-                        return b.price - a.price;
-                    case 'popular':
-                        return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
-                    default:
-                        return 0;
-                }
+            switch(sortBy) {
+                case 'newest':
+                    sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    break;
+                case 'oldest':
+                    sorted.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                    break;
+                case 'price-low':
+                    sorted.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    sorted.sort((a, b) => b.price - a.price);
+                    break;
+            }
+
+            displayProducts(sorted);
+        }
+
+        // Handle image selection
+        function handleImageSelect(e) {
+            const files = Array.from(e.target.files);
+            imagePreview.innerHTML = '';
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
             });
-
-            loadProducts();
         }
 
-        // Set view mode
-        function setView(view) {
-            currentView = view;
-            const productsGrid = document.getElementById('productsGrid');
-            const gridBtn = document.getElementById('gridView');
-            const listBtn = document.getElementById('listView');
-
-            if (view === 'grid') {
-                productsGrid.classList.remove('list-view');
-                gridBtn.classList.add('active');
-                listBtn.classList.remove('active');
-            } else {
-                productsGrid.classList.add('list-view');
-                listBtn.classList.add('active');
-                gridBtn.classList.remove('active');
-            }
+        // View product detail
+        function viewProduct(productId) {
+            // TODO: Navigate to product detail page
+            console.log('View product:', productId);
         }
 
-        // Toggle save product
-        function toggleSave(productId) {
-            event.stopPropagation();
-            
-            if (savedProducts.includes(productId)) {
-                savedProducts = savedProducts.filter(id => id !== productId);
-            } else {
-                savedProducts.push(productId);
-            }
-
-            localStorage.setItem('savedProducts', JSON.stringify(savedProducts));
-            loadProducts(); // Refresh to update buttons
-        }
-
-        // Open chat modal
-        function openChat(product) {
-            event.stopPropagation();
-            
-            // Update chat product info
-            const chatProductInfo = document.getElementById('chatProductInfo');
-            chatProductInfo.innerHTML = `
-                <img src="${product.image}" alt="${product.title}" class="chat-product-image">
-                <div>
-                    <strong>${product.title}</strong>
-                    <div style="color: #2196F3;">$${product.price.toLocaleString()}</div>
-                    <div style="font-size: 0.85rem; color: #666;">Người bán: ${product.seller}</div>
-                </div>
-            `;
-
-            document.getElementById('chatModal').style.display = 'flex';
-        }
-
-        // Close chat modal
-        function closeChatModal() {
-            document.getElementById('chatModal').style.display = 'none';
-        }
-
-        // Send message
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message sent';
-            messageDiv.innerHTML = `
-                <div class="message-bubble">
-                    ${message}
-                    <div class="message-time">${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</div>
-                </div>
-            `;
-
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            input.value = '';
-
-            // Simulate response
+        // Helper functions
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
             setTimeout(() => {
-                const responseDiv = document.createElement('div');
-                responseDiv.className = 'message';
-                responseDiv.innerHTML = `
-                    <div class="message-bubble">
-                        Cảm ơn bạn đã quan tâm! Tôi sẽ liên hệ lại sớm.
-                        <div class="message-time">${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</div>
-                    </div>
-                `;
-                messagesContainer.appendChild(responseDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 1000);
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
         }
     </script>
 </body>
