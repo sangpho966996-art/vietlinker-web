@@ -92,24 +92,6 @@
             text-decoration: none;
         }
     </style>
-    
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // Supabase configuration - paste trực tiếp
-       // Đợi Supabase load xong
-let supabase;
-if (window.supabase) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} else {
-    console.error('Supabase chưa load!');
-}
-        // Initialize Supabase
-        const { createClient } = window.supabase;
-        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-        
-        console.log('Supabase connected!');
-    </script>
 </head>
 <body>
     <div class="container">
@@ -150,9 +132,19 @@ if (window.supabase) {
         </div>
     </div>
 
+    <!-- Supabase Script phải ở cuối body -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
-        // Xử lý đăng ký
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        // Config Supabase
+        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        
+        // Khởi tạo Supabase ngay
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // Xử lý form
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const fullName = document.getElementById('fullName').value;
@@ -165,8 +157,12 @@ if (window.supabase) {
             messageDiv.innerHTML = '<p style="color: blue;">Đang xử lý...</p>';
             
             try {
-                // Đăng ký với Supabase Auth
-                const { data: authData, error: authError } = await supabase.auth.signUp({
+                // Test xem supabase có tồn tại không
+                console.log('Supabase object:', supabase);
+                console.log('Auth methods:', supabase.auth);
+                
+                // Đăng ký
+                const { data, error } = await supabase.auth.signUp({
                     email: email,
                     password: password,
                     options: {
@@ -177,54 +173,19 @@ if (window.supabase) {
                     }
                 });
                 
-                if (authError) {
-                    throw authError;
+                if (error) {
+                    throw error;
                 }
                 
-                // Nếu đăng ký thành công
-                if (authData && authData.user) {
-                    // Thêm vào bảng users
-                    const { error: profileError } = await supabase
-                        .from('users')
-                        .insert([{
-                            id: authData.user.id,
-                            email: email,
-                            full_name: fullName,
-                            phone: phone
-                        }]);
-                    
-                    if (profileError) {
-                        console.error('Profile error:', profileError);
-                        // Không throw error ở đây vì auth đã thành công
-                    }
-                    
-                    messageDiv.innerHTML = '<p class="success">Đăng ký thành công! Vui lòng kiểm tra email để xác nhận.</p>';
-                    
-                    // Reset form
-                    document.getElementById('registerForm').reset();
-                    
-                    // Chuyển đến trang đăng nhập sau 3 giây
-                    setTimeout(() => {
-                        window.location.href = '/pages/login.html';
-                    }, 3000);
-                }
+                // Thành công
+                messageDiv.innerHTML = '<p class="success">Đăng ký thành công! Vui lòng kiểm tra email.</p>';
+                
+                // Reset form
+                this.reset();
                 
             } catch (error) {
-                console.error('Error:', error);
-                let errorMessage = 'Có lỗi xảy ra!';
-                
-                // Xử lý các lỗi phổ biến
-                if (error.message.includes('already registered')) {
-                    errorMessage = 'Email này đã được đăng ký!';
-                } else if (error.message.includes('valid email')) {
-                    errorMessage = 'Email không hợp lệ!';
-                } else if (error.message.includes('password')) {
-                    errorMessage = 'Mật khẩu phải có ít nhất 6 ký tự!';
-                } else {
-                    errorMessage = error.message;
-                }
-                
-                messageDiv.innerHTML = `<p class="error">Lỗi: ${errorMessage}</p>`;
+                console.error('Registration error:', error);
+                messageDiv.innerHTML = `<p class="error">Lỗi: ${error.message}</p>`;
             }
         });
     </script>
