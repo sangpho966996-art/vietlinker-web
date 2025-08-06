@@ -492,88 +492,92 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        
+        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         // Check authentication
-        function checkAuth() {
-            const token = localStorage.getItem('supabase_token');
-            const userEmail = localStorage.getItem('user_email');
+        async function checkAuth() {
+            const { data: { user } } = await supabase.auth.getUser();
             
-            if (!token || !userEmail) {
+            if (!user) {
                 alert('Vui lòng đăng nhập để xem trang này');
                 window.location.href = 'login.html';
                 return false;
             }
             
-            document.getElementById('userEmail').textContent = userEmail;
+            // Display user email
+            document.getElementById('userEmail').textContent = user.email;
+            
+            // Load user's posts
+            await loadUserPosts(user.id);
             return true;
         }
 
         // Logout function
-        function logout() {
+        window.logout = async function() {
             if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                localStorage.clear();
-                window.location.href = 'index.html';
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                    window.location.href = 'index.html';
+                }
             }
         }
 
-        // Load posts (mock data for now)
-        function loadPosts() {
+        // Load user's posts from all tables
+        async function loadUserPosts(userId) {
             const loading = document.getElementById('loading');
             const emptyState = document.getElementById('emptyState');
             const postsList = document.getElementById('postsList');
             
-            // Simulate loading
-            setTimeout(() => {
+            try {
+                // Query all category tables for user's posts
+                const tables = ['jobs', 'marketplace', 'services', 'real_estate', 'classifieds', 'promotions'];
+                let allPosts = [];
+                
+                for (const table of tables) {
+                    const { data, error } = await supabase
+                        .from(table)
+                        .select('*')
+                        .eq('user_id', userId)
+                        .order('created_at', { ascending: false });
+                    
+                    if (data && data.length > 0) {
+                        // Add category info to each post
+                        const postsWithCategory = data.map(post => ({
+                            ...post,
+                            category: table
+                        }));
+                        allPosts = [...allPosts, ...postsWithCategory];
+                    }
+                }
+                
                 loading.style.display = 'none';
                 
-                // Mock data - replace with actual Supabase query later
-                const mockPosts = [
-                    {
-                        id: 1,
-                        title: 'iPhone 14 Pro Max 256GB',
-                        category: 'marketplace',
-                        status: 'active',
-                        date: '2024-01-15',
-                        views: 234,
-                        price: '$899',
-                        city: 'Houston'
-                    },
-                    {
-                        id: 2,
-                        title: 'Cần tuyển nhân viên nail',
-                        category: 'jobs',
-                        status: 'active',
-                        date: '2024-01-14',
-                        views: 567,
-                        salary: '$5000/tháng',
-                        city: 'Dallas'
-                    },
-                    {
-                        id: 3,
-                        title: 'Cho thuê nhà 3PN 2WC',
-                        category: 'real_estate',
-                        status: 'pending',
-                        date: '2024-01-13',
-                        views: 123,
-                        price: '$1500/tháng',
-                        city: 'Austin'
-                    }
-                ];
-
-                if (mockPosts.length === 0) {
+                if (allPosts.length === 0) {
                     emptyState.style.display = 'block';
                 } else {
                     // Update stats
-                    document.getElementById('totalPosts').textContent = mockPosts.length;
-                    document.getElementById('activePosts').textContent = mockPosts.filter(p => p.status === 'active').length;
-                    document.getElementById('pendingPosts').textContent = mockPosts.filter(p => p.status === 'pending').length;
-                    document.getElementById('totalViews').textContent = mockPosts.reduce((sum, p) => sum + p.views, 0);
+                    document.getElementById('totalPosts').textContent = allPosts.length;
+                    document.getElementById('activePosts').textContent = allPosts.filter(p => p.status === 'active').length;
+                    document.getElementById('pendingPosts').textContent = allPosts.filter(p => p.status === 'pending').length;
+                    document.getElementById('totalViews').textContent = allPosts.reduce((sum, p) => sum + (p.views || 0), 0);
+                    
+                    // Sort posts by date
+                    allPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                     
                     // Render posts
-                    const postsHTML = mockPosts.map(post => createPostCard(post)).join('');
+                    const postsHTML = allPosts.map(post => createPostCard(post)).join('');
                     postsList.innerHTML = postsHTML;
                 }
-            }, 1000);
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                loading.style.display = 'none';
+                postsList.innerHTML = '<p style="text-align: center; color: #dc3545;">Lỗi khi tải tin đăng. Vui lòng thử lại.</p>';
+            }
         }
 
         // Create post card HTML
@@ -587,5 +591,100 @@
                 promotions: '🎁'
             };
 
+            const categoryNames = {
+                marketplace: 'Mua Bán',
+                jobs: 'Việc Làm',
+                real_estate: 'BĐS & Tiệm',
+                services: 'Dịch Vụ',
+                classifieds: 'Rao Vặt',
+                promotions: 'Khuyến Mãi'
+            };
+
             const statusClasses = {
-                active: 
+                active: 'status-active',
+                inactive: 'status-inactive',
+                pending: 'status-pending'
+            };
+
+            const statusLabels = {
+                active: 'Đang hiển thị',
+                inactive: 'Đã ẩn',
+                pending: 'Chờ duyệt'
+            };
+
+            const postDate = new Date(post.created_at).toLocaleDateString('vi-VN');
+            const postStatus = post.status || 'active';
+
+            return `
+                <div class="post-card">
+                    <div class="post-image">
+                        ${categoryIcons[post.category] || '📄'}
+                    </div>
+                    <div class="post-details">
+                        <h3 class="post-title">${post.title}</h3>
+                        <div class="post-meta">
+                            <span>📅 ${postDate}</span>
+                            <span>👁 ${post.views || 0} lượt xem</span>
+                            <span>📍 ${post.city || 'N/A'}</span>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <span class="post-category">${categoryNames[post.category]}</span>
+                            <span class="post-status ${statusClasses[postStatus]}">
+                                ${statusLabels[postStatus]}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="btn-action btn-view" onclick="viewPost('${post.id}', '${post.category}')">Xem</button>
+                        <button class="btn-action btn-edit" onclick="editPost('${post.id}', '${post.category}')">Sửa</button>
+                        <button class="btn-action btn-delete" onclick="deletePost('${post.id}', '${post.category}')">Xóa</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter posts by status
+        window.filterPosts = function(status) {
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Re-load posts with filter
+            checkAuth(); // This will reload posts
+        }
+
+        // View post
+        window.viewPost = function(postId, category) {
+            // Navigate to the category page with post ID
+            window.location.href = `${category}.html?id=${postId}`;
+        }
+
+        // Edit post
+        window.editPost = function(postId, category) {
+            // Navigate to post form in edit mode
+            window.location.href = `post-form.html?edit=${postId}&category=${category}`;
+        }
+
+        // Delete post
+        window.deletePost = async function(postId, category) {
+            if (confirm('Bạn có chắc muốn xóa tin này?')) {
+                try {
+                    const { error } = await supabase
+                        .from(category)
+                        .delete()
+                        .eq('id', postId);
+                    
+                    if (error) throw error;
+                    
+                    alert('Đã xóa tin thành công!');
+                    checkAuth(); // Reload posts
+                } catch (error) {
+                    console.error('Error deleting post:', error);
+                    alert('Lỗi khi xóa tin. Vui lòng thử lại.');
+                }
+            }
+        }
+
+        // Initialize on page load
+        checkAuth();
+    </script> 
