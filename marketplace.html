@@ -350,7 +350,6 @@
             overflow: hidden;
         }
 
-        /* Detail Modal Styles */
         .detail-modal .modal-content {
             max-width: 800px;
         }
@@ -768,6 +767,8 @@
     </div>
 
     <script type="module">
+        console.log('Script starting...'); // Debug log
+        
         // Supabase config
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
@@ -776,9 +777,10 @@
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // Global variables
         let currentUser = null;
-        window.allItems = []; // Make it global
-        let selectedFile = null; // QUAN TRỌNG: Phải khai báo global
+        window.allItems = [];
+        let selectedFile = null;
 
         // Check auth
         async function checkAuth() {
@@ -797,6 +799,125 @@
                 userEmail.textContent = 'Chưa đăng nhập';
                 logoutBtn.style.display = 'none';
                 postItemBtn.style.display = 'none';
+            }
+        }
+
+        // Setup upload handlers after DOM loads
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, setting up handlers...');
+            
+            const imageUploadArea = document.getElementById('imageUploadArea');
+            const imageFile = document.getElementById('imageFile');
+            
+            if (imageUploadArea && imageFile) {
+                console.log('Upload elements found!');
+                
+                // Click handler
+                imageUploadArea.onclick = (e) => {
+                    e.preventDefault();
+                    console.log('Upload area clicked');
+                    imageFile.click();
+                };
+                
+                // File change handler
+                imageFile.onchange = (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                        console.log('File selected:', e.target.files[0].name);
+                        handleImageSelect(e.target.files[0]);
+                    }
+                };
+                
+                // Drag and drop
+                imageUploadArea.ondragover = (e) => {
+                    e.preventDefault();
+                    imageUploadArea.style.background = '#ffe5e5';
+                };
+                
+                imageUploadArea.ondragleave = () => {
+                    imageUploadArea.style.background = '#fff5f5';
+                };
+                
+                imageUploadArea.ondrop = (e) => {
+                    e.preventDefault();
+                    imageUploadArea.style.background = '#fff5f5';
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                        handleImageSelect(e.dataTransfer.files[0]);
+                    }
+                };
+            } else {
+                console.error('Upload elements NOT found!');
+            }
+        });
+
+        // Handle image selection
+        function handleImageSelect(file) {
+            console.log('handleImageSelect:', file.name, file.size);
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Hình ảnh phải nhỏ hơn 5MB!');
+                return;
+            }
+            
+            if (!file.type.startsWith('image/')) {
+                alert('Vui lòng chọn file hình ảnh!');
+                return;
+            }
+            
+            selectedFile = file;
+            console.log('File saved to selectedFile');
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+                document.getElementById('imagePreview').style.display = 'block';
+                document.getElementById('uploadStatus').style.display = 'none';
+                console.log('Preview shown');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Change image
+        window.changeImage = function() {
+            document.getElementById('imageFile').click();
+        }
+
+        // Upload image to Supabase
+        async function uploadImage() {
+            console.log('uploadImage called, selectedFile:', selectedFile);
+            
+            if (!selectedFile) {
+                console.log('No file to upload');
+                return null;
+            }
+            
+            try {
+                const fileExt = selectedFile.name.split('.').pop();
+                const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+                
+                console.log('Uploading:', fileName);
+                
+                const { data, error } = await supabase.storage
+                    .from('marketplace')
+                    .upload(fileName, selectedFile);
+                
+                if (error) {
+                    console.error('Upload error:', error);
+                    alert('Lỗi upload: ' + error.message);
+                    return null;
+                }
+                
+                console.log('Upload success:', data);
+                
+                const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/marketplace/${fileName}`;
+                console.log('Public URL:', publicUrl);
+                
+                document.getElementById('uploadStatus').style.display = 'block';
+                return publicUrl;
+                
+            } catch (err) {
+                console.error('Error:', err);
+                return null;
             }
         }
 
@@ -820,7 +941,6 @@
         function closeModal() {
             document.getElementById('itemModal').style.display = 'none';
             document.getElementById('itemForm').reset();
-            // Reset image upload
             selectedFile = null;
             document.getElementById('uploadPlaceholder').style.display = 'block';
             document.getElementById('imagePreview').style.display = 'none';
@@ -844,6 +964,72 @@
             }
             if (e.target === detailModal) {
                 closeDetailModal();
+            }
+        });
+
+        // Submit form
+        document.getElementById('itemForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('Form submitted');
+            
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập!');
+                return;
+            }
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Đang xử lý...';
+            submitBtn.disabled = true;
+
+            try {
+                let imageUrl = null;
+                
+                if (selectedFile) {
+                    console.log('Uploading image...');
+                    imageUrl = await uploadImage();
+                    console.log('Image URL:', imageUrl);
+                }
+
+                const itemData = {
+                    user_id: currentUser.id,
+                    title: document.getElementById('title').value,
+                    category: document.getElementById('category').value,
+                    price: parseFloat(document.getElementById('price').value),
+                    description: document.getElementById('description').value || '',
+                    condition: document.getElementById('condition').value,
+                    location: document.getElementById('location').value || '',
+                    city: document.getElementById('city').value,
+                    zipcode: document.getElementById('zipcode').value,
+                    contact: document.getElementById('contact').value,
+                    status: 'active',
+                    views: 0
+                };
+                
+                if (imageUrl) {
+                    itemData.image_url = imageUrl;
+                }
+
+                console.log('Saving:', itemData);
+
+                const { data, error } = await supabase
+                    .from('marketplace')
+                    .insert([itemData])
+                    .select();
+
+                if (error) throw error;
+
+                console.log('Saved!', data);
+                alert('Đăng bán thành công!');
+                closeModal();
+                loadItems();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Lỗi: ' + error.message);
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
 
@@ -932,9 +1118,7 @@
                 </div>
             `;
 
-            // Update views
             updateViews(item.id);
-            
             document.getElementById('detailModal').style.display = 'block';
         }
         window.showItemDetail = showItemDetail;
@@ -959,199 +1143,6 @@
             }
         }
 
-        // Image upload handling - Đảm bảo selectedFile được set đúng
-        const imageUploadArea = document.getElementById('imageUploadArea');
-        const imageFile = document.getElementById('imageFile');
-        
-        if (imageUploadArea && imageFile) {
-            imageUploadArea.addEventListener('click', () => {
-                imageFile.click();
-            });
-            
-            imageUploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                imageUploadArea.style.background = '#ffe5e5';
-            });
-            
-            imageUploadArea.addEventListener('dragleave', () => {
-                imageUploadArea.style.background = '#fff5f5';
-            });
-            
-            imageUploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                imageUploadArea.style.background = '#fff5f5';
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleImageSelect(files[0]);
-                }
-            });
-            
-            imageFile.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    console.log('File selected via input:', e.target.files[0].name);
-                    handleImageSelect(e.target.files[0]);
-                }
-            });
-        }
-        
-        function handleImageSelect(file) {
-            console.log('handleImageSelect called with:', file.name, file.size);
-            
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Hình ảnh phải nhỏ hơn 5MB!');
-                return;
-            }
-            
-            if (!file.type.startsWith('image/')) {
-                alert('Vui lòng chọn file hình ảnh!');
-                return;
-            }
-            
-            selectedFile = file; // Set global variable
-            console.log('selectedFile set to:', selectedFile);
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('uploadPlaceholder').style.display = 'none';
-                document.getElementById('imagePreview').style.display = 'block';
-                document.getElementById('uploadStatus').style.display = 'none';
-                console.log('Image preview shown');
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        window.changeImage = function() {
-            imageFile.click();
-        }
-        
-        async function uploadImage() {
-            if (!selectedFile) return null;
-            
-            try {
-                // Tạo tên file unique và đơn giản
-                const fileExt = selectedFile.name.split('.').pop();
-                const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
-                
-                console.log('Uploading:', fileName);
-                console.log('File size:', selectedFile.size);
-                
-                // Upload file trực tiếp không dùng subfolder
-                const { data, error } = await supabase.storage
-                    .from('marketplace')
-                    .upload(fileName, selectedFile);
-                
-                if (error) {
-                    console.error('Upload error:', error);
-                    alert('Lỗi upload: ' + error.message);
-                    return null;
-                }
-                
-                console.log('Upload success:', data);
-                
-                // Build public URL theo format chuẩn của Supabase
-                const publicUrl = `https://wwlmvcsozavqfvwlxkrt.supabase.co/storage/v1/object/public/marketplace/${fileName}`;
-                
-                console.log('Image URL:', publicUrl);
-                
-                // Hiển thị thông báo thành công
-                document.getElementById('uploadStatus').style.display = 'block';
-                document.getElementById('uploadStatus').innerHTML = `✅ Upload thành công! <a href="${publicUrl}" target="_blank">Xem hình</a>`;
-                
-                return publicUrl;
-                
-            } catch (err) {
-                console.error('Unexpected error:', err);
-                alert('Lỗi không xác định: ' + err.message);
-                return null;
-            }
-        }
-
-        // Submit form
-        document.getElementById('itemForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (!currentUser) {
-                alert('Vui lòng đăng nhập!');
-                return;
-            }
-
-            // Show loading
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Đang xử lý...';
-            submitBtn.disabled = true;
-
-            try {
-                let imageUrl = null;
-                
-                // Upload image nếu có chọn file
-                if (selectedFile) {
-                    console.log('Found selected file:', selectedFile.name);
-                    imageUrl = await uploadImage();
-                    console.log('Upload result:', imageUrl);
-                    
-                    if (!imageUrl) {
-                        console.error('Upload failed - no URL returned');
-                    }
-                } else {
-                    console.log('No file selected for upload');
-                }
-
-                // Prepare data
-                const itemData = {
-                    user_id: currentUser.id,
-                    title: document.getElementById('title').value,
-                    category: document.getElementById('category').value,
-                    price: parseFloat(document.getElementById('price').value),
-                    description: document.getElementById('description').value || '',
-                    condition: document.getElementById('condition').value,
-                    location: document.getElementById('location').value || '',
-                    city: document.getElementById('city').value,
-                    zipcode: document.getElementById('zipcode').value,
-                    contact: document.getElementById('contact').value,
-                    status: 'active',
-                    views: 0
-                };
-                
-                // Add image_url nếu có
-                if (imageUrl) {
-                    itemData.image_url = imageUrl;
-                    console.log('Added image_url to data:', imageUrl);
-                } else {
-                    console.log('No image_url to add');
-                }
-
-                console.log('Saving to database:', itemData);
-
-                // Save to database
-                const { data, error } = await supabase
-                    .from('marketplace')
-                    .insert([itemData])
-                    .select();
-
-                if (error) throw error;
-
-                console.log('Saved successfully:', data);
-                alert('Đăng bán thành công!');
-                
-                // Reset form và close modal
-                selectedFile = null;
-                document.getElementById('uploadPlaceholder').style.display = 'block';
-                document.getElementById('imagePreview').style.display = 'none';
-                document.getElementById('uploadStatus').style.display = 'none';
-                closeModal();
-                loadItems();
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Lỗi: ' + error.message);
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-
         // Load items
         async function loadItems(category = '', searchTerm = '', location = '') {
             const container = document.getElementById('itemsContainer');
@@ -1172,7 +1163,6 @@
                     query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
                 }
 
-                // Location filter
                 if (location) {
                     if (/^\d{5}$/.test(location)) {
                         query = query.eq('zipcode', location);
@@ -1185,7 +1175,7 @@
 
                 if (error) throw error;
 
-                window.allItems = items; // Store globally for detail view
+                window.allItems = items;
 
                 if (items.length === 0) {
                     let emptyMessage = '🔍 Không tìm thấy sản phẩm nào';
@@ -1201,7 +1191,6 @@
                     return;
                 }
 
-                // Result header if searching by location
                 let resultHeader = '';
                 if (location) {
                     resultHeader = `<div style="grid-column: 1/-1; padding: 15px; background: #f0f7ff; border-radius: 8px; margin-bottom: 10px; color: #1e3c72;">
@@ -1236,14 +1225,11 @@
                     if (item.zipcode) locationInfo.push(item.zipcode);
                     const fullLocation = locationInfo.join(', ');
 
-                    // Debug log
-                    console.log('Item:', item.title, 'Image URL:', item.image_url);
-
                     return `
                         <div class="item-card" onclick="window.showItemDetail(window.allItems[${index}])">
                             ${item.condition === 'new' ? '<div class="item-badge">MỚI</div>' : ''}
                             <div class="item-image">
-                                ${item.image_url && item.image_url.trim() !== '' ? 
+                                ${item.image_url ? 
                                     `<img src="${item.image_url}" alt="${item.title}" onerror="this.parentElement.innerHTML='${categoryIcons[item.category] || '📦'}'">` : 
                                     categoryIcons[item.category] || '📦'
                                 }
@@ -1251,7 +1237,7 @@
                             <div class="item-body">
                                 <div class="item-category">${item.category || 'Khác'}</div>
                                 <div class="item-title">${item.title}</div>
-                                <div class="item-price">${item.price.toLocaleString()}</div>
+                                <div class="item-price">$${item.price.toLocaleString()}</div>
                                 <div class="item-details">
                                     ${item.condition ? `
                                         <div class="item-detail">
@@ -1296,7 +1282,6 @@
             loadItems(e.target.value, searchTerm, location);
         });
 
-        // Location filter
         let locationTimeout;
         document.getElementById('locationInput').addEventListener('input', (e) => {
             clearTimeout(locationTimeout);
@@ -1308,6 +1293,7 @@
         });
 
         // Init
+        console.log('Initializing...');
         checkAuth();
         loadItems();
     </script>
