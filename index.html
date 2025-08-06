@@ -104,6 +104,65 @@
             padding: 8px 15px;
             border-radius: 30px;
             backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        /* Dropdown Menu */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .user-info:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .dropdown-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .dropdown-item:hover {
+            background: #f8f9fa;
+            color: #dc143c;
+        }
+        
+        .dropdown-item.signout {
+            color: #dc143c;
+            font-weight: 600;
+        }
+        
+        .dropdown-item.signout:hover {
+            background: #dc143c;
+            color: white;
         }
         
         .user-info.active {
@@ -750,6 +809,21 @@
                 <div class="user-info" id="userInfo">
                     <div class="user-avatar" id="userAvatar">U</div>
                     <span class="user-name" id="userName">User</span>
+                    <!-- Dropdown Menu -->
+                    <div class="user-dropdown">
+                        <a href="profile.html" class="dropdown-item">
+                            👤 Hồ Sơ Cá Nhân
+                        </a>
+                        <a href="my-posts.html" class="dropdown-item">
+                            📝 Quản Lý Tin Đăng
+                        </a>
+                        <a href="marketplace.html" class="dropdown-item">
+                            ➕ Đăng Tin Mới
+                        </a>
+                        <a href="#" onclick="signOut()" class="dropdown-item signout">
+                            🚪 Đăng Xuất
+                        </a>
+                    </div>
                 </div>
                 <div class="auth-buttons" id="authButtons">
                     <a href="login.html" class="btn-auth btn-login">Đăng Nhập</a>
@@ -1042,6 +1116,16 @@
                 }
             });
         });
+        
+        // Sign Out function
+        window.signOut = async function() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                    window.location.reload();
+                }
+            }
+        }
         
         // Check auth on page load
         checkAuth();
