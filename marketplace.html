@@ -762,7 +762,7 @@
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let currentUser = null;
-        let allItems = [];
+        window.allItems = []; // Make it global
 
         // Check auth
         async function checkAuth() {
@@ -1012,7 +1012,7 @@
 
                 if (error) throw error;
 
-                allItems = items; // Store for detail view
+                window.allItems = items; // Store globally for detail view
 
                 if (items.length === 0) {
                     let emptyMessage = '🔍 Không tìm thấy sản phẩm nào';
@@ -1064,7 +1064,7 @@
                     const fullLocation = locationInfo.join(', ');
 
                     return `
-                        <div class="item-card" onclick="showItemDetail(allItems[${index}])">
+                        <div class="item-card" onclick="window.showItemDetail(window.allItems[${index}])">
                             ${item.condition === 'new' ? '<div class="item-badge">MỚI</div>' : ''}
                             <div class="item-image">
                                 ${item.image_url ? 
