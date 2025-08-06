@@ -3,189 +3,510 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký - VietLinker</title>
+    <title>Đăng Ký - VietLinker</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            max-width: 400px;
-            margin: 50px auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .register-card {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease;
         }
-        
-        h1 {
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            padding: 40px 30px;
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .logo-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .logo-viet {
+            color: #FFD700;
+        }
+
+        .card-header h2 {
+            color: white;
+            font-size: 1.5em;
+            font-weight: normal;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body {
+            padding: 40px 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
-        
-        label {
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1e3c72;
+            font-weight: 600;
+            font-size: 14px;
         }
-        
-        input {
+
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 16px;
+            transition: all 0.3s;
         }
-        
-        button {
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            font-size: 20px;
+        }
+
+        .password-strength {
+            margin-top: 5px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+
+        .strength-weak { background: #ff4444; width: 33%; }
+        .strength-medium { background: #ffaa00; width: 66%; }
+        .strength-strong { background: #00aa00; width: 100%; }
+
+        .terms {
+            display: flex;
+            align-items: start;
+            gap: 8px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .terms input {
+            margin-top: 3px;
+        }
+
+        .terms a {
+            color: #dc143c;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-register {
             width: 100%;
-            padding: 12px;
-            background-color: #007bff;
+            padding: 14px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 18px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
         }
-        
-        button:hover {
-            background-color: #0056b3;
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
         }
-        
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-register:disabled {
+            background: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .login-link {
             text-align: center;
+            color: #666;
+            font-size: 14px;
             margin-top: 20px;
         }
-        
-        .error {
-            color: red;
-            text-align: center;
-            margin-top: 10px;
-        }
-        
-        .success {
-            color: green;
-            text-align: center;
-            margin-top: 10px;
-        }
-        
-        .home-link {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .home-link a {
-            color: #007bff;
+
+        .login-link a {
+            color: #dc143c;
             text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-home a {
+            color: #1e3c72;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-home a:hover {
+            color: #dc143c;
+            transform: translateX(-5px);
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .alert-success {
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .card-body {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="home-link">
-            <a href="/">← Về trang chủ</a>
-        </div>
-        
-        <h1>Đăng ký tài khoản</h1>
-        
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="fullName">Họ và tên:</label>
-                <input type="text" id="fullName" required>
+        <div class="register-card">
+            <div class="card-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
+                            <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+                            <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+                            <circle cx="75" cy="50" r="8" fill="#FFD700"/>
+                            <circle cx="35" cy="70" r="8" fill="#1e3c72"/>
+                            <circle cx="65" cy="70" r="8" fill="#1e3c72"/>
+                            <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2"/>
+                            <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2"/>
+                            <line x1="25" y1="50" x2="35" y2="70" stroke="#1e3c72" stroke-width="2"/>
+                            <line x1="75" y1="50" x2="65" y2="70" stroke="#1e3c72" stroke-width="2"/>
+                            <line x1="35" y1="70" x2="65" y2="70" stroke="#FFD700" stroke-width="2"/>
+                            <circle cx="50" cy="50" r="5" fill="#dc143c"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-viet">Viet</span><span>Linker</span>
+                    </div>
+                </div>
+                <h2>Tạo tài khoản mới</h2>
             </div>
-            
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" required>
+
+            <div class="card-body">
+                <div id="alertBox" class="alert"></div>
+
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Họ và tên *</label>
+                            <input type="text" id="fullName" required placeholder="Nguyễn Văn A">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại</label>
+                            <input type="tel" id="phone" placeholder="(123) 456-7890">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required placeholder="email@example.com">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="password">Mật khẩu *</label>
+                        <div class="password-container">
+                            <input type="password" id="password" required placeholder="Tối thiểu 6 ký tự">
+                            <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                        </div>
+                        <div class="password-strength">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="confirmPassword">Xác nhận mật khẩu *</label>
+                        <div class="password-container">
+                            <input type="password" id="confirmPassword" required placeholder="Nhập lại mật khẩu">
+                            <span class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">Thành phố *</label>
+                            <input type="text" id="city" required placeholder="Houston">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zipcode">Zipcode *</label>
+                            <input type="text" id="zipcode" required placeholder="77001" pattern="[0-9]{5}" maxlength="5">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" id="address" placeholder="123 Main St">
+                    </div>
+
+                    <label class="terms">
+                        <input type="checkbox" id="terms" required>
+                        <span>Tôi đồng ý với <a href="#">Điều khoản sử dụng</a> và <a href="#">Chính sách bảo mật</a></span>
+                    </label>
+
+                    <button type="submit" class="btn-register" id="submitBtn">Đăng Ký</button>
+                </form>
+
+                <div class="login-link">
+                    Đã có tài khoản? <a href="login.html">Đăng nhập</a>
+                </div>
+
+                <div class="back-home">
+                    <a href="index.html">← Về trang chủ</a>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="password">Mật khẩu:</label>
-                <input type="password" id="password" required minlength="6">
-            </div>
-            
-            <div class="form-group">
-                <label for="phone">Số điện thoại:</label>
-                <input type="tel" id="phone">
-            </div>
-            
-            <button type="submit">Đăng ký</button>
-        </form>
-        
-        <div id="message"></div>
-        
-        <div class="login-link">
-            Đã có tài khoản? <a href="/pages/login.html">Đăng nhập</a>
         </div>
     </div>
 
-    <!-- Supabase Script phải ở cuối body -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <script>
-        // Config Supabase
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
         
-        // Khởi tạo Supabase ngay
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        
-        // Xử lý form
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Toggle password visibility
+        window.togglePassword = function(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleIcon = passwordInput.nextElementSibling;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
+        // Check password strength
+        document.getElementById('password').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strengthBar = document.getElementById('strengthBar');
+            
+            if (password.length < 6) {
+                strengthBar.className = 'password-strength-bar strength-weak';
+            } else if (password.length < 10) {
+                strengthBar.className = 'password-strength-bar strength-medium';
+            } else {
+                strengthBar.className = 'password-strength-bar strength-strong';
+            }
+        });
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // Handle registration
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const phone = document.getElementById('phone').value;
-            const messageDiv = document.getElementById('message');
+            const confirmPassword = document.getElementById('confirmPassword').value;
             
-            // Hiển thị đang xử lý
-            messageDiv.innerHTML = '<p style="color: blue;">Đang xử lý...</p>';
-            
+            if (password !== confirmPassword) {
+                showAlert('Mật khẩu xác nhận không khớp!', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('Mật khẩu phải có ít nhất 6 ký tự!', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang xử lý...';
+
             try {
-                // Test xem supabase có tồn tại không
-                console.log('Supabase object:', supabase);
-                console.log('Auth methods:', supabase.auth);
-                
-                // Đăng ký
-                const { data, error } = await supabase.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        data: {
-                            full_name: fullName,
-                            phone: phone
-                        }
-                    }
+                // Register user
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email: document.getElementById('email').value,
+                    password: password
                 });
+
+                if (authError) throw authError;
+
+                // Save additional user info
+                const { error: profileError } = await supabase
+                    .from('users')
+                    .insert([{
+                        id: authData.user.id,
+                        email: document.getElementById('email').value,
+                        full_name: document.getElementById('fullName').value,
+                        phone: document.getElementById('phone').value,
+                        address: document.getElementById('address').value,
+                        city: document.getElementById('city').value,
+                        zipcode: document.getElementById('zipcode').value,
+                        state: 'TX'
+                    }]);
+
+                if (profileError) throw profileError;
+
+                showAlert('Đăng ký thành công! Đang chuyển hướng...', 'success');
                 
-                if (error) {
-                    throw error;
-                }
-                
-                // Thành công
-                messageDiv.innerHTML = '<p class="success">Đăng ký thành công! Vui lòng kiểm tra email.</p>';
-                
-                // Reset form
-                this.reset();
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
                 
             } catch (error) {
-                console.error('Registration error:', error);
-                messageDiv.innerHTML = `<p class="error">Lỗi: ${error.message}</p>`;
+                showAlert('Lỗi: ' + error.message, 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Đăng Ký';
             }
         });
     </script>
