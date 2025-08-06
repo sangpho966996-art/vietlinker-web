@@ -4,651 +4,457 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Việc Làm - VietLinker</title>
-    
-    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
     <style>
-        /* Reset và Base Styles (giống index.html) */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-color: #2196F3;
-            --primary-dark: #1976D2;
-            --primary-light: #64B5F6;
-            --secondary-color: #FFC107;
-            --success-color: #4CAF50;
-            --danger-color: #F44336;
-            --text-dark: #333333;
-            --text-light: #666666;
-            --bg-light: #F5F5F5;
-            --white: #FFFFFF;
-            --shadow: 0 2px 10px rgba(0,0,0,0.1);
-            --transition: all 0.3s ease;
-        }
-
         body {
             font-family: 'Roboto', sans-serif;
-            color: var(--text-dark);
             line-height: 1.6;
-            background: var(--bg-light);
+            color: #333;
+            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header Styles (giống index.html) */
+        /* Header Styles */
         header {
-            background: var(--white);
-            box-shadow: var(--shadow);
-            position: fixed;
-            width: 100%;
+            background: #2196F3;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: white;
             text-decoration: none;
         }
 
-        .logo i {
-            margin-right: 0.5rem;
-            font-size: 2rem;
-        }
-
-        .nav-menu {
+        .nav-links {
             display: flex;
             list-style: none;
             gap: 2rem;
             align-items: center;
         }
 
-        .nav-link {
-            color: var(--text-dark);
+        .nav-links a {
+            color: white;
             text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
+            transition: opacity 0.3s;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--primary-color);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: var(--primary-color);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.5rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
-        }
-
-        .btn-success {
-            background: var(--success-color);
-            color: var(--white);
-        }
-
-        .btn-success:hover {
-            background: #45a049;
-        }
-
-        .mobile-menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            color: var(--text-dark);
-            cursor: pointer;
-        }
-
-        /* Page Header */
-        .page-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 100px 0 50px;
-            margin-top: 70px;
-        }
-
-        .page-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .breadcrumb {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        .breadcrumb a {
-            color: var(--white);
-            text-decoration: none;
+        .nav-links a:hover {
             opacity: 0.8;
-            transition: var(--transition);
         }
 
-        .breadcrumb a:hover {
-            opacity: 1;
-        }
-
-        /* Search Section */
-        .search-section {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            margin: -30px 0 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: 1fr 200px 200px 200px auto;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group label {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        .form-control {
-            padding: 0.75rem 1rem;
-            border: 1px solid #ddd;
+        .btn-post-job {
+            background: #4CAF50;
+            padding: 8px 20px;
             border-radius: 5px;
-            font-size: 1rem;
-            transition: var(--transition);
+            text-decoration: none;
+            color: white;
+            transition: background 0.3s;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        .btn-post-job:hover {
+            background: #45a049;
+            opacity: 1 !important;
         }
 
-        select.form-control {
-            cursor: pointer;
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
         }
 
-        /* Main Content Layout */
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
 
-        /* Filters Sidebar */
-        .filters-sidebar {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
-        .filter-section {
-            margin-bottom: 2rem;
-        }
-
-        .filter-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .filter-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 10px;
+            padding: 0 20px;
         }
 
-        .filter-clear {
-            font-size: 0.9rem;
-            color: var(--primary-color);
-            cursor: pointer;
-            font-weight: 400;
-        }
-
-        .filter-clear:hover {
-            text-decoration: underline;
-        }
-
-        .filter-list {
-            list-style: none;
-        }
-
-        .filter-item {
-            margin-bottom: 0.75rem;
-        }
-
-        .filter-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
-
-        .filter-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .filter-checkbox label {
-            cursor: pointer;
+        .search-box {
             flex: 1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
         }
 
-        .filter-count {
-            background: var(--bg-light);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            color: var(--text-light);
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .search-box select {
+            padding: 12px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .search-box button {
+            padding: 12px 30px;
+            background: #FF5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background: #E64A19;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: #2196F3;
+            color: white;
+            border-color: #2196F3;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .filter-group input[type="checkbox"] {
+            margin-right: 8px;
         }
 
         .salary-range {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .salary-range input {
-            padding: 0.5rem;
+            width: 100%;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 0.9rem;
         }
 
         /* Job Listings */
-        .job-listings {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+        .jobs-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .results-header {
+        .jobs-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
 
-        .results-count {
-            font-size: 1.1rem;
-            color: var(--text-dark);
+        .job-count {
+            color: #666;
         }
 
         .sort-select {
-            padding: 0.5rem 1rem;
+            padding: 8px 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            background: white;
             cursor: pointer;
         }
 
         /* Job Card */
         .job-card {
-            background: var(--white);
+            border: 1px solid #eee;
             border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
         }
 
         .job-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        }
-
-        .job-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: var(--primary-color);
-            transform: scaleY(0);
-            transition: var(--transition);
-        }
-
-        .job-card:hover::before {
-            transform: scaleY(1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
 
         .job-header {
             display: flex;
             justify-content: space-between;
             align-items: start;
-            margin-bottom: 1rem;
+            margin-bottom: 15px;
         }
 
         .job-title {
             font-size: 1.3rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            color: #2196F3;
+            margin-bottom: 5px;
+            text-decoration: none;
         }
 
-        .company-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
+        .job-title:hover {
+            text-decoration: underline;
         }
 
-        .company-info i {
-            color: var(--primary-color);
+        .company-name {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 10px;
         }
 
         .job-meta {
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
+            gap: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
         }
 
-        .meta-item {
+        .job-meta span {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .meta-item i {
-            color: var(--primary-color);
-        }
-
-        .job-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .tag {
-            padding: 0.25rem 0.75rem;
-            background: var(--bg-light);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: var(--text-dark);
-        }
-
-        .tag.urgent {
-            background: #FFE5E5;
-            color: var(--danger-color);
-        }
-
-        .tag.new {
-            background: #E8F5E9;
-            color: var(--success-color);
+            gap: 5px;
         }
 
         .job-description {
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            color: #666;
+            margin-bottom: 15px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .job-footer {
+        .job-tags {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .posted-time {
-            font-size: 0.9rem;
-            color: var(--text-light);
+        .job-tag {
+            padding: 5px 12px;
+            background: #e3f2fd;
+            color: #1976D2;
+            border-radius: 15px;
+            font-size: 0.85rem;
         }
 
-        .save-job {
+        .salary-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        /* Post Job Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 700px;
+            margin: 50px auto;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .modal-header {
+            background: #2196F3;
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
             background: none;
             border: none;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: var(--transition);
         }
 
-        .save-job:hover {
-            color: var(--primary-color);
+        .modal-body {
+            padding: 30px;
         }
 
-        .save-job.saved {
-            color: var(--danger-color);
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 3rem;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
         }
 
-        .page-link {
-            padding: 0.5rem 1rem;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
             border: 1px solid #ddd;
-            background: var(--white);
-            color: var(--text-dark);
-            text-decoration: none;
             border-radius: 5px;
-            transition: var(--transition);
+            font-size: 16px;
         }
 
-        .page-link:hover {
-            background: var(--primary-color);
-            color: var(--white);
-            border-color: var(--primary-color);
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
         }
 
-        .page-link.active {
-            background: var(--primary-color);
-            color: var(--white);
-            border-color: var(--primary-color);
-        }
-
-        .page-link.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Post Job CTA */
-        .post-job-cta {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, #FFB300 100%);
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 2rem;
-            color: var(--text-dark);
-        }
-
-        .post-job-cta h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .post-job-cta p {
-            margin-bottom: 1rem;
-        }
-
-        /* Footer (giống index.html) */
-        footer {
-            background: #1A1A1A;
-            color: var(--white);
-            padding: 60px 0 20px;
-            margin-top: 80px;
-        }
-
-        .footer-content {
+        .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-light);
+        .btn-submit {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .footer-section ul {
-            list-style: none;
+        .btn-submit:hover {
+            background: #45a049;
         }
 
-        .footer-section ul li {
-            margin-bottom: 0.5rem;
+        .btn-cancel {
+            background: #f44336;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.3s;
         }
 
-        .footer-section a {
-            color: #CCC;
-            text-decoration: none;
-            transition: var(--transition);
+        .btn-cancel:hover {
+            background: #d32f2f;
         }
 
-        .footer-section a:hover {
-            color: var(--primary-light);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            color: var(--white);
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            background: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #999;
-        }
-
-        /* Loading Spinner */
+        /* Loading */
         .loading {
-            display: none;
             text-align: center;
-            padding: 2rem;
+            padding: 40px;
+            color: #666;
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
+            display: inline-block;
             width: 40px;
             height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2196F3;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
         }
 
         @keyframes spin {
@@ -656,874 +462,596 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--text-dark);
-            color: var(--white);
-            padding: 1rem 1.5rem;
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 12px 20px;
             border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transform: translateX(400px);
-            transition: var(--transition);
-            z-index: 1001;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        .toast.show {
-            transform: translateX(0);
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
-        .toast.success {
-            background: var(--success-color);
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
-        .toast.error {
-            background: var(--danger-color);
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 80px;
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .content-wrapper {
-                grid-template-columns: 250px 1fr;
-            }
-
-            .search-form {
-                grid-template-columns: 1fr 1fr;
-            }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
-            .nav-menu {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: var(--white);
-                flex-direction: column;
-                padding: 2rem;
-                transition: var(--transition);
-                box-shadow: var(--shadow);
+            .nav-links {
+                display: none;
             }
 
-            .nav-menu.active {
-                left: 0;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .auth-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .auth-buttons .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .page-title {
+            .hero h1 {
                 font-size: 2rem;
             }
 
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-
-            .content-wrapper {
-                grid-template-columns: 1fr;
-            }
-
-            .filters-sidebar {
-                position: static;
-                margin-bottom: 2rem;
-            }
-
-            .job-header {
+            .search-container {
                 flex-direction: column;
             }
 
-            .job-meta {
+            .search-box {
                 flex-direction: column;
-                gap: 0.5rem;
             }
 
-            .job-footer {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .footer-content {
+            .main-container {
                 grid-template-columns: 1fr;
-                text-align: center;
             }
 
-            .social-links {
-                justify-content: center;
+            .sidebar {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header Navigation -->
+    <!-- Header -->
     <header>
-        <nav class="container">
-            <a href="../index.html" class="logo">
-                <i class="fas fa-link"></i>
-                VietLinker
-            </a>
-            
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="jobs.html" class="nav-link active">Việc làm</a></li>
-                <li><a href="classifieds.html" class="nav-link">Rao vặt</a></li>
-                <li><a href="services.html" class="nav-link">Dịch vụ</a></li>
-                <li><a href="realestate.html" class="nav-link">Bất động sản</a></li>
-                <li><a href="marketplace.html" class="nav-link">Chợ</a></li>
-                <li><a href="promotions.html" class="nav-link">Khuyến mãi</a></li>
-                <li class="auth-buttons">
-                    <a href="login.html" class="btn btn-outline">
-                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
-                    </a>
-                    <a href="register.html" class="btn btn-primary">
-                        <i class="fas fa-user-plus"></i> Đăng ký
-                    </a>
-                </li>
+        <nav>
+            <a href="../index.html" class="logo">VietLinker</a>
+            <ul class="nav-links">
+                <li><a href="../pages/jobs.html" style="text-decoration: underline;">Việc Làm</a></li>
+                <li><a href="../pages/services.html">Dịch Vụ</a></li>
+                <li><a href="../pages/marketplace.html">Chợ Xe & Đồ</a></li>
+                <li><a href="../pages/realestate.html">Bất Động Sản</a></li>
+                <li><a href="../pages/classifieds.html">Rao Vặt</a></li>
+                <li><a href="#" class="btn-post-job" id="postJobBtn"><i class="fas fa-plus"></i> Đăng Tin Tuyển Dụng</a></li>
             </ul>
-            
-            <div class="mobile-menu-toggle" id="mobileMenuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
         </nav>
     </header>
 
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1 class="page-title">Tìm Việc Làm</h1>
-            <div class="breadcrumb">
-                <a href="../index.html">Trang chủ</a>
-                <i class="fas fa-chevron-right"></i>
-                <span>Việc làm</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Tìm Việc Làm Trong Cộng Đồng Việt</h1>
+        <p>Kết nối nhà tuyển dụng và người tìm việc người Việt tại Mỹ</p>
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchKeyword" placeholder="Tìm theo vị trí, công ty...">
+                <select id="searchLocation">
+                    <option value="">Tất cả địa điểm</option>
+                    <option value="Houston">Houston</option>
+                    <option value="Dallas">Dallas</option>
+                    <option value="Austin">Austin</option>
+                    <option value="San Antonio">San Antonio</option>
+                </select>
+                <button id="searchBtn"><i class="fas fa-search"></i> Tìm kiếm</button>
             </div>
         </div>
     </section>
 
+    <!-- Filter Chips -->
+    <div class="filter-section">
+        <div class="filter-chip active" data-type="all">Tất cả</div>
+        <div class="filter-chip" data-type="full-time">Full Time</div>
+        <div class="filter-chip" data-type="part-time">Part Time</div>
+        <div class="filter-chip" data-type="contract">Contract</div>
+        <div class="filter-chip" data-type="remote">Remote</div>
+    </div>
+
     <!-- Main Content -->
-    <main class="container">
-        <!-- Search Section -->
-        <div class="search-section">
-            <form class="search-form" id="jobSearchForm">
-                <div class="form-group">
-                    <label for="keyword">Từ khóa</label>
-                    <input type="text" id="keyword" class="form-control" placeholder="Tìm theo tiêu đề, công ty...">
-                </div>
-                <div class="form-group">
-                    <label for="category">Ngành nghề</label>
-                    <select id="category" class="form-control">
-                        <option value="">Tất cả ngành nghề</option>
-                        <option value="nail">Nail Salon</option>
-                        <option value="restaurant">Nhà hàng</option>
-                        <option value="construction">Xây dựng</option>
-                        <option value="office">Văn phòng</option>
-                        <option value="retail">Bán hàng</option>
-                        <option value="healthcare">Y tế</option>
-                        <option value="it">IT/Technology</option>
-                        <option value="other">Khác</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="state">Tiểu bang</label>
-                    <select id="state" class="form-control">
-                        <option value="">Tất cả tiểu bang</option>
-                        <option value="CA">California</option>
-                        <option value="TX">Texas</option>
-                        <option value="FL">Florida</option>
-                        <option value="NY">New York</option>
-                        <option value="WA">Washington</option>
-                        <option value="GA">Georgia</option>
-                        <option value="other">Khác</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="city">Thành phố</label>
-                    <input type="text" id="city" class="form-control" placeholder="Nhập thành phố">
-                </div>
-                <div class="form-group">
-                    <label>&nbsp;</label>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i> Tìm kiếm
-                    </button>
-                </div>
-            </form>
-        </div>
+    <main class="main-container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <h3>Lọc theo</h3>
+            
+            <div class="filter-group">
+                <h4>Loại công việc</h4>
+                <label><input type="checkbox" value="full-time"> Full Time</label>
+                <label><input type="checkbox" value="part-time"> Part Time</label>
+                <label><input type="checkbox" value="contract"> Contract</label>
+                <label><input type="checkbox" value="temporary"> Temporary</label>
+            </div>
 
-        <!-- Content Wrapper -->
-        <div class="content-wrapper">
-            <!-- Filters Sidebar -->
-            <aside class="filters-sidebar">
-                <!-- Job Type Filter -->
-                <div class="filter-section">
-                    <h3 class="filter-title">
-                        Loại công việc
-                        <span class="filter-clear" onclick="clearFilters('jobType')">Xóa</span>
-                    </h3>
-                    <ul class="filter-list">
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="fulltime" name="jobType" value="fulltime">
-                                <label for="fulltime">
-                                    Full-time
-                                    <span class="filter-count">245</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="parttime" name="jobType" value="parttime">
-                                <label for="parttime">
-                                    Part-time
-                                    <span class="filter-count">128</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="contract" name="jobType" value="contract">
-                                <label for="contract">
-                                    Contract
-                                    <span class="filter-count">67</span>
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
+            <div class="filter-group">
+                <h4>Mức lương</h4>
+                <div class="salary-range">
+                    <input type="number" id="salaryMin" placeholder="Từ">
+                    <span>-</span>
+                    <input type="number" id="salaryMax" placeholder="Đến">
                 </div>
+                <label><input type="radio" name="salary-type" value="hourly"> Theo giờ</label>
+                <label><input type="radio" name="salary-type" value="yearly"> Theo năm</label>
+            </div>
 
-                <!-- Salary Range Filter -->
-                <div class="filter-section">
-                    <h3 class="filter-title">Mức lương</h3>
-                    <ul class="filter-list">
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="salary1" name="salary" value="0-30000">
-                                <label for="salary1">
-                                    Dưới $30,000/năm
-                                    <span class="filter-count">89</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="salary2" name="salary" value="30000-50000">
-                                <label for="salary2">
-                                    $30,000 - $50,000
-                                    <span class="filter-count">156</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="salary3" name="salary" value="50000-80000">
-                                <label for="salary3">
-                                    $50,000 - $80,000
-                                    <span class="filter-count">124</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="salary4" name="salary" value="80000+">
-                                <label for="salary4">
-                                    Trên $80,000
-                                    <span class="filter-count">71</span>
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="salary-range">
-                        <input type="number" placeholder="Min" class="form-control">
-                        <input type="number" placeholder="Max" class="form-control">
-                    </div>
-                </div>
+            <div class="filter-group">
+                <h4>Ngành nghề</h4>
+                <label><input type="checkbox" value="restaurant"> Nhà hàng</label>
+                <label><input type="checkbox" value="nail"> Nail Salon</label>
+                <label><input type="checkbox" value="retail"> Bán hàng</label>
+                <label><input type="checkbox" value="office"> Văn phòng</label>
+                <label><input type="checkbox" value="construction"> Xây dựng</label>
+            </div>
+        </aside>
 
-                <!-- Experience Filter -->
-                <div class="filter-section">
-                    <h3 class="filter-title">
-                        Kinh nghiệm
-                        <span class="filter-clear" onclick="clearFilters('experience')">Xóa</span>
-                    </h3>
-                    <ul class="filter-list">
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="exp1" name="experience" value="entry">
-                                <label for="exp1">
-                                    Entry Level
-                                    <span class="filter-count">167</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="exp2" name="experience" value="1-3">
-                                <label for="exp2">
-                                    1-3 năm
-                                    <span class="filter-count">143</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="exp3" name="experience" value="3-5">
-                                <label for="exp3">
-                                    3-5 năm
-                                    <span class="filter-count">98</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="filter-item">
-                            <div class="filter-checkbox">
-                                <input type="checkbox" id="exp4" name="experience" value="5+">
-                                <label for="exp4">
-                                    Trên 5 năm
-                                    <span class="filter-count">32</span>
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+        <!-- Jobs Container -->
+        <div class="jobs-container">
+            <div class="jobs-header">
+                <span class="job-count">Đang tải...</span>
+                <select class="sort-select" id="sortSelect">
+                    <option value="newest">Mới nhất</option>
+                    <option value="oldest">Cũ nhất</option>
+                    <option value="salary-high">Lương cao nhất</option>
+                    <option value="salary-low">Lương thấp nhất</option>
+                </select>
+            </div>
 
-                <!-- Post Job CTA -->
-                <div class="post-job-cta">
-                    <h3>Tuyển dụng ngay!</h3>
-                    <p>Đăng tin tuyển dụng miễn phí</p>
-                    <a href="post-job.html" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Đăng tin
-                    </a>
-                </div>
-            </aside>
-
-            <!-- Job Listings -->
-            <div class="job-listings">
-                <!-- Results Header -->
-                <div class="results-header">
-                    <span class="results-count">Tìm thấy <strong>440</strong> việc làm</span>
-                    <select class="sort-select" id="sortSelect">
-                        <option value="newest">Mới nhất</option>
-                        <option value="oldest">Cũ nhất</option>
-                        <option value="salary-high">Lương cao nhất</option>
-                        <option value="salary-low">Lương thấp nhất</option>
-                    </select>
-                </div>
-
-                <!-- Job Cards -->
-                <div id="jobListings">
-                    <!-- Job Card 1 -->
-                    <div class="job-card" onclick="viewJobDetails(1)">
-                        <div class="job-header">
-                            <div>
-                                <h2 class="job-title">Nail Technician - Full Time</h2>
-                                <div class="company-info">
-                                    <i class="fas fa-building"></i>
-                                    <span>Luxury Nail Spa</span>
-                                </div>
-                                <div class="job-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Westminster, CA</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        <span>$3,000 - $5,000/tháng</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Full-time</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="save-job" onclick="toggleSaveJob(event, 1)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="job-tags">
-                            <span class="tag urgent">Gấp</span>
-                            <span class="tag new">Mới</span>
-                            <span class="tag">Commission cao</span>
-                        </div>
-                        <p class="job-description">
-                            Cần tuyển thợ nail có kinh nghiệm. Môi trường làm việc chuyên nghiệp, khách đông, tip cao. 
-                            Được training các kỹ thuật mới. Hỗ trợ chỗ ở cho thợ ở xa...
-                        </p>
-                        <div class="job-footer">
-                            <span class="posted-time">
-                                <i class="far fa-calendar"></i> Đăng 2 giờ trước
-                            </span>
-                            <a href="#" class="btn btn-outline btn-sm">Xem chi tiết</a>
-                        </div>
-                    </div>
-
-                    <!-- Job Card 2 -->
-                    <div class="job-card" onclick="viewJobDetails(2)">
-                        <div class="job-header">
-                            <div>
-                                <h2 class="job-title">Phụ bếp nhà hàng Việt</h2>
-                                <div class="company-info">
-                                    <i class="fas fa-building"></i>
-                                    <span>Phở Saigon Restaurant</span>
-                                </div>
-                                <div class="job-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Houston, TX</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        <span>$15 - $18/giờ</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Full-time</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="save-job" onclick="toggleSaveJob(event, 2)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="job-tags">
-                            <span class="tag">Không cần kinh nghiệm</span>
-                            <span class="tag">Có training</span>
-                        </div>
-                        <p class="job-description">
-                            Nhà hàng Phở Saigon cần tuyển phụ bếp làm full-time. Không yêu cầu kinh nghiệm, 
-                            sẽ được training. Môi trường làm việc vui vẻ, gia đình...
-                        </p>
-                        <div class="job-footer">
-                            <span class="posted-time">
-                                <i class="far fa-calendar"></i> Đăng hôm qua
-                            </span>
-                            <a href="#" class="btn btn-outline btn-sm">Xem chi tiết</a>
-                        </div>
-                    </div>
-
-                    <!-- Job Card 3 -->
-                    <div class="job-card" onclick="viewJobDetails(3)">
-                        <div class="job-header">
-                            <div>
-                                <h2 class="job-title">Office Assistant - Văn phòng luật</h2>
-                                <div class="company-info">
-                                    <i class="fas fa-building"></i>
-                                    <span>Nguyen & Associates Law Firm</span>
-                                </div>
-                                <div class="job-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>San Jose, CA</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        <span>$45,000 - $55,000/năm</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Full-time</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="save-job" onclick="toggleSaveJob(event, 3)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="job-tags">
-                            <span class="tag">Tiếng Việt & Anh</span>
-                            <span class="tag">Benefits</span>
-                        </div>
-                        <p class="job-description">
-                            Văn phòng luật cần tuyển trợ lý văn phòng. Yêu cầu: nói được tiếng Việt và tiếng Anh, 
-                            biết sử dụng computer cơ bản. Lương cao, có benefits đầy đủ...
-                        </p>
-                        <div class="job-footer">
-                            <span class="posted-time">
-                                <i class="far fa-calendar"></i> Đăng 3 ngày trước
-                            </span>
-                            <a href="#" class="btn btn-outline btn-sm">Xem chi tiết</a>
-                        </div>
-                    </div>
-
-                    <!-- Job Card 4 -->
-                    <div class="job-card" onclick="viewJobDetails(4)">
-                        <div class="job-header">
-                            <div>
-                                <h2 class="job-title">Thợ sửa xe - Auto Mechanic</h2>
-                                <div class="company-info">
-                                    <i class="fas fa-building"></i>
-                                    <span>Viet Auto Repair</span>
-                                </div>
-                                <div class="job-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Garden Grove, CA</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        <span>$25 - $35/giờ</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Full-time</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="save-job" onclick="toggleSaveJob(event, 4)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="job-tags">
-                            <span class="tag">Kinh nghiệm 3+ năm</span>
-                            <span class="tag">ASE Certified ưu tiên</span>
-                        </div>
-                        <p class="job-description">
-                            Garage sửa xe cần thợ có kinh nghiệm. Làm việc với nhiều loại xe khác nhau. 
-                            Môi trường làm việc chuyên nghiệp, có đầy đủ tools...
-                        </p>
-                        <div class="job-footer">
-                            <span class="posted-time">
-                                <i class="far fa-calendar"></i> Đăng 1 tuần trước
-                            </span>
-                            <a href="#" class="btn btn-outline btn-sm">Xem chi tiết</a>
-                        </div>
-                    </div>
-
-                    <!-- Job Card 5 -->
-                    <div class="job-card" onclick="viewJobDetails(5)">
-                        <div class="job-header">
-                            <div>
-                                <h2 class="job-title">Sales Associate - Siêu thị Việt</h2>
-                                <div class="company-info">
-                                    <i class="fas fa-building"></i>
-                                    <span>Saigon Market</span>
-                                </div>
-                                <div class="job-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Dallas, TX</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        <span>$13 - $15/giờ + commission</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Part-time</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="save-job" onclick="toggleSaveJob(event, 5)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="job-tags">
-                            <span class="tag">Weekend available</span>
-                            <span class="tag">Flexible hours</span>
-                        </div>
-                        <p class="job-description">
-                            Siêu thị Saigon Market cần nhân viên bán hàng part-time. Làm việc cuối tuần, 
-                            giờ giấc linh hoạt. Phù hợp cho sinh viên...
-                        </p>
-                        <div class="job-footer">
-                            <span class="posted-time">
-                                <i class="far fa-calendar"></i> Đăng 2 tuần trước
-                            </span>
-                            <a href="#" class="btn btn-outline btn-sm">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Loading Spinner -->
-                <div class="loading" id="loadingSpinner">
+            <div id="jobsList">
+                <div class="loading">
                     <div class="spinner"></div>
-                </div>
-
-                <!-- Pagination -->
-                <div class="pagination">
-                    <a href="#" class="page-link disabled">
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" class="page-link active">1</a>
-                    <a href="#" class="page-link">2</a>
-                    <a href="#" class="page-link">3</a>
-                    <span class="page-link disabled">...</span>
-                    <a href="#" class="page-link">15</a>
-                    <a href="#" class="page-link">
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
+                    <p>Đang tải việc làm...</p>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Post Job Modal -->
+    <div class="modal" id="postJobModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Đăng Tin Tuyển Dụng</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert success" id="successAlert"></div>
+                <div class="alert error" id="errorAlert"></div>
+
+                <form id="postJobForm">
+                    <div class="form-group">
+                        <label for="jobTitle">Vị trí tuyển dụng *</label>
+                        <input type="text" id="jobTitle" required placeholder="VD: Nhân viên phục vụ, Thợ nail...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companyName">Tên công ty/cửa hàng *</label>
+                        <input type="text" id="companyName" required placeholder="VD: Nhà hàng Phở Saigon">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jobLocation">Địa điểm *</label>
+                            <input type="text" id="jobLocation" required placeholder="VD: Houston, TX">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobType">Loại công việc</label>
+                            <select id="jobType">
+                                <option value="full-time">Full Time</option>
+                                <option value="part-time">Part Time</option>
+                                <option value="contract">Contract</option>
+                                <option value="temporary">Temporary</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="salaryMin">Lương tối thiểu</label>
+                            <input type="number" id="salaryMin" placeholder="VD: 15">
+                        </div>
+                        <div class="form-group">
+                            <label for="salaryMax">Lương tối đa</label>
+                            <input type="number" id="salaryMax" placeholder="VD: 20">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="salaryType">Loại lương</label>
+                        <select id="salaryType">
+                            <option value="hourly">Theo giờ ($/hour)</option>
+                            <option value="yearly">Theo năm ($/year)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobDescription">Mô tả công việc *</label>
+                        <textarea id="jobDescription" required placeholder="Mô tả chi tiết về công việc, trách nhiệm..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requirements">Yêu cầu</label>
+                        <textarea id="requirements" placeholder="Kinh nghiệm, kỹ năng cần thiết..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="benefits">Quyền lợi</label>
+                        <textarea id="benefits" placeholder="Bảo hiểm, thưởng, nghỉ phép..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactEmail">Email liên hệ</label>
+                            <input type="email" id="contactEmail" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Số điện thoại</label>
+                            <input type="tel" id="contactPhone" placeholder="123-456-7890">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn-submit">Đăng tin</button>
+                        <button type="button" class="btn-cancel" id="cancelBtn">Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Về VietLinker</h3>
-                    <p>Nền tảng kết nối cộng đồng người Việt lớn nhất tại Mỹ. Chúng tôi giúp bạn tìm việc làm, dịch vụ và kết nối với cộng đồng.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Liên kết nhanh</h3>
-                    <ul>
-                        <li><a href="jobs.html">Việc làm</a></li>
-                        <li><a href="classifieds.html">Rao vặt</a></li>
-                        <li><a href="services.html">Dịch vụ</a></li>
-                        <li><a href="realestate.html">Bất động sản</a></li>
-                        <li><a href="marketplace.html">Chợ</a></li>
-                        <li><a href="promotions.html">Khuyến mãi</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Hỗ trợ</h3>
-                    <ul>
-                        <li><a href="#">Hướng dẫn sử dụng</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a href="#">Chính sách bảo mật</a></li>
-                        <li><a href="#">Điều khoản sử dụng</a></li>
-                        <li><a href="#">Liên hệ hỗ trợ</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Liên hệ</h3>
-                    <p><i class="fas fa-envelope"></i> contact@vietlinker.com</p>
-                    <p><i class="fas fa-phone"></i> (714) 123-4567</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Westminster, CA 92683</p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 VietLinker. All rights reserved. Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for Vietnamese community</p>
-            </div>
+        <div class="footer-content">
+            <p>&copy; 2024 VietLinker. Kết nối cộng đồng người Việt tại Mỹ.</p>
         </div>
     </footer>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
+    <!-- Supabase Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- JavaScript -->
     <script>
-        // Mobile Menu Toggle
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const navMenu = document.getElementById('navMenu');
+        // Khởi tạo Supabase
+        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
         
-        mobileMenuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            const icon = mobileMenuToggle.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        });
+        let supabaseClient;
+        let currentUser = null;
+        let allJobs = [];
 
-        // Job Search Form
-        const jobSearchForm = document.getElementById('jobSearchForm');
-        jobSearchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Show loading
-            showLoading();
-            
-            // Simulate search delay
-            setTimeout(() => {
-                hideLoading();
-                showToast('Đã tìm thấy 25 việc làm phù hợp', 'success');
-            }, 1000);
-        });
-
-        // Save Job Toggle
-        function toggleSaveJob(event, jobId) {
-            event.stopPropagation();
-            const button = event.currentTarget;
-            const icon = button.querySelector('i');
-            
-            if (icon.classList.contains('far')) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                button.classList.add('saved');
-                showToast('Đã lưu việc làm', 'success');
-                
-                // Save to localStorage
-                let savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '[]');
-                if (!savedJobs.includes(jobId)) {
-                    savedJobs.push(jobId);
-                    localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
-                }
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                button.classList.remove('saved');
-                showToast('Đã bỏ lưu việc làm', 'success');
-                
-                // Remove from localStorage
-                let savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '[]');
-                savedJobs = savedJobs.filter(id => id !== jobId);
-                localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
-            }
-        }
-
-        // View Job Details
-        function viewJobDetails(jobId) {
-            // In real app, this would navigate to job detail page
-            console.log('View job details:', jobId);
-            // window.location.href = `job-detail.html?id=${jobId}`;
-        }
-
-        // Filter Functions
-        function clearFilters(filterType) {
-            const checkboxes = document.querySelectorAll(`input[name="${filterType}"]`);
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            applyFilters();
-        }
-
-        // Apply Filters
-        function applyFilters() {
-            showLoading();
-            
-            // Collect all filter values
-            const filters = {
-                jobType: [],
-                salary: [],
-                experience: []
-            };
-            
-            // Get checked filters
-            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
-                const filterName = checkbox.name;
-                if (filters[filterName]) {
-                    filters[filterName].push(checkbox.value);
-                }
-            });
-            
-            // Simulate API call
-            setTimeout(() => {
-                hideLoading();
-                showToast('Đã áp dụng bộ lọc', 'success');
-            }, 500);
-        }
-
-        // Add event listeners to all checkboxes
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', applyFilters);
-        });
-
-        // Sort Select
+        // DOM Elements
+        const postJobBtn = document.getElementById('postJobBtn');
+        const postJobModal = document.getElementById('postJobModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const postJobForm = document.getElementById('postJobForm');
+        const jobsList = document.getElementById('jobsList');
+        const searchBtn = document.getElementById('searchBtn');
         const sortSelect = document.getElementById('sortSelect');
-        sortSelect.addEventListener('change', (e) => {
-            showLoading();
-            setTimeout(() => {
-                hideLoading();
-                showToast(`Sắp xếp theo: ${e.target.options[e.target.selectedIndex].text}`, 'success');
-            }, 500);
-        });
 
-        // State and City Dynamic Update
-        const stateSelect = document.getElementById('state');
-        const cityInput = document.getElementById('city');
-
-        stateSelect.addEventListener('change', (e) => {
-            if (e.target.value) {
-                cityInput.placeholder = `Nhập thành phố tại ${e.target.options[e.target.selectedIndex].text}`;
-            } else {
-                cityInput.placeholder = 'Nhập thành phố';
-            }
-        });
-
-        // Loading Functions
-        function showLoading() {
-            document.getElementById('loadingSpinner').style.display = 'block';
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingSpinner').style.display = 'none';
-        }
-
-        // Toast Notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
+        // Initialize
+        window.addEventListener('DOMContentLoaded', async () => {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
+            // Check if user is logged in
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+            }
+            
+            // Load jobs
+            loadJobs();
+            
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Post job button
+            postJobBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!currentUser) {
+                    if (confirm('Bạn cần đăng nhập để đăng tin. Đăng nhập ngay?')) {
+                        window.location.href = 'login.html?return=jobs.html';
+                    }
+                    return;
+                }
+                postJobModal.style.display = 'block';
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', () => {
+                postJobModal.style.display = 'none';
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                postJobModal.style.display = 'none';
+            });
+
+            // Click outside modal
+            window.addEventListener('click', (e) => {
+                if (e.target === postJobModal) {
+                    postJobModal.style.display = 'none';
+                }
+            });
+
+            // Post job form
+            postJobForm.addEventListener('submit', handlePostJob);
+
+            // Search
+            searchBtn.addEventListener('click', handleSearch);
+            document.getElementById('searchKeyword').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSearch();
+            });
+
+            // Sort
+            sortSelect.addEventListener('change', () => {
+                sortJobs();
+                displayJobs(allJobs);
+            });
+
+            // Filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    filterJobs(chip.dataset.type);
+                });
+            });
+        }
+
+        // Load jobs
+        async function loadJobs() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('jobs')
+                    .select(`
+                        *,
+                        users (
+                            full_name,
+                            email
+                        )
+                    `)
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                allJobs = data || [];
+                displayJobs(allJobs);
+                updateJobCount(allJobs.length);
+            } catch (err) {
+                console.error('Error loading jobs:', err);
+                jobsList.innerHTML = '<p class="empty-state">Có lỗi xảy ra khi tải việc làm.</p>';
+            }
+        }
+
+        // Display jobs
+        function displayJobs(jobs) {
+            if (jobs.length === 0) {
+                jobsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>Chưa có việc làm nào</h3>
+                        <p>Hãy là người đầu tiên đăng tin tuyển dụng!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            jobsList.innerHTML = jobs.map(job => {
+                const salaryText = job.salary_min && job.salary_max 
+                    ? `$${job.salary_min}-$${job.salary_max}/${job.salary_type === 'hourly' ? 'giờ' : 'năm'}`
+                    : 'Thỏa thuận';
+
+                const jobTypeText = {
+                    'full-time': 'Full Time',
+                    'part-time': 'Part Time',
+                    'contract': 'Contract',
+                    'temporary': 'Temporary'
+                }[job.job_type] || job.job_type;
+
+                return `
+                    <div class="job-card" onclick="viewJobDetail('${job.id}')">
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">${job.title}</h3>
+                                <p class="company-name">${job.company}</p>
+                                <div class="job-meta">
+                                    <span><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                                    <span><i class="fas fa-clock"></i> ${jobTypeText}</span>
+                                    <span><i class="fas fa-calendar"></i> ${formatDate(job.created_at)}</span>
+                                </div>
+                            </div>
+                            <div class="salary-badge">${salaryText}</div>
+                        </div>
+                        <p class="job-description">${job.description}</p>
+                        <div class="job-tags">
+                            <span class="job-tag">${jobTypeText}</span>
+                            ${job.requirements ? '<span class="job-tag">Có yêu cầu kinh nghiệm</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Handle post job
+        async function handlePostJob(e) {
+            e.preventDefault();
+
+            const submitBtn = postJobForm.querySelector('.btn-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang đăng...';
+
+            try {
+                const jobData = {
+                    user_id: currentUser.id,
+                    title: document.getElementById('jobTitle').value,
+                    company: document.getElementById('companyName').value,
+                    location: document.getElementById('jobLocation').value,
+                    job_type: document.getElementById('jobType').value,
+                    salary_min: parseInt(document.getElementById('salaryMin').value) || null,
+                    salary_max: parseInt(document.getElementById('salaryMax').value) || null,
+                    salary_type: document.getElementById('salaryType').value,
+                    description: document.getElementById('jobDescription').value,
+                    requirements: document.getElementById('requirements').value,
+                    benefits: document.getElementById('benefits').value,
+                    contact_email: document.getElementById('contactEmail').value || currentUser.email,
+                    contact_phone: document.getElementById('contactPhone').value
+                };
+
+                const { error } = await supabaseClient
+                    .from('jobs')
+                    .insert([jobData]);
+
+                if (error) throw error;
+
+                showSuccess('Đăng tin tuyển dụng thành công!');
+                postJobForm.reset();
+                setTimeout(() => {
+                    postJobModal.style.display = 'none';
+                    loadJobs();
+                }, 2000);
+            } catch (err) {
+                console.error('Error posting job:', err);
+                showError('Có lỗi xảy ra. Vui lòng thử lại!');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Đăng tin';
+            }
+        }
+
+        // Search jobs
+        function handleSearch() {
+            const keyword = document.getElementById('searchKeyword').value.toLowerCase();
+            const location = document.getElementById('searchLocation').value.toLowerCase();
+
+            const filtered = allJobs.filter(job => {
+                const matchKeyword = !keyword || 
+                    job.title.toLowerCase().includes(keyword) ||
+                    job.company.toLowerCase().includes(keyword) ||
+                    job.description.toLowerCase().includes(keyword);
+
+                const matchLocation = !location || 
+                    job.location.toLowerCase().includes(location);
+
+                return matchKeyword && matchLocation;
+            });
+
+            displayJobs(filtered);
+            updateJobCount(filtered.length);
+        }
+
+        // Filter jobs
+        function filterJobs(type) {
+            if (type === 'all') {
+                displayJobs(allJobs);
+                updateJobCount(allJobs.length);
+                return;
+            }
+
+            const filtered = allJobs.filter(job => job.job_type === type);
+            displayJobs(filtered);
+            updateJobCount(filtered.length);
+        }
+
+        // Sort jobs
+        function sortJobs() {
+            const sortBy = sortSelect.value;
+
+            switch(sortBy) {
+                case 'newest':
+                    allJobs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    break;
+                case 'oldest':
+                    allJobs.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                    break;
+                case 'salary-high':
+                    allJobs.sort((a, b) => (b.salary_max || 0) - (a.salary_max || 0));
+                    break;
+                case 'salary-low':
+                    allJobs.sort((a, b) => (a.salary_min || 0) - (b.salary_min || 0));
+                    break;
+            }
+        }
+
+        // View job detail
+        function viewJobDetail(jobId) {
+            // TODO: Navigate to job detail page
+            console.log('View job:', jobId);
+        }
+
+        // Update job count
+        function updateJobCount(count) {
+            document.querySelector('.job-count').textContent = `${count} việc làm`;
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+            if (diff === 0) return 'Hôm nay';
+            if (diff === 1) return 'Hôm qua';
+            if (diff < 7) return `${diff} ngày trước`;
+            if (diff < 30) return `${Math.floor(diff / 7)} tuần trước`;
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        // Helper functions
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
             setTimeout(() => {
-                toast.classList.remove('show');
+                alert.style.display = 'none';
             }, 3000);
         }
 
-        // Pagination
-        document.querySelectorAll('.page-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (!link.classList.contains('disabled')) {
-                    // Remove active class from all links
-                    document.querySelectorAll('.page-link').forEach(l => l.classList.remove('active'));
-                    // Add active class to clicked link
-                    link.classList.add('active');
-                    
-                    // Scroll to top
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    
-                    // Load new page data
-                    showLoading();
-                    setTimeout(() => {
-                        hideLoading();
-                    }, 500);
-                }
-            });
-        });
-
-        // Load saved jobs on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '[]');
-            savedJobs.forEach(jobId => {
-                const button = document.querySelector(`button[onclick="toggleSaveJob(event, ${jobId})"]`);
-                if (button) {
-                    const icon = button.querySelector('i');
-                    icon.classList.remove('far');
-                    icon.classList.add('fas');
-                    button.classList.add('saved');
-                }
-            });
-        });
-
-        // Infinite scroll (optional)
-        let page = 1;
-        const loadMoreJobs = () => {
-            const scrollPosition = window.innerHeight + window.scrollY;
-            const bodyHeight = document.body.offsetHeight;
-            
-            if (scrollPosition >= bodyHeight - 500 && !document.getElementById('loadingSpinner').style.display) {
-                page++;
-                showLoading();
-                
-                // Simulate loading more jobs
-                setTimeout(() => {
-                    // In real app, append new job cards here
-                    hideLoading();
-                }, 1000);
-            }
-        };
-
-        // Uncomment to enable infinite scroll
-        // window.addEventListener('scroll', loadMoreJobs);
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
     </script>
 </body>
 </html>
