@@ -761,14 +761,33 @@
         </div>
     </div>
 
-    <script type="module">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="initializeApp()"></script>
+    <script>
+        console.log('🔥 Script started loading...');
+        
         // Supabase config
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
 
-        // Import Supabase
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabase;
+        
+        // Initialize app when Supabase is loaded
+        function initializeApp() {
+            console.log('🔗 Supabase script loaded, creating client...');
+            
+            try {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase client created successfully');
+                
+                // Initialize everything after Supabase is ready
+                console.log('🔧 Starting initialization...');
+                checkAuth();
+                loadJobs();
+            } catch (error) {
+                console.error('❌ Supabase client creation failed:', error);
+                alert('Lỗi kết nối! Vui lòng refresh trang.');
+            }
+        }
 
         let currentUser = null;
         let selectedFile = null;
@@ -791,6 +810,12 @@
             const uploadText = document.getElementById('uploadText');
             const uploadPreview = document.getElementById('uploadPreview');
 
+            console.log('🔍 Elements check:');
+            console.log('- uploadArea:', uploadArea);
+            console.log('- imageInput:', imageInput);
+            console.log('- uploadText:', uploadText);
+            console.log('- uploadPreview:', uploadPreview);
+
             if (!uploadArea || !imageInput) {
                 console.error('❌ Upload elements not found!');
                 return;
@@ -804,6 +829,9 @@
                 console.log('📁 Upload area clicked');
                 imageInput.click();
             };
+
+            // Test click event immediately
+            console.log('🧪 Testing upload area click handler...');
 
             // Drag and drop
             uploadArea.addEventListener('dragover', (e) => {
@@ -1469,10 +1497,8 @@
         // Search and filter - moved to setupFilters() in DOMContentLoaded
         // Location filter - moved to setupFilters() in DOMContentLoaded
 
-        // Init - This will run immediately when script loads
-        console.log('🔧 Initializing auth and data loading...');
-        checkAuth();
-        loadJobs();
+        // Remove the old init code since it's now in initializeApp()
+        // This section is moved to initializeApp() function
     </script>
 </body>
 </html>
