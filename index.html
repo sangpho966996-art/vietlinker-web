@@ -10,180 +10,211 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
-            overflow-x: hidden;
+            background: #f8f9fa;
+            min-height: 100vh;
         }
-
-        /* Header với logo mới */
-        .header {
+        
+        /* Header với gradient chính xác */
+        header {
             background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
+            padding: 1rem 0;
+            position: relative;
+            overflow: hidden;
         }
-
-        .header-container {
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
-
-        /* Logo Design Mới - Kết nối */
-        .logo-container {
+        
+        /* Logo SVG Network Design */
+        .logo {
             display: flex;
             align-items: center;
             gap: 15px;
             text-decoration: none;
         }
-
-        .logo-icon {
+        
+        .logo svg {
             width: 50px;
             height: 50px;
-            position: relative;
+        }
+        
+        .logo-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* User Actions */
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+        
+        .user-info.active {
+            display: flex;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: white;
+            color: #dc143c;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        /* SVG Logo - Network Connection Design */
-        .logo-svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-main {
-            font-size: 28px;
             font-weight: bold;
-            color: white;
-            letter-spacing: -1px;
         }
-
-        .logo-viet {
-            color: #FFD700;
-        }
-
-        .logo-linker {
-            color: white;
-        }
-
-        .logo-tagline {
-            font-size: 12px;
-            color: rgba(255,255,255,0.9);
-            margin-top: -2px;
-        }
-
-        /* Navigation */
-        .nav-menu {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-menu a:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
+        
         .auth-buttons {
             display: flex;
             gap: 10px;
         }
-
-        .btn-login, .btn-register {
+        
+        .auth-buttons.hidden {
+            display: none;
+        }
+        
+        .btn-auth {
             padding: 8px 20px;
-            border-radius: 20px;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s;
         }
-
+        
         .btn-login {
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-login:hover {
             background: white;
-            color: #1e3c72;
+            color: #dc143c;
         }
-
+        
         .btn-register {
-            background: #FFD700;
-            color: #1e3c72;
+            background: #dc143c;
+            color: white;
         }
-
-        .btn-register:hover {
-            background: #FFC700;
+        
+        .btn-auth:hover {
             transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-
-        /* Hero Section */
-        .hero {
-            margin-top: 80px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 80px 20px;
-            position: relative;
-            overflow: hidden;
+        
+        /* Navigation Style */
+        nav {
+            background: #1e3c72;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .hero-content {
+        
+        .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            padding: 0 20px;
         }
-
-        .hero h1 {
-            font-size: 3em;
+        
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            padding: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .nav-links a {
             color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(220, 20, 60, 0.3);
+        }
+        
+        .nav-links a.active {
+            background: #dc143c;
+        }
+        
+        /* User Menu Items */
+        .user-menu {
+            display: none;
+            gap: 10px;
+        }
+        
+        .user-menu.active {
+            display: flex;
+        }
+        
+        .user-menu a {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #FFD700;
+        }
+        
+        .user-menu a:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
             margin-bottom: 20px;
-            animation: fadeInUp 1s;
+            animation: fadeInUp 1s ease;
         }
-
+        
         .hero p {
-            font-size: 1.3em;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 40px;
-            animation: fadeInUp 1s 0.2s both;
+            font-size: 20px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
         }
-
+        
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -194,172 +225,119 @@
                 transform: translateY(0);
             }
         }
-
-        /* Quick Access Cards */
-        .quick-access {
+        
+        /* Categories Grid */
+        .categories {
             max-width: 1200px;
-            margin: -50px auto 50px;
+            margin: 60px auto;
             padding: 0 20px;
-            position: relative;
-            z-index: 10;
         }
-
-        .cards-grid {
+        
+        .section-title {
+            font-size: 32px;
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .categories-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
         }
-
-        .card {
+        
+        .category-card {
             background: white;
             border-radius: 15px;
             padding: 30px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
             text-decoration: none;
             color: inherit;
-            position: relative;
-            overflow: hidden;
         }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #dc143c, #1e3c72);
-            transform: scaleX(0);
-            transition: transform 0.3s;
+        
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
         }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .card-icon {
+        
+        .category-icon {
             font-size: 48px;
             margin-bottom: 15px;
         }
-
-        .card-title {
-            font-size: 1.3em;
+        
+        .category-title {
+            font-size: 20px;
             color: #1e3c72;
             margin-bottom: 10px;
             font-weight: 600;
         }
-
-        .card-description {
+        
+        .category-description {
             color: #666;
-            line-height: 1.5;
+            font-size: 14px;
         }
-
+        
+        .category-count {
+            margin-top: 10px;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
         /* Features Section */
         .features {
             background: white;
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
-
-        .features-container {
+        
+        .features-grid {
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5em;
-            color: #1e3c72;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #dc143c, #1e3c72);
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            margin-top: 60px;
         }
-
-        .feature-item {
-            display: flex;
-            gap: 20px;
-            align-items: start;
+        
+        .feature {
+            text-align: center;
         }
-
+        
         .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 36px;
-            color: #dc143c;
-            min-width: 50px;
+            margin: 0 auto 20px;
+            color: white;
         }
-
-        .feature-content h3 {
+        
+        .feature h3 {
             color: #1e3c72;
             margin-bottom: 10px;
-            font-size: 1.2em;
         }
-
-        .feature-content p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* Statistics */
-        .stats {
-            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            padding: 60px 20px;
-            color: white;
-        }
-
-        .stats-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .stat-item p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
+        
         /* Footer */
-        .footer {
+        footer {
             background: #1e3c72;
             color: white;
-            padding: 40px 20px 20px;
+            padding: 40px 20px;
             text-align: center;
         }
-
+        
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
         }
-
+        
         .footer-links {
             display: flex;
             justify-content: center;
@@ -367,267 +345,226 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-
+        
         .footer-links a {
             color: white;
             text-decoration: none;
             transition: color 0.3s;
         }
-
+        
         .footer-links a:hover {
             color: #FFD700;
         }
-
-        .footer-bottom {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            opacity: 0.8;
-        }
-
+        
         /* Responsive */
         @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-
             .hero h1 {
-                font-size: 2em;
+                font-size: 32px;
             }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
+            
+            .hero p {
+                font-size: 16px;
             }
-
-            .logo-main {
-                font-size: 24px;
+            
+            .nav-links {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
-
-            .logo-icon {
-                width: 40px;
-                height: 40px;
+            
+            .user-info span {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo-container">
-                <div class="logo-icon">
-                    <!-- SVG Logo thiết kế kết nối -->
-                    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Vòng tròn nền -->
-                        <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
-                        
-                        <!-- Network nodes -->
-                        <circle cx="50" cy="25" r="8" fill="#dc143c"/>
-                        <circle cx="25" cy="50" r="8" fill="#FFD700"/>
-                        <circle cx="75" cy="50" r="8" fill="#FFD700"/>
-                        <circle cx="35" cy="70" r="8" fill="#1e3c72"/>
-                        <circle cx="65" cy="70" r="8" fill="#1e3c72"/>
-                        
-                        <!-- Connection lines -->
-                        <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2"/>
-                        <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2"/>
-                        <line x1="25" y1="50" x2="35" y2="70" stroke="#1e3c72" stroke-width="2"/>
-                        <line x1="75" y1="50" x2="65" y2="70" stroke="#1e3c72" stroke-width="2"/>
-                        <line x1="35" y1="70" x2="65" y2="70" stroke="#FFD700" stroke-width="2"/>
-                        
-                        <!-- Center dot -->
-                        <circle cx="50" cy="50" r="5" fill="#dc143c"/>
-                    </svg>
-                </div>
-                <div class="logo-text">
-                    <div class="logo-main">
-                        <span class="logo-viet">Viet</span><span class="logo-linker">Linker</span>
-                    </div>
-                    <div class="logo-tagline">Kết nối cộng đồng Việt</div>
-                </div>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
+                    <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+                    <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+                    <circle cx="75" cy="50" r="8" fill="#FFD700"/>
+                    <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
+                    <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                    <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                    <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                    <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                </svg>
+                <span class="logo-text">VietLinker</span>
             </a>
-
-            <nav class="nav-menu">
-                <a href="jobs.html">💼 Việc làm</a>
-                <a href="marketplace.html">🛒 Mua bán</a>
-                <a href="services.html">🛠️ Dịch vụ</a>
-                <a href="realestate.html">🏠 Bất động sản</a>
-            </nav>
-
-            <div class="auth-buttons">
-                <a href="login.html" class="btn-login" id="loginBtn">Đăng nhập</a>
-                <a href="register.html" class="btn-register" id="registerBtn">Đăng ký</a>
-                <button class="btn-login" id="logoutBtn" style="display: none; background: none; border: 2px solid white; cursor: pointer;">Đăng xuất</button>
+            
+            <div class="user-actions">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.html" class="btn-auth btn-login">Đăng Nhập</a>
+                    <a href="register.html" class="btn-auth btn-register">Đăng Ký</a>
+                </div>
             </div>
         </div>
     </header>
-
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="index.html" class="active">🏠 Trang Chủ</a>
+                
+                <!-- User Menu Items - Hiển thị khi đã đăng nhập -->
+                <div class="user-menu" id="userMenu">
+                    <a href="profile.html">👤 Hồ Sơ</a>
+                    <a href="my-posts.html">📝 Tin Đăng</a>
+                </div>
+                
+                <a href="marketplace.html">🛒 Mua Bán</a>
+                <a href="jobs.html">💼 Việc Làm</a>
+                <a href="services.html">🔧 Dịch Vụ</a>
+                <a href="realestate.html">🏠 BĐS & Tiệm</a>
+                <a href="classifieds.html">📋 Rao Vặt</a>
+                <a href="promotions.html">🎁 Khuyến Mãi</a>
+            </div>
+        </div>
+    </nav>
+    
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>Chào mừng đến với VietLinker</h1>
-            <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ - Tìm việc, mua bán, dịch vụ và hơn thế nữa</p>
+        <h1>Kết Nối Cộng Đồng Người Việt</h1>
+        <p>Nền tảng số 1 cho người Việt tại Mỹ - Mua bán, việc làm, dịch vụ và nhiều hơn nữa</p>
+    </section>
+    
+    <!-- Categories -->
+    <section class="categories">
+        <h2 class="section-title">Khám Phá Danh Mục</h2>
+        <div class="categories-grid">
+            <a href="marketplace.html" class="category-card">
+                <div class="category-icon">🛒</div>
+                <h3 class="category-title">Mua Bán</h3>
+                <p class="category-description">Đồ điện tử, nội thất, xe cộ và nhiều hơn</p>
+                <span class="category-count">1,234 tin</span>
+            </a>
+            
+            <a href="jobs.html" class="category-card">
+                <div class="category-icon">💼</div>
+                <h3 class="category-title">Việc Làm</h3>
+                <p class="category-description">Tìm việc làm phù hợp với bạn</p>
+                <span class="category-count">567 việc</span>
+            </a>
+            
+            <a href="services.html" class="category-card">
+                <div class="category-icon">🔧</div>
+                <h3 class="category-title">Dịch Vụ</h3>
+                <p class="category-description">Sửa chữa, làm đẹp, y tế, pháp lý</p>
+                <span class="category-count">890 dịch vụ</span>
+            </a>
+            
+            <a href="realestate.html" class="category-card">
+                <div class="category-icon">🏠</div>
+                <h3 class="category-title">BĐS & Tiệm</h3>
+                <p class="category-description">Nhà cho thuê, mua bán, sang nhượng</p>
+                <span class="category-count">345 tin</span>
+            </a>
+            
+            <a href="profile.html" class="category-card">
+                <div class="category-icon">👤</div>
+                <h3 class="category-title">Hồ Sơ Cá Nhân</h3>
+                <p class="category-description">Quản lý thông tin và cài đặt tài khoản</p>
+                <span class="category-count">Của bạn</span>
+            </a>
+            
+            <a href="my-posts.html" class="category-card">
+                <div class="category-icon">📝</div>
+                <h3 class="category-title">Tin Đăng</h3>
+                <p class="category-description">Quản lý các tin đăng của bạn</p>
+                <span class="category-count">Quản lý</span>
+            </a>
         </div>
     </section>
-
-    <!-- Quick Access Cards -->
-    <section class="quick-access">
-        <div class="cards-grid">
-            <a href="jobs.html" class="card">
-                <div class="card-icon">💼</div>
-                <div class="card-title">Việc Làm</div>
-                <div class="card-description">Tìm kiếm cơ hội việc làm phù hợp trong cộng đồng</div>
-            </a>
-
-            <a href="marketplace.html" class="card">
-                <div class="card-icon">🛒</div>
-                <div class="card-title">Mua Bán</div>
-                <div class="card-description">Mua bán xe, đồ điện tử và nhiều mặt hàng khác</div>
-            </a>
-
-            <a href="services.html" class="card">
-                <div class="card-icon">🛠️</div>
-                <div class="card-title">Dịch Vụ</div>
-                <div class="card-description">Kết nối với các dịch vụ uy tín: nail, tóc, nhà hàng...</div>
-            </a>
-
-            <a href="realestate.html" class="card">
-                <div class="card-icon">🏠</div>
-                <div class="card-title">Bất Động Sản</div>
-                <div class="card-description">Mua bán, cho thuê nhà và sang nhượng cơ sở kinh doanh</div>
-            </a>
-        </div>
-    </section>
-
-    <!-- Features Section -->
+    
+    <!-- Features -->
     <section class="features">
-        <div class="features-container">
-            <h2 class="section-title">Tại sao chọn VietLinker?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">🌟</div>
-                    <div class="feature-content">
-                        <h3>Cộng đồng lớn mạnh</h3>
-                        <p>Kết nối với hàng nghìn người Việt tại Mỹ, xây dựng mạng lưới quan hệ vững chắc</p>
-                    </div>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    <div class="feature-content">
-                        <h3>An toàn & Tin cậy</h3>
-                        <p>Xác thực người dùng, bảo mật thông tin và giao dịch an toàn</p>
-                    </div>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">📍</div>
-                    <div class="feature-content">
-                        <h3>Tìm kiếm theo khu vực</h3>
-                        <p>Dễ dàng tìm kiếm dịch vụ, việc làm theo zipcode hoặc thành phố</p>
-                    </div>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">💬</div>
-                    <div class="feature-content">
-                        <h3>Hỗ trợ 24/7</h3>
-                        <p>Đội ngũ hỗ trợ luôn sẵn sàng giúp đỡ bạn mọi lúc</p>
-                    </div>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">📱</div>
-                    <div class="feature-content">
-                        <h3>Giao diện thân thiện</h3>
-                        <p>Dễ sử dụng trên mọi thiết bị: điện thoại, tablet, máy tính</p>
-                    </div>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">🚀</div>
-                    <div class="feature-content">
-                        <h3>Cập nhật liên tục</h3>
-                        <p>Thông tin mới nhất về việc làm, dịch vụ và cơ hội kinh doanh</p>
-                    </div>
-                </div>
+        <h2 class="section-title">Tại Sao Chọn VietLinker?</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🌟</div>
+                <h3>Cộng Đồng Lớn</h3>
+                <p>Kết nối với hàng ngàn người Việt tại Mỹ</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3>An Toàn & Bảo Mật</h3>
+                <p>Thông tin được bảo vệ và xác thực</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <h3>Dễ Sử Dụng</h3>
+                <p>Giao diện thân thiện trên mọi thiết bị</p>
             </div>
         </div>
     </section>
-
-    <!-- Statistics -->
-    <section class="stats">
-        <div class="stats-container">
-            <div class="stat-item">
-                <h3>10,000+</h3>
-                <p>Thành viên</p>
-            </div>
-            <div class="stat-item">
-                <h3>500+</h3>
-                <p>Việc làm mỗi tháng</p>
-            </div>
-            <div class="stat-item">
-                <h3>1,000+</h3>
-                <p>Dịch vụ đăng ký</p>
-            </div>
-            <div class="stat-item">
-                <h3>50+</h3>
-                <p>Thành phố</p>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="footer-content">
             <div class="footer-links">
-                <a href="about.html">Về chúng tôi</a>
-                <a href="contact.html">Liên hệ</a>
-                <a href="terms.html">Điều khoản</a>
-                <a href="privacy.html">Bảo mật</a>
+                <a href="about.html">Về Chúng Tôi</a>
+                <a href="contact.html">Liên Hệ</a>
+                <a href="terms.html">Điều Khoản</a>
+                <a href="privacy.html">Bảo Mật</a>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 VietLinker. Kết nối cộng đồng người Việt tại Mỹ.</p>
-            </div>
+            <p>&copy; 2024 VietLinker. Tất cả quyền được bảo lưu.</p>
         </div>
     </footer>
-
+    
     <script type="module">
-        // Import Supabase
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
         
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
-        
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Check authentication
+        
+        // Check authentication status
         async function checkAuth() {
             const { data: { user } } = await supabase.auth.getUser();
             
-            const loginBtn = document.getElementById('loginBtn');
-            const registerBtn = document.getElementById('registerBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
+            const userInfo = document.getElementById('userInfo');
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
             
             if (user) {
-                loginBtn.style.display = 'none';
-                registerBtn.style.display = 'none';
-                logoutBtn.style.display = 'block';
-                logoutBtn.textContent = `Đăng xuất (${user.email})`;
+                // User is logged in
+                userInfo.classList.add('active');
+                authButtons.classList.add('hidden');
+                userMenu.classList.add('active');
+                
+                // Get user details
+                const { data: userData } = await supabase
+                    .from('users')
+                    .select('full_name, name')
+                    .eq('email', user.email)
+                    .single();
+                
+                if (userData) {
+                    const displayName = userData.full_name || userData.name || user.email;
+                    document.getElementById('userName').textContent = displayName;
+                    const firstLetter = displayName.charAt(0).toUpperCase();
+                    document.getElementById('userAvatar').textContent = firstLetter;
+                }
             } else {
-                loginBtn.style.display = 'block';
-                registerBtn.style.display = 'block';
-                logoutBtn.style.display = 'none';
+                // User is not logged in
+                userInfo.classList.remove('active');
+                authButtons.classList.remove('hidden');
+                userMenu.classList.remove('active');
             }
         }
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.reload();
-        });
-
-        // Initialize
+        
+        // Check auth on page load
         checkAuth();
     </script>
 </body>
