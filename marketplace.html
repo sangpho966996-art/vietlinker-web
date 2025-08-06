@@ -266,6 +266,13 @@
             justify-content: center;
             font-size: 60px;
             position: relative;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .item-body {
@@ -343,6 +350,94 @@
             overflow: hidden;
         }
 
+        /* Detail Modal Styles */
+        .detail-modal .modal-content {
+            max-width: 800px;
+        }
+
+        .detail-image-container {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .detail-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .detail-info {
+            margin-bottom: 20px;
+        }
+
+        .detail-info h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .detail-price {
+            font-size: 2em;
+            color: #dc143c;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .detail-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .detail-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-meta-item .label {
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .detail-description {
+            background: white;
+            padding: 20px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .detail-contact {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .detail-contact h4 {
+            margin-bottom: 10px;
+        }
+
+        .detail-contact .phone {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
         .modal-header {
             background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
             color: white;
@@ -405,6 +500,13 @@
         .form-group textarea {
             resize: vertical;
             min-height: 100px;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 0.9em;
         }
 
         .form-row {
@@ -505,6 +607,8 @@
                 <a href="marketplace.html" class="active">Mua bán</a>
                 <a href="services.html">Dịch vụ</a>
                 <a href="realestate.html">Bất động sản</a>
+                <a href="classifieds.html">Rao vặt</a>
+                <a href="promotions.html">Khuyến mãi</a>
             </div>
             <div class="user-info">
                 <span id="userEmail">Chưa đăng nhập</span>
@@ -599,6 +703,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="imageUrl">Link hình ảnh (tùy chọn)</label>
+                        <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
+                        <small>Dán link hình ảnh từ internet (imgur, imgbb, v.v...)</small>
+                    </div>
+
+                    <div class="form-group">
                         <label for="location">Địa chỉ giao dịch</label>
                         <input type="text" id="location" placeholder="VD: 123 Main St, Houston, TX">
                     </div>
@@ -629,6 +739,19 @@
         </div>
     </div>
 
+    <!-- Modal xem chi tiết -->
+    <div id="detailModal" class="modal detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Chi tiết sản phẩm</h2>
+                <button class="close-modal" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         // Supabase config
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
@@ -639,6 +762,7 @@
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let currentUser = null;
+        let allItems = [];
 
         // Check auth
         async function checkAuth() {
@@ -683,14 +807,136 @@
         }
         window.closeModal = closeModal;
 
+        // Close detail modal
+        function closeDetailModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+        window.closeDetailModal = closeDetailModal;
+
         document.querySelector('.close-modal').addEventListener('click', closeModal);
 
         window.addEventListener('click', (e) => {
             const modal = document.getElementById('itemModal');
+            const detailModal = document.getElementById('detailModal');
             if (e.target === modal) {
                 closeModal();
             }
+            if (e.target === detailModal) {
+                closeDetailModal();
+            }
         });
+
+        // Show item detail
+        function showItemDetail(item) {
+            const categoryIcons = {
+                'car': '🚗',
+                'motorcycle': '🏍️',
+                'electronics': '📱',
+                'furniture': '🛋️',
+                'appliances': '🏠',
+                'clothing': '👕',
+                'jewelry': '💎',
+                'sports': '⚽',
+                'toys': '🧸',
+                'other': '📦'
+            };
+
+            const conditionLabels = {
+                'new': 'Mới 100%',
+                'like-new': 'Như mới',
+                'good': 'Tốt',
+                'fair': 'Khá',
+                'poor': 'Cần sửa'
+            };
+
+            const locationInfo = [];
+            if (item.city) locationInfo.push(item.city);
+            if (item.zipcode) locationInfo.push(item.zipcode);
+            const fullLocation = locationInfo.join(', ');
+
+            const detailContent = document.getElementById('detailContent');
+            detailContent.innerHTML = `
+                <div class="detail-image-container">
+                    ${item.image_url ? 
+                        `<img src="${item.image_url}" alt="${item.title}" onerror="this.style.display='none'; this.parentElement.innerHTML='${categoryIcons[item.category] || '📦'}'">` : 
+                        categoryIcons[item.category] || '📦'
+                    }
+                </div>
+                
+                <div class="detail-info">
+                    <h3>${item.title}</h3>
+                    <div class="detail-price">$${item.price.toLocaleString()}</div>
+                    
+                    <div class="detail-meta">
+                        <div class="detail-meta-item">
+                            <span class="label">📦 Danh mục:</span>
+                            <span>${item.category || 'Khác'}</span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="label">✨ Tình trạng:</span>
+                            <span>${conditionLabels[item.condition] || item.condition || 'Không rõ'}</span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="label">📍 Khu vực:</span>
+                            <span>${fullLocation || 'Không rõ'}</span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="label">📅 Ngày đăng:</span>
+                            <span>${new Date(item.created_at).toLocaleDateString('vi-VN')}</span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="label">👁️ Lượt xem:</span>
+                            <span>${item.views || 0}</span>
+                        </div>
+                    </div>
+                    
+                    ${item.description ? `
+                        <div class="detail-description">
+                            <h4 style="margin-bottom: 10px; color: #1e3c72;">Mô tả chi tiết:</h4>
+                            <p>${item.description.replace(/\n/g, '<br>')}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${item.location ? `
+                        <div class="detail-description">
+                            <h4 style="margin-bottom: 10px; color: #1e3c72;">Địa chỉ giao dịch:</h4>
+                            <p>📍 ${item.location}</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="detail-contact">
+                        <h4>Thông tin liên hệ</h4>
+                        <div class="phone">📞 ${item.contact || 'Liên hệ người bán'}</div>
+                    </div>
+                </div>
+            `;
+
+            // Update views
+            updateViews(item.id);
+            
+            document.getElementById('detailModal').style.display = 'block';
+        }
+        window.showItemDetail = showItemDetail;
+
+        // Update views count
+        async function updateViews(itemId) {
+            try {
+                const { data: item } = await supabase
+                    .from('marketplace')
+                    .select('views')
+                    .eq('id', itemId)
+                    .single();
+
+                if (item) {
+                    await supabase
+                        .from('marketplace')
+                        .update({ views: (item.views || 0) + 1 })
+                        .eq('id', itemId);
+                }
+            } catch (error) {
+                console.error('Error updating views:', error);
+            }
+        }
 
         // Submit form
         document.getElementById('itemForm').addEventListener('submit', async (e) => {
@@ -708,11 +954,13 @@
                 price: parseFloat(document.getElementById('price').value),
                 description: document.getElementById('description').value,
                 condition: document.getElementById('condition').value,
+                image_url: document.getElementById('imageUrl').value || null,
                 location: document.getElementById('location').value,
                 city: document.getElementById('city').value,
                 zipcode: document.getElementById('zipcode').value,
                 contact: document.getElementById('contact').value,
-                status: 'active'
+                status: 'active',
+                views: 0
             };
 
             try {
@@ -764,6 +1012,8 @@
 
                 if (error) throw error;
 
+                allItems = items; // Store for detail view
+
                 if (items.length === 0) {
                     let emptyMessage = '🔍 Không tìm thấy sản phẩm nào';
                     if (location) {
@@ -807,17 +1057,20 @@
                     'poor': 'Cần sửa'
                 };
 
-                container.innerHTML = resultHeader + items.map(item => {
+                container.innerHTML = resultHeader + items.map((item, index) => {
                     const locationInfo = [];
                     if (item.city) locationInfo.push(item.city);
                     if (item.zipcode) locationInfo.push(item.zipcode);
                     const fullLocation = locationInfo.join(', ');
 
                     return `
-                        <div class="item-card">
+                        <div class="item-card" onclick="showItemDetail(allItems[${index}])">
                             ${item.condition === 'new' ? '<div class="item-badge">MỚI</div>' : ''}
                             <div class="item-image">
-                                ${categoryIcons[item.category] || '📦'}
+                                ${item.image_url ? 
+                                    `<img src="${item.image_url}" alt="${item.title}" onerror="this.style.display='none'; this.parentElement.innerHTML='${categoryIcons[item.category] || '📦'}'">` : 
+                                    categoryIcons[item.category] || '📦'
+                                }
                             </div>
                             <div class="item-body">
                                 <div class="item-category">${item.category || 'Khác'}</div>
@@ -835,8 +1088,8 @@
                                         <span>${fullLocation || 'Không rõ'}</span>
                                     </div>
                                     <div class="item-detail">
-                                        <span class="icon">📞</span>
-                                        <span>${item.contact || 'Liên hệ'}</span>
+                                        <span class="icon">👁️</span>
+                                        <span>${item.views || 0} lượt xem</span>
                                     </div>
                                 </div>
                             </div>
