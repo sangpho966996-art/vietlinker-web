@@ -839,16 +839,16 @@
         async function loadJobs() {
             try {
                 const { data, error } = await supabaseClient
-                    .from('jobs')
-                    .select(`
-                        *,
-                        users (
-                            full_name,
-                            email
-                        )
-                    `)
-                    .eq('is_active', true)
-                    .order('created_at', { ascending: false });
+                  .from('jobs')
+    .select(`
+        *,
+        users (
+            full_name,
+            email
+        )
+    `)
+    .eq('is_active', true)
+    .order('created_at', { ascending: false });
 
                 if (error) throw error;
 
