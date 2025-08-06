@@ -1076,20 +1076,30 @@
             submitBtn.disabled = true;
 
             try {
-                // Upload image first if selected
                 let imageUrl = null;
+                
+                // Upload image nếu có chọn file
                 if (selectedFile) {
+                    console.log('Found selected file:', selectedFile.name);
                     imageUrl = await uploadImage();
+                    console.log('Upload result:', imageUrl);
+                    
+                    if (!imageUrl) {
+                        console.error('Upload failed - no URL returned');
+                    }
+                } else {
+                    console.log('No file selected for upload');
                 }
 
+                // Prepare data
                 const itemData = {
                     user_id: currentUser.id,
                     title: document.getElementById('title').value,
                     category: document.getElementById('category').value,
                     price: parseFloat(document.getElementById('price').value),
-                    description: document.getElementById('description').value,
+                    description: document.getElementById('description').value || '',
                     condition: document.getElementById('condition').value,
-                    location: document.getElementById('location').value,
+                    location: document.getElementById('location').value || '',
                     city: document.getElementById('city').value,
                     zipcode: document.getElementById('zipcode').value,
                     contact: document.getElementById('contact').value,
@@ -1097,20 +1107,35 @@
                     views: 0
                 };
                 
-                // Add image_url if available
+                // Add image_url nếu có
                 if (imageUrl) {
                     itemData.image_url = imageUrl;
+                    console.log('Added image_url to data:', imageUrl);
+                } else {
+                    console.log('No image_url to add');
                 }
 
+                console.log('Saving to database:', itemData);
+
+                // Save to database
                 const { data, error } = await supabase
                     .from('marketplace')
-                    .insert([itemData]);
+                    .insert([itemData])
+                    .select();
 
                 if (error) throw error;
 
+                console.log('Saved successfully:', data);
                 alert('Đăng bán thành công!');
+                
+                // Reset form và close modal
+                selectedFile = null;
+                document.getElementById('uploadPlaceholder').style.display = 'block';
+                document.getElementById('imagePreview').style.display = 'none';
+                document.getElementById('uploadStatus').style.display = 'none';
                 closeModal();
                 loadItems();
+                
             } catch (error) {
                 console.error('Error:', error);
                 alert('Lỗi: ' + error.message);
