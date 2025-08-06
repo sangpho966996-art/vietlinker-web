@@ -145,7 +145,31 @@
             display: flex;
             gap: 10px;
             flex: 1;
-            max-width: 500px;
+            max-width: 700px;
+        }
+
+        .location-input {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            min-width: 180px;
+        }
+
+        .location-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 16px;
+            padding: 0;
+        }
+
+        .location-icon {
+            color: #dc143c;
+            font-size: 18px;
         }
 
         .search-bar input {
@@ -174,6 +198,10 @@
 
         .search-bar select:focus {
             outline: none;
+            border-color: #1e3c72;
+        }
+
+        .location-input:focus-within {
             border-color: #1e3c72;
         }
 
@@ -480,6 +508,10 @@
         <div class="main-content">
             <div class="actions-bar">
                 <div class="search-bar">
+                    <div class="location-input">
+                        <span class="location-icon">📍</span>
+                        <input type="text" id="locationInput" placeholder="Zipcode hoặc Thành phố">
+                    </div>
                     <select id="categoryFilter">
                         <option value="">Tất cả danh mục</option>
                         <option value="nail">💅 Nail & Spa</option>
@@ -548,6 +580,16 @@
                     <div class="form-group">
                         <label for="location">Địa chỉ</label>
                         <input type="text" id="location" placeholder="VD: 123 Main St, Houston, TX 77001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">Thành phố *</label>
+                        <input type="text" id="city" required placeholder="VD: Houston, Dallas, Austin...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zipcode">Zipcode *</label>
+                        <input type="text" id="zipcode" required placeholder="VD: 77001" pattern="[0-9]{5}" maxlength="5">
                     </div>
 
                     <div class="form-group">
@@ -655,6 +697,8 @@
                 description: document.getElementById('description').value,
                 price_range: document.getElementById('priceRange').value,
                 location: document.getElementById('location').value,
+                city: document.getElementById('city').value,
+                zipcode: document.getElementById('zipcode').value,
                 phone: document.getElementById('phone').value,
                 email: document.getElementById('email').value,
                 business_hours: document.getElementById('businessHours').value
@@ -677,7 +721,7 @@
         });
 
         // Load và hiển thị dịch vụ
-        async function loadServices(category = '', searchTerm = '') {
+        async function loadServices(category = '', searchTerm = '', location = '') {
             const container = document.getElementById('servicesContainer');
             container.innerHTML = '<div class="loading">Đang tải dịch vụ</div>';
 
@@ -696,21 +740,43 @@
                     query = query.or(`service_name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
                 }
 
+                // Lọc theo location (zipcode hoặc city)
+                if (location) {
+                    // Kiểm tra nếu là zipcode (5 số) hoặc city name
+                    if (/^\d{5}$/.test(location)) {
+                        query = query.eq('zipcode', location);
+                    } else {
+                        query = query.ilike('city', `%${location}%`);
+                    }
+                }
+
                 const { data: services, error } = await query;
 
                 if (error) throw error;
 
                 if (services.length === 0) {
+                    let emptyMessage = '🔍 Không tìm thấy dịch vụ nào';
+                    if (location) {
+                        emptyMessage += ` tại khu vực "${location}"`;
+                    }
                     container.innerHTML = `
                         <div class="empty-state">
-                            <h3>🔍 Chưa có dịch vụ nào</h3>
-                            <p>Hãy là người đầu tiên đăng dịch vụ!</p>
+                            <h3>${emptyMessage}</h3>
+                            <p>Hãy thử tìm kiếm với zipcode hoặc thành phố khác!</p>
                         </div>
                     `;
                     return;
                 }
 
-                container.innerHTML = services.map(service => {
+                // Hiển thị số lượng kết quả và khu vực
+                let resultHeader = '';
+                if (location) {
+                    resultHeader = `<div style="grid-column: 1/-1; padding: 15px; background: #f0f7ff; border-radius: 8px; margin-bottom: 10px; color: #1e3c72;">
+                        <strong>📍 Tìm thấy ${services.length} dịch vụ tại khu vực "${location}"</strong>
+                    </div>`;
+                }
+
+                container.innerHTML = resultHeader + services.map(service => {
                     const categoryIcons = {
                         'nail': '💅',
                         'hair': '✂️',
@@ -736,6 +802,12 @@
                         'travel': 'Du lịch - Vé máy bay',
                         'other': 'Dịch vụ khác'
                     };
+
+                    // Hiển thị city và zipcode
+                    const locationInfo = [];
+                    if (service.city) locationInfo.push(service.city);
+                    if (service.zipcode) locationInfo.push(service.zipcode);
+                    const fullLocation = locationInfo.join(', ');
 
                     return `
                         <div class="service-card">
@@ -763,6 +835,12 @@
                                         <div class="service-info-item">
                                             <span class="icon">📍</span>
                                             <span>${service.location}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${fullLocation ? `
+                                        <div class="service-info-item">
+                                            <span class="icon">🏙️</span>
+                                            <span>${fullLocation}</span>
                                         </div>
                                     ` : ''}
                                     <div class="service-info-item">
@@ -793,13 +871,26 @@
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 const category = document.getElementById('categoryFilter').value;
-                loadServices(category, e.target.value);
+                const location = document.getElementById('locationInput').value;
+                loadServices(category, e.target.value, location);
             }, 500);
         });
 
         document.getElementById('categoryFilter').addEventListener('change', (e) => {
             const searchTerm = document.getElementById('searchInput').value;
-            loadServices(e.target.value, searchTerm);
+            const location = document.getElementById('locationInput').value;
+            loadServices(e.target.value, searchTerm, location);
+        });
+
+        // Tìm kiếm theo location
+        let locationTimeout;
+        document.getElementById('locationInput').addEventListener('input', (e) => {
+            clearTimeout(locationTimeout);
+            locationTimeout = setTimeout(() => {
+                const category = document.getElementById('categoryFilter').value;
+                const searchTerm = document.getElementById('searchInput').value;
+                loadServices(category, searchTerm, e.target.value);
+            }, 500);
         });
 
         // Khởi động
