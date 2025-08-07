@@ -63,7 +63,7 @@
             z-index: 1;
         }
         
-        /* Logo Professional */
+        /* Logo Professional - UPDATED */
         .logo {
             display: flex;
             align-items: center;
@@ -76,7 +76,7 @@
             transform: scale(1.05);
         }
         
-        .logo svg {
+        .logo img {
             width: 55px;
             height: 55px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
@@ -918,7 +918,7 @@
             flex-wrap: wrap;
         }
         
-        /* Footer Professional */
+        /* Footer Professional - UPDATED */
         footer {
             background: #1e3c72;
             color: white;
@@ -940,6 +940,11 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+        
+        .footer-brand img {
+            width: 30px;
+            height: 30px;
         }
         
         .footer-brand p {
@@ -1083,25 +1088,24 @@
                 padding: 8px 16px;
                 font-size: 14px;
             }
+            
+            .logo img {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .logo-text {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header Professional -->
+    <!-- Header Professional - LOGO UPDATED -->
     <header>
         <div class="header-content">
             <a href="index.html" class="logo">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
-                    <circle cx="50" cy="25" r="8" fill="#dc143c"/>
-                    <circle cx="25" cy="50" r="8" fill="#FFD700"/>
-                    <circle cx="75" cy="50" r="8" fill="#FFD700"/>
-                    <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
-                    <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
-                    <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
-                    <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
-                    <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
-                </svg>
+                <img src="logo.png" alt="VietLinker Logo">
                 <span class="logo-text">VietLinker</span>
             </a>
             
@@ -1387,18 +1391,12 @@
         </div>
     </section>
     
-    <!-- Footer Professional - UPDATED WITH FOOD -->
+    <!-- Footer Professional - UPDATED WITH NEW PAGES -->
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
                 <h3>
-                    <svg width="30" height="30" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
-                        <circle cx="50" cy="25" r="8" fill="#dc143c"/>
-                        <circle cx="25" cy="50" r="8" fill="#FFD700"/>
-                        <circle cx="75" cy="50" r="8" fill="#FFD700"/>
-                        <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
-                    </svg>
+                    <img src="logo.png" alt="VietLinker">
                     VietLinker
                 </h3>
                 <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ. Mang đến cơ hội, kết nối và phát triển cho cộng đồng.</p>
@@ -1426,7 +1424,7 @@
                 <ul>
                     <li><a href="#">Hướng Dẫn</a></li>
                     <li><a href="#">Câu Hỏi Thường Gặp</a></li>
-                    <li><a href="#">Liên Hệ</a></li>
+                    <li><a href="contact.html">Liên Hệ</a></li>
                     <li><a href="#">Báo Cáo Vi Phạm</a></li>
                 </ul>
             </div>
@@ -1434,16 +1432,16 @@
             <div class="footer-column">
                 <h4>Về VietLinker</h4>
                 <ul>
-                    <li><a href="#">Giới Thiệu</a></li>
-                    <li><a href="#">Điều Khoản</a></li>
-                    <li><a href="#">Chính Sách Bảo Mật</a></li>
+                    <li><a href="about.html">Giới Thiệu</a></li>
+                    <li><a href="terms.html">Điều Khoản</a></li>
+                    <li><a href="privacy.html">Chính Sách Bảo Mật</a></li>
                     <li><a href="#">Quảng Cáo</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2024 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</p>
+            <p>&copy; 2025 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</p>
         </div>
     </footer>
 
@@ -1663,7 +1661,7 @@
             
             var supabase = window.supabase.createClient(
                 'https://wwlmvcsozavqfvwlxkrt.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM08.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
             );
             
             supabase.auth.getUser().then(function(result) {
