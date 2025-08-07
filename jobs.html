@@ -732,7 +732,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
     <script>
         console.log('🔥 Script loading...');
         
@@ -749,17 +749,31 @@
         function initializeApp() {
             console.log('🚀 Initializing app...');
             
-            if (window.supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase ready');
+            // Check multiple possible locations for Supabase
+            var supabaseLib = window.supabase || window.Supabase || (window.supabaseClient && window.supabaseClient.supabase);
+            
+            if (supabaseLib) {
+                console.log('✅ Supabase library found');
+                supabase = supabaseLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase client created');
                 
                 setupUpload();
                 setupEvents();
                 checkAuth();
                 loadJobs();
             } else {
-                console.log('⏳ Waiting for Supabase...');
-                setTimeout(initializeApp, 100);
+                console.log('⏳ Waiting for Supabase... (retrying in 500ms)');
+                // Limit retries to prevent infinite loop
+                if (!window.retryCount) window.retryCount = 0;
+                window.retryCount++;
+                
+                if (window.retryCount > 20) {
+                    console.error('❌ Failed to load Supabase after 10 seconds');
+                    alert('Không thể tải Supabase. Vui lòng kiểm tra kết nối internet và refresh lại trang.');
+                    return;
+                }
+                
+                setTimeout(initializeApp, 500);
             }
         }
 
@@ -1055,27 +1069,32 @@
 
         // Upload image
         function uploadImage(file) {
-            console.log('📤 Uploading to jobs-images bucket...');
+            console.log('📤 Uploading to marketplace bucket...');
             
-            var fileName = Date.now() + '_' + Math.random().toString(36).substring(2) + '.' + file.name.split('.').pop();
+            var fileName = 'jobs_' + Date.now() + '_' + Math.random().toString(36).substring(2) + '.' + file.name.split('.').pop();
             console.log('📁 File name:', fileName);
             
             return supabase.storage
-                .from('jobs-images')
+                .from('marketplace')
                 .upload(fileName, file)
                 .then(function(response) {
                     if (response.error) {
+                        console.error('❌ Upload error:', response.error);
                         throw response.error;
                     }
                     
                     console.log('✅ File uploaded:', response.data);
                     
                     var urlResponse = supabase.storage
-                        .from('jobs-images')
+                        .from('marketplace')
                         .getPublicUrl(fileName);
                     
                     console.log('🔗 Public URL:', urlResponse.data.publicUrl);
                     return urlResponse.data.publicUrl;
+                })
+                .catch(function(error) {
+                    console.error('❌ Upload failed:', error);
+                    throw error;
                 });
         }
 
