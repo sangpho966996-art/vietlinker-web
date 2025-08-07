@@ -1560,9 +1560,9 @@
                 }
             }
             
-            // Global search function - FIXED
-            async function performGlobalSearch() {
-                console.log('performGlobalSearch called');
+            // Global search function - WORKING VERSION
+            window.performGlobalSearch = async function() {
+                console.log('🔍 === SEARCH STARTED ===');
                 
                 const keyword = document.getElementById('searchKeyword').value;
                 const location = document.getElementById('searchLocation').value;
@@ -1581,63 +1581,105 @@
                 searchButton.innerHTML = '<span>⏳</span><span>ĐANG TÌM...</span>';
                 searchButton.disabled = true;
                 
+                // Show modal with loading
+                const modal = document.getElementById('searchResultsModal');
+                const body = document.getElementById('searchResultsBody');
+                modal.style.display = 'block';
+                body.innerHTML = '<p style="text-align: center; padding: 40px;">🔍 Đang tìm kiếm...</p>';
+                
                 try {
-                    // Store search in localStorage for history
-                    const searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-                    searchHistory.unshift({ keyword, location, category, date: new Date() });
-                    localStorage.setItem('searchHistory', JSON.stringify(searchHistory.slice(0, 10)));
-                    
-                    // Build search query
-                    let searchResults = [];
+                    // Tables to search
                     const tables = category ? [category] : ['jobs', 'marketplace', 'services', 'food_dining', 'real_estate', 'classifieds', 'promotions'];
+                    const allResults = [];
                     
                     console.log('Searching in tables:', tables);
                     
-                    // Search each table
                     for (const table of tables) {
-                        try {
-                            // FIX: Use supabaseClient instead of supabase
-                            let query = supabaseClient.from(table).select('*').eq('status', 'active');
-                            
-                            if (keyword) {
+                        console.log(`Searching in ${table}...`);
+                        
+                        let query = supabaseClient.from(table).select('*').eq('status', 'active');
+                        
+                        if (keyword) {
+                            if (table === 'food_dining') {
+                                query = query.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%,business_name.ilike.%${keyword}%`);
+                            } else {
                                 query = query.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%`);
                             }
-                            
-                            if (location) {
-                                if (/^\d{5}$/.test(location)) {
-                                    query = query.eq('zipcode', location);
-                                } else {
-                                    query = query.ilike('city', `%${location}%`);
-                                }
+                        }
+                        
+                        if (location) {
+                            if (/^\d{5}$/.test(location)) {
+                                query = query.eq('zipcode', location);
+                            } else {
+                                query = query.ilike('city', `%${location}%`);
                             }
-                            
-                            const { data, error } = await query.limit(10);
-                            
-                            if (error) {
-                                console.error(`Error searching ${table}:`, error);
-                                continue;
-                            }
-                            
-                            if (data && data.length > 0) {
-                                console.log(`Found ${data.length} results in ${table}`);
-                                searchResults.push({
-                                    category: table,
-                                    items: data
-                                });
-                            }
-                        } catch (tableError) {
-                            console.error(`Error processing table ${table}:`, tableError);
+                        }
+                        
+                        const { data, error } = await query.limit(10);
+                        
+                        if (error) {
+                            console.error(`Error searching ${table}:`, error);
+                            continue;
+                        }
+                        
+                        if (data && data.length > 0) {
+                            console.log(`Found ${data.length} results in ${table}`);
+                            allResults.push({ table, data });
                         }
                     }
                     
-                    console.log('Total search results:', searchResults);
-                    
                     // Display results
-                    displaySearchResults(searchResults, keyword, location);
+                    if (allResults.length === 0) {
+                        body.innerHTML = '<p style="text-align: center; padding: 40px;">😔 Không tìm thấy kết quả nào.</p>';
+                    } else {
+                        let html = '<div style="padding: 20px;">';
+                        html += '<h3 style="color: #1e3c72;">🎯 Kết quả tìm kiếm</h3>';
+                        
+                        const tableNames = {
+                            'jobs': '💼 Việc Làm',
+                            'marketplace': '🛒 Mua Bán',
+                            'services': '🤝 Dịch Vụ',
+                            'food_dining': '🍜 Ăn Uống',
+                            'real_estate': '🏠 Bất Động Sản',
+                            'classifieds': '📋 Rao Vặt',
+                            'promotions': '🎁 Khuyến Mãi'
+                        };
+                        
+                        allResults.forEach(result => {
+                            html += `<div style="margin: 20px 0;">`;
+                            html += `<h4 style="color: #1e3c72; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">`;
+                            html += `${tableNames[result.table]} (${result.data.length} kết quả)</h4>`;
+                            
+                            result.data.forEach(item => {
+                                const title = item.title || item.business_name || item.name || 'No title';
+                                const desc = item.description || '';
+                                const city = item.city || '';
+                                const price = item.price || item.salary || item.price_range || '';
+                                
+                                html += `<div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer;"
+                                         onclick="window.location.href='${result.table.replace('_', '')}.html'"
+                                         onmouseover="this.style.background='#e9ecef'" 
+                                         onmouseout="this.style.background='#f8f9fa'">`;
+                                html += `<h5 style="color: #1e3c72; margin: 0 0 8px 0;">${escapeHtml(title)}</h5>`;
+                                if (desc) html += `<p style="color: #666; margin: 0 0 8px 0; font-size: 14px;">${escapeHtml(desc.substring(0, 100))}...</p>`;
+                                html += `<div style="display: flex; gap: 15px; font-size: 13px; color: #999;">`;
+                                if (city) html += `<span>📍 ${escapeHtml(city)}</span>`;
+                                if (price) html += `<span>💰 ${escapeHtml(price.toString())}</span>`;
+                                html += `</div></div>`;
+                            });
+                            
+                            html += `</div>`;
+                        });
+                        
+                        html += '</div>';
+                        body.innerHTML = html;
+                    }
+                    
+                    console.log('✅ Search complete!');
                     
                 } catch (error) {
-                    console.error('Search error:', error);
-                    alert('Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại!');
+                    console.error('❌ Search error:', error);
+                    body.innerHTML = '<p style="text-align: center; padding: 40px; color: red;">❌ Lỗi khi tìm kiếm! Vui lòng thử lại.</p>';
                 } finally {
                     // Reset button state
                     searchButton.innerHTML = originalText;
@@ -1747,83 +1789,107 @@
                 }
             }
             
-            // Initialize on page load
-            checkAuth();
-            getUserLocation();
+            // Initialize everything after Supabase is ready
+            initializeApp();
             
-            // Add event listeners
-            const searchButton = document.getElementById('searchButton');
-            if (searchButton) {
-                searchButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('Search button clicked');
-                    performGlobalSearch();
-                });
-            } else {
-                console.error('Search button not found');
+            // Main app initialization
+            function initializeApp() {
+                console.log('✅ App initialization started');
+                
+                // Check authentication
+                checkAuth();
+                
+                // Get location
+                getUserLocation();
+                
+                // Setup search functionality
+                setupSearch();
+                
+                // Setup other event listeners
+                setupEventListeners();
+                
+                console.log('✅ App initialization complete');
             }
             
-            // Close modal when clicking X
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', closeSearchModal);
-            }
-            
-            // Close modal when clicking outside
-            const searchModal = document.getElementById('searchResultsModal');
-            if (searchModal) {
-                searchModal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeSearchModal();
-                    }
-                });
-            }
-            
-            // Quick search tags
-            document.querySelectorAll('.quick-search-tag').forEach(tag => {
-                tag.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const term = this.getAttribute('data-search');
-                    document.getElementById('searchKeyword').value = term;
-                    console.log('Quick search:', term);
-                    performGlobalSearch();
-                });
-            });
-            
-            // Add enter key support for search
-            const searchKeyword = document.getElementById('searchKeyword');
-            if (searchKeyword) {
-                searchKeyword.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
+            // Setup search functionality
+            function setupSearch() {
+                // Attach to search button
+                const searchBtn = document.getElementById('searchButton');
+                if (searchBtn) {
+                    searchBtn.onclick = function(e) {
                         e.preventDefault();
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
-            const searchLocation = document.getElementById('searchLocation');
-            if (searchLocation) {
-                searchLocation.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
-            // Smooth scroll for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId && targetId !== '#') {
-                        const target = document.querySelector(targetId);
-                        if (target) {
-                            target.scrollIntoView({ behavior: 'smooth' });
+                        console.log('Search button clicked');
+                        window.performGlobalSearch();
+                    };
+                    console.log('✅ Search function attached to button');
+                }
+                
+                // Attach to Enter key
+                const searchKeyword = document.getElementById('searchKeyword');
+                if (searchKeyword) {
+                    searchKeyword.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            window.performGlobalSearch();
                         }
+                    });
+                }
+                
+                const searchLocation = document.getElementById('searchLocation');
+                if (searchLocation) {
+                    searchLocation.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            window.performGlobalSearch();
+                        }
+                    });
+                }
+                
+                // Quick search tags
+                document.querySelectorAll('.quick-search-tag').forEach(tag => {
+                    tag.onclick = function(e) {
+                        e.preventDefault();
+                        document.getElementById('searchKeyword').value = this.getAttribute('data-search');
+                        console.log('Quick search:', this.getAttribute('data-search'));
+                        window.performGlobalSearch();
+                    };
+                });
+                
+                // Close modal handlers
+                const closeBtn = document.getElementById('closeModalBtn');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        document.getElementById('searchResultsModal').style.display = 'none';
+                    };
+                }
+                
+                // Click outside to close
+                window.addEventListener('click', function(e) {
+                    const modal = document.getElementById('searchResultsModal');
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
                     }
                 });
-            });
+                
+                console.log('✅ Search setup complete');
+            }
             
-            console.log('All event listeners attached');
+            // Setup other event listeners
+            function setupEventListeners() {
+                // Smooth scroll for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        if (targetId && targetId !== '#') {
+                            const target = document.querySelector(targetId);
+                            if (target) {
+                                target.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }
+                    });
+                });
+            }
+            
+            });
         });
