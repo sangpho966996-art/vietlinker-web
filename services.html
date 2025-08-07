@@ -59,13 +59,6 @@
             z-index: 1;
         }
 
-        header p {
-            font-size: 1.1em;
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
-        }
-
         nav {
             background: #1e3c72;
             padding: 15px 30px;
@@ -73,8 +66,6 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .nav-links {
@@ -89,7 +80,6 @@
             padding: 8px 16px;
             border-radius: 5px;
             transition: all 0.3s;
-            position: relative;
         }
 
         .nav-links a:hover {
@@ -146,6 +136,7 @@
             gap: 10px;
             flex: 1;
             max-width: 700px;
+            flex-wrap: wrap;
         }
 
         .location-input {
@@ -172,37 +163,23 @@
             font-size: 18px;
         }
 
-        .search-bar input {
+        .location-input:focus-within {
+            border-color: #1e3c72;
+        }
+
+        .search-bar input,
+        .search-bar select {
             flex: 1;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            border-color: #1e3c72;
+            min-width: 140px;
         }
 
         .search-bar select {
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
             background: white;
             cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        .search-bar select:focus {
-            outline: none;
-            border-color: #1e3c72;
-        }
-
-        .location-input:focus-within {
-            border-color: #1e3c72;
         }
 
         .btn {
@@ -223,30 +200,20 @@
             box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
-        }
-
-        .btn-success:hover {
-            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
-        }
-
-        .services-grid {
+        .services-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            gap: 20px;
         }
 
         .service-card {
             background: white;
-            border-radius: 15px;
-            padding: 0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             transition: all 0.3s;
             cursor: pointer;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 20px;
         }
 
         .service-card:hover {
@@ -254,72 +221,85 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.15);
         }
 
-        .service-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .service-icon {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
+        .service-image {
+            width: 120px;
+            height: 120px;
+            background: #f0f0f0;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            color: #999;
+            font-size: 24px;
+            flex-shrink: 0;
+            overflow: hidden;
         }
 
-        .service-category {
-            color: white;
-            font-weight: 600;
-            font-size: 0.95em;
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .service-body {
-            padding: 20px;
+        .service-content {
+            flex: 1;
         }
 
-        .service-name {
-            font-size: 1.3em;
-            font-weight: bold;
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .service-title {
+            font-size: 1.4em;
             color: #1e3c72;
-            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .service-type {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
         }
 
         .service-description {
             color: #666;
+            line-height: 1.6;
             margin-bottom: 15px;
-            line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .service-info {
+        .service-details {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 0.9em;
-            color: #555;
-            border-top: 1px solid #f0f0f0;
+            gap: 20px;
+            flex-wrap: wrap;
             padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
         }
 
-        .service-info-item {
+        .service-detail-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
+            color: #555;
+            font-size: 0.95em;
         }
 
-        .service-info-item .icon {
+        .service-detail-item .icon {
             color: #dc143c;
-            font-size: 16px;
-            min-width: 20px;
+        }
+
+        .view-count {
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 10px;
         }
 
         .modal {
@@ -340,21 +320,10 @@
             margin: 50px auto;
             padding: 0;
             width: 90%;
-            max-width: 600px;
+            max-width: 700px;
             border-radius: 15px;
             animation: slideDown 0.3s;
             overflow: hidden;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .modal-header {
@@ -385,6 +354,8 @@
 
         .modal-body {
             padding: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
         }
 
         .form-group {
@@ -421,6 +392,40 @@
             min-height: 100px;
         }
 
+        .upload-area {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+
+        .upload-area:hover {
+            border-color: #dc143c;
+            background: #fff;
+        }
+
+        .upload-area.dragover {
+            border-color: #dc143c;
+            background: #fff5f5;
+        }
+
+        .upload-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px auto;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .upload-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .form-actions {
             display: flex;
             gap: 15px;
@@ -430,29 +435,92 @@
             border-top: 2px solid #f0f0f0;
         }
 
+        .detail-modal .modal-content {
+            max-width: 800px;
+        }
+
+        .detail-header {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-image {
+            width: 200px;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 24px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .detail-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .detail-info h3 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .detail-type {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .detail-description {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            white-space: pre-wrap;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: #555;
+        }
+
+        .detail-item .icon {
+            color: #dc143c;
+            font-size: 18px;
+        }
+
         .loading {
             text-align: center;
             padding: 50px;
             color: #666;
-            grid-column: 1/-1;
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
         }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: #999;
-            grid-column: 1/-1;
             background: white;
             border-radius: 12px;
         }
@@ -463,22 +531,43 @@
             color: #1e3c72;
         }
 
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .actions-bar {
+            .service-card {
                 flex-direction: column;
-                align-items: stretch;
             }
-
+            
+            .service-image {
+                width: 100%;
+                height: 200px;
+            }
+            
             .search-bar {
-                max-width: 100%;
+                flex-direction: column;
+            }
+            
+            .search-bar input,
+            .search-bar select {
+                min-width: auto;
+            }
+            
+            .detail-header {
+                flex-direction: column;
+            }
+            
+            .detail-image {
+                width: 100%;
+                height: 250px;
             }
         }
     </style>
@@ -486,8 +575,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>🏪 Dịch Vụ Cộng Đồng</h1>
-            <p>Kết nối với các dịch vụ uy tín trong cộng đồng người Việt</p>
+            <h1>🛠️ Dịch Vụ</h1>
+            <p>Tìm kiếm dịch vụ từ cộng đồng người Việt</p>
         </header>
 
         <nav>
@@ -512,26 +601,35 @@
                         <span class="location-icon">📍</span>
                         <input type="text" id="locationInput" placeholder="Zipcode hoặc Thành phố">
                     </div>
-                    <select id="categoryFilter">
-                        <option value="">Tất cả danh mục</option>
-                        <option value="nail">💅 Nail & Spa</option>
-                        <option value="hair">✂️ Salon - Làm tóc</option>
-                        <option value="auto">🔧 Sửa xe - Bảo dưỡng</option>
-                        <option value="food">🍲 Nhà hàng - Ẩm thực</option>
-                        <option value="health">🏥 Y tế - Sức khỏe</option>
-                        <option value="education">🎓 Giáo dục - Đào tạo</option>
-                        <option value="legal">⚖️ Luật sư - Di trú</option>
-                        <option value="insurance">🛡️ Bảo hiểm</option>
-                        <option value="travel">✈️ Du lịch - Vé máy bay</option>
-                        <option value="other">📦 Dịch vụ khác</option>
+                    <select id="typeFilter">
+                        <option value="">Tất cả loại dịch vụ</option>
+                        <option value="nail">Nail & Spa</option>
+                        <option value="hair">Tóc & Làm đẹp</option>
+                        <option value="repair">Sửa chữa</option>
+                        <option value="cleaning">Vệ sinh & Dọn dẹp</option>
+                        <option value="moving">Chuyển nhà</option>
+                        <option value="tax">Kế toán & Thuế</option>
+                        <option value="legal">Luật & Di trú</option>
+                        <option value="education">Giáo dục & Dạy học</option>
+                        <option value="health">Y tế & Sức khỏe</option>
+                        <option value="tech">IT & Công nghệ</option>
+                        <option value="other">Khác</option>
+                    </select>
+                    <select id="priceFilter">
+                        <option value="">Tất cả mức giá</option>
+                        <option value="under-50">Dưới $50</option>
+                        <option value="50-100">$50-100</option>
+                        <option value="100-200">$100-200</option>
+                        <option value="200-500">$200-500</option>
+                        <option value="above-500">Trên $500</option>
                     </select>
                     <input type="text" id="searchInput" placeholder="Tìm kiếm dịch vụ...">
                 </div>
                 <button class="btn" id="postServiceBtn">+ Đăng dịch vụ</button>
             </div>
 
-            <div id="servicesContainer" class="services-grid">
-                <div class="loading">Đang tải dịch vụ</div>
+            <div id="servicesContainer" class="services-container">
+                <div class="loading">Đang tải dịch vụ...</div>
             </div>
         </div>
     </div>
@@ -540,46 +638,47 @@
     <div id="serviceModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>📝 Đăng Dịch Vụ Mới</h2>
+                <h2>📝 Đăng Dịch Vụ</h2>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="serviceForm">
                     <div class="form-group">
-                        <label for="category">Danh mục *</label>
-                        <select id="category" required>
-                            <option value="">Chọn danh mục</option>
-                            <option value="nail">💅 Nail & Spa</option>
-                            <option value="hair">✂️ Salon - Làm tóc</option>
-                            <option value="auto">🔧 Sửa xe - Bảo dưỡng</option>
-                            <option value="food">🍲 Nhà hàng - Ẩm thực</option>
-                            <option value="health">🏥 Y tế - Sức khỏe</option>
-                            <option value="education">🎓 Giáo dục - Đào tạo</option>
-                            <option value="legal">⚖️ Luật sư - Di trú</option>
-                            <option value="insurance">🛡️ Bảo hiểm</option>
-                            <option value="travel">✈️ Du lịch - Vé máy bay</option>
-                            <option value="other">📦 Dịch vụ khác</option>
+                        <label for="title">Tên dịch vụ *</label>
+                        <input type="text" id="title" required placeholder="VD: Dạy piano, Sửa máy lạnh, Làm nail tại nhà...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Mô tả chi tiết *</label>
+                        <textarea id="description" required placeholder="Mô tả chi tiết về dịch vụ, kinh nghiệm, ưu điểm..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service_type">Loại dịch vụ *</label>
+                        <select id="service_type" required>
+                            <option value="">Chọn loại</option>
+                            <option value="nail">Nail & Spa</option>
+                            <option value="hair">Tóc & Làm đẹp</option>
+                            <option value="repair">Sửa chữa</option>
+                            <option value="cleaning">Vệ sinh & Dọn dẹp</option>
+                            <option value="moving">Chuyển nhà</option>
+                            <option value="tax">Kế toán & Thuế</option>
+                            <option value="legal">Luật & Di trú</option>
+                            <option value="education">Giáo dục & Dạy học</option>
+                            <option value="health">Y tế & Sức khỏe</option>
+                            <option value="tech">IT & Công nghệ</option>
+                            <option value="other">Khác</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="serviceName">Tên dịch vụ *</label>
-                        <input type="text" id="serviceName" required placeholder="VD: Tiệm nail Hồng Vân">
+                        <label for="price">Giá dịch vụ</label>
+                        <input type="text" id="price" placeholder="VD: $50/giờ, $200/lần, Thương lượng...">
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Mô tả chi tiết</label>
-                        <textarea id="description" placeholder="Mô tả về dịch vụ, kinh nghiệm, ưu đãi đặc biệt..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="priceRange">Mức giá</label>
-                        <input type="text" id="priceRange" placeholder="VD: $30-$50 hoặc Liên hệ">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="location">Địa chỉ</label>
-                        <input type="text" id="location" placeholder="VD: 123 Main St, Houston, TX 77001">
+                        <label for="location">Địa chỉ cung cấp dịch vụ</label>
+                        <input type="text" id="location" placeholder="VD: 123 Main St, Houston, TX hoặc Tận nơi">
                     </div>
 
                     <div class="form-group">
@@ -593,309 +692,623 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">Số điện thoại *</label>
-                        <input type="tel" id="phone" required placeholder="VD: (713) 123-4567">
+                        <label for="contact">Thông tin liên hệ *</label>
+                        <input type="text" id="contact" required placeholder="Số điện thoại hoặc email">
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="email@example.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="businessHours">Giờ làm việc</label>
-                        <textarea id="businessHours" placeholder="VD: Thứ 2-6: 9AM-7PM, Thứ 7: 9AM-8PM, CN: 10AM-6PM"></textarea>
+                        <label>Hình ảnh dịch vụ</label>
+                        <div class="upload-area" id="uploadArea">
+                            <div id="uploadText">
+                                📷 Kéo thả hoặc click để chọn hình ảnh<br>
+                                <small>PNG, JPG, GIF (tối đa 5MB)</small>
+                            </div>
+                            <div id="uploadPreview" class="upload-preview" style="display: none;"></div>
+                        </div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
                     </div>
 
                     <div class="form-actions">
                         <button type="button" class="btn" style="background: #999" onclick="closeModal()">Hủy</button>
-                        <button type="submit" class="btn btn-success">Đăng dịch vụ</button>
+                        <button type="submit" class="btn">Đăng dịch vụ</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <script type="module">
+    <!-- Modal xem chi tiết -->
+    <div id="detailModal" class="modal detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Chi Tiết Dịch Vụ</h2>
+                <button class="close-modal" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- Content sẽ được load động -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script>
+        console.log('🔥 Services Script loading...');
+        
+        // Global variables
+        var supabase;
+        var currentUser = null;
+        var selectedFile = null;
+        var allServices = []; // Store all services data
+        
         // Supabase config
-        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        var SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
 
-        // Import Supabase
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Biến global
-        let currentUser = null;
-
-        // Kiểm tra đăng nhập
-        async function checkAuth() {
-            const { data: { user } } = await supabase.auth.getUser();
-            currentUser = user;
+        // Initialize app
+        function initializeApp() {
+            console.log('🚀 Initializing app...');
             
-            const userEmail = document.getElementById('userEmail');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const postServiceBtn = document.getElementById('postServiceBtn');
+            var supabaseLib = window.supabase || window.Supabase;
             
-            if (user) {
-                userEmail.textContent = user.email;
-                logoutBtn.style.display = 'block';
-                postServiceBtn.style.display = 'block';
+            if (supabaseLib) {
+                console.log('✅ Supabase library found');
+                supabase = supabaseLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase client created');
+                
+                setupUpload();
+                setupEvents();
+                checkAuth();
+                loadServices();
             } else {
-                userEmail.textContent = 'Chưa đăng nhập';
-                logoutBtn.style.display = 'none';
-                postServiceBtn.style.display = 'none';
+                console.log('⏳ Waiting for Supabase...');
+                setTimeout(initializeApp, 500);
             }
         }
 
-        // Đăng xuất
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.href = 'login.html';
-        });
-
-        // Hiển thị modal
-        document.getElementById('postServiceBtn').addEventListener('click', () => {
-            if (!currentUser) {
-                alert('Vui lòng đăng nhập để đăng dịch vụ!');
-                window.location.href = 'login.html';
+        // Initialize when page loads
+        window.onload = function() {
+            console.log('🚀 Page loaded');
+            initializeApp();
+        };
+        
+        // Setup upload functionality
+        function setupUpload() {
+            console.log('📷 Setting up upload...');
+            
+            var uploadArea = document.getElementById('uploadArea');
+            var imageInput = document.getElementById('imageInput');
+            
+            if (!uploadArea || !imageInput) {
+                console.error('❌ Upload elements not found');
                 return;
             }
-            document.getElementById('serviceModal').style.display = 'block';
-        });
-
-        // Đóng modal
-        function closeModal() {
-            document.getElementById('serviceModal').style.display = 'none';
-            document.getElementById('serviceForm').reset();
+            
+            uploadArea.onclick = function() {
+                imageInput.click();
+            };
+            
+            imageInput.onchange = function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            };
+            
+            uploadArea.ondragover = function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            };
+            
+            uploadArea.ondragleave = function() {
+                uploadArea.classList.remove('dragover');
+            };
+            
+            uploadArea.ondrop = function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) {
+                    handleFileSelect(e.dataTransfer.files[0]);
+                }
+            };
         }
-        window.closeModal = closeModal;
-
-        document.querySelector('.close-modal').addEventListener('click', closeModal);
-
-        // Click bên ngoài modal để đóng
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('serviceModal');
-            if (e.target === modal) {
-                closeModal();
+        
+        // Handle file selection
+        function handleFileSelect(file) {
+            console.log('📷 Processing file:', file.name);
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File quá lớn! Tối đa 5MB.');
+                return;
             }
-        });
+            
+            if (!file.type.startsWith('image/')) {
+                alert('Chỉ chấp nhận file hình ảnh!');
+                return;
+            }
+            
+            selectedFile = file;
+            
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var preview = document.getElementById('uploadPreview');
+                var text = document.getElementById('uploadText');
+                
+                if (preview && text) {
+                    preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+                    preview.style.display = 'block';
+                    text.style.display = 'none';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
 
-        // Xử lý form đăng dịch vụ
-        document.getElementById('serviceForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Setup events
+        function setupEvents() {
+            console.log('🔧 Setting up events...');
+            
+            // Post service button
+            var postBtn = document.getElementById('postServiceBtn');
+            if (postBtn) {
+                postBtn.onclick = function() {
+                    if (!currentUser) {
+                        alert('Vui lòng đăng nhập!');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    document.getElementById('serviceModal').style.display = 'block';
+                };
+            }
+            
+            // Logout button
+            var logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.onclick = function() {
+                    if (supabase) {
+                        supabase.auth.signOut().then(function() {
+                            window.location.href = 'login.html';
+                        });
+                    }
+                };
+            }
+            
+            // Form submit
+            var serviceForm = document.getElementById('serviceForm');
+            if (serviceForm) {
+                serviceForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    handleSubmit();
+                };
+            }
+            
+            // Close modals
+            var closeButtons = document.querySelectorAll('.close-modal');
+            for (var i = 0; i < closeButtons.length; i++) {
+                closeButtons[i].onclick = function() {
+                    var modal = this.closest('.modal');
+                    if (modal) modal.style.display = 'none';
+                };
+            }
+            
+            // Modal background click
+            window.onclick = function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+            };
+            
+            // Search filters
+            setupFilters();
+        }
+        
+        // Setup filters
+        function setupFilters() {
+            var searchInput = document.getElementById('searchInput');
+            var typeFilter = document.getElementById('typeFilter');
+            var priceFilter = document.getElementById('priceFilter');
+            var locationInput = document.getElementById('locationInput');
+            
+            function applyFilters() {
+                var type = typeFilter ? typeFilter.value : '';
+                var location = locationInput ? locationInput.value : '';
+                var price = priceFilter ? priceFilter.value : '';
+                var search = searchInput ? searchInput.value : '';
+                loadServices(type, search, location, price);
+            }
+            
+            if (searchInput) {
+                searchInput.oninput = function() {
+                    setTimeout(applyFilters, 500);
+                };
+            }
+            
+            if (typeFilter) {
+                typeFilter.onchange = applyFilters;
+            }
+            
+            if (priceFilter) {
+                priceFilter.onchange = applyFilters;
+            }
+            
+            if (locationInput) {
+                locationInput.oninput = function() {
+                    setTimeout(applyFilters, 500);
+                };
+            }
+        }
+
+        // Check auth
+        function checkAuth() {
+            console.log('🔐 Checking auth...');
+            
+            supabase.auth.getUser().then(function(response) {
+                var user = response.data.user;
+                currentUser = user;
+                
+                var userEmail = document.getElementById('userEmail');
+                var logoutBtn = document.getElementById('logoutBtn');
+                
+                if (user) {
+                    if (userEmail) userEmail.textContent = user.email;
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+                    console.log('✅ User logged in:', user.email);
+                } else {
+                    if (userEmail) userEmail.textContent = 'Chưa đăng nhập';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                }
+            });
+        }
+
+        // Handle form submission
+        function handleSubmit() {
+            console.log('📝 Form submitted');
             
             if (!currentUser) {
                 alert('Vui lòng đăng nhập!');
                 return;
             }
 
-            const serviceData = {
-                user_id: currentUser.id,
-                category: document.getElementById('category').value,
-                service_name: document.getElementById('serviceName').value,
-                description: document.getElementById('description').value,
-                price_range: document.getElementById('priceRange').value,
-                location: document.getElementById('location').value,
-                city: document.getElementById('city').value,
-                zipcode: document.getElementById('zipcode').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                business_hours: document.getElementById('businessHours').value
-            };
+            var submitBtn = document.querySelector('#serviceForm button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Đang đăng...';
+            }
 
-            try {
-                const { data, error } = await supabase
+            var uploadPromise = Promise.resolve(null);
+            
+            if (selectedFile) {
+                uploadPromise = uploadImage(selectedFile);
+            }
+
+            uploadPromise.then(function(imageUrl) {
+                var serviceData = {
+                    user_id: currentUser.id,
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value,
+                    service_type: document.getElementById('service_type').value,
+                    price: document.getElementById('price').value,
+                    location: document.getElementById('location').value,
+                    city: document.getElementById('city').value,
+                    zipcode: document.getElementById('zipcode').value,
+                    contact: document.getElementById('contact').value,
+                    image_url: imageUrl,
+                    status: 'active',
+                    views: 0
+                };
+
+                return supabase
                     .from('services')
-                    .insert([serviceData]);
-
-                if (error) throw error;
-
+                    .insert([serviceData])
+                    .select();
+            }).then(function(response) {
+                if (response.error) throw response.error;
+                
+                console.log('✅ Service saved successfully');
                 alert('Đăng dịch vụ thành công!');
                 closeModal();
                 loadServices();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Lỗi khi đăng dịch vụ: ' + error.message);
+            }).catch(function(error) {
+                console.error('❌ Error:', error);
+                alert('Lỗi: ' + error.message);
+            }).finally(function() {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Đăng dịch vụ';
+                }
+            });
+        }
+
+        // Upload image - Using marketplace bucket with services folder
+        function uploadImage(file) {
+            console.log('📤 Uploading image...');
+            
+            var fileName = 'service_' + Date.now() + '_' + Math.random().toString(36).substring(2) + '.' + file.name.split('.').pop();
+            
+            return supabase.storage
+                .from('marketplace')
+                .upload('services/' + fileName, file)
+                .then(function(response) {
+                    if (response.error) throw response.error;
+                    
+                    var urlResponse = supabase.storage
+                        .from('marketplace')
+                        .getPublicUrl('services/' + fileName);
+                    
+                    console.log('✅ Image uploaded:', urlResponse.data.publicUrl);
+                    return urlResponse.data.publicUrl;
+                });
+        }
+
+        // Close modal
+        function closeModal() {
+            var modal = document.getElementById('serviceModal');
+            var form = document.getElementById('serviceForm');
+            var preview = document.getElementById('uploadPreview');
+            var text = document.getElementById('uploadText');
+            
+            if (modal) modal.style.display = 'none';
+            if (form) form.reset();
+            selectedFile = null;
+            
+            if (preview && text) {
+                preview.style.display = 'none';
+                text.style.display = 'block';
+                preview.innerHTML = '';
             }
-        });
+        }
+        window.closeModal = closeModal;
 
-        // Load và hiển thị dịch vụ
-        async function loadServices(category = '', searchTerm = '', location = '') {
-            const container = document.getElementById('servicesContainer');
-            container.innerHTML = '<div class="loading">Đang tải dịch vụ</div>';
+        // Close detail modal
+        function closeDetailModal() {
+            var modal = document.getElementById('detailModal');
+            if (modal) modal.style.display = 'none';
+        }
+        window.closeDetailModal = closeDetailModal;
 
-            try {
-                let query = supabase
-                    .from('services')
-                    .select('*')
-                    .eq('status', 'active')
-                    .order('created_at', { ascending: false });
+        // View service detail - Using index approach to avoid UUID issues
+        function viewServiceDetail(serviceData) {
+            console.log('👁️ Viewing service detail:', serviceData);
+            
+            if (!serviceData) {
+                console.error('❌ No service data provided');
+                return;
+            }
+            
+            // Update view count
+            var newViews = (serviceData.views || 0) + 1;
+            
+            supabase
+                .from('services')
+                .update({ views: newViews })
+                .eq('id', serviceData.id)
+                .then(function(response) {
+                    console.log('✅ View count updated');
+                    serviceData.views = newViews;
+                    displayServiceDetail(serviceData);
+                    
+                    // Reload services to show updated view count
+                    setTimeout(loadServices, 1000);
+                })
+                .catch(function(error) {
+                    console.error('⚠️ Could not update view count:', error);
+                    // Still show the detail even if view update fails
+                    displayServiceDetail(serviceData);
+                });
+        }
+        
+        // Display service detail in modal
+        function displayServiceDetail(service) {
+            console.log('📋 Displaying service detail');
+            
+            var detailContent = document.getElementById('detailContent');
+            if (!detailContent) return;
+            
+            // Helper function to escape HTML
+            function safe(text) {
+                var div = document.createElement('div');
+                div.textContent = text || '';
+                return div.innerHTML;
+            }
+            
+            var locationInfo = [];
+            if (service.city) locationInfo.push(service.city);
+            if (service.zipcode) locationInfo.push(service.zipcode);
+            var fullLocation = locationInfo.join(', ');
+            
+            var createdDate = new Date(service.created_at);
+            var formattedDate = createdDate.toLocaleDateString('vi-VN');
+            
+            // Get display name for service type
+            var serviceTypes = {
+                'nail': 'Nail & Spa',
+                'hair': 'Tóc & Làm đẹp',
+                'repair': 'Sửa chữa',
+                'cleaning': 'Vệ sinh & Dọn dẹp',
+                'moving': 'Chuyển nhà',
+                'tax': 'Kế toán & Thuế',
+                'legal': 'Luật & Di trú',
+                'education': 'Giáo dục & Dạy học',
+                'health': 'Y tế & Sức khỏe',
+                'tech': 'IT & Công nghệ',
+                'other': 'Khác'
+            };
+            var typeDisplay = serviceTypes[service.service_type] || service.service_type;
+            
+            var html = '<div class="detail-header">';
+            html += '<div class="detail-image">';
+            html += service.image_url ? '<img src="' + safe(service.image_url) + '" alt="Service">' : '🛠️';
+            html += '</div>';
+            html += '<div class="detail-info">';
+            html += '<h3>' + safe(service.title) + '</h3>';
+            html += '<div class="detail-type">' + safe(typeDisplay) + '</div>';
+            html += '</div></div>';
+            
+            html += '<div class="detail-description">' + safe(service.description) + '</div>';
+            
+            html += '<div class="detail-grid">';
+            
+            if (service.price) {
+                html += '<div class="detail-item">';
+                html += '<span class="icon">💵</span>';
+                html += '<span><strong>Giá:</strong> ' + safe(service.price) + '</span>';
+                html += '</div>';
+            }
+            
+            if (service.location) {
+                html += '<div class="detail-item">';
+                html += '<span class="icon">📍</span>';
+                html += '<span><strong>Địa chỉ:</strong> ' + safe(service.location) + '</span>';
+                html += '</div>';
+            }
+            
+            if (fullLocation) {
+                html += '<div class="detail-item">';
+                html += '<span class="icon">🏙️</span>';
+                html += '<span><strong>Khu vực:</strong> ' + safe(fullLocation) + '</span>';
+                html += '</div>';
+            }
+            
+            html += '<div class="detail-item">';
+            html += '<span class="icon">📞</span>';
+            html += '<span><strong>Liên hệ:</strong> ' + safe(service.contact) + '</span>';
+            html += '</div>';
+            
+            html += '<div class="detail-item">';
+            html += '<span class="icon">👁️</span>';
+            html += '<span><strong>Lượt xem:</strong> ' + service.views + '</span>';
+            html += '</div>';
+            
+            html += '<div class="detail-item">';
+            html += '<span class="icon">📅</span>';
+            html += '<span><strong>Đăng ngày:</strong> ' + formattedDate + '</span>';
+            html += '</div>';
+            
+            html += '</div>';
+            
+            detailContent.innerHTML = html;
+            
+            // Show modal
+            var modal = document.getElementById('detailModal');
+            if (modal) modal.style.display = 'block';
+        }
 
-                if (category) {
-                    query = query.eq('category', category);
+        // Load services
+        function loadServices(serviceType, searchTerm, location, price) {
+            console.log('📥 Loading services...');
+            
+            var container = document.getElementById('servicesContainer');
+            if (container) {
+                container.innerHTML = '<div class="loading">Đang tải dịch vụ...</div>';
+            }
+
+            var query = supabase
+                .from('services')
+                .select('*')
+                .eq('status', 'active')
+                .order('created_at', { ascending: false });
+
+            if (serviceType) {
+                query = query.eq('service_type', serviceType);
+            }
+
+            if (searchTerm) {
+                query = query.or('title.ilike.%' + searchTerm + '%,description.ilike.%' + searchTerm + '%');
+            }
+
+            if (location) {
+                if (/^\d{5}$/.test(location)) {
+                    query = query.eq('zipcode', location);
+                } else {
+                    query = query.ilike('city', '%' + location + '%');
                 }
+            }
 
-                if (searchTerm) {
-                    query = query.or(`service_name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
-                }
+            query.then(function(response) {
+                if (response.error) throw response.error;
 
-                // Lọc theo location (zipcode hoặc city)
-                if (location) {
-                    // Kiểm tra nếu là zipcode (5 số) hoặc city name
-                    if (/^\d{5}$/.test(location)) {
-                        query = query.eq('zipcode', location);
-                    } else {
-                        query = query.ilike('city', `%${location}%`);
-                    }
-                }
+                var services = response.data;
+                allServices = services; // Store for later use
+                console.log('✅ Services loaded:', services.length);
 
-                const { data: services, error } = await query;
-
-                if (error) throw error;
+                if (!container) return;
 
                 if (services.length === 0) {
-                    let emptyMessage = '🔍 Không tìm thấy dịch vụ nào';
-                    if (location) {
-                        emptyMessage += ` tại khu vực "${location}"`;
-                    }
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <h3>${emptyMessage}</h3>
-                            <p>Hãy thử tìm kiếm với zipcode hoặc thành phố khác!</p>
-                        </div>
-                    `;
+                    container.innerHTML = '<div class="empty-state"><h3>Không tìm thấy dịch vụ nào</h3></div>';
                     return;
                 }
 
-                // Hiển thị số lượng kết quả và khu vực
-                let resultHeader = '';
-                if (location) {
-                    resultHeader = `<div style="grid-column: 1/-1; padding: 15px; background: #f0f7ff; border-radius: 8px; margin-bottom: 10px; color: #1e3c72;">
-                        <strong>📍 Tìm thấy ${services.length} dịch vụ tại khu vực "${location}"</strong>
-                    </div>`;
-                }
+                // Service type display names
+                var serviceTypes = {
+                    'nail': 'Nail & Spa',
+                    'hair': 'Tóc & Làm đẹp',
+                    'repair': 'Sửa chữa',
+                    'cleaning': 'Vệ sinh & Dọn dẹp',
+                    'moving': 'Chuyển nhà',
+                    'tax': 'Kế toán & Thuế',
+                    'legal': 'Luật & Di trú',
+                    'education': 'Giáo dục & Dạy học',
+                    'health': 'Y tế & Sức khỏe',
+                    'tech': 'IT & Công nghệ',
+                    'other': 'Khác'
+                };
 
-                container.innerHTML = resultHeader + services.map(service => {
-                    const categoryIcons = {
-                        'nail': '💅',
-                        'hair': '✂️',
-                        'auto': '🔧',
-                        'food': '🍲',
-                        'health': '🏥',
-                        'education': '🎓',
-                        'legal': '⚖️',
-                        'insurance': '🛡️',
-                        'travel': '✈️',
-                        'other': '📦'
-                    };
-
-                    const categoryNames = {
-                        'nail': 'Nail & Spa',
-                        'hair': 'Salon - Làm tóc',
-                        'auto': 'Sửa xe - Bảo dưỡng',
-                        'food': 'Nhà hàng - Ẩm thực',
-                        'health': 'Y tế - Sức khỏe',
-                        'education': 'Giáo dục - Đào tạo',
-                        'legal': 'Luật sư - Di trú',
-                        'insurance': 'Bảo hiểm',
-                        'travel': 'Du lịch - Vé máy bay',
-                        'other': 'Dịch vụ khác'
-                    };
-
-                    // Hiển thị city và zipcode
-                    const locationInfo = [];
+                var html = '';
+                for (var i = 0; i < services.length; i++) {
+                    var service = services[i];
+                    var locationInfo = [];
                     if (service.city) locationInfo.push(service.city);
                     if (service.zipcode) locationInfo.push(service.zipcode);
-                    const fullLocation = locationInfo.join(', ');
+                    var fullLocation = locationInfo.join(', ');
+                    var typeDisplay = serviceTypes[service.service_type] || service.service_type;
 
-                    return `
-                        <div class="service-card">
-                            <div class="service-header">
-                                <div class="service-icon">
-                                    ${categoryIcons[service.category] || '📦'}
-                                </div>
-                                <div class="service-category">
-                                    ${categoryNames[service.category] || 'Khác'}
-                                </div>
-                            </div>
-                            <div class="service-body">
-                                <div class="service-name">${service.service_name}</div>
-                                <div class="service-description">
-                                    ${service.description || 'Không có mô tả'}
-                                </div>
-                                <div class="service-info">
-                                    ${service.price_range ? `
-                                        <div class="service-info-item">
-                                            <span class="icon">💵</span>
-                                            <span>${service.price_range}</span>
-                                        </div>
-                                    ` : ''}
-                                    ${service.location ? `
-                                        <div class="service-info-item">
-                                            <span class="icon">📍</span>
-                                            <span>${service.location}</span>
-                                        </div>
-                                    ` : ''}
-                                    ${fullLocation ? `
-                                        <div class="service-info-item">
-                                            <span class="icon">🏙️</span>
-                                            <span>${fullLocation}</span>
-                                        </div>
-                                    ` : ''}
-                                    <div class="service-info-item">
-                                        <span class="icon">📞</span>
-                                        <span>${service.phone}</span>
-                                    </div>
-                                    ${service.business_hours ? `
-                                        <div class="service-info-item">
-                                            <span class="icon">🕐</span>
-                                            <span>${service.business_hours}</span>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                    // Store index instead of ID to avoid UUID issues
+                    html += '<div class="service-card" data-service-index="' + i + '">';
+                    html += '<div class="service-image">';
+                    html += service.image_url ? '<img src="' + service.image_url + '" alt="Service">' : '🛠️';
+                    html += '</div>';
+                    html += '<div class="service-content">';
+                    html += '<div class="service-header">';
+                    html += '<div><div class="service-title">' + (service.title || '') + '</div></div>';
+                    html += '<div class="service-type">' + typeDisplay + '</div>';
+                    html += '</div>';
+                    html += '<div class="service-description">' + (service.description || '') + '</div>';
+                    html += '<div class="service-details">';
+                    if (service.price) {
+                        html += '<div class="service-detail-item"><span class="icon">💵</span><span>' + service.price + '</span></div>';
+                    }
+                    if (service.location) {
+                        html += '<div class="service-detail-item"><span class="icon">📍</span><span>' + service.location + '</span></div>';
+                    }
+                    if (fullLocation) {
+                        html += '<div class="service-detail-item"><span class="icon">🏙️</span><span>' + fullLocation + '</span></div>';
+                    }
+                    html += '<div class="service-detail-item"><span class="icon">📞</span><span>' + (service.contact || '') + '</span></div>';
+                    html += '</div>';
+                    html += '<div class="view-count">👁️ ' + (service.views || 0) + ' lượt xem</div>';
+                    html += '</div></div>';
+                }
 
-            } catch (error) {
-                console.error('Error loading services:', error);
-                container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
-            }
+                container.innerHTML = html;
+                
+                // Add click handlers using index approach
+                var serviceCards = container.querySelectorAll('.service-card');
+                for (var j = 0; j < serviceCards.length; j++) {
+                    (function(card) {
+                        card.onclick = function() {
+                            var index = parseInt(card.getAttribute('data-service-index'));
+                            console.log('📱 Service card clicked, index:', index);
+                            if (!isNaN(index) && allServices[index]) {
+                                viewServiceDetail(allServices[index]);
+                            }
+                        };
+                    })(serviceCards[j]);
+                }
+
+            }).catch(function(error) {
+                console.error('❌ Error loading services:', error);
+                if (container) {
+                    container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
+                }
+            });
         }
-
-        // Tìm kiếm và lọc
-        let searchTimeout;
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                const category = document.getElementById('categoryFilter').value;
-                const location = document.getElementById('locationInput').value;
-                loadServices(category, e.target.value, location);
-            }, 500);
-        });
-
-        document.getElementById('categoryFilter').addEventListener('change', (e) => {
-            const searchTerm = document.getElementById('searchInput').value;
-            const location = document.getElementById('locationInput').value;
-            loadServices(e.target.value, searchTerm, location);
-        });
-
-        // Tìm kiếm theo location
-        let locationTimeout;
-        document.getElementById('locationInput').addEventListener('input', (e) => {
-            clearTimeout(locationTimeout);
-            locationTimeout = setTimeout(() => {
-                const category = document.getElementById('categoryFilter').value;
-                const searchTerm = document.getElementById('searchInput').value;
-                loadServices(category, searchTerm, e.target.value);
-            }, 500);
-        });
-
-        // Khởi động
-        checkAuth();
-        loadServices();
     </script>
 </body>
 </html>
