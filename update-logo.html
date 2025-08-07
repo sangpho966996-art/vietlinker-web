@@ -1,1 +1,509 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Update Logo - VietLinker Digital Marketing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .warning-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .step-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #1e3c72;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .file-input-section {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            border: 2px dashed #2196f3;
+        }
+        
+        .file-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .file-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .file-item:hover {
+            border-color: #2196f3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .file-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: #f8f8f8;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .result-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .logo-preview {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+        
+        #downloadBtn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Auto Update Logo Tool</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Công cụ tự động thay thế logo cho tất cả file HTML của VietLinker Digital Marketing
+        </p>
+        
+        <div class="warning-box">
+            <h3>⚠️ LƯU Ý QUAN TRỌNG:</h3>
+            <ul style="color: #856404; line-height: 1.8;">
+                <li>Tool này tạo ra code để bạn copy/paste vào từng file</li>
+                <li>Bạn cần backup files trước khi thay đổi</li>
+                <li>Kiểm tra kỹ preview trước khi apply</li>
+            </ul>
+        </div>
+        
+        <!-- Logo Preview -->
+        <div class="logo-preview">
+            <h3 style="margin-bottom: 15px; color: #1e3c72;">Logo Handshake Đã Chọn:</h3>
+            <svg width="220" height="60" viewBox="0 0 220 60">
+                <g transform="translate(12, 15)">
+                    <path d="M 5 20 Q 10 15 15 20 L 20 25 L 22 28" stroke="#1e3c72" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M 38 20 Q 33 15 28 20 L 23 25 L 21 28" stroke="#dc143c" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <circle cx="21.5" cy="26" r="2" fill="#ffcc00"/>
+                    <line x1="19" y1="18" x2="24" y2="18" stroke="#666" stroke-width="2" opacity="0.4"/>
+                    <line x1="19" y1="22" x2="24" y2="22" stroke="#666" stroke-width="2" opacity="0.4"/>
+                </g>
+                <text x="60" y="32" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#1e3c72">VietLinker</text>
+                <text x="60" y="48" font-family="Arial, sans-serif" font-size="11" fill="#dc143c">DIGITAL MARKETING</text>
+            </svg>
+        </div>
+        
+        <!-- Step 1: Select Files -->
+        <div class="step-section">
+            <h2><span class="step-number">1</span>Chọn Files Cần Update</h2>
+            <p style="margin: 15px 0;">Chọn các file HTML bạn muốn update logo:</p>
+            
+            <div style="margin: 20px 0;">
+                <button class="btn btn-warning" onclick="selectAll()">✅ Chọn Tất Cả</button>
+                <button class="btn btn-warning" onclick="deselectAll()">❌ Bỏ Chọn Tất Cả</button>
+            </div>
+            
+            <div class="file-list" id="fileList">
+                <!-- Main pages -->
+                <div class="file-item">
+                    <input type="checkbox" id="index" checked>
+                    <label for="index">📄 index.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="about" checked>
+                    <label for="about">📄 about.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="contact" checked>
+                    <label for="contact">📄 contact.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="privacy" checked>
+                    <label for="privacy">📄 privacy.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="terms" checked>
+                    <label for="terms">📄 terms.html</label>
+                </div>
+                
+                <!-- Category pages -->
+                <div class="file-item">
+                    <input type="checkbox" id="marketplace" checked>
+                    <label for="marketplace">📄 marketplace.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="jobs" checked>
+                    <label for="jobs">📄 jobs.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="services" checked>
+                    <label for="services">📄 services.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="food" checked>
+                    <label for="food">📄 food.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="realestate" checked>
+                    <label for="realestate">📄 realestate.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="classifieds" checked>
+                    <label for="classifieds">📄 classifieds.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="promotions" checked>
+                    <label for="promotions">📄 promotions.html</label>
+                </div>
+                
+                <!-- User pages -->
+                <div class="file-item">
+                    <input type="checkbox" id="login" checked>
+                    <label for="login">📄 login.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="register" checked>
+                    <label for="register">📄 register.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="profile" checked>
+                    <label for="profile">📄 profile.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="post-form" checked>
+                    <label for="post-form">📄 post-form.html</label>
+                </div>
+                <div class="file-item">
+                    <input type="checkbox" id="my-posts" checked>
+                    <label for="my-posts">📄 my-posts.html</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Generate Code -->
+        <div class="step-section">
+            <h2><span class="step-number">2</span>Tạo Code Logo</h2>
+            <p style="margin: 15px 0;">Click nút bên dưới để tạo code logo cho các file đã chọn:</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn btn-primary" onclick="generateLogoCode()">
+                    🎨 Tạo Code Logo
+                </button>
+            </div>
+            
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+        </div>
+        
+        <!-- Step 3: Results -->
+        <div class="step-section" id="resultsSection" style="display: none;">
+            <h2><span class="step-number">3</span>Code Logo Cho Từng File</h2>
+            <p style="margin: 15px 0;">Copy code bên dưới và paste vào từng file tương ứng:</p>
+            
+            <div id="codeResults"></div>
+        </div>
+        
+        <!-- Final Instructions -->
+        <div class="result-box" id="resultBox">
+            <h3 style="color: #155724; margin-bottom: 15px;">✅ Hoàn Thành!</h3>
+            <p style="color: #155724; line-height: 1.8;">
+                Đã tạo code logo cho <span id="fileCount">0</span> files.<br>
+                Bây giờ bạn cần:
+            </p>
+            <ol style="color: #155724; line-height: 1.8; margin-top: 10px;">
+                <li>Copy code cho từng file ở trên</li>
+                <li>Mở file HTML tương ứng</li>
+                <li>Tìm và thay thế phần logo cũ</li>
+                <li>Lưu file và commit lên GitHub</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // Logo SVG templates
+        const headerLogoSVG = `<svg width="200" height="50" viewBox="0 0 200 50">
+        <g transform="translate(10, 12)">
+            <path d="M 3 15 Q 7 11 11 15 L 14 18 L 15 20" stroke="#1e3c72" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M 27 15 Q 23 11 19 15 L 16 18 L 15 20" stroke="#dc143c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="15" cy="19" r="1.5" fill="#ffcc00"/>
+            <line x1="13" y1="13" x2="17" y2="13" stroke="#666" stroke-width="1.5" opacity="0.4"/>
+            <line x1="13" y1="16" x2="17" y2="16" stroke="#666" stroke-width="1.5" opacity="0.4"/>
+        </g>
+        <text x="45" y="26" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e3c72">VietLinker</text>
+        <text x="45" y="38" font-family="Arial, sans-serif" font-size="9" fill="#dc143c">DIGITAL MARKETING</text>
+    </svg>`;
+        
+        const footerLogoSVG = `<svg width="220" height="60" viewBox="0 0 220 60">
+        <g transform="translate(12, 15)">
+            <path d="M 5 20 Q 10 15 15 20 L 20 25 L 22 28" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M 38 20 Q 33 15 28 20 L 23 25 L 21 28" stroke="#ff6b6b" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="21.5" cy="26" r="2" fill="#ffcc00"/>
+        </g>
+        <text x="60" y="32" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">VietLinker</text>
+        <text x="60" y="48" font-family="Arial, sans-serif" font-size="11" fill="#ffcc00">DIGITAL MARKETING</text>
+    </svg>`;
+        
+        function selectAll() {
+            document.querySelectorAll('#fileList input[type="checkbox"]').forEach(cb => {
+                cb.checked = true;
+            });
+        }
+        
+        function deselectAll() {
+            document.querySelectorAll('#fileList input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+        }
+        
+        function generateLogoCode() {
+            const selectedFiles = [];
+            document.querySelectorAll('#fileList input[type="checkbox"]:checked').forEach(cb => {
+                selectedFiles.push(cb.id + '.html');
+            });
+            
+            if (selectedFiles.length === 0) {
+                alert('Vui lòng chọn ít nhất 1 file!');
+                return;
+            }
+            
+            // Show progress bar
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            let progress = 0;
+            const progressFill = document.getElementById('progressFill');
+            const codeResults = document.getElementById('codeResults');
+            codeResults.innerHTML = '';
+            
+            // Generate code for each file
+            selectedFiles.forEach((file, index) => {
+                setTimeout(() => {
+                    progress = Math.round(((index + 1) / selectedFiles.length) * 100);
+                    progressFill.style.width = progress + '%';
+                    progressFill.textContent = progress + '%';
+                    
+                    // Create code block for this file
+                    const fileBlock = document.createElement('div');
+                    fileBlock.innerHTML = `
+                        <div style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                            <h4 style="color: #1e3c72; margin-bottom: 15px;">📄 ${file}</h4>
+                            <p style="color: #666; margin-bottom: 10px;">Tìm và thay thế <code>&lt;img src="logo.png"&gt;</code> bằng:</p>
+                            
+                            <h5 style="margin-top: 15px;">Header Logo:</h5>
+                            <div class="code-block">
+&lt;a href="index.html" class="navbar-brand" style="display: flex; align-items: center; text-decoration: none;"&gt;
+    ${headerLogoSVG}
+&lt;/a&gt;
+                            </div>
+                            <button class="copy-btn" onclick="copyCode(this, 'header')">📋 Copy Header Logo</button>
+                            
+                            ${file !== 'login.html' && file !== 'register.html' ? `
+                            <h5 style="margin-top: 20px;">Footer Logo:</h5>
+                            <div class="code-block">
+&lt;div class="footer-logo" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;"&gt;
+    ${footerLogoSVG}
+&lt;/div&gt;
+                            </div>
+                            <button class="copy-btn" onclick="copyCode(this, 'footer')">📋 Copy Footer Logo</button>
+                            ` : '<p style="color: #28a745;">✓ File này chỉ cần update header</p>'}
+                        </div>
+                    `;
+                    codeResults.appendChild(fileBlock);
+                    
+                    if (index === selectedFiles.length - 1) {
+                        // Show completion message
+                        document.getElementById('resultBox').style.display = 'block';
+                        document.getElementById('fileCount').textContent = selectedFiles.length;
+                    }
+                }, index * 100);
+            });
+        }
+        
+        function copyCode(button, type) {
+            const codeBlock = button.previousElementSibling;
+            const code = codeBlock.textContent.trim();
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '✅ Đã copy!';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = '#6c757d';
+                }, 2000);
+            }).catch(err => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                button.innerHTML = '✅ Đã copy!';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
