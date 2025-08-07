@@ -1105,7 +1105,7 @@
         }
         window.closeDetailModal = closeDetailModal;
 
-        // Show job detail
+        // Show job detail - FIXED VERSION
         function showJobDetail(jobId) {
             console.log('🔍 Showing job detail:', jobId);
             
@@ -1114,23 +1114,29 @@
                 return;
             }
 
-            // First, update view count
+            // First get current job data to get the current view count
             supabase
                 .from('jobs')
-                .update({ views: supabase.sql('views + 1') })
+                .select('*')
                 .eq('id', jobId)
-                .then(function(updateResponse) {
-                    if (updateResponse.error) {
-                        console.error('⚠️ Error updating views:', updateResponse.error);
-                    } else {
-                        console.log('✅ View count updated');
+                .single()
+                .then(function(response) {
+                    if (response.error) {
+                        throw response.error;
                     }
                     
-                    // Then load job details
+                    var job = response.data;
+                    var currentViews = job.views || 0;
+                    var newViews = currentViews + 1;
+                    
+                    console.log('📊 Current views:', currentViews, '→ New views:', newViews);
+                    
+                    // Update views with the new count
                     return supabase
                         .from('jobs')
-                        .select('*')
+                        .update({ views: newViews })
                         .eq('id', jobId)
+                        .select()
                         .single();
                 })
                 .then(function(response) {
@@ -1139,7 +1145,7 @@
                     }
                     
                     var job = response.data;
-                    console.log('📋 Job details loaded:', job);
+                    console.log('✅ View count updated, job details:', job);
                     
                     var detailContent = document.getElementById('detailContent');
                     if (!detailContent) {
@@ -1169,7 +1175,7 @@
                                 '<div class="detail-type">' + job.job_type + '</div>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="detail-description">' + job.description + '</div>' +
+                        '<div class="detail-description">' + job.description.replace(/\n/g, '<br>') + '</div>' +
                         '<div class="detail-grid">' +
                             (job.salary ? 
                                 '<div class="detail-item">' +
@@ -1195,7 +1201,7 @@
                             '</div>' +
                             '<div class="detail-item">' +
                                 '<span class="icon">👁️</span>' +
-                                '<span><strong>Lượt xem:</strong> ' + ((job.views || 0) + 1) + '</span>' +
+                                '<span><strong>Lượt xem:</strong> ' + job.views + '</span>' +
                             '</div>' +
                             '<div class="detail-item">' +
                                 '<span class="icon">📅</span>' +
