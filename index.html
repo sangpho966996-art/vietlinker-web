@@ -1195,7 +1195,7 @@
                     </select>
                 </div>
                 
-                <button class="search-btn-primary" id="searchButton">
+                <button class="search-btn-primary" id="searchButton" onclick="performGlobalSearch()">
                     <span>🔍</span>
                     <span>TÌM KIẾM</span>
                 </button>
@@ -1217,7 +1217,7 @@
         <div class="search-results-container">
             <div class="search-results-header">
                 <h2>Kết quả tìm kiếm</h2>
-                <button class="close-search-modal" id="closeModalBtn">&times;</button>
+                <button class="close-search-modal" id="closeModalBtn" onclick="closeSearchModal()">&times;</button>
             </div>
             <div class="search-results-body" id="searchResultsBody">
                 <!-- Search results will be displayed here -->
@@ -1452,444 +1452,279 @@
         ➕
     </a>
     
-    <!-- Supabase CDN -->
+    <!-- Supabase CDN - LOAD FIRST -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
     
+    <!-- MAIN SCRIPT - SIMPLE AND WORKING -->
     <script>
-        console.log('Script starting...');
+        // SIMPLE WORKING SCRIPT - NO COMPLEX FUNCTIONS
+        console.log('🚀 VietLinker Starting...');
         
-        // Global variables
-        let supabaseClient = null;
-        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
-        
-        // Function to initialize Supabase after library loads
-        function initializeSupabase() {
-            if (typeof window.supabase !== 'undefined') {
-                console.log('✅ Supabase library loaded');
-                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase client created:', supabaseClient);
-                return true;
+        // GLOBAL SEARCH FUNCTION
+        function performGlobalSearch() {
+            console.log('🔍 Search function called');
+            
+            var keyword = document.getElementById('searchKeyword').value;
+            var location = document.getElementById('searchLocation').value;
+            var category = document.getElementById('searchCategory').value;
+            
+            console.log('Search params:', { keyword: keyword, location: location, category: category });
+            
+            if (!keyword && !location && !category) {
+                alert('Vui lòng nhập thông tin tìm kiếm!');
+                return;
             }
-            console.log('⏳ Waiting for Supabase library...');
-            return false;
+            
+            // Show modal
+            var modal = document.getElementById('searchResultsModal');
+            var body = document.getElementById('searchResultsBody');
+            modal.style.display = 'block';
+            body.innerHTML = '<p style="text-align: center; padding: 40px;">🔍 Đang tìm kiếm...</p>';
+            
+            // Create Supabase client
+            var supabase = window.supabase.createClient(
+                'https://wwlmvcsozavqfvwlxkrt.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
+            );
+            
+            // Search tables
+            var tables = category ? [category] : ['jobs', 'marketplace', 'services', 'food_dining', 'real_estate', 'classifieds'];
+            var allResults = [];
+            var completed = 0;
+            
+            tables.forEach(function(table) {
+                var query = supabase.from(table).select('*').eq('status', 'active');
+                
+                if (keyword) {
+                    if (table === 'food_dining') {
+                        query = query.or('title.ilike.%' + keyword + '%,description.ilike.%' + keyword + '%,business_name.ilike.%' + keyword + '%');
+                    } else {
+                        query = query.or('title.ilike.%' + keyword + '%,description.ilike.%' + keyword + '%');
+                    }
+                }
+                
+                if (location) {
+                    if (/^\d{5}$/.test(location)) {
+                        query = query.eq('zipcode', location);
+                    } else {
+                        query = query.ilike('city', '%' + location + '%');
+                    }
+                }
+                
+                query.limit(10).then(function(result) {
+                    completed++;
+                    
+                    if (result.data && result.data.length > 0) {
+                        allResults.push({ table: table, data: result.data });
+                    }
+                    
+                    // When all searches complete
+                    if (completed === tables.length) {
+                        displayResults(allResults);
+                    }
+                });
+            });
         }
         
-        // Wait for both DOM and Supabase to be ready
-        function waitForSupabase(callback) {
-            let attempts = 0;
-            const maxAttempts = 50; // 5 seconds max wait
+        // Display search results
+        function displayResults(allResults) {
+            var body = document.getElementById('searchResultsBody');
             
-            const checkInterval = setInterval(() => {
-                attempts++;
-                if (initializeSupabase()) {
-                    clearInterval(checkInterval);
-                    callback();
-                } else if (attempts >= maxAttempts) {
-                    clearInterval(checkInterval);
-                    console.error('❌ Supabase library failed to load');
-                }
-            }, 100);
-        }
-        
-        // Main initialization
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded!');
-            
-            // Wait for Supabase then initialize everything
-            waitForSupabase(function() {
-                console.log('🚀 Initializing app...');
-            
-            // Check authentication status
-            async function checkAuth() {
-                try {
-                    const { data: { user } } = await supabaseClient.auth.getUser();
-                    
-                    const userInfo = document.getElementById('userInfo');
-                    const authButtons = document.getElementById('authButtons');
-                    const userMenu = document.getElementById('userMenu');
-                    
-                    if (user) {
-                        // User is logged in
-                        userInfo.classList.add('active');
-                        authButtons.classList.add('hidden');
-                        userMenu.classList.add('active');
-                        
-                        // Get user details
-                        const { data: userData } = await supabaseClient
-                            .from('users')
-                            .select('full_name, name')
-                            .eq('email', user.email)
-                            .single();
-                        
-                        if (userData) {
-                            const displayName = userData.full_name || userData.name || user.email;
-                            document.getElementById('userName').textContent = displayName;
-                            const firstLetter = displayName.charAt(0).toUpperCase();
-                            document.getElementById('userAvatar').textContent = firstLetter;
-                        }
-                    } else {
-                        // User is not logged in
-                        userInfo.classList.remove('active');
-                        authButtons.classList.remove('hidden');
-                        userMenu.classList.remove('active');
-                    }
-                } catch (error) {
-                    console.error('Auth check error:', error);
-                }
-            }
-            
-            // Get user location
-            async function getUserLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        async (position) => {
-                            const { latitude, longitude } = position.coords;
-                            console.log('Location detected:', latitude, longitude);
-                            
-                            // Show location detected status
-                            const locationStatus = document.getElementById('locationStatus');
-                            if (locationStatus) {
-                                locationStatus.classList.add('active');
-                            }
-                        },
-                        (error) => {
-                            console.log('Location access denied:', error);
-                        }
-                    );
-                }
-            }
-            
-            // Global search function - WORKING VERSION
-            window.performGlobalSearch = async function() {
-                console.log('🔍 === SEARCH STARTED ===');
+            if (allResults.length === 0) {
+                body.innerHTML = '<p style="text-align: center; padding: 40px;">😔 Không tìm thấy kết quả nào.</p>';
+            } else {
+                var html = '<div style="padding: 20px;">';
+                html += '<h3 style="color: #1e3c72;">🎯 Kết quả tìm kiếm</h3>';
                 
-                const keyword = document.getElementById('searchKeyword').value;
-                const location = document.getElementById('searchLocation').value;
-                const category = document.getElementById('searchCategory').value;
-                
-                console.log('Search params:', { keyword, location, category });
-                
-                if (!keyword && !location && !category) {
-                    alert('Vui lòng nhập thông tin tìm kiếm!');
-                    return;
-                }
-                
-                // Show loading state
-                const searchButton = document.getElementById('searchButton');
-                const originalText = searchButton.innerHTML;
-                searchButton.innerHTML = '<span>⏳</span><span>ĐANG TÌM...</span>';
-                searchButton.disabled = true;
-                
-                // Show modal with loading
-                const modal = document.getElementById('searchResultsModal');
-                const body = document.getElementById('searchResultsBody');
-                modal.style.display = 'block';
-                body.innerHTML = '<p style="text-align: center; padding: 40px;">🔍 Đang tìm kiếm...</p>';
-                
-                try {
-                    // Tables to search
-                    const tables = category ? [category] : ['jobs', 'marketplace', 'services', 'food_dining', 'real_estate', 'classifieds', 'promotions'];
-                    const allResults = [];
-                    
-                    console.log('Searching in tables:', tables);
-                    
-                    for (const table of tables) {
-                        console.log(`Searching in ${table}...`);
-                        
-                        let query = supabaseClient.from(table).select('*').eq('status', 'active');
-                        
-                        if (keyword) {
-                            if (table === 'food_dining') {
-                                query = query.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%,business_name.ilike.%${keyword}%`);
-                            } else {
-                                query = query.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%`);
-                            }
-                        }
-                        
-                        if (location) {
-                            if (/^\d{5}$/.test(location)) {
-                                query = query.eq('zipcode', location);
-                            } else {
-                                query = query.ilike('city', `%${location}%`);
-                            }
-                        }
-                        
-                        const { data, error } = await query.limit(10);
-                        
-                        if (error) {
-                            console.error(`Error searching ${table}:`, error);
-                            continue;
-                        }
-                        
-                        if (data && data.length > 0) {
-                            console.log(`Found ${data.length} results in ${table}`);
-                            allResults.push({ table, data });
-                        }
-                    }
-                    
-                    // Display results
-                    if (allResults.length === 0) {
-                        body.innerHTML = '<p style="text-align: center; padding: 40px;">😔 Không tìm thấy kết quả nào.</p>';
-                    } else {
-                        let html = '<div style="padding: 20px;">';
-                        html += '<h3 style="color: #1e3c72;">🎯 Kết quả tìm kiếm</h3>';
-                        
-                        const tableNames = {
-                            'jobs': '💼 Việc Làm',
-                            'marketplace': '🛒 Mua Bán',
-                            'services': '🤝 Dịch Vụ',
-                            'food_dining': '🍜 Ăn Uống',
-                            'real_estate': '🏠 Bất Động Sản',
-                            'classifieds': '📋 Rao Vặt',
-                            'promotions': '🎁 Khuyến Mãi'
-                        };
-                        
-                        allResults.forEach(result => {
-                            html += `<div style="margin: 20px 0;">`;
-                            html += `<h4 style="color: #1e3c72; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">`;
-                            html += `${tableNames[result.table]} (${result.data.length} kết quả)</h4>`;
-                            
-                            result.data.forEach(item => {
-                                const title = item.title || item.business_name || item.name || 'No title';
-                                const desc = item.description || '';
-                                const city = item.city || '';
-                                const price = item.price || item.salary || item.price_range || '';
-                                
-                                html += `<div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer;"
-                                         onclick="window.location.href='${result.table.replace('_', '')}.html'"
-                                         onmouseover="this.style.background='#e9ecef'" 
-                                         onmouseout="this.style.background='#f8f9fa'">`;
-                                html += `<h5 style="color: #1e3c72; margin: 0 0 8px 0;">${escapeHtml(title)}</h5>`;
-                                if (desc) html += `<p style="color: #666; margin: 0 0 8px 0; font-size: 14px;">${escapeHtml(desc.substring(0, 100))}...</p>`;
-                                html += `<div style="display: flex; gap: 15px; font-size: 13px; color: #999;">`;
-                                if (city) html += `<span>📍 ${escapeHtml(city)}</span>`;
-                                if (price) html += `<span>💰 ${escapeHtml(price.toString())}</span>`;
-                                html += `</div></div>`;
-                            });
-                            
-                            html += `</div>`;
-                        });
-                        
-                        html += '</div>';
-                        body.innerHTML = html;
-                    }
-                    
-                    console.log('✅ Search complete!');
-                    
-                } catch (error) {
-                    console.error('❌ Search error:', error);
-                    body.innerHTML = '<p style="text-align: center; padding: 40px; color: red;">❌ Lỗi khi tìm kiếm! Vui lòng thử lại.</p>';
-                } finally {
-                    // Reset button state
-                    searchButton.innerHTML = originalText;
-                    searchButton.disabled = false;
-                }
-            }
-            
-            // Display search results
-            function displaySearchResults(results, keyword, location) {
-                console.log('Displaying results:', results);
-                
-                const modal = document.getElementById('searchResultsModal');
-                const body = document.getElementById('searchResultsBody');
-                
-                if (!modal || !body) {
-                    console.error('Modal elements not found');
-                    return;
-                }
-                
-                if (results.length === 0) {
-                    body.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">Không tìm thấy kết quả nào.</p>';
-                } else {
-                    let html = '<h3 style="color: #1e3c72; margin-bottom: 20px;">Tìm thấy kết quả cho: "' + escapeHtml(keyword || '') + '" ' + (location ? 'tại ' + escapeHtml(location) : '') + '</h3>';
-                    
-                    const categoryNames = {
-                        'jobs': '💼 Việc Làm',
-                        'marketplace': '🛒 Mua Bán',
-                        'services': '🤝 Dịch Vụ',
-                        'food_dining': '🍜 Ăn Uống',
-                        'real_estate': '🏠 Bất Động Sản',
-                        'classifieds': '📋 Rao Vặt',
-                        'promotions': '🎁 Khuyến Mãi'
-                    };
-                    
-                    results.forEach(result => {
-                        html += '<div style="margin: 30px 0;">';
-                        html += '<h4 style="color: #1e3c72; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">' + categoryNames[result.category] + '</h4>';
-                        html += '<div style="display: grid; gap: 15px; margin-top: 15px;">';
-                        
-                        result.items.forEach(item => {
-                            const title = item.title || item.business_name || item.name || 'Không có tiêu đề';
-                            const description = item.description || '';
-                            const itemLocation = item.city || item.location || '';
-                            const price = item.price || item.salary || item.price_range || '';
-                            
-                            // Escape HTML to prevent XSS
-                            const safeTitle = escapeHtml(title);
-                            const safeDescription = escapeHtml(description);
-                            const safeLocation = escapeHtml(itemLocation);
-                            const safePrice = escapeHtml(price);
-                            
-                            html += '<div style="background: #f8f9fa; padding: 15px; border-radius: 10px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background=\'#e9ecef\'" onmouseout="this.style.background=\'#f8f9fa\'" onclick="window.location.href=\'' + result.category.replace('_', '') + '.html\'">';
-                            html += '<h5 style="color: #1e3c72; margin: 0 0 8px 0;">' + safeTitle + '</h5>';
-                            if (description) {
-                                html += '<p style="color: #666; margin: 0 0 8px 0; font-size: 14px;">' + safeDescription.substring(0, 100) + '...</p>';
-                            }
-                            html += '<div style="display: flex; gap: 15px; font-size: 13px; color: #999;">';
-                            if (itemLocation) html += '<span>📍 ' + safeLocation + '</span>';
-                            if (price) html += '<span>💰 ' + safePrice + '</span>';
-                            html += '</div>';
-                            html += '</div>';
-                        });
-                        
-                        html += '</div>';
-                        html += '</div>';
-                    });
-                }
-                
-                body.innerHTML = html;
-                modal.style.display = 'block';
-            }
-            
-            // Escape HTML function to prevent XSS
-            function escapeHtml(text) {
-                if (!text) return '';
-                const map = {
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#039;'
+                var tableNames = {
+                    'jobs': '💼 Việc Làm',
+                    'marketplace': '🛒 Mua Bán',
+                    'services': '🤝 Dịch Vụ',
+                    'food_dining': '🍜 Ăn Uống',
+                    'real_estate': '🏠 Bất Động Sản',
+                    'classifieds': '📋 Rao Vặt',
+                    'promotions': '🎁 Khuyến Mãi'
                 };
-                return text.toString().replace(/[&<>"']/g, m => map[m]);
+                
+                allResults.forEach(function(result) {
+                    html += '<div style="margin: 20px 0;">';
+                    html += '<h4 style="color: #1e3c72; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">';
+                    html += tableNames[result.table] + ' (' + result.data.length + ' kết quả)</h4>';
+                    
+                    result.data.forEach(function(item) {
+                        var title = item.title || item.business_name || item.name || 'No title';
+                        var desc = item.description || '';
+                        var city = item.city || '';
+                        var price = item.price || item.salary || item.price_range || '';
+                        
+                        html += '<div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer;"';
+                        html += ' onmouseover="this.style.background=\'#e9ecef\'"';
+                        html += ' onmouseout="this.style.background=\'#f8f9fa\'"';
+                        html += ' onclick="window.location.href=\'' + result.table.replace('_', '') + '.html\'">';
+                        html += '<h5 style="color: #1e3c72; margin: 0 0 8px 0;">' + title + '</h5>';
+                        if (desc) {
+                            html += '<p style="color: #666; margin: 0 0 8px 0; font-size: 14px;">' + desc.substring(0, 100) + '...</p>';
+                        }
+                        html += '<div style="display: flex; gap: 15px; font-size: 13px; color: #999;">';
+                        if (city) html += '<span>📍 ' + city + '</span>';
+                        if (price) html += '<span>💰 ' + price + '</span>';
+                        html += '</div></div>';
+                    });
+                    
+                    html += '</div>';
+                });
+                
+                html += '</div>';
+                body.innerHTML = html;
             }
             
-            // Close search modal
-            window.closeSearchModal = function() {
-                const modal = document.getElementById('searchResultsModal');
-                if (modal) {
+            console.log('✅ Search results displayed');
+        }
+        
+        // Close modal function
+        function closeSearchModal() {
+            document.getElementById('searchResultsModal').style.display = 'none';
+        }
+        
+        // Sign out function
+        function signOut() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                var supabase = window.supabase.createClient(
+                    'https://wwlmvcsozavqfvwlxkrt.supabase.co',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
+                );
+                supabase.auth.signOut().then(function() {
+                    window.location.reload();
+                });
+            }
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('load', function() {
+            console.log('✅ Page loaded, initializing...');
+            
+            // Check if Supabase loaded
+            if (typeof window.supabase === 'undefined') {
+                console.error('❌ Supabase not loaded!');
+                return;
+            }
+            
+            console.log('✅ Supabase is available');
+            
+            // Add event listeners for Enter key
+            var searchKeyword = document.getElementById('searchKeyword');
+            if (searchKeyword) {
+                searchKeyword.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performGlobalSearch();
+                    }
+                });
+            }
+            
+            var searchLocation = document.getElementById('searchLocation');
+            if (searchLocation) {
+                searchLocation.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performGlobalSearch();
+                    }
+                });
+            }
+            
+            // Quick search tags
+            document.querySelectorAll('.quick-search-tag').forEach(function(tag) {
+                tag.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('searchKeyword').value = this.getAttribute('data-search');
+                    performGlobalSearch();
+                });
+            });
+            
+            // Click outside modal to close
+            window.addEventListener('click', function(e) {
+                var modal = document.getElementById('searchResultsModal');
+                if (e.target === modal) {
                     modal.style.display = 'none';
                 }
-            }
+            });
             
-            // Sign Out function - FIXED
-            window.signOut = async function() {
-                if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                    try {
-                        const { error } = await supabaseClient.auth.signOut();
-                        if (!error) {
-                            window.location.reload();
-                        } else {
-                            console.error('Sign out error:', error);
-                        }
-                    } catch (error) {
-                        console.error('Sign out error:', error);
-                    }
-                }
-            }
+            // Check authentication
+            checkAuth();
             
-            // Initialize everything after Supabase is ready
-            initializeApp();
+            // Get user location
+            getUserLocation();
             
-            // Main app initialization
-            function initializeApp() {
-                console.log('✅ App initialization started');
-                
-                // Check authentication
-                checkAuth();
-                
-                // Get location
-                getUserLocation();
-                
-                // Setup search functionality
-                setupSearch();
-                
-                // Setup other event listeners
-                setupEventListeners();
-                
-                console.log('✅ App initialization complete');
-            }
+            console.log('✅ VietLinker Ready!');
+            console.log('💡 Try searching for: nail, phở, honda, etc.');
+        });
+        
+        // Check authentication
+        function checkAuth() {
+            if (typeof window.supabase === 'undefined') return;
             
-            // Setup search functionality
-            function setupSearch() {
-                // Attach to search button
-                const searchBtn = document.getElementById('searchButton');
-                if (searchBtn) {
-                    searchBtn.onclick = function(e) {
-                        e.preventDefault();
-                        console.log('Search button clicked');
-                        window.performGlobalSearch();
-                    };
-                    console.log('✅ Search function attached to button');
-                }
-                
-                // Attach to Enter key
-                const searchKeyword = document.getElementById('searchKeyword');
-                if (searchKeyword) {
-                    searchKeyword.addEventListener('keypress', function(e) {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                            window.performGlobalSearch();
-                        }
-                    });
-                }
-                
-                const searchLocation = document.getElementById('searchLocation');
-                if (searchLocation) {
-                    searchLocation.addEventListener('keypress', function(e) {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                            window.performGlobalSearch();
-                        }
-                    });
-                }
-                
-                // Quick search tags
-                document.querySelectorAll('.quick-search-tag').forEach(tag => {
-                    tag.onclick = function(e) {
-                        e.preventDefault();
-                        document.getElementById('searchKeyword').value = this.getAttribute('data-search');
-                        console.log('Quick search:', this.getAttribute('data-search'));
-                        window.performGlobalSearch();
-                    };
-                });
-                
-                // Close modal handlers
-                const closeBtn = document.getElementById('closeModalBtn');
-                if (closeBtn) {
-                    closeBtn.onclick = function() {
-                        document.getElementById('searchResultsModal').style.display = 'none';
-                    };
-                }
-                
-                // Click outside to close
-                window.addEventListener('click', function(e) {
-                    const modal = document.getElementById('searchResultsModal');
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-                
-                console.log('✅ Search setup complete');
-            }
+            var supabase = window.supabase.createClient(
+                'https://wwlmvcsozavqfvwlxkrt.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
+            );
             
-            // Setup other event listeners
-            function setupEventListeners() {
-                // Smooth scroll for anchor links
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const targetId = this.getAttribute('href');
-                        if (targetId && targetId !== '#') {
-                            const target = document.querySelector(targetId);
-                            if (target) {
-                                target.scrollIntoView({ behavior: 'smooth' });
+            supabase.auth.getUser().then(function(result) {
+                var user = result.data.user;
+                var userInfo = document.getElementById('userInfo');
+                var authButtons = document.getElementById('authButtons');
+                var userMenu = document.getElementById('userMenu');
+                
+                if (user) {
+                    // User is logged in
+                    userInfo.classList.add('active');
+                    authButtons.classList.add('hidden');
+                    userMenu.classList.add('active');
+                    
+                    // Get user details
+                    supabase.from('users')
+                        .select('full_name, name')
+                        .eq('email', user.email)
+                        .single()
+                        .then(function(result) {
+                            if (result.data) {
+                                var displayName = result.data.full_name || result.data.name || user.email;
+                                document.getElementById('userName').textContent = displayName;
+                                document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
                             }
-                        }
-                    });
+                        });
+                } else {
+                    // User is not logged in
+                    userInfo.classList.remove('active');
+                    authButtons.classList.remove('hidden');
+                    userMenu.classList.remove('active');
+                }
+            });
+        }
+        
+        // Get user location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    console.log('Location detected:', position.coords.latitude, position.coords.longitude);
+                    var locationStatus = document.getElementById('locationStatus');
+                    if (locationStatus) {
+                        locationStatus.classList.add('active');
+                    }
                 });
             }
-            
+        }
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                var targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    var target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
             });
         });
+    </script>
+</body>
+</html>
