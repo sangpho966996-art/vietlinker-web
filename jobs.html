@@ -1108,7 +1108,117 @@
         // Show job detail
         function showJobDetail(jobId) {
             console.log('🔍 Showing job detail:', jobId);
-            // Implementation for job detail modal
+            
+            if (!supabase) {
+                console.error('❌ Supabase not ready');
+                return;
+            }
+
+            // First, update view count
+            supabase
+                .from('jobs')
+                .update({ views: supabase.sql('views + 1') })
+                .eq('id', jobId)
+                .then(function(updateResponse) {
+                    if (updateResponse.error) {
+                        console.error('⚠️ Error updating views:', updateResponse.error);
+                    } else {
+                        console.log('✅ View count updated');
+                    }
+                    
+                    // Then load job details
+                    return supabase
+                        .from('jobs')
+                        .select('*')
+                        .eq('id', jobId)
+                        .single();
+                })
+                .then(function(response) {
+                    if (response.error) {
+                        throw response.error;
+                    }
+                    
+                    var job = response.data;
+                    console.log('📋 Job details loaded:', job);
+                    
+                    var detailContent = document.getElementById('detailContent');
+                    if (!detailContent) {
+                        console.error('❌ Detail content element not found');
+                        return;
+                    }
+                    
+                    var locationInfo = [];
+                    if (job.city) locationInfo.push(job.city);
+                    if (job.zipcode) locationInfo.push(job.zipcode);
+                    var fullLocation = locationInfo.join(', ');
+                    
+                    var createdDate = new Date(job.created_at);
+                    var formattedDate = createdDate.toLocaleDateString('vi-VN');
+                    
+                    detailContent.innerHTML = 
+                        '<div class="detail-header">' +
+                            '<div class="detail-image">' +
+                                (job.image_url ? 
+                                    '<img src="' + job.image_url + '" alt="' + job.title + '">' : 
+                                    '🏢'
+                                ) +
+                            '</div>' +
+                            '<div class="detail-info">' +
+                                '<h3>' + job.title + '</h3>' +
+                                '<div class="detail-company">' + job.company + '</div>' +
+                                '<div class="detail-type">' + job.job_type + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="detail-description">' + job.description + '</div>' +
+                        '<div class="detail-grid">' +
+                            (job.salary ? 
+                                '<div class="detail-item">' +
+                                    '<span class="icon">💵</span>' +
+                                    '<span><strong>Mức lương:</strong> ' + job.salary + '</span>' +
+                                '</div>' : ''
+                            ) +
+                            (job.location ? 
+                                '<div class="detail-item">' +
+                                    '<span class="icon">📍</span>' +
+                                    '<span><strong>Địa chỉ:</strong> ' + job.location + '</span>' +
+                                '</div>' : ''
+                            ) +
+                            (fullLocation ? 
+                                '<div class="detail-item">' +
+                                    '<span class="icon">🏙️</span>' +
+                                    '<span><strong>Khu vực:</strong> ' + fullLocation + '</span>' +
+                                '</div>' : ''
+                            ) +
+                            '<div class="detail-item">' +
+                                '<span class="icon">📞</span>' +
+                                '<span><strong>Liên hệ:</strong> ' + job.contact + '</span>' +
+                            '</div>' +
+                            '<div class="detail-item">' +
+                                '<span class="icon">👁️</span>' +
+                                '<span><strong>Lượt xem:</strong> ' + ((job.views || 0) + 1) + '</span>' +
+                            '</div>' +
+                            '<div class="detail-item">' +
+                                '<span class="icon">📅</span>' +
+                                '<span><strong>Đăng ngày:</strong> ' + formattedDate + '</span>' +
+                            '</div>' +
+                        '</div>';
+                    
+                    // Show the modal
+                    var detailModal = document.getElementById('detailModal');
+                    if (detailModal) {
+                        detailModal.style.display = 'block';
+                        console.log('✅ Detail modal shown');
+                    }
+                    
+                    // Reload jobs list after a delay to show updated view count
+                    setTimeout(function() {
+                        loadJobs();
+                    }, 1000);
+                })
+                .catch(function(error) {
+                    console.error('❌ Error loading job detail:', error);
+                    alert('Lỗi khi tải chi tiết công việc: ' + error.message);
+                });
         }
         window.showJobDetail = showJobDetail;
 
