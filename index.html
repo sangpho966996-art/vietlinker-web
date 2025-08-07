@@ -1452,16 +1452,27 @@
         ➕
     </a>
     
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    
+    <script>
+        console.log('Script starting...');
         
-        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        // Check authentication status
-        async function checkAuth() {
-            const { data: { user } } = await supabase.auth.getUser();
+        // Wait for page to load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded!');
+            
+            // Initialize Supabase
+            const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+            
+            const { createClient } = supabase;
+            const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase initialized:', supabaseClient);
+            
+            // Check authentication status
+            async function checkAuth() {
+                const { data: { user } } = await supabaseClient.auth.getUser();
             
             const userInfo = document.getElementById('userInfo');
             const authButtons = document.getElementById('authButtons');
@@ -1473,12 +1484,12 @@
                 authButtons.classList.add('hidden');
                 userMenu.classList.add('active');
                 
-                // Get user details
-                const { data: userData } = await supabase
-                    .from('users')
-                    .select('full_name, name')
-                    .eq('email', user.email)
-                    .single();
+                    // Get user details
+                    const { data: userData } = await supabaseClient
+                        .from('users')
+                        .select('full_name, name')
+                        .eq('email', user.email)
+                        .single();
                 
                 if (userData) {
                     const displayName = userData.full_name || userData.name || user.email;
