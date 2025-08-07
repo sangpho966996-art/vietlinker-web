@@ -1,1 +1,106 @@
+<!-- ĐÂY LÀ CODE CẦN THAY THẾ TRONG TẤT CẢ CÁC FILE HTML -->
 
+<!-- OPTION 1: Dùng logo từ URL (Google Drive, Imgur, etc.) -->
+<!-- Thay thế dòng logo cũ: -->
+<img src="logo.png" alt="VietLinker Logo">
+
+<!-- Bằng dòng mới với URL của bạn: -->
+<img src="URL_LOGO_CỦA_BẠN_Ở_ĐÂY" alt="VietLinker Logo" style="width: 55px; height: 55px; object-fit: contain;">
+
+<!-- VÍ DỤ: -->
+<!-- <img src="https://i.imgur.com/abc123.png" alt="VietLinker Logo" style="width: 55px; height: 55px; object-fit: contain;"> -->
+
+<!-- ================================================================ -->
+
+<!-- OPTION 2: Dùng Text Logo thay vì ảnh (Không cần upload) -->
+<!-- Thay thế toàn bộ phần logo bằng: -->
+
+<a href="index.html" class="logo" style="text-decoration: none;">
+    <div style="
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    ">VL</div>
+    <span class="logo-text" style="
+        font-size: 26px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    ">VietLinker</span>
+</a>
+
+<!-- ================================================================ -->
+
+<!-- OPTION 3: Dùng SVG Logo (Không cần upload file) -->
+<!-- Copy và paste trực tiếp vào HTML: -->
+
+<a href="index.html" class="logo" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+    <!-- SVG Logo -->
+    <svg width="55" height="55" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background circle -->
+        <circle cx="50" cy="50" r="48" fill="url(#gradient1)" />
+        
+        <!-- VL Text -->
+        <text x="50" y="50" 
+              font-family="Arial, sans-serif" 
+              font-size="32" 
+              font-weight="bold" 
+              fill="white" 
+              text-anchor="middle" 
+              dominant-baseline="central">VL</text>
+        
+        <!-- Gradient definition -->
+        <defs>
+            <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#1e3c72;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#dc143c;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+        
+        <!-- Connection dots -->
+        <circle cx="25" cy="25" r="3" fill="white" opacity="0.8"/>
+        <circle cx="75" cy="25" r="3" fill="white" opacity="0.8"/>
+        <circle cx="25" cy="75" r="3" fill="white" opacity="0.8"/>
+        <circle cx="75" cy="75" r="3" fill="white" opacity="0.8"/>
+        
+        <!-- Connection lines -->
+        <line x1="25" y1="25" x2="75" y2="25" stroke="white" stroke-width="1" opacity="0.3"/>
+        <line x1="25" y1="75" x2="75" y2="75" stroke="white" stroke-width="1" opacity="0.3"/>
+        <line x1="25" y1="25" x2="25" y2="75" stroke="white" stroke-width="1" opacity="0.3"/>
+        <line x1="75" y1="25" x2="75" y2="75" stroke="white" stroke-width="1" opacity="0.3"/>
+    </svg>
+    
+    <!-- Text -->
+    <span style="
+        font-size: 26px;
+        font-weight: 700;
+        color: #1e3c72;
+    ">VietLinker</span>
+</a>
+
+<!-- ================================================================ -->
+
+<!-- HƯỚNG DẪN: -->
+<!-- 
+1. Chọn 1 trong 3 options trên
+2. Copy code của option đó
+3. Tìm và thay thế TẤT CẢ chỗ có <img src="logo.png"> trong:
+   - index.html (2 chỗ: header và footer)
+   - privacy.html (2 chỗ)
+   - terms.html (2 chỗ)
+   - about.html (2 chỗ)
+   - contact.html (2 chỗ)
+   - Và tất cả các file HTML khác
+
+4. Option 2 và 3 KHÔNG CẦN upload file nào cả!
+-->
