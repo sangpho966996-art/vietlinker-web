@@ -1195,7 +1195,7 @@
                     </select>
                 </div>
                 
-                <button class="search-btn-primary" onclick="performGlobalSearch()">
+                <button class="search-btn-primary" id="searchButton">
                     <span>🔍</span>
                     <span>TÌM KIẾM</span>
                 </button>
@@ -1203,11 +1203,11 @@
             
             <div class="quick-searches">
                 <span>Tìm nhanh:</span>
-                <a href="#" class="quick-search-tag" onclick="quickSearch('Thợ Nail')">Thợ Nail</a>
-                <a href="#" class="quick-search-tag" onclick="quickSearch('Phòng cho thuê')">Phòng cho thuê</a>
-                <a href="#" class="quick-search-tag" onclick="quickSearch('Honda Civic')">Honda Civic</a>
-                <a href="#" class="quick-search-tag" onclick="quickSearch('Phở')">Phở</a>
-                <a href="#" class="quick-search-tag" onclick="quickSearch('Tiệm nail')">Tiệm nail</a>
+                <a href="#" class="quick-search-tag" data-search="Thợ Nail">Thợ Nail</a>
+                <a href="#" class="quick-search-tag" data-search="Phòng cho thuê">Phòng cho thuê</a>
+                <a href="#" class="quick-search-tag" data-search="Honda Civic">Honda Civic</a>
+                <a href="#" class="quick-search-tag" data-search="Phở">Phở</a>
+                <a href="#" class="quick-search-tag" data-search="Tiệm nail">Tiệm nail</a>
             </div>
         </div>
     </section>
@@ -1516,7 +1516,7 @@
         }
         
         // Global search function
-        window.performGlobalSearch = async function() {
+        async function performGlobalSearch() {
             const keyword = document.getElementById('searchKeyword').value;
             const location = document.getElementById('searchLocation').value;
             const category = document.getElementById('searchCategory').value;
@@ -1566,7 +1566,7 @@
         }
         
         // Quick search function
-        window.quickSearch = function(term) {
+        function quickSearch(term) {
             document.getElementById('searchKeyword').value = term;
             performGlobalSearch();
         }
@@ -1652,6 +1652,25 @@
         // Initialize on page load
         checkAuth();
         getUserLocation();
+        
+        // Add event listeners
+        document.getElementById('searchButton').addEventListener('click', performGlobalSearch);
+        
+        // Close modal when clicking X
+        document.querySelector('.close-search-modal').addEventListener('click', closeSearchModal);
+        
+        // Quick search tags
+        document.querySelectorAll('.quick-search-tag').forEach(tag => {
+            tag.addEventListener('click', function(e) {
+                e.preventDefault();
+                const term = this.getAttribute('data-search');
+                document.getElementById('searchKeyword').value = term;
+                performGlobalSearch();
+            });
+        });
+        
+        // Make signOut available globally for onclick
+        window.signOut = signOut;
         
         // Add enter key support for search
         document.getElementById('searchKeyword').addEventListener('keypress', function(e) {
