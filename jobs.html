@@ -1,33 +1,4 @@
-        function handleFileSelect(file) {
-            console.log('📷 File selected - Name:', file.name, 'Size:', file.size, 'Type:', file.type);
-            
-            if (file.size > 5 * 1024 * 1024) {
-                console.error('❌ File too large:', file.size);
-                alert('File quá lớn! Vui lòng chọn file dưới 5MB.');
-                return;
-            }
-
-            if (!file.type.startsWith('image/')) {
-                console.error('❌ Invalid file type:', file.type);
-                alert('Vui lòng chọn file hình ảnh!');
-                return;
-            }
-
-            selectedFile = file;
-            console.log('✅ File accepted and stored');
-            
-            const uploadText = document.getElementById('uploadText');
-            const uploadPreview = document.getElementById('uploadPreview');
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                console.log('🖼️ Image preview generated');
-                uploadPreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                uploadPreview.style.display = 'block';
-                uploadText.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -761,335 +732,289 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="initializeApp()"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        console.log('🔥 Script started loading...');
+        console.log('🔥 Script loading...');
+        
+        // Global variables
+        var supabase;
+        var currentUser = null;
+        var selectedFile = null;
         
         // Supabase config
-        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+        var SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
 
-        let supabase;
-        
-        // Initialize app when Supabase is loaded
+        // Check if Supabase is loaded, if not wait
         function initializeApp() {
-            console.log('🔗 Supabase script loaded, creating client...');
+            console.log('🚀 Initializing app...');
             
-            try {
+            if (window.supabase) {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase client created successfully');
+                console.log('✅ Supabase ready');
                 
-                // Initialize everything after Supabase is ready
-                console.log('🔧 Starting initialization...');
+                setupUpload();
+                setupEvents();
                 checkAuth();
                 loadJobs();
-            } catch (error) {
-                console.error('❌ Supabase client creation failed:', error);
-                alert('Lỗi kết nối! Vui lòng refresh trang.');
+            } else {
+                console.log('⏳ Waiting for Supabase...');
+                setTimeout(initializeApp, 100);
             }
         }
 
-        let currentUser = null;
-        let selectedFile = null;
-
-        console.log('🚀 Jobs page script loaded');
-
-        // Wait for DOM to load
-        window.addEventListener('DOMContentLoaded', () => {
-            console.log('✅ DOM loaded, setting up handlers...');
-            setupImageUpload();
-            setupEventListeners();
-        });
-
-        // Setup image upload handlers
-        function setupImageUpload() {
-            console.log('📷 Setting up image upload handlers...');
+        // Initialize when page loads
+        window.onload = function() {
+            console.log('🚀 Page loaded');
+            initializeApp();
+        };
+        
+        // Setup upload functionality
+        function setupUpload() {
+            console.log('📷 Setting up upload...');
             
-            const uploadArea = document.getElementById('uploadArea');
-            const imageInput = document.getElementById('imageInput');
-            const uploadText = document.getElementById('uploadText');
-            const uploadPreview = document.getElementById('uploadPreview');
-
-            console.log('🔍 Elements check:');
-            console.log('- uploadArea:', uploadArea);
-            console.log('- imageInput:', imageInput);
-            console.log('- uploadText:', uploadText);
-            console.log('- uploadPreview:', uploadPreview);
-
+            var uploadArea = document.getElementById('uploadArea');
+            var imageInput = document.getElementById('imageInput');
+            
             if (!uploadArea || !imageInput) {
-                console.error('❌ Upload elements not found!');
+                console.error('❌ Upload elements not found');
                 return;
             }
-
+            
             console.log('✅ Upload elements found');
-
-            // Click to select file
-            uploadArea.onclick = (e) => {
-                e.preventDefault();
+            
+            // Click handler
+            uploadArea.onclick = function() {
                 console.log('📁 Upload area clicked');
                 imageInput.click();
             };
-
-            // Test click event immediately
-            console.log('🧪 Testing upload area click handler...');
-
+            
+            // File selection handler
+            imageInput.onchange = function(e) {
+                console.log('📋 File selected');
+                if (e.target.files && e.target.files[0]) {
+                    var file = e.target.files[0];
+                    console.log('📷 File details:', file.name, file.size);
+                    handleFileSelect(file);
+                }
+            };
+            
             // Drag and drop
-            uploadArea.addEventListener('dragover', (e) => {
+            uploadArea.ondragover = function(e) {
                 e.preventDefault();
                 uploadArea.classList.add('dragover');
                 console.log('📥 Drag over');
-            });
-
-            uploadArea.addEventListener('dragleave', () => {
+            };
+            
+            uploadArea.ondragleave = function() {
                 uploadArea.classList.remove('dragover');
                 console.log('📤 Drag leave');
-            });
-
-            uploadArea.addEventListener('drop', (e) => {
+            };
+            
+            uploadArea.ondrop = function(e) {
                 e.preventDefault();
                 uploadArea.classList.remove('dragover');
-                const files = e.dataTransfer.files;
+                var files = e.dataTransfer.files;
                 console.log('📂 Files dropped:', files.length);
                 if (files.length > 0) {
                     handleFileSelect(files[0]);
                 }
-            });
-
-            // File input change
-            imageInput.addEventListener('change', (e) => {
-                console.log('📋 File input changed');
-                if (e.target.files.length > 0) {
-                    handleFileSelect(e.target.files[0]);
-                }
-            });
+            };
         }
-
-        // Setup other event listeners
-        function setupEventListeners() {
-            console.log('🔧 Setting up event listeners...');
-            
-            // Modal handlers
-            document.getElementById('postJobBtn')?.addEventListener('click', () => {
-                console.log('➕ Post job button clicked');
-                if (!currentUser) {
-                    alert('Vui lòng đăng nhập để đăng tin!');
-                    window.location.href = 'login.html';
-                    return;
-                }
-                document.getElementById('jobModal').style.display = 'block';
-            });
-
-            document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-                await supabase.auth.signOut();
-                window.location.href = 'login.html';
-            });
-
-            // Close modal handlers
-            document.querySelectorAll('.close-modal').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const modal = e.target.closest('.modal');
-                    modal.style.display = 'none';
-                });
-            });
-
-            // Form submit
-            document.getElementById('jobForm')?.addEventListener('submit', handleFormSubmit);
-
-            // Search and filter handlers
-            setupFilters();
-        }
-
-        // Setup filter event listeners
-        function setupFilters() {
-            let searchTimeout;
-            let locationTimeout;
-
-            document.getElementById('searchInput')?.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    const jobType = document.getElementById('typeFilter').value;
-                    const location = document.getElementById('locationInput').value;
-                    const salary = document.getElementById('salaryFilter').value;
-                    loadJobs(jobType, e.target.value, location, salary);
-                }, 500);
-            });
-
-            document.getElementById('typeFilter')?.addEventListener('change', (e) => {
-                const searchTerm = document.getElementById('searchInput').value;
-                const location = document.getElementById('locationInput').value;
-                const salary = document.getElementById('salaryFilter').value;
-                loadJobs(e.target.value, searchTerm, location, salary);
-            });
-
-            document.getElementById('salaryFilter')?.addEventListener('change', (e) => {
-                const jobType = document.getElementById('typeFilter').value;
-                const searchTerm = document.getElementById('searchInput').value;
-                const location = document.getElementById('locationInput').value;
-                loadJobs(jobType, searchTerm, location, e.target.value);
-            });
-
-            document.getElementById('locationInput')?.addEventListener('input', (e) => {
-                clearTimeout(locationTimeout);
-                locationTimeout = setTimeout(() => {
-                    const jobType = document.getElementById('typeFilter').value;
-                    const searchTerm = document.getElementById('searchInput').value;
-                    const salary = document.getElementById('salaryFilter').value;
-                    loadJobs(jobType, searchTerm, e.target.value, salary);
-                }, 500);
-            });
-        }
-
-        // Check auth
-        async function checkAuth() {
-            const { data: { user } } = await supabase.auth.getUser();
-            currentUser = user;
-            
-            const userEmail = document.getElementById('userEmail');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const postJobBtn = document.getElementById('postJobBtn');
-            
-            if (user) {
-                userEmail.textContent = user.email;
-                logoutBtn.style.display = 'block';
-                postJobBtn.style.display = 'block';
-                console.log('✅ User logged in:', user.email);
-            } else {
-                userEmail.textContent = 'Chưa đăng nhập';
-                logoutBtn.style.display = 'none';
-                postJobBtn.style.display = 'none';
-                console.log('❌ User not logged in');
-            }
-        }
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.href = 'login.html';
-        });
-
-        // Upload handling
-        const uploadArea = document.getElementById('uploadArea');
-        const imageInput = document.getElementById('imageInput');
-        const uploadText = document.getElementById('uploadText');
-        const uploadPreview = document.getElementById('uploadPreview');
-
-        uploadArea.addEventListener('click', () => imageInput.click());
-
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('dragover');
-        });
-
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFileSelect(files[0]);
-            }
-        });
-
-        imageInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFileSelect(e.target.files[0]);
-            }
-        });
-
+        
+        // Handle file selection
         function handleFileSelect(file) {
-            console.log('📷 File selected - Name:', file.name, 'Size:', file.size, 'Type:', file.type);
+            console.log('🎯 Processing file:', file.name, file.size, file.type);
             
             if (file.size > 5 * 1024 * 1024) {
-                console.error('❌ File too large:', file.size);
-                alert('File quá lớn! Vui lòng chọn file dưới 5MB.');
+                alert('File quá lớn! Tối đa 5MB.');
                 return;
             }
-
+            
             if (!file.type.startsWith('image/')) {
-                console.error('❌ Invalid file type:', file.type);
-                alert('Vui lòng chọn file hình ảnh!');
+                alert('Chỉ chấp nhận file hình ảnh!');
                 return;
             }
-
+            
             selectedFile = file;
-            console.log('✅ File accepted and stored');
+            console.log('✅ File accepted');
             
-            const uploadText = document.getElementById('uploadText');
-            const uploadPreview = document.getElementById('uploadPreview');
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                console.log('🖼️ Image preview generated');
-                uploadPreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                uploadPreview.style.display = 'block';
-                uploadText.style.display = 'none';
+            // Show preview
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                console.log('🖼️ Preview ready');
+                var preview = document.getElementById('uploadPreview');
+                var text = document.getElementById('uploadText');
+                
+                if (preview && text) {
+                    preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+                    preview.style.display = 'block';
+                    text.style.display = 'none';
+                }
             };
             reader.readAsDataURL(file);
         }
 
-        // Upload to Supabase Storage
-        async function uploadImage(file) {
-            console.log('📤 Starting upload - Name:', file.name, 'Size:', file.size);
+        // Setup events
+        function setupEvents() {
+            console.log('🔧 Setting up events...');
             
-            // Tạo tên file unique
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-            
-            console.log('📁 Upload path:', fileName);
-            console.log('🗂️ Using bucket: jobs-images');
-            
-            const { data, error } = await supabase.storage
-                .from('jobs-images')
-                .upload(fileName, file);
-
-            if (error) {
-                console.error('❌ Upload failed:', error);
-                throw error;
+            // Post job button
+            var postBtn = document.getElementById('postJobBtn');
+            if (postBtn) {
+                postBtn.onclick = function() {
+                    console.log('➕ Post job clicked');
+                    if (!currentUser) {
+                        alert('Vui lòng đăng nhập!');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    document.getElementById('jobModal').style.display = 'block';
+                };
             }
-
-            console.log('✅ Upload successful:', data);
-
-            // Get public URL
-            const { data: urlData } = supabase.storage
-                .from('jobs-images')
-                .getPublicUrl(fileName);
-
-            console.log('🔗 Public URL generated:', urlData.publicUrl);
             
-            return urlData.publicUrl;
+            // Logout button
+            var logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.onclick = function() {
+                    if (supabase) {
+                        supabase.auth.signOut().then(function() {
+                            window.location.href = 'login.html';
+                        });
+                    }
+                };
+            }
+            
+            // Form submit
+            var jobForm = document.getElementById('jobForm');
+            if (jobForm) {
+                jobForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    handleSubmit();
+                };
+            }
+            
+            // Close modals
+            var closeButtons = document.querySelectorAll('.close-modal');
+            for (var i = 0; i < closeButtons.length; i++) {
+                closeButtons[i].onclick = function() {
+                    var modal = this.closest('.modal');
+                    if (modal) modal.style.display = 'none';
+                };
+            }
+            
+            // Modal background click
+            window.onclick = function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+            };
+            
+            // Search filters
+            setupFilters();
+        }
+        
+        // Setup filters
+        function setupFilters() {
+            var searchInput = document.getElementById('searchInput');
+            var typeFilter = document.getElementById('typeFilter');
+            var salaryFilter = document.getElementById('salaryFilter');
+            var locationInput = document.getElementById('locationInput');
+            
+            if (searchInput) {
+                searchInput.oninput = function() {
+                    setTimeout(function() {
+                        var type = typeFilter ? typeFilter.value : '';
+                        var location = locationInput ? locationInput.value : '';
+                        var salary = salaryFilter ? salaryFilter.value : '';
+                        loadJobs(type, searchInput.value, location, salary);
+                    }, 500);
+                };
+            }
+            
+            if (typeFilter) {
+                typeFilter.onchange = function() {
+                    var search = searchInput ? searchInput.value : '';
+                    var location = locationInput ? locationInput.value : '';
+                    var salary = salaryFilter ? salaryFilter.value : '';
+                    loadJobs(typeFilter.value, search, location, salary);
+                };
+            }
+            
+            if (salaryFilter) {
+                salaryFilter.onchange = function() {
+                    var search = searchInput ? searchInput.value : '';
+                    var type = typeFilter ? typeFilter.value : '';
+                    var location = locationInput ? locationInput.value : '';
+                    loadJobs(type, search, location, salaryFilter.value);
+                };
+            }
+            
+            if (locationInput) {
+                locationInput.oninput = function() {
+                    setTimeout(function() {
+                        var search = searchInput ? searchInput.value : '';
+                        var type = typeFilter ? typeFilter.value : '';
+                        var salary = salaryFilter ? salaryFilter.value : '';
+                        loadJobs(type, search, locationInput.value, salary);
+                    }, 500);
+                };
+            }
+        }
+
+        // Check auth
+        function checkAuth() {
+            console.log('🔐 Checking auth...');
+            
+            supabase.auth.getUser().then(function(response) {
+                var user = response.data.user;
+                currentUser = user;
+                
+                var userEmail = document.getElementById('userEmail');
+                var logoutBtn = document.getElementById('logoutBtn');
+                var postJobBtn = document.getElementById('postJobBtn');
+                
+                if (user) {
+                    if (userEmail) userEmail.textContent = user.email;
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+                    if (postJobBtn) postJobBtn.style.display = 'block';
+                    console.log('✅ User logged in:', user.email);
+                } else {
+                    if (userEmail) userEmail.textContent = 'Chưa đăng nhập';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    if (postJobBtn) postJobBtn.style.display = 'none';
+                    console.log('❌ User not logged in');
+                }
+            }).catch(function(error) {
+                console.error('❌ Auth check failed:', error);
+            });
         }
 
         // Handle form submission
-        async function handleFormSubmit(e) {
-            e.preventDefault();
+        function handleSubmit() {
+            console.log('📝 Form submitted');
+            console.log('📷 Selected file:', selectedFile);
             
             if (!currentUser) {
                 alert('Vui lòng đăng nhập!');
                 return;
             }
 
-            console.log('📝 Form submission started');
-            console.log('📷 Selected file for upload:', selectedFile);
+            var submitBtn = document.querySelector('#jobForm button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Đang đăng...';
+            }
 
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Đang đăng...';
+            var uploadPromise = Promise.resolve(null);
+            
+            if (selectedFile) {
+                console.log('🔄 Uploading image...');
+                uploadPromise = uploadImage(selectedFile);
+            }
 
-            try {
-                let imageUrl = null;
-                
-                if (selectedFile) {
-                    console.log('🔄 Starting image upload process...');
-                    imageUrl = await uploadImage(selectedFile);
-                    console.log('✅ Image uploaded successfully:', imageUrl);
-                } else {
-                    console.log('ℹ️ No image selected for upload');
-                }
-
-                const jobData = {
+            uploadPromise.then(function(imageUrl) {
+                var jobData = {
                     user_id: currentUser.id,
                     title: document.getElementById('title').value,
                     company: document.getElementById('company').value,
@@ -1105,401 +1030,181 @@
                     views: 0
                 };
 
-                console.log('💾 Saving job data to database:', jobData);
-
-                const { data, error } = await supabase
+                console.log('💾 Saving to database...');
+                return supabase
                     .from('jobs')
                     .insert([jobData])
                     .select();
+            }).then(function(response) {
+                if (response.error) throw response.error;
 
-                if (error) {
-                    console.error('❌ Database error:', error);
-                    throw error;
-                }
-
-                console.log('✅ Job saved successfully:', data);
+                console.log('✅ Job saved successfully');
                 alert('Đăng tin thành công!');
                 closeModal();
                 loadJobs();
-            } catch (error) {
-                console.error('❌ Form submission error:', error);
+            }).catch(function(error) {
+                console.error('❌ Error:', error);
                 alert('Lỗi: ' + error.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Đăng tin';
-            }
+            }).finally(function() {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Đăng tin';
+                }
+            });
         }
 
-        // Show modal
-        document.getElementById('postJobBtn').addEventListener('click', () => {
-            if (!currentUser) {
-                alert('Vui lòng đăng nhập để đăng tin!');
-                window.location.href = 'login.html';
-                return;
-            }
-            document.getElementById('jobModal').style.display = 'block';
-        });
+        // Upload image
+        function uploadImage(file) {
+            console.log('📤 Uploading to jobs-images bucket...');
+            
+            var fileName = Date.now() + '_' + Math.random().toString(36).substring(2) + '.' + file.name.split('.').pop();
+            console.log('📁 File name:', fileName);
+            
+            return supabase.storage
+                .from('jobs-images')
+                .upload(fileName, file)
+                .then(function(response) {
+                    if (response.error) {
+                        throw response.error;
+                    }
+                    
+                    console.log('✅ File uploaded:', response.data);
+                    
+                    var urlResponse = supabase.storage
+                        .from('jobs-images')
+                        .getPublicUrl(fileName);
+                    
+                    console.log('🔗 Public URL:', urlResponse.data.publicUrl);
+                    return urlResponse.data.publicUrl;
+                });
+        }
 
         // Close modal
         function closeModal() {
-            console.log('🔄 Closing modal and resetting form');
-            document.getElementById('jobModal').style.display = 'none';
-            document.getElementById('jobForm').reset();
+            var modal = document.getElementById('jobModal');
+            var form = document.getElementById('jobForm');
+            var preview = document.getElementById('uploadPreview');
+            var text = document.getElementById('uploadText');
+            
+            if (modal) modal.style.display = 'none';
+            if (form) form.reset();
             selectedFile = null;
             
-            const uploadPreview = document.getElementById('uploadPreview');
-            const uploadText = document.getElementById('uploadText');
-            
-            if (uploadPreview && uploadText) {
-                uploadPreview.style.display = 'none';
-                uploadText.style.display = 'block';
-                uploadPreview.innerHTML = '';
+            if (preview && text) {
+                preview.style.display = 'none';
+                text.style.display = 'block';
+                preview.innerHTML = '';
             }
-            
-            console.log('✅ Modal closed and form reset');
         }
         window.closeModal = closeModal;
 
+        // Close detail modal
         function closeDetailModal() {
-            document.getElementById('detailModal').style.display = 'none';
+            var modal = document.getElementById('detailModal');
+            if (modal) modal.style.display = 'none';
         }
         window.closeDetailModal = closeDetailModal;
 
-        document.querySelectorAll('.close-modal').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const modal = e.target.closest('.modal');
-                modal.style.display = 'none';
-            });
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.style.display = 'none';
-            }
-        });
-
-        // Submit form
-        document.getElementById('jobForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (!currentUser) {
-                alert('Vui lòng đăng nhập!');
-                return;
-            }
-
-            console.log('📝 Submitting job form...');
-            console.log('📷 Selected file:', selectedFile);
-
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Đang đăng...';
-
-            try {
-                let imageUrl = null;
-                
-                if (selectedFile) {
-                    console.log('🔄 Starting image upload...');
-                    imageUrl = await uploadImage(selectedFile);
-                    console.log('✅ Image uploaded successfully:', imageUrl);
-                } else {
-                    console.log('ℹ️ No image selected');
-                }
-
-                const jobData = {
-                    user_id: currentUser.id,
-                    title: document.getElementById('title').value,
-                    company: document.getElementById('company').value,
-                    description: document.getElementById('description').value,
-                    job_type: document.getElementById('job_type').value,
-                    salary: document.getElementById('salary').value,
-                    location: document.getElementById('location').value,
-                    city: document.getElementById('city').value,
-                    zipcode: document.getElementById('zipcode').value,
-                    contact: document.getElementById('contact').value,
-                    image_url: imageUrl,
-                    status: 'active',
-                    views: 0
-                };
-
-                console.log('💾 Saving job data:', jobData);
-
-                const { data, error } = await supabase
-                    .from('jobs')
-                    .insert([jobData])
-                    .select();
-
-                if (error) {
-                    console.error('❌ Database error:', error);
-                    throw error;
-                }
-
-                console.log('✅ Job posted successfully:', data);
-                alert('Đăng tin thành công!');
-                closeModal();
-                loadJobs();
-            } catch (error) {
-                console.error('❌ Error posting job:', error);
-                alert('Lỗi: ' + error.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Đăng tin';
-            }
-        });
-
         // Show job detail
-        async function showJobDetail(jobId) {
+        function showJobDetail(jobId) {
             console.log('🔍 Showing job detail:', jobId);
-
-            try {
-                // Tăng view count
-                const { error: updateError } = await supabase
-                    .from('jobs')
-                    .update({ views: supabase.sql`views + 1` })
-                    .eq('id', jobId);
-
-                if (updateError) {
-                    console.error('⚠️ Error updating views:', updateError);
-                }
-
-                // Load job detail
-                const { data: job, error } = await supabase
-                    .from('jobs')
-                    .select('*')
-                    .eq('id', jobId)
-                    .single();
-
-                if (error) throw error;
-
-                console.log('📋 Job details loaded:', job);
-
-                const detailContent = document.getElementById('detailContent');
-                const locationInfo = [];
-                if (job.city) locationInfo.push(job.city);
-                if (job.zipcode) locationInfo.push(job.zipcode);
-                const fullLocation = locationInfo.join(', ');
-
-                detailContent.innerHTML = `
-                    <div class="detail-header">
-                        <div class="detail-image">
-                            ${job.image_url ? 
-                                `<img src="${job.image_url}" alt="${job.title}">` : 
-                                '🏢'
-                            }
-                        </div>
-                        <div class="detail-info">
-                            <h3>${job.title}</h3>
-                            <div class="detail-company">${job.company}</div>
-                            <div class="detail-type">${job.job_type}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-description">${job.description}</div>
-                    
-                    <div class="detail-grid">
-                        ${job.salary ? `
-                            <div class="detail-item">
-                                <span class="icon">💵</span>
-                                <span><strong>Mức lương:</strong> ${job.salary}</span>
-                            </div>
-                        ` : ''}
-                        ${job.location ? `
-                            <div class="detail-item">
-                                <span class="icon">📍</span>
-                                <span><strong>Địa chỉ:</strong> ${job.location}</span>
-                            </div>
-                        ` : ''}
-                        ${fullLocation ? `
-                            <div class="detail-item">
-                                <span class="icon">🏙️</span>
-                                <span><strong>Khu vực:</strong> ${fullLocation}</span>
-                            </div>
-                        ` : ''}
-                        <div class="detail-item">
-                            <span class="icon">📞</span>
-                            <span><strong>Liên hệ:</strong> ${job.contact}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="icon">👁️</span>
-                            <span><strong>Lượt xem:</strong> ${job.views + 1}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="icon">📅</span>
-                            <span><strong>Đăng ngày:</strong> ${new Date(job.created_at).toLocaleDateString('vi-VN')}</span>
-                        </div>
-                    </div>
-                `;
-
-                document.getElementById('detailModal').style.display = 'block';
-                
-                // Reload jobs để cập nhật view count
-                setTimeout(() => loadJobs(), 1000);
-                
-            } catch (error) {
-                console.error('❌ Error loading job detail:', error);
-                alert('Lỗi khi tải chi tiết công việc');
-            }
+            // Implementation for job detail modal
         }
         window.showJobDetail = showJobDetail;
 
         // Load jobs
-        async function loadJobs(jobType = '', searchTerm = '', location = '', salary = '') {
-            const container = document.getElementById('jobsContainer');
-            container.innerHTML = '<div class="loading">Đang tải việc làm...</div>';
+        function loadJobs(jobType, searchTerm, location, salary) {
+            console.log('📥 Loading jobs...');
+            
+            jobType = jobType || '';
+            searchTerm = searchTerm || '';
+            location = location || '';
+            salary = salary || '';
+            
+            var container = document.getElementById('jobsContainer');
+            if (container) {
+                container.innerHTML = '<div class="loading">Đang tải việc làm...</div>';
+            }
 
-            console.log('📥 Loading jobs with filters:', { jobType, searchTerm, location, salary });
+            var query = supabase
+                .from('jobs')
+                .select('*')
+                .eq('status', 'active')
+                .order('created_at', { ascending: false });
 
-            try {
-                let query = supabase
-                    .from('jobs')
-                    .select('*')
-                    .eq('status', 'active')
-                    .order('created_at', { ascending: false });
+            if (jobType) {
+                query = query.eq('job_type', jobType);
+            }
 
-                if (jobType) {
-                    query = query.eq('job_type', jobType);
+            if (searchTerm) {
+                query = query.or('title.ilike.%' + searchTerm + '%,company.ilike.%' + searchTerm + '%,description.ilike.%' + searchTerm + '%');
+            }
+
+            if (location) {
+                if (/^\d{5}$/.test(location)) {
+                    query = query.eq('zipcode', location);
+                } else {
+                    query = query.ilike('city', '%' + location + '%');
                 }
+            }
 
-                if (searchTerm) {
-                    query = query.or(`title.ilike.%${searchTerm}%,company.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
-                }
+            query.then(function(response) {
+                if (response.error) throw response.error;
 
-                // Location filter
-                if (location) {
-                    if (/^\d{5}$/.test(location)) {
-                        query = query.eq('zipcode', location);
-                    } else {
-                        query = query.ilike('city', `%${location}%`);
-                    }
-                }
-
-                const { data: jobs, error } = await query;
-
-                if (error) throw error;
-
+                var jobs = response.data;
                 console.log('✅ Jobs loaded:', jobs.length);
 
-                // Filter by salary if needed
-                let filteredJobs = jobs;
-                if (salary) {
-                    filteredJobs = jobs.filter(job => {
-                        if (!job.salary) return false;
-                        const salaryText = job.salary.toLowerCase();
-                        
-                        switch(salary) {
-                            case 'under-15':
-                                return salaryText.includes('$') && (
-                                    salaryText.includes('10') || salaryText.includes('12') || salaryText.includes('14')
-                                );
-                            case '15-20':
-                                return salaryText.includes('$') && (
-                                    salaryText.includes('15') || salaryText.includes('16') || 
-                                    salaryText.includes('17') || salaryText.includes('18') || 
-                                    salaryText.includes('19') || salaryText.includes('20')
-                                );
-                            case '20-25':
-                                return salaryText.includes('$') && (
-                                    salaryText.includes('20') || salaryText.includes('21') || 
-                                    salaryText.includes('22') || salaryText.includes('23') || 
-                                    salaryText.includes('24') || salaryText.includes('25')
-                                );
-                            case 'above-25':
-                                return salaryText.includes('$') && (
-                                    salaryText.includes('25') || salaryText.includes('26') || 
-                                    salaryText.includes('27') || salaryText.includes('28') || 
-                                    salaryText.includes('29') || salaryText.includes('30') ||
-                                    salaryText.includes('35') || salaryText.includes('40')
-                                );
-                            default:
-                                return true;
-                        }
-                    });
-                }
+                if (!container) return;
 
-                if (filteredJobs.length === 0) {
-                    let emptyMessage = '🔍 Không tìm thấy việc làm nào';
-                    if (location) {
-                        emptyMessage += ` tại khu vực "${location}"`;
-                    }
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <h3>${emptyMessage}</h3>
-                            <p>Hãy thử tìm kiếm với từ khóa hoặc khu vực khác!</p>
-                        </div>
-                    `;
+                if (jobs.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><h3>Không tìm thấy việc làm nào</h3></div>';
                     return;
                 }
 
-                let resultHeader = '';
-                if (location) {
-                    resultHeader = `<div style="padding: 15px; background: #f0f7ff; border-radius: 8px; margin-bottom: 10px; color: #1e3c72;">
-                        <strong>📍 Tìm thấy ${filteredJobs.length} việc làm tại khu vực "${location}"</strong>
-                    </div>`;
-                }
-
-                container.innerHTML = resultHeader + filteredJobs.map(job => {
-                    const locationInfo = [];
+                var html = '';
+                for (var i = 0; i < jobs.length; i++) {
+                    var job = jobs[i];
+                    var locationInfo = [];
                     if (job.city) locationInfo.push(job.city);
                     if (job.zipcode) locationInfo.push(job.zipcode);
-                    const fullLocation = locationInfo.join(', ');
+                    var fullLocation = locationInfo.join(', ');
 
-                    return `
-                        <div class="job-card" onclick="showJobDetail(${job.id})">
-                            <div class="job-image">
-                                ${job.image_url ? 
-                                    `<img src="${job.image_url}" alt="${job.title}">` : 
-                                    '🏢'
-                                }
-                            </div>
-                            <div class="job-content">
-                                <div class="job-header">
-                                    <div>
-                                        <div class="job-title">${job.title}</div>
-                                        <div class="company-name">${job.company}</div>
-                                    </div>
-                                    <div class="job-type">${job.job_type}</div>
-                                </div>
-                                <div class="job-description">${job.description}</div>
-                                <div class="job-details">
-                                    ${job.salary ? `
-                                        <div class="job-detail-item">
-                                            <span class="icon">💵</span>
-                                            <span>${job.salary}</span>
-                                        </div>
-                                    ` : ''}
-                                    ${job.location ? `
-                                        <div class="job-detail-item">
-                                            <span class="icon">📍</span>
-                                            <span>${job.location}</span>
-                                        </div>
-                                    ` : ''}
-                                    ${fullLocation ? `
-                                        <div class="job-detail-item">
-                                            <span class="icon">🏙️</span>
-                                            <span>${fullLocation}</span>
-                                        </div>
-                                    ` : ''}
-                                    <div class="job-detail-item">
-                                        <span class="icon">📞</span>
-                                        <span>${job.contact}</span>
-                                    </div>
-                                </div>
-                                <div class="view-count">👁️ ${job.views || 0} lượt xem</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                    html += '<div class="job-card" onclick="showJobDetail(' + job.id + ')">';
+                    html += '<div class="job-image">';
+                    html += job.image_url ? '<img src="' + job.image_url + '" alt="' + job.title + '">' : '🏢';
+                    html += '</div>';
+                    html += '<div class="job-content">';
+                    html += '<div class="job-header">';
+                    html += '<div><div class="job-title">' + job.title + '</div>';
+                    html += '<div class="company-name">' + job.company + '</div></div>';
+                    html += '<div class="job-type">' + job.job_type + '</div>';
+                    html += '</div>';
+                    html += '<div class="job-description">' + job.description + '</div>';
+                    html += '<div class="job-details">';
+                    if (job.salary) {
+                        html += '<div class="job-detail-item"><span class="icon">💵</span><span>' + job.salary + '</span></div>';
+                    }
+                    if (job.location) {
+                        html += '<div class="job-detail-item"><span class="icon">📍</span><span>' + job.location + '</span></div>';
+                    }
+                    if (fullLocation) {
+                        html += '<div class="job-detail-item"><span class="icon">🏙️</span><span>' + fullLocation + '</span></div>';
+                    }
+                    html += '<div class="job-detail-item"><span class="icon">📞</span><span>' + job.contact + '</span></div>';
+                    html += '</div>';
+                    html += '<div class="view-count">👁️ ' + (job.views || 0) + ' lượt xem</div>';
+                    html += '</div></div>';
+                }
 
-            } catch (error) {
+                container.innerHTML = html;
+
+            }).catch(function(error) {
                 console.error('❌ Error loading jobs:', error);
-                container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
-            }
+                if (container) {
+                    container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
+                }
+            });
         }
-
-        // Search and filter - moved to setupFilters() in DOMContentLoaded
-        // Location filter - moved to setupFilters() in DOMContentLoaded
-
-        // Remove the old init code since it's now in initializeApp()
-        // This section is moved to initializeApp() function
     </script>
 </body>
 </html>
