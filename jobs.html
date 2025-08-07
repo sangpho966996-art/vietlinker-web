@@ -1304,17 +1304,18 @@
                     if (job.zipcode) locationInfo.push(job.zipcode);
                     var fullLocation = locationInfo.join(', ');
 
-                    html += '<div class="job-card" onclick="showJobDetail(' + job.id + ')">';
+                    // Use data attribute instead of onclick to avoid syntax errors
+                    html += '<div class="job-card" data-job-id="' + job.id + '">';
                     html += '<div class="job-image">';
-                    html += job.image_url ? '<img src="' + job.image_url + '" alt="' + job.title + '">' : '🏢';
+                    html += job.image_url ? '<img src="' + job.image_url + '" alt="Job Image">' : '🏢';
                     html += '</div>';
                     html += '<div class="job-content">';
                     html += '<div class="job-header">';
-                    html += '<div><div class="job-title">' + job.title + '</div>';
-                    html += '<div class="company-name">' + job.company + '</div></div>';
-                    html += '<div class="job-type">' + job.job_type + '</div>';
+                    html += '<div><div class="job-title">' + (job.title || '') + '</div>';
+                    html += '<div class="company-name">' + (job.company || '') + '</div></div>';
+                    html += '<div class="job-type">' + (job.job_type || '') + '</div>';
                     html += '</div>';
-                    html += '<div class="job-description">' + job.description + '</div>';
+                    html += '<div class="job-description">' + (job.description || '') + '</div>';
                     html += '<div class="job-details">';
                     if (job.salary) {
                         html += '<div class="job-detail-item"><span class="icon">💵</span><span>' + job.salary + '</span></div>';
@@ -1325,13 +1326,27 @@
                     if (fullLocation) {
                         html += '<div class="job-detail-item"><span class="icon">🏙️</span><span>' + fullLocation + '</span></div>';
                     }
-                    html += '<div class="job-detail-item"><span class="icon">📞</span><span>' + job.contact + '</span></div>';
+                    html += '<div class="job-detail-item"><span class="icon">📞</span><span>' + (job.contact || '') + '</span></div>';
                     html += '</div>';
                     html += '<div class="view-count">👁️ ' + (job.views || 0) + ' lượt xem</div>';
                     html += '</div></div>';
                 }
 
                 container.innerHTML = html;
+                
+                // Add click event listeners to all job cards
+                var jobCards = container.querySelectorAll('.job-card');
+                for (var j = 0; j < jobCards.length; j++) {
+                    (function(card) {
+                        card.onclick = function() {
+                            var jobId = card.getAttribute('data-job-id');
+                            console.log('📱 Job card clicked, ID:', jobId);
+                            if (jobId) {
+                                showJobDetail(parseInt(jobId));
+                            }
+                        };
+                    })(jobCards[j]);
+                }
 
             }).catch(function(error) {
                 console.error('❌ Error loading jobs:', error);
