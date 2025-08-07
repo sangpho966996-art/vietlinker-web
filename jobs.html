@@ -1036,12 +1036,13 @@
             
             // Tạo tên file unique
             const fileExt = file.name.split('.').pop();
-            const fileName = `jobs/${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
             
             console.log('📁 Upload path:', fileName);
+            console.log('🗂️ Using bucket: jobs-images');
             
             const { data, error } = await supabase.storage
-                .from('marketplace')
+                .from('jobs-images')
                 .upload(fileName, file);
 
             if (error) {
@@ -1053,7 +1054,7 @@
 
             // Get public URL
             const { data: urlData } = supabase.storage
-                .from('marketplace')
+                .from('jobs-images')
                 .getPublicUrl(fileName);
 
             console.log('🔗 Public URL generated:', urlData.publicUrl);
