@@ -1,1 +1,402 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu - VietLinker</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for About page */
+        .about-hero {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+        
+        .about-hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .about-hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #dc143c;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 30px;
+            position: relative;
+            margin-bottom: 40px;
+            width: 50%;
+        }
+        
+        .timeline-item:nth-child(even) {
+            align-self: flex-end;
+            justify-content: flex-start;
+            padding-left: 30px;
+            padding-right: 0;
+            margin-left: 50%;
+        }
+        
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #dc143c;
+            border: 4px solid white;
+            border-radius: 50%;
+            top: 20px;
+            right: -10px;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -10px;
+            right: auto;
+        }
+        
+        .value-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .team-avatar {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 60px;
+                padding-right: 0;
+            }
+            
+            .timeline-item:nth-child(even) {
+                margin-left: 0;
+                padding-left: 60px;
+            }
+            
+            .timeline-dot {
+                left: 20px !important;
+                right: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <!-- SVG Logo -->
+                <svg width="45" height="45" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="48" fill="url(#gradient1)" />
+                    <text x="50" y="50" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">VL</text>
+                    <defs>
+                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1e3c72;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#dc143c;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="25" cy="25" r="3" fill="white" opacity="0.8"/>
+                    <circle cx="75" cy="25" r="3" fill="white" opacity="0.8"/>
+                    <circle cx="25" cy="75" r="3" fill="white" opacity="0.8"/>
+                    <circle cx="75" cy="75" r="3" fill="white" opacity="0.8"/>
+                </svg>
+                <span style="font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VietLinker</span>
+            </a>
+            
+            <div class="navbar-menu">
+                <a href="marketplace.html">Chợ Việt</a>
+                <a href="jobs.html">Việc Làm</a>
+                <a href="services.html">Dịch Vụ</a>
+                <a href="food.html">Ẩm Thực</a>
+                <a href="realestate.html">Bất Động Sản</a>
+                <a href="classifieds.html">Rao Vặt</a>
+                <a href="promotions.html">Khuyến Mãi</a>
+            </div>
+            
+            <div class="navbar-actions">
+                <button onclick="window.location.href='post-form.html'" class="btn-post">
+                    ✚ Đăng Tin
+                </button>
+                <div class="user-menu" id="userMenu"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <h1>Về VietLinker Digital Marketing</h1>
+        <p>Kết nối cộng đồng người Việt - Xây dựng tương lai cùng nhau</p>
+    </section>
+
+    <!-- About Content -->
+    <div class="container" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+        
+        <!-- Mission Section -->
+        <section style="text-align: center; padding: 60px 20px;">
+            <h2 style="font-size: 36px; color: #1e3c72; margin-bottom: 30px;">Sứ Mệnh Của Chúng Tôi</h2>
+            <p style="font-size: 18px; line-height: 1.8; color: #666; max-width: 800px; margin: 0 auto;">
+                VietLinker Digital Marketing ra đời với sứ mệnh kết nối cộng đồng người Việt tại Hoa Kỳ, tạo ra một nền tảng 
+                số toàn diện giúp mọi người dễ dàng tìm kiếm việc làm, mua bán, trao đổi dịch vụ và xây dựng 
+                mối quan hệ kinh doanh bền vững. Đồng thời cung cấp giải pháp Digital Marketing chuyên nghiệp cho doanh nghiệp Việt.
+            </p>
+        </section>
+
+        <!-- Values Section -->
+        <section style="padding: 60px 20px; background: #f8f9fa; border-radius: 20px;">
+            <h2 style="text-align: center; font-size: 36px; color: #1e3c72; margin-bottom: 50px;">Giá Trị Cốt Lõi</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Kết Nối</h3>
+                    <p style="color: #666;">Tạo cầu nối vững chắc giữa người Việt khắp nước Mỹ</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">⭐</div>
+                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Chất Lượng</h3>
+                    <p style="color: #666;">Cam kết mang đến dịch vụ tốt nhất cho cộng đồng</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔒</div>
+                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Tin Cậy</h3>
+                    <p style="color: #666;">Bảo mật thông tin và xây dựng niềm tin bền vững</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💡</div>
+                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Đổi Mới</h3>
+                    <p style="color: #666;">Không ngừng cải tiến để phục vụ tốt hơn</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Journey Timeline -->
+        <section style="padding: 60px 20px;">
+            <h2 style="text-align: center; font-size: 36px; color: #1e3c72; margin-bottom: 50px;">Hành Trình Phát Triển</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 style="color: #dc143c;">2023</h3>
+                        <p>Ý tưởng VietLinker Digital Marketing ra đời từ nhu cầu thực tế của cộng đồng</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 style="color: #dc143c;">2024</h3>
+                        <p>Phát triển platform và kết nối 10,000+ người dùng đầu tiên</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 style="color: #dc143c;">2025</h3>
+                        <p>Mở rộng toàn quốc với 50,000+ thành viên tích cực</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section style="background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%); padding: 60px 20px; border-radius: 20px; color: white; text-align: center;">
+            <h2 style="font-size: 36px; margin-bottom: 50px;">VietLinker Digital Marketing Trong Số Liệu</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
+                <div>
+                    <div style="font-size: 48px; font-weight: bold;">50,000+</div>
+                    <p style="opacity: 0.9;">Thành viên tích cực</p>
+                </div>
+                <div>
+                    <div style="font-size: 48px; font-weight: bold;">10,000+</div>
+                    <p style="opacity: 0.9;">Tin đăng mỗi tháng</p>
+                </div>
+                <div>
+                    <div style="font-size: 48px; font-weight: bold;">500+</div>
+                    <p style="opacity: 0.9;">Doanh nghiệp Việt</p>
+                </div>
+                <div>
+                    <div style="font-size: 48px; font-weight: bold;">50</div>
+                    <p style="opacity: 0.9;">Tiểu bang có mặt</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section style="padding: 60px 20px;">
+            <h2 style="text-align: center; font-size: 36px; color: #1e3c72; margin-bottom: 50px;">Đội Ngũ Của Chúng Tôi</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+                <div class="team-member">
+                    <div class="team-avatar">👨‍💼</div>
+                    <h3 style="color: #1e3c72;">Founder & CEO</h3>
+                    <p style="color: #666;">Dẫn dắt tầm nhìn và chiến lược phát triển</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👩‍💻</div>
+                    <h3 style="color: #1e3c72;">CTO</h3>
+                    <p style="color: #666;">Phát triển công nghệ và đổi mới sáng tạo</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👥</div>
+                    <h3 style="color: #1e3c72;">Community Team</h3>
+                    <p style="color: #666;">Hỗ trợ và kết nối cộng đồng 24/7</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section style="background: #f8f9fa; padding: 60px 20px; border-radius: 20px; text-align: center;">
+            <h2 style="font-size: 36px; color: #1e3c72; margin-bottom: 20px;">Tham Gia Cùng Chúng Tôi</h2>
+            <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
+                Hãy là một phần của cộng đồng người Việt lớn mạnh tại Hoa Kỳ
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="register.html" style="background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color: white; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: 600; display: inline-block;">
+                    Đăng Ký Ngay
+                </a>
+                <a href="contact.html" style="background: white; color: #1e3c72; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: 600; border: 2px solid #1e3c72; display: inline-block;">
+                    Liên Hệ Với Chúng Tôi
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="48" fill="white" opacity="0.9"/>
+                            <text x="50" y="50" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1e3c72" text-anchor="middle" dominant-baseline="central">VL</text>
+                        </svg>
+                        <span style="font-size: 24px; font-weight: 700; color: white;">VietLinker Digital Marketing</span>
+                    </div>
+                    <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ</p>
+                    <p>Giải pháp Marketing số toàn diện</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Danh Mục</h4>
+                    <a href="marketplace.html">Chợ Việt</a>
+                    <a href="jobs.html">Việc Làm</a>
+                    <a href="services.html">Dịch Vụ</a>
+                    <a href="food.html">Ẩm Thực</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Thông Tin</h4>
+                    <a href="about.html">Giới Thiệu</a>
+                    <a href="contact.html">Liên Hệ</a>
+                    <a href="privacy.html">Chính Sách Bảo Mật</a>
+                    <a href="terms.html">Điều Khoản Sử Dụng</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Kết Nối</h4>
+                    <p>📧 support@vietlinker.info</p>
+                    <p>📱 (469) xxx-xxxx</p>
+                    <p>📍 Carrollton, TX 75007</p>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <a href="privacy.html">Chính Sách Bảo Mật</a>
+                <a href="terms.html">Điều Khoản</a>
+                <a href="about.html">Giới Thiệu</a>
+                <a href="contact.html">Liên Hệ</a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 VietLinker Digital Marketing. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
