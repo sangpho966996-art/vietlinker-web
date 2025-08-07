@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VietLinker - Nền Tảng Kết Nối Cộng Đồng Người Việt Tại Mỹ</title>
+    <title>VietLinker Digital Marketing - Nền Tảng Kết Nối Cộng Đồng Người Việt Tại Mỹ</title>
     <style>
         * {
             margin: 0;
@@ -63,11 +63,10 @@
             z-index: 1;
         }
         
-        /* Logo Professional - UPDATED */
+        /* Logo Professional - NEW HANDSHAKE LOGO */
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
             text-decoration: none;
             transition: transform 0.3s;
         }
@@ -76,17 +75,20 @@
             transform: scale(1.05);
         }
         
-        .logo img {
-            width: 55px;
-            height: 55px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        .logo-svg {
+            width: 200px;
+            height: 50px;
         }
         
-        .logo-text {
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
             color: white;
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px;
         }
         
         /* User Actions Professional */
@@ -357,6 +359,74 @@
         .user-menu a:hover {
             background: rgba(255,215,0,0.25);
             border-color: #FFD700;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: #1e3c72;
+            z-index: 9999;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+        }
+        
+        .mobile-nav-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .mobile-nav-links {
+            padding: 20px;
+        }
+        
+        .mobile-nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+        
+        .mobile-nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+        }
+        
+        .mobile-nav-overlay.active {
+            display: block;
         }
         
         /* NEW Hero Search Section */
@@ -942,9 +1012,11 @@
             gap: 10px;
         }
         
-        .footer-brand img {
-            width: 30px;
-            height: 30px;
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
         .footer-brand p {
@@ -1007,33 +1079,47 @@
             color: rgba(255,255,255,0.6);
         }
         
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
+        /* MOBILE RESPONSIVE IMPROVEMENTS */
         @media (max-width: 768px) {
-            .hero-text h1 {
-                font-size: 36px;
+            /* Header Mobile */
+            .header-content {
+                padding: 1rem 15px;
             }
             
+            .logo-svg {
+                width: 150px;
+                height: 40px;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .user-actions {
+                display: none;
+            }
+            
+            /* Mobile Navigation Display */
+            .nav-container {
+                display: none;
+            }
+            
+            .mobile-nav {
+                display: block;
+            }
+            
+            /* Hero Search Mobile */
             .search-title {
-                font-size: 28px;
+                font-size: 24px;
+            }
+            
+            .search-subtitle {
+                font-size: 14px;
             }
             
             .mega-search-box {
                 flex-direction: column;
+                padding: 20px;
             }
             
             .search-input-group {
@@ -1045,17 +1131,44 @@
                 justify-content: center;
             }
             
-            .section-title {
+            /* Quick searches mobile */
+            .quick-searches {
+                padding: 0 10px;
+            }
+            
+            .quick-search-tag {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+            
+            /* Hero Mobile */
+            .hero {
+                padding: 40px 15px;
+            }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 30px;
+            }
+            
+            .hero-text h1 {
                 font-size: 32px;
             }
             
-            .nav-links {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+            .hero-text p {
+                font-size: 16px;
             }
             
-            .nav-divider {
-                display: none;
+            .hero-buttons {
+                justify-content: center;
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-hero {
+                width: 100%;
+                justify-content: center;
             }
             
             .hero-stats {
@@ -1063,19 +1176,67 @@
                 gap: 20px;
             }
             
+            /* Categories Mobile */
+            .categories {
+                padding: 40px 15px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .category-card {
+                padding: 25px 20px;
+            }
+            
+            /* Features Mobile */
+            .features {
+                padding: 40px 15px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .feature {
+                padding: 30px 20px;
+            }
+            
+            /* CTA Mobile */
+            .cta {
+                padding: 40px 15px;
+            }
+            
+            .cta h2 {
+                font-size: 28px;
+            }
+            
+            .cta p {
+                font-size: 16px;
+            }
+            
+            /* Footer Mobile */
             .footer-content {
                 grid-template-columns: 1fr;
                 text-align: center;
+                gap: 30px;
+            }
+            
+            .footer-logo {
+                justify-content: center;
             }
             
             .social-links {
                 justify-content: center;
             }
             
-            .user-name {
-                display: none;
-            }
-
+            /* Floating button mobile */
             .floating-post-btn {
                 width: 55px;
                 height: 55px;
@@ -1083,31 +1244,79 @@
                 right: 20px;
                 font-size: 24px;
             }
-
-            .btn-post {
-                padding: 8px 16px;
+            
+            /* Modal mobile */
+            .search-results-container {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .search-results-body {
+                padding: 15px;
+            }
+        }
+        
+        /* Tablet Responsive */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-content {
+                gap: 40px;
+            }
+        }
+        
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .logo-svg {
+                width: 120px;
+                height: 35px;
+            }
+            
+            .search-title {
+                font-size: 20px;
+            }
+            
+            .hero-text h1 {
+                font-size: 26px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .btn-hero {
+                padding: 12px 25px;
                 font-size: 14px;
-            }
-            
-            .logo img {
-                width: 45px;
-                height: 45px;
-            }
-            
-            .logo-text {
-                font-size: 22px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header Professional - LOGO UPDATED -->
+    <!-- Header Professional - LOGO HANDSHAKE UPDATED -->
     <header>
         <div class="header-content">
             <a href="index.html" class="logo">
-               <img src="URL_LOGO_CỦA_BẠN_Ở_ĐÂY" alt="VietLinker Logo" style="width: 55px; height: 55px; object-fit: contain;">
-                <span class="logo-text">VietLinker</span>
+                <svg class="logo-svg" viewBox="0 0 200 50">
+                    <g transform="translate(10, 12)">
+                        <path d="M 3 15 Q 7 11 11 15 L 14 18 L 15 20" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M 27 15 Q 23 11 19 15 L 16 18 L 15 20" stroke="#ffcc00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <circle cx="15" cy="19" r="1.5" fill="#ffffff"/>
+                        <line x1="13" y1="13" x2="17" y2="13" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" opacity="0.4"/>
+                        <line x1="13" y1="16" x2="17" y2="16" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" opacity="0.4"/>
+                    </g>
+                    <text x="45" y="26" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">VietLinker</text>
+                    <text x="45" y="38" font-family="Arial, sans-serif" font-size="9" fill="#ffcc00">DIGITAL MARKETING</text>
+                </svg>
             </a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
             
             <div class="user-actions">
                 <!-- Nút Đăng tin - LUÔN HIỂN THỊ cho mọi user -->
@@ -1142,7 +1351,38 @@
         </div>
     </header>
     
-    <!-- Navigation Professional - UPDATED WITH FOOD -->
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <svg width="150" height="40" viewBox="0 0 200 50">
+                <g transform="translate(10, 8)">
+                    <path d="M 3 15 Q 7 11 11 15 L 14 18 L 15 20" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M 27 15 Q 23 11 19 15 L 16 18 L 15 20" stroke="#ffcc00" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <circle cx="15" cy="19" r="1.5" fill="#ffffff"/>
+                </g>
+                <text x="45" y="24" font-family="Arial" font-size="14" font-weight="bold" fill="white">VietLinker</text>
+                <text x="45" y="35" font-family="Arial" font-size="8" fill="#ffcc00">DIGITAL MARKETING</text>
+            </svg>
+            <button class="mobile-nav-close" onclick="toggleMobileMenu()">×</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="index.html">🏠 Trang Chủ</a>
+            <a href="marketplace.html">🛒 Mua Bán</a>
+            <a href="jobs.html">💼 Việc Làm</a>
+            <a href="services.html">🤝 Dịch Vụ</a>
+            <a href="food.html">🍜 Ăn Uống</a>
+            <a href="realestate.html">🏠 BĐS & Tiệm</a>
+            <a href="classifieds.html">📋 Rao Vặt</a>
+            <a href="promotions.html">🎁 Khuyến Mãi</a>
+            <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+            <a href="login.html">🔐 Đăng Nhập</a>
+            <a href="register.html">✨ Đăng Ký</a>
+            <a href="post-form.html">✍️ Đăng Tin</a>
+        </div>
+    </div>
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="toggleMobileMenu()"></div>
+    
+    <!-- Navigation Professional - DESKTOP ONLY -->
     <nav>
         <div class="nav-container">
             <div class="nav-links">
@@ -1167,6 +1407,7 @@
         </div>
     </nav>
     
+    <!-- Giữ nguyên toàn bộ nội dung từ Hero Search Section trở xuống -->
     <!-- NEW Hero Search Section -->
     <section class="hero-search">
         <div class="search-container">
@@ -1391,26 +1632,21 @@
         </div>
     </section>
     
-    <!-- Footer Professional - UPDATED WITH NEW PAGES -->
+    <!-- Footer Professional - LOGO HANDSHAKE UPDATED -->
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
-                <h3>
-                   <a href="index.html" class="navbar-brand" style="display: flex; align-items: center; text-decoration: none;">
-    
-        
-            
-            
-            
-            
-            
-        
-        VietLinker
-        DIGITAL MARKETING
-    
-</a>
-                    VietLinker
-                </h3>
+                <div class="footer-logo">
+                    <svg width="180" height="45" viewBox="0 0 200 50">
+                        <g transform="translate(10, 10)">
+                            <path d="M 3 15 Q 7 11 11 15 L 14 18 L 15 20" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <path d="M 27 15 Q 23 11 19 15 L 16 18 L 15 20" stroke="#ffcc00" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <circle cx="15" cy="19" r="1.5" fill="#ffffff"/>
+                        </g>
+                        <text x="45" y="25" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="white">VietLinker</text>
+                        <text x="45" y="37" font-family="Arial, sans-serif" font-size="8" fill="#ffcc00">DIGITAL MARKETING</text>
+                    </svg>
+                </div>
                 <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ. Mang đến cơ hội, kết nối và phát triển cho cộng đồng.</p>
                 <div class="social-links">
                     <a href="#" class="social-link">f</a>
@@ -1418,326 +1654,3 @@
                     <a href="#" class="social-link">i</a>
                     <a href="#" class="social-link">y</a>
                 </div>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Danh Mục</h4>
-                <ul>
-                    <li><a href="marketplace.html">Mua Bán</a></li>
-                    <li><a href="jobs.html">Việc Làm</a></li>
-                    <li><a href="services.html">Dịch Vụ</a></li>
-                    <li><a href="food.html">Ăn Uống</a></li>
-                    <li><a href="realestate.html">Bất Động Sản</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Hỗ Trợ</h4>
-                <ul>
-                    <li><a href="#">Hướng Dẫn</a></li>
-                    <li><a href="#">Câu Hỏi Thường Gặp</a></li>
-                    <li><a href="contact.html">Liên Hệ</a></li>
-                    <li><a href="#">Báo Cáo Vi Phạm</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Về VietLinker</h4>
-                <ul>
-                    <li><a href="about.html">Giới Thiệu</a></li>
-                    <li><a href="terms.html">Điều Khoản</a></li>
-                    <li><a href="privacy.html">Chính Sách Bảo Mật</a></li>
-                    <li><a href="#">Quảng Cáo</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2025 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</p>
-        </div>
-    </footer>
-
-    <!-- Floating Post Button -->
-    <a href="post-form.html" class="floating-post-btn">
-        ➕
-    </a>
-    
-    <!-- Supabase CDN - LOAD FIRST -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
-    
-    <!-- MAIN SCRIPT - SIMPLE AND WORKING -->
-    <script>
-        // SIMPLE WORKING SCRIPT - NO COMPLEX FUNCTIONS
-        console.log('🚀 VietLinker Starting...');
-        
-        // GLOBAL SEARCH FUNCTION
-        function performGlobalSearch() {
-            console.log('🔍 Search function called');
-            
-            var keyword = document.getElementById('searchKeyword').value;
-            var location = document.getElementById('searchLocation').value;
-            var category = document.getElementById('searchCategory').value;
-            
-            console.log('Search params:', { keyword: keyword, location: location, category: category });
-            
-            if (!keyword && !location && !category) {
-                alert('Vui lòng nhập thông tin tìm kiếm!');
-                return;
-            }
-            
-            // Show modal
-            var modal = document.getElementById('searchResultsModal');
-            var body = document.getElementById('searchResultsBody');
-            modal.style.display = 'block';
-            body.innerHTML = '<p style="text-align: center; padding: 40px;">🔍 Đang tìm kiếm...</p>';
-            
-            // Create Supabase client
-            var supabase = window.supabase.createClient(
-                'https://wwlmvcsozavqfvwlxkrt.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
-            );
-            
-            // Search tables
-            var tables = category ? [category] : ['jobs', 'marketplace', 'services', 'food_dining', 'real_estate', 'classifieds'];
-            var allResults = [];
-            var completed = 0;
-            
-            tables.forEach(function(table) {
-                var query = supabase.from(table).select('*').eq('status', 'active');
-                
-                if (keyword) {
-                    if (table === 'food_dining') {
-                        query = query.or('title.ilike.%' + keyword + '%,description.ilike.%' + keyword + '%,business_name.ilike.%' + keyword + '%');
-                    } else {
-                        query = query.or('title.ilike.%' + keyword + '%,description.ilike.%' + keyword + '%');
-                    }
-                }
-                
-                if (location) {
-                    if (/^\d{5}$/.test(location)) {
-                        query = query.eq('zipcode', location);
-                    } else {
-                        query = query.ilike('city', '%' + location + '%');
-                    }
-                }
-                
-                query.limit(10).then(function(result) {
-                    completed++;
-                    
-                    if (result.data && result.data.length > 0) {
-                        allResults.push({ table: table, data: result.data });
-                    }
-                    
-                    // When all searches complete
-                    if (completed === tables.length) {
-                        displayResults(allResults);
-                    }
-                });
-            });
-        }
-        
-        // Display search results
-        function displayResults(allResults) {
-            var body = document.getElementById('searchResultsBody');
-            
-            if (allResults.length === 0) {
-                body.innerHTML = '<p style="text-align: center; padding: 40px;">😔 Không tìm thấy kết quả nào.</p>';
-            } else {
-                var html = '<div style="padding: 20px;">';
-                html += '<h3 style="color: #1e3c72;">🎯 Kết quả tìm kiếm</h3>';
-                
-                var tableNames = {
-                    'jobs': '💼 Việc Làm',
-                    'marketplace': '🛒 Mua Bán',
-                    'services': '🤝 Dịch Vụ',
-                    'food_dining': '🍜 Ăn Uống',
-                    'real_estate': '🏠 Bất Động Sản',
-                    'classifieds': '📋 Rao Vặt',
-                    'promotions': '🎁 Khuyến Mãi'
-                };
-                
-                allResults.forEach(function(result) {
-                    html += '<div style="margin: 20px 0;">';
-                    html += '<h4 style="color: #1e3c72; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">';
-                    html += tableNames[result.table] + ' (' + result.data.length + ' kết quả)</h4>';
-                    
-                    result.data.forEach(function(item) {
-                        var title = item.title || item.business_name || item.name || 'No title';
-                        var desc = item.description || '';
-                        var city = item.city || '';
-                        var price = item.price || item.salary || item.price_range || '';
-                        
-                        html += '<div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer;"';
-                        html += ' onmouseover="this.style.background=\'#e9ecef\'"';
-                        html += ' onmouseout="this.style.background=\'#f8f9fa\'"';
-                        html += ' onclick="window.location.href=\'' + result.table.replace('_', '') + '.html\'">';
-                        html += '<h5 style="color: #1e3c72; margin: 0 0 8px 0;">' + title + '</h5>';
-                        if (desc) {
-                            html += '<p style="color: #666; margin: 0 0 8px 0; font-size: 14px;">' + desc.substring(0, 100) + '...</p>';
-                        }
-                        html += '<div style="display: flex; gap: 15px; font-size: 13px; color: #999;">';
-                        if (city) html += '<span>📍 ' + city + '</span>';
-                        if (price) html += '<span>💰 ' + price + '</span>';
-                        html += '</div></div>';
-                    });
-                    
-                    html += '</div>';
-                });
-                
-                html += '</div>';
-                body.innerHTML = html;
-            }
-            
-            console.log('✅ Search results displayed');
-        }
-        
-        // Close modal function
-        function closeSearchModal() {
-            document.getElementById('searchResultsModal').style.display = 'none';
-        }
-        
-        // Sign out function
-        function signOut() {
-            if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                var supabase = window.supabase.createClient(
-                    'https://wwlmvcsozavqfvwlxkrt.supabase.co',
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
-                );
-                supabase.auth.signOut().then(function() {
-                    window.location.reload();
-                });
-            }
-        }
-        
-        // Initialize when page loads
-        window.addEventListener('load', function() {
-            console.log('✅ Page loaded, initializing...');
-            
-            // Check if Supabase loaded
-            if (typeof window.supabase === 'undefined') {
-                console.error('❌ Supabase not loaded!');
-                return;
-            }
-            
-            console.log('✅ Supabase is available');
-            
-            // Add event listeners for Enter key
-            var searchKeyword = document.getElementById('searchKeyword');
-            if (searchKeyword) {
-                searchKeyword.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
-            var searchLocation = document.getElementById('searchLocation');
-            if (searchLocation) {
-                searchLocation.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
-            // Quick search tags
-            document.querySelectorAll('.quick-search-tag').forEach(function(tag) {
-                tag.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById('searchKeyword').value = this.getAttribute('data-search');
-                    performGlobalSearch();
-                });
-            });
-            
-            // Click outside modal to close
-            window.addEventListener('click', function(e) {
-                var modal = document.getElementById('searchResultsModal');
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-            
-            // Check authentication
-            checkAuth();
-            
-            // Get user location
-            getUserLocation();
-            
-            console.log('✅ VietLinker Ready!');
-            console.log('💡 Try searching for: nail, phở, honda, etc.');
-        });
-        
-        // Check authentication
-        function checkAuth() {
-            if (typeof window.supabase === 'undefined') return;
-            
-            var supabase = window.supabase.createClient(
-                'https://wwlmvcsozavqfvwlxkrt.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM08.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
-            );
-            
-            supabase.auth.getUser().then(function(result) {
-                var user = result.data.user;
-                var userInfo = document.getElementById('userInfo');
-                var authButtons = document.getElementById('authButtons');
-                var userMenu = document.getElementById('userMenu');
-                
-                if (user) {
-                    // User is logged in
-                    userInfo.classList.add('active');
-                    authButtons.classList.add('hidden');
-                    userMenu.classList.add('active');
-                    
-                    // Get user details
-                    supabase.from('users')
-                        .select('full_name, name')
-                        .eq('email', user.email)
-                        .single()
-                        .then(function(result) {
-                            if (result.data) {
-                                var displayName = result.data.full_name || result.data.name || user.email;
-                                document.getElementById('userName').textContent = displayName;
-                                document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
-                            }
-                        });
-                } else {
-                    // User is not logged in
-                    userInfo.classList.remove('active');
-                    authButtons.classList.remove('hidden');
-                    userMenu.classList.remove('active');
-                }
-            });
-        }
-        
-        // Get user location
-        function getUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    console.log('Location detected:', position.coords.latitude, position.coords.longitude);
-                    var locationStatus = document.getElementById('locationStatus');
-                    if (locationStatus) {
-                        locationStatus.classList.add('active');
-                    }
-                });
-            }
-        }
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                var targetId = this.getAttribute('href');
-                if (targetId && targetId !== '#') {
-                    var target = document.querySelector(targetId);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-    </script>
-</body>
-</html>
-
-
-
