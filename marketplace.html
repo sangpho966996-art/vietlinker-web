@@ -5,92 +5,437 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mua Bán - VietLinker</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
         }
-        .container { background: white; min-height: 100vh; }
+
+        /* Mobile-first approach */
+        .container {
+            background: white;
+            min-height: 100vh;
+        }
+
         header {
             background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            color: white; padding: 20px; text-align: center; position: relative; overflow: hidden;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
+
         header::before {
-            content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%;
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: shimmer 3s infinite;
         }
-        @keyframes shimmer { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        header h1 { font-size: 1.8em; margin-bottom: 5px; position: relative; z-index: 1; }
-        header p { font-size: 0.95em; opacity: 0.95; position: relative; z-index: 1; }
-        
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            font-size: 0.95em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobile Navigation */
         nav {
-            background: #1e3c72; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky; top: 0; z-index: 100;
+            background: #1e3c72;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
-        .nav-toggle { display: block; background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 5px; }
-        .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1e3c72; flex-direction: column; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .nav-links.active { display: flex; }
-        .nav-links a { color: white; text-decoration: none; padding: 12px; border-radius: 5px; transition: all 0.3s; }
-        .nav-links a:hover, .nav-links a.active { background: rgba(220, 20, 60, 0.3); }
-        
-        .user-info { color: white; display: flex; align-items: center; gap: 10px; font-size: 0.9em; }
-        .logout-btn { background: #dc143c; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; transition: all 0.3s; font-size: 0.85em; }
-        .logout-btn:hover { background: #b91c3c; transform: scale(1.05); }
-        
-        .main-content { padding: 20px; background: #f8f9fa; }
-        
-        .loading { display: flex; justify-content: center; align-items: center; padding: 40px; color: #666; }
-        .loading-spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1e3c72; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 15px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .actions-bar { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .search-filter-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .search-box { flex: 1; min-width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
-        .search-box:focus { outline: none; border-color: #1e3c72; }
-        .filter-btn { background: #1e3c72; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-size: 14px; }
-        .filter-btn:hover { background: #2a5298; transform: translateY(-2px); }
-        .post-btn { background: #dc143c; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-weight: 600; font-size: 14px; }
-        .post-btn:hover { background: #b91c3c; transform: translateY(-2px); }
-        
-        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
-        .item-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer; position: relative; }
-        .item-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-        .item-image { width: 100%; height: 200px; object-fit: cover; background: #f0f0f0; }
-        .item-content { padding: 15px; }
-        .item-title { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: #333; line-height: 1.3; }
-        .item-price { font-size: 1.2em; font-weight: 700; color: #dc143c; margin-bottom: 8px; }
-        .item-location { font-size: 0.9em; color: #666; margin-bottom: 8px; }
-        .item-date { font-size: 0.8em; color: #999; }
-        .favorite-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
-        .favorite-btn:hover { background: white; transform: scale(1.1); }
-        .favorite-btn.active { color: #dc143c; }
-        
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
-        .page-btn { padding: 8px 12px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 5px; transition: all 0.3s; }
-        .page-btn:hover, .page-btn.active { background: #1e3c72; color: white; border-color: #1e3c72; }
-        
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-toggle {
+            display: block;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .nav-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1e3c72;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(220, 20, 60, 0.3);
+        }
+
+        .user-info {
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .logout-btn {
+            background: #dc143c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85em;
+        }
+
+        .logout-btn:hover {
+            background: #b91c3c;
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1e3c72;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Optimized Actions Bar */
+        .actions-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        .filter-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+        }
+
+        .post-btn {
+            background: #dc143c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .post-btn:hover {
+            background: #b91c3c;
+            transform: translateY(-2px);
+        }
+
+        /* Optimized Items Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .item-image.loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .item-content {
+            padding: 15px;
+        }
+
+        .item-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .item-price {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #dc143c;
+            margin-bottom: 8px;
+        }
+
+        .item-location {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .item-date {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.active {
+            color: #dc143c;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #1e3c72;
+            color: white;
+            border-color: #1e3c72;
+        }
+
+        /* Mobile Optimizations */
         @media (max-width: 768px) {
-            .items-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
-            .search-filter-row { flex-direction: column; }
-            .search-box { min-width: auto; }
-            .item-image { height: 180px; }
+            .items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+
+            .search-filter-row {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: auto;
+            }
+
+            .item-card {
+                margin-bottom: 0;
+            }
+
+            .item-image {
+                height: 180px;
+            }
         }
+
         @media (max-width: 480px) {
-            .items-grid { grid-template-columns: 1fr; }
-            .item-image { height: 200px; }
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item-image {
+                height: 200px;
+            }
         }
-        
-        footer { background: #1e3c72; color: white; padding: 30px 20px; margin-top: 40px; }
-        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .footer-column h4 { margin-bottom: 15px; color: #FFD700; }
-        .footer-column ul { list-style: none; }
-        .footer-column ul li { margin-bottom: 8px; }
-        .footer-column ul li a { color: white; text-decoration: none; transition: color 0.3s; }
-        .footer-column ul li a:hover { color: #FFD700; }
-        .footer-bottom { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); }
+
+        /* Footer */
+        footer {
+            background: #1e3c72;
+            color: white;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: #FFD700;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
     </style>
 </head>
 <body>
@@ -134,6 +479,7 @@
             </div>
 
             <div id="itemsGrid" class="items-grid" style="display: none;"></div>
+
             <div id="pagination" class="pagination" style="display: none;"></div>
         </div>
 
@@ -168,7 +514,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Performance optimizations
+        // Performance optimizations - GIỮ NGUYÊN TẤT CẢ CHỨC NĂNG
         let searchTimeout;
         let currentPage = 1;
         let itemsPerPage = 12;
@@ -176,6 +522,7 @@
         let filteredItems = [];
         let currentUser = null;
         let favorites = new Set();
+        let isLoading = false; // Prevent multiple simultaneous loads
 
         // Debounced search for better performance
         function debounceSearch() {
@@ -190,10 +537,15 @@
             try {
                 console.log('🚀 VietLinker Marketplace Starting...');
                 
-                // Check auth first
-                await checkAuth();
+                // Check auth first (non-blocking)
+                checkAuth().then(() => {
+                    // Load favorites in background if user is logged in
+                    if (currentUser) {
+                        loadFavorites();
+                    }
+                });
                 
-                // Load items with loading state
+                // Load items immediately
                 await loadItems();
                 
                 console.log('✅ VietLinker Marketplace Ready!');
@@ -203,7 +555,7 @@
             }
         }
 
-        // Optimized auth check
+        // Optimized auth check - GIỮ NGUYÊN CHỨC NĂNG
         async function checkAuth() {
             const supabase = getSupabase();
             if (!supabase) return;
@@ -218,9 +570,6 @@
                 if (currentUser) {
                     userName.textContent = currentUser.email || 'User';
                     userInfo.style.display = 'flex';
-                    
-                    // Load favorites in background
-                    loadFavorites();
                 } else {
                     userInfo.style.display = 'none';
                 }
@@ -229,8 +578,11 @@
             }
         }
 
-        // Optimized item loading
+        // Optimized item loading - GIỮ NGUYÊN CHỨC NĂNG
         async function loadItems() {
+            if (isLoading) return; // Prevent multiple loads
+            
+            isLoading = true;
             const loading = document.getElementById('loading');
             const itemsGrid = document.getElementById('itemsGrid');
             
@@ -241,9 +593,10 @@
                 const supabase = getSupabase();
                 if (!supabase) throw new Error('Supabase not available');
 
+                // Optimized query - only get what we need
                 const { data, error } = await supabase
                     .from('marketplace')
-                    .select('*')
+                    .select('id, title, description, price, city, image_url, created_at, user_id')
                     .order('created_at', { ascending: false })
                     .limit(100); // Limit for performance
 
@@ -260,10 +613,11 @@
                 showError('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
             } finally {
                 loading.style.display = 'none';
+                isLoading = false;
             }
         }
 
-        // Optimized rendering
+        // Optimized rendering - GIỮ NGUYÊN CHỨC NĂNG
         function renderItems() {
             const itemsGrid = document.getElementById('itemsGrid');
             const pagination = document.getElementById('pagination');
@@ -279,7 +633,8 @@
                 return;
             }
 
-            itemsGrid.innerHTML = pageItems.map(item => `
+            // Optimized HTML generation
+            const itemsHTML = pageItems.map(item => `
                 <div class="item-card" onclick="viewItem('${item.id}')">
                     <img src="${escapeHtml(item.image_url || '')}" 
                          alt="${escapeHtml(item.title)}" 
@@ -299,11 +654,12 @@
                 </div>
             `).join('');
 
+            itemsGrid.innerHTML = itemsHTML;
             itemsGrid.style.display = 'block';
             renderPagination();
         }
 
-        // Optimized pagination
+        // Optimized pagination - GIỮ NGUYÊN CHỨC NĂNG
         function renderPagination() {
             const pagination = document.getElementById('pagination');
             const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
@@ -320,7 +676,7 @@
                 paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage - 1})">←</button>`;
             }
 
-            // Page numbers
+            // Page numbers - optimized to show fewer buttons
             for (let i = 1; i <= totalPages; i++) {
                 if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
                     paginationHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
@@ -338,10 +694,11 @@
             pagination.style.display = 'flex';
         }
 
-        // Optimized filtering
+        // Optimized filtering - GIỮ NGUYÊN CHỨC NĂNG
         function filterItems() {
             const searchTerm = document.getElementById('searchBox').value.toLowerCase();
             
+            // Optimized filtering
             filteredItems = allItems.filter(item => 
                 item.title?.toLowerCase().includes(searchTerm) ||
                 item.description?.toLowerCase().includes(searchTerm) ||
@@ -352,7 +709,7 @@
             renderItems();
         }
 
-        // Optimized favorites
+        // Optimized favorites - GIỮ NGUYÊN CHỨC NĂNG
         async function loadFavorites() {
             if (!currentUser) return;
             
@@ -406,7 +763,7 @@
             }
         }
 
-        // Utility functions
+        // Utility functions - GIỮ NGUYÊN CHỨC NĂNG
         function changePage(page) {
             currentPage = page;
             renderItems();
