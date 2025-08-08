@@ -200,6 +200,12 @@
             box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
         }
 
+        .btn-secondary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
         .properties-container {
             display: grid;
             gap: 20px;
@@ -214,6 +220,7 @@
             cursor: pointer;
             display: flex;
             gap: 20px;
+            position: relative;
         }
 
         .property-card:hover {
@@ -264,6 +271,9 @@
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .property-price {
@@ -301,6 +311,58 @@
 
         .property-detail-item .icon {
             color: #dc143c;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .action-btn.contact {
+            background: linear-gradient(135deg, #00b4d8 0%, #0077be 100%);
+            color: white;
+        }
+
+        .action-btn.schedule {
+            background: linear-gradient(135deg, #06ffa5 0%, #00d68f 100%);
+            color: white;
+        }
+
+        .action-btn.share {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+            color: white;
+        }
+
+        .action-btn.call {
+            background: linear-gradient(135deg, #00c851 0%, #00a846 100%);
+            color: white;
+            text-decoration: none;
+        }
+
+        .action-btn.sms {
+            background: linear-gradient(135deg, #0099ff 0%, #0077cc 100%);
+            color: white;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .view-count {
@@ -557,6 +619,167 @@
             font-size: 18px;
         }
 
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        /* Contact Modal */
+        .contact-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Schedule Modal */
+        .schedule-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .calendar-day {
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .calendar-day:hover {
+            border-color: #dc143c;
+            background: #fff5f5;
+        }
+
+        .calendar-day.selected {
+            background: #dc143c;
+            color: white;
+            border-color: #dc143c;
+        }
+
+        .calendar-day.disabled {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover {
+            border-color: #dc143c;
+            background: #fff5f5;
+        }
+
+        .time-slot.selected {
+            background: #dc143c;
+            color: white;
+            border-color: #dc143c;
+        }
+
+        /* Share Modal */
+        .share-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .share-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .share-btn.facebook {
+            background: #1877f2;
+        }
+
+        .share-btn.zalo {
+            background: #0068ff;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Quick Contact Bar for Mobile */
+        .quick-contact-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 2px solid #e0e0e0;
+            padding: 15px;
+            display: none;
+            gap: 10px;
+            z-index: 1001;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .quick-contact-bar.active {
+            display: flex;
+        }
+
+        .quick-contact-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .quick-contact-btn.call {
+            background: linear-gradient(135deg, #00c851 0%, #00a846 100%);
+        }
+
+        .quick-contact-btn.sms {
+            background: linear-gradient(135deg, #0099ff 0%, #0077cc 100%);
+        }
+
+        .quick-contact-btn:active {
+            transform: scale(0.95);
+        }
+
         .loading {
             text-align: center;
             padding: 50px;
@@ -588,36 +811,219 @@
             }
         }
 
+        /* Enhanced Mobile Responsive */
         @media (max-width: 768px) {
-            .property-card {
-                flex-direction: column;
+            body {
+                padding: 0;
             }
-            
-            .property-image {
-                width: 100%;
-                height: 200px;
+
+            .container {
+                border-radius: 0;
+                margin: 0;
             }
-            
+
+            header {
+                padding: 20px 15px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            nav {
+                padding: 10px 0;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-links {
+                min-width: max-content;
+                padding: 5px 15px;
+                gap: 10px;
+            }
+
+            .nav-links a {
+                padding: 8px 14px;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .actions-bar {
+                padding: 15px;
+                gap: 10px;
+            }
+
             .search-bar {
                 flex-direction: column;
+                width: 100%;
             }
-            
+
             .search-bar input,
-            .search-bar select {
+            .search-bar select,
+            .location-input {
+                width: 100%;
                 min-width: auto;
             }
-            
+
+            .btn {
+                width: 100%;
+                padding: 14px 20px;
+            }
+
+            .property-card {
+                flex-direction: row;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .property-image {
+                width: 120px;
+                height: 120px;
+                flex-shrink: 0;
+            }
+
+            .property-title {
+                font-size: 1.1em;
+                line-height: 1.3;
+            }
+
+            .property-type {
+                font-size: 0.8em;
+                padding: 3px 8px;
+            }
+
+            .property-price {
+                font-size: 1.1em;
+            }
+
+            .property-description {
+                font-size: 0.9em;
+                -webkit-line-clamp: 2;
+            }
+
+            .property-details {
+                gap: 10px;
+            }
+
+            .property-detail-item {
+                font-size: 0.85em;
+            }
+
+            .property-actions {
+                flex-direction: row;
+                gap: 8px;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+
+            .action-btn {
+                flex: 1;
+                padding: 10px 8px;
+                font-size: 12px;
+                border-radius: 8px;
+            }
+
+            .action-btn span:last-child {
+                display: none;
+            }
+
             .detail-header {
                 flex-direction: column;
             }
-            
+
             .detail-image {
                 width: 100%;
-                height: 250px;
+                height: 200px;
             }
-            
+
+            .detail-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .detail-actions .action-btn {
+                width: 100%;
+                padding: 14px;
+                font-size: 16px;
+                justify-content: center;
+            }
+
+            .detail-actions .action-btn span:last-child {
+                display: inline;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20px auto;
+                border-radius: 15px;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 1.4em;
+            }
+
+            .modal-body {
+                padding: 20px;
+                max-height: 75vh;
+            }
+
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                font-size: 16px;
+                padding: 14px;
+            }
+
             .form-row {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            header p {
+                font-size: 0.9em;
+            }
+
+            .property-card {
+                padding: 12px;
+            }
+
+            .property-image {
+                width: 100px;
+                height: 100px;
+            }
+
+            .property-title {
+                font-size: 1em;
+            }
+
+            .property-price {
+                font-size: 1em;
+            }
+
+            .property-description {
+                display: none;
+            }
+
+            .property-actions {
+                gap: 5px;
+            }
+
+            .action-btn {
+                padding: 8px 5px;
+                font-size: 11px;
             }
         }
     </style>
@@ -625,18 +1031,20 @@
 <body>
     <div class="container">
         <header>
-            <h1>🏠 Bất Động Sản</h1>
-            <p>Mua bán, cho thuê nhà cửa trong cộng đồng người Việt</p>
+            <h1>🏠 Bất Động Sản & Sang Tiệm</h1>
+            <p>Mua bán, cho thuê nhà cửa và sang nhượng cơ sở kinh doanh</p>
         </header>
 
         <nav>
             <div class="nav-links">
-                <a href="index.html">Trang chủ</a>
-                <a href="jobs.html">Việc làm</a>
-                <a href="marketplace.html">Mua bán</a>
-                <a href="services.html">Dịch vụ</a>
-                <a href="realestate.html" class="active">Bất động sản</a>
-                <a href="promotions.html">Khuyến mãi</a>
+                <a href="index.html">🏠 Trang chủ</a>
+                <a href="jobs.html">💼 Việc làm</a>
+                <a href="marketplace.html">🛒 Mua bán</a>
+                <a href="services.html">🤝 Dịch vụ</a>
+                <a href="food.html">🍜 Ăn uống</a>
+                <a href="realestate.html" class="active">🏠 BĐS & Tiệm</a>
+                <a href="classifieds.html">📋 Rao vặt</a>
+                <a href="promotions.html">🎁 Khuyến mãi</a>
             </div>
             <div class="user-info">
                 <span id="userEmail">Chưa đăng nhập</span>
@@ -653,14 +1061,14 @@
                     </div>
                     <select id="typeFilter">
                         <option value="">Tất cả loại</option>
-                        <option value="house">Nhà riêng</option>
-                        <option value="apartment">Căn hộ/Apartment</option>
-                        <option value="condo">Condo</option>
-                        <option value="townhouse">Townhouse</option>
-                        <option value="land">Đất</option>
-                        <option value="commercial">Nhà hàng/Tiệm</option>
-                        <option value="room">Phòng cho thuê</option>
-                        <option value="other">Khác</option>
+                        <option value="house">🏡 Nhà riêng</option>
+                        <option value="apartment">🏢 Căn hộ/Apartment</option>
+                        <option value="condo">🏬 Condo</option>
+                        <option value="townhouse">🏘️ Townhouse</option>
+                        <option value="land">🏞️ Đất</option>
+                        <option value="commercial">🏪 Nhà hàng/Tiệm</option>
+                        <option value="room">🚪 Phòng cho thuê</option>
+                        <option value="other">📌 Khác</option>
                     </select>
                     <select id="priceFilter">
                         <option value="">Tất cả mức giá</option>
@@ -716,14 +1124,14 @@
                             <label for="property_type">Loại BĐS *</label>
                             <select id="property_type" required>
                                 <option value="">Chọn loại</option>
-                                <option value="house">Nhà riêng</option>
-                                <option value="apartment">Căn hộ/Apartment</option>
-                                <option value="condo">Condo</option>
-                                <option value="townhouse">Townhouse</option>
-                                <option value="land">Đất</option>
-                                <option value="commercial">Nhà hàng/Tiệm</option>
-                                <option value="room">Phòng cho thuê</option>
-                                <option value="other">Khác</option>
+                                <option value="house">🏡 Nhà riêng</option>
+                                <option value="apartment">🏢 Căn hộ/Apartment</option>
+                                <option value="condo">🏬 Condo</option>
+                                <option value="townhouse">🏘️ Townhouse</option>
+                                <option value="land">🏞️ Đất</option>
+                                <option value="commercial">🏪 Nhà hàng/Tiệm</option>
+                                <option value="room">🚪 Phòng cho thuê</option>
+                                <option value="other">📌 Khác</option>
                             </select>
                         </div>
 
@@ -825,6 +1233,93 @@
         </div>
     </div>
 
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📧 Liên hệ với người đăng</h2>
+                <button class="close-modal" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="contactName">Tên của bạn *</label>
+                        <input type="text" id="contactName" required placeholder="Nhập tên của bạn">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Số điện thoại *</label>
+                        <input type="tel" id="contactPhone" required placeholder="Số điện thoại của bạn">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Tin nhắn</label>
+                        <textarea id="contactMessage" placeholder="Tôi quan tâm đến BĐS này..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn" style="background: #999" onclick="closeContactModal()">Hủy</button>
+                        <button type="submit" class="btn">Gửi liên hệ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📅 Đặt lịch xem nhà</h2>
+                <button class="close-modal" onclick="closeScheduleModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Chọn ngày:</label>
+                    <div class="schedule-calendar" id="scheduleCalendar">
+                        <!-- Calendar will be generated here -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Chọn giờ:</label>
+                    <div class="time-slots" id="timeSlots">
+                        <!-- Time slots will be generated here -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleNote">Ghi chú:</label>
+                    <textarea id="scheduleNote" placeholder="Thêm ghi chú cho lịch hẹn..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn" style="background: #999" onclick="closeScheduleModal()">Hủy</button>
+                    <button type="button" class="btn" onclick="confirmSchedule()">Xác nhận lịch hẹn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔗 Chia sẻ bất động sản</h2>
+                <button class="close-modal" onclick="closeShareModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="text-align: center; margin-bottom: 20px;">Chia sẻ BĐS này với bạn bè:</p>
+                <div class="share-buttons">
+                    <button class="share-btn facebook" onclick="shareToFacebook()">
+                        <span>📘</span> Facebook
+                    </button>
+                    <button class="share-btn zalo" onclick="shareToZalo()">
+                        <span>💬</span> Zalo
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Link chia sẻ:</label>
+                    <input type="text" id="shareLink" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
     <script>
         console.log('🔥 Real Estate Script loading...');
@@ -833,11 +1328,26 @@
         var supabase;
         var currentUser = null;
         var selectedFile = null;
-        var allProperties = []; // Store all properties data
+        var allProperties = [];
+        var currentProperty = null;
+        var selectedDate = null;
+        var selectedTime = null;
         
         // Supabase config
         var SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+
+        // Property types with icons
+        var propertyTypes = {
+            'house': { name: 'Nhà riêng', icon: '🏡' },
+            'apartment': { name: 'Căn hộ/Apartment', icon: '🏢' },
+            'condo': { name: 'Condo', icon: '🏬' },
+            'townhouse': { name: 'Townhouse', icon: '🏘️' },
+            'land': { name: 'Đất', icon: '🏞️' },
+            'commercial': { name: 'Nhà hàng/Tiệm', icon: '🏪' },
+            'room': { name: 'Phòng cho thuê', icon: '🚪' },
+            'other': { name: 'Khác', icon: '📌' }
+        };
 
         // Initialize app
         function initializeApp() {
@@ -854,6 +1364,8 @@
                 setupEvents();
                 checkAuth();
                 loadProperties();
+                initializeCalendar();
+                initializeTimeSlots();
             } else {
                 console.log('⏳ Waiting for Supabase...');
                 setTimeout(initializeApp, 500);
@@ -987,6 +1499,7 @@
             window.onclick = function(e) {
                 if (e.target.classList.contains('modal')) {
                     e.target.style.display = 'none';
+                    hideQuickContactBar();
                 }
             };
             
@@ -1120,7 +1633,7 @@
             });
         }
 
-        // Upload image - Using marketplace bucket with realestate folder
+        // Upload image
         function uploadImage(file) {
             console.log('📤 Uploading image...');
             
@@ -1164,10 +1677,60 @@
         function closeDetailModal() {
             var modal = document.getElementById('detailModal');
             if (modal) modal.style.display = 'none';
+            hideQuickContactBar();
         }
         window.closeDetailModal = closeDetailModal;
 
-        // View property detail - Using index approach to avoid UUID issues
+        // Extract phone number from contact string
+        function extractPhoneNumber(contact) {
+            if (!contact) return null;
+            
+            // Remove all non-digit characters except + for international
+            var cleaned = contact.replace(/[^\d+]/g, '');
+            
+            // Check if it looks like a phone number (10+ digits)
+            if (cleaned.length >= 10) {
+                // Format for US phone numbers
+                if (cleaned.length === 10) {
+                    return '+1' + cleaned;
+                } else if (cleaned.length === 11 && cleaned.startsWith('1')) {
+                    return '+' + cleaned;
+                } else if (cleaned.startsWith('+')) {
+                    return cleaned;
+                }
+                return cleaned;
+            }
+            
+            return null;
+        }
+
+        // Show quick contact bar for mobile
+        function showQuickContactBar(phoneNumber) {
+            // Remove existing bar if any
+            var existingBar = document.querySelector('.quick-contact-bar');
+            if (existingBar) {
+                existingBar.remove();
+            }
+            
+            // Create new contact bar
+            var contactBar = document.createElement('div');
+            contactBar.className = 'quick-contact-bar active';
+            contactBar.innerHTML = 
+                '<a href="tel:' + phoneNumber + '" class="quick-contact-btn call">📞 Gọi ngay</a>' +
+                '<a href="sms:' + phoneNumber + '" class="quick-contact-btn sms">💬 Nhắn tin SMS</a>';
+            
+            document.body.appendChild(contactBar);
+        }
+        
+        // Hide quick contact bar when closing modal
+        function hideQuickContactBar() {
+            var contactBar = document.querySelector('.quick-contact-bar');
+            if (contactBar) {
+                contactBar.remove();
+            }
+        }
+
+        // View property detail
         function viewPropertyDetail(propertyData) {
             console.log('👁️ Viewing property detail:', propertyData);
             
@@ -1175,6 +1738,8 @@
                 console.error('❌ No property data provided');
                 return;
             }
+            
+            currentProperty = propertyData;
             
             // Update view count
             var newViews = (propertyData.views || 0) + 1;
@@ -1193,7 +1758,6 @@
                 })
                 .catch(function(error) {
                     console.error('⚠️ Could not update view count:', error);
-                    // Still show the detail even if view update fails
                     displayPropertyDetail(propertyData);
                 });
         }
@@ -1212,6 +1776,9 @@
                 return div.innerHTML;
             }
             
+            // Extract phone number from contact field
+            var phoneNumber = extractPhoneNumber(property.contact);
+            
             var locationInfo = [];
             if (property.city) locationInfo.push(property.city);
             if (property.zipcode) locationInfo.push(property.zipcode);
@@ -1220,31 +1787,20 @@
             var createdDate = new Date(property.created_at);
             var formattedDate = createdDate.toLocaleDateString('vi-VN');
             
-            // Get display name for property type
-            var propertyTypes = {
-                'house': 'Nhà riêng',
-                'apartment': 'Căn hộ/Apartment',
-                'condo': 'Condo',
-                'townhouse': 'Townhouse',
-                'land': 'Đất',
-                'commercial': 'Nhà hàng/Tiệm',
-                'room': 'Phòng cho thuê',
-                'other': 'Khác'
-            };
-            var typeDisplay = propertyTypes[property.property_type] || property.property_type;
+            var typeInfo = propertyTypes[property.property_type] || { name: property.property_type, icon: '📌' };
             
             var html = '<div class="detail-header">';
             html += '<div class="detail-image">';
-            html += property.image_url ? '<img src="' + safe(property.image_url) + '" alt="Property">' : '🏠';
+            html += property.image_url ? '<img src="' + safe(property.image_url) + '" alt="Property">' : typeInfo.icon;
             html += '</div>';
             html += '<div class="detail-info">';
             html += '<h3>' + safe(property.title) + '</h3>';
             html += '<div class="detail-price">' + safe(property.price) + '</div>';
-            html += '<div class="detail-type">' + safe(typeDisplay) + '</div>';
+            html += '<div class="detail-type">' + typeInfo.icon + ' ' + safe(typeInfo.name) + '</div>';
             html += '</div></div>';
             
             // Property specs
-            if (property.bedrooms || property.bathrooms || property.area) {
+            if (property.bedrooms !== null || property.bathrooms || property.area) {
                 html += '<div class="detail-specs">';
                 if (property.bedrooms !== null) {
                     html += '<div class="detail-spec-item">';
@@ -1302,15 +1858,193 @@
             
             html += '</div>';
             
+            // Action buttons with direct call/SMS
+            html += '<div class="detail-actions">';
+            
+            if (phoneNumber) {
+                html += '<a href="tel:' + phoneNumber + '" class="action-btn call">📞 Gọi ngay</a>';
+                html += '<a href="sms:' + phoneNumber + '" class="action-btn sms">💬 SMS ngay</a>';
+            }
+            
+            html += '<button class="action-btn contact" onclick="openContact()">📧 Liên hệ</button>';
+            html += '<button class="action-btn schedule" onclick="openSchedule()">📅 Đặt lịch xem</button>';
+            html += '<button class="action-btn share" onclick="openShare()">🔗 Chia sẻ</button>';
+            html += '</div>';
+            
             detailContent.innerHTML = html;
             
             // Show modal
             var modal = document.getElementById('detailModal');
             if (modal) modal.style.display = 'block';
+            
+            // Show quick contact bar on mobile
+            if (window.innerWidth <= 768 && phoneNumber) {
+                showQuickContactBar(phoneNumber);
+            }
         }
 
+        // Contact functions
+        function openContact() {
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để liên hệ!');
+                return;
+            }
+            
+            document.getElementById('contactModal').style.display = 'block';
+        }
+        window.openContact = openContact;
+
+        function closeContactModal() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+        window.closeContactModal = closeContactModal;
+
+        // Schedule functions
+        function openSchedule() {
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để đặt lịch!');
+                return;
+            }
+            
+            document.getElementById('scheduleModal').style.display = 'block';
+            initializeCalendar();
+            initializeTimeSlots();
+        }
+        window.openSchedule = openSchedule;
+
+        function closeScheduleModal() {
+            document.getElementById('scheduleModal').style.display = 'none';
+            selectedDate = null;
+            selectedTime = null;
+        }
+        window.closeScheduleModal = closeScheduleModal;
+
+        function initializeCalendar() {
+            var calendarContainer = document.getElementById('scheduleCalendar');
+            if (!calendarContainer) return;
+            
+            var html = '';
+            var today = new Date();
+            
+            // Generate next 14 days
+            for (var i = 0; i < 14; i++) {
+                var date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                var day = date.getDate();
+                var disabled = i === 0 ? 'disabled' : '';
+                
+                html += '<div class="calendar-day ' + disabled + '" data-date="' + date.toISOString() + '" onclick="selectDate(this)">' + day + '</div>';
+            }
+            
+            calendarContainer.innerHTML = html;
+        }
+
+        function selectDate(element) {
+            if (element.classList.contains('disabled')) return;
+            
+            // Remove previous selection
+            var days = document.querySelectorAll('.calendar-day');
+            for (var i = 0; i < days.length; i++) {
+                days[i].classList.remove('selected');
+            }
+            
+            element.classList.add('selected');
+            selectedDate = element.getAttribute('data-date');
+        }
+        window.selectDate = selectDate;
+
+        function initializeTimeSlots() {
+            var slotsContainer = document.getElementById('timeSlots');
+            if (!slotsContainer) return;
+            
+            var times = ['9:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
+            var html = '';
+            
+            for (var i = 0; i < times.length; i++) {
+                html += '<div class="time-slot" onclick="selectTime(this)">' + times[i] + '</div>';
+            }
+            
+            slotsContainer.innerHTML = html;
+        }
+
+        function selectTime(element) {
+            // Remove previous selection
+            var slots = document.querySelectorAll('.time-slot');
+            for (var i = 0; i < slots.length; i++) {
+                slots[i].classList.remove('selected');
+            }
+            
+            element.classList.add('selected');
+            selectedTime = element.textContent;
+        }
+        window.selectTime = selectTime;
+
+        function confirmSchedule() {
+            if (!selectedDate || !selectedTime) {
+                alert('Vui lòng chọn ngày và giờ!');
+                return;
+            }
+            
+            var note = document.getElementById('scheduleNote').value;
+            
+            // Save schedule to database
+            supabase
+                .from('property_viewings')
+                .insert([{
+                    property_id: currentProperty.id,
+                    user_id: currentUser.id,
+                    owner_id: currentProperty.user_id,
+                    date: selectedDate,
+                    time: selectedTime,
+                    note: note,
+                    status: 'pending'
+                }])
+                .then(function(response) {
+                    if (response.error) throw response.error;
+                    
+                    alert('Đặt lịch xem nhà thành công! Chúng tôi sẽ liên hệ xác nhận.');
+                    closeScheduleModal();
+                    
+                    console.log('📧 Sending notification email...');
+                })
+                .catch(function(error) {
+                    console.error('❌ Schedule error:', error);
+                    alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                });
+        }
+        window.confirmSchedule = confirmSchedule;
+
+        // Share functions
+        function openShare() {
+            document.getElementById('shareModal').style.display = 'block';
+            
+            var shareLink = window.location.origin + '/realestate.html?id=' + currentProperty.id;
+            document.getElementById('shareLink').value = shareLink;
+        }
+        window.openShare = openShare;
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+        window.closeShareModal = closeShareModal;
+
+        function shareToFacebook() {
+            var url = encodeURIComponent(window.location.href);
+            var text = encodeURIComponent(currentProperty.title + ' - VietLinker');
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + url + '&quote=' + text, '_blank');
+        }
+        window.shareToFacebook = shareToFacebook;
+
+        function shareToZalo() {
+            var url = encodeURIComponent(window.location.href);
+            var text = encodeURIComponent(currentProperty.title + ' - VietLinker');
+            window.open('https://zalo.me/share/?url=' + url + '&text=' + text, '_blank');
+        }
+        window.shareToZalo = shareToZalo;
+
         // Load properties
-        function loadProperties(propertyType, searchTerm, location, price, bedrooms) {
+        function loadProperties(propertyType, searchTerm, location, priceRange, bedrooms) {
             console.log('📥 Loading properties...');
             
             var container = document.getElementById('propertiesContainer');
@@ -1352,7 +2086,35 @@
                 if (response.error) throw response.error;
 
                 var properties = response.data;
-                allProperties = properties; // Store for later use
+                
+                // Filter by price if specified
+                if (priceRange) {
+                    properties = properties.filter(function(property) {
+                        if (!property.price) return false;
+                        
+                        var priceStr = property.price.toLowerCase();
+                        var priceNum = parseFloat(priceStr.replace(/[^0-9.-]+/g, ''));
+                        
+                        if (isNaN(priceNum)) return false;
+                        
+                        // Check if it's rent (per month) or sale
+                        var isRent = priceStr.includes('tháng') || priceStr.includes('month') || priceStr.includes('/');
+                        
+                        switch(priceRange) {
+                            case 'under-1000': return isRent && priceNum < 1000;
+                            case '1000-2000': return isRent && priceNum >= 1000 && priceNum <= 2000;
+                            case '2000-3000': return isRent && priceNum >= 2000 && priceNum <= 3000;
+                            case 'above-3000': return isRent && priceNum > 3000;
+                            case 'under-300k': return !isRent && priceNum < 300000;
+                            case '300k-500k': return !isRent && priceNum >= 300000 && priceNum <= 500000;
+                            case '500k-1m': return !isRent && priceNum >= 500000 && priceNum <= 1000000;
+                            case 'above-1m': return !isRent && priceNum > 1000000;
+                            default: return true;
+                        }
+                    });
+                }
+                
+                allProperties = properties;
                 console.log('✅ Properties loaded:', properties.length);
 
                 if (!container) return;
@@ -1362,18 +2124,6 @@
                     return;
                 }
 
-                // Property type display names
-                var propertyTypes = {
-                    'house': 'Nhà riêng',
-                    'apartment': 'Căn hộ/Apartment',
-                    'condo': 'Condo',
-                    'townhouse': 'Townhouse',
-                    'land': 'Đất',
-                    'commercial': 'Nhà hàng/Tiệm',
-                    'room': 'Phòng cho thuê',
-                    'other': 'Khác'
-                };
-
                 var html = '';
                 for (var i = 0; i < properties.length; i++) {
                     var property = properties[i];
@@ -1381,18 +2131,18 @@
                     if (property.city) locationInfo.push(property.city);
                     if (property.zipcode) locationInfo.push(property.zipcode);
                     var fullLocation = locationInfo.join(', ');
-                    var typeDisplay = propertyTypes[property.property_type] || property.property_type;
+                    
+                    var typeInfo = propertyTypes[property.property_type] || { name: property.property_type, icon: '📌' };
 
-                    // Store index instead of ID to avoid UUID issues
                     html += '<div class="property-card" data-property-index="' + i + '">';
                     html += '<div class="property-image">';
-                    html += property.image_url ? '<img src="' + property.image_url + '" alt="Property">' : '🏠';
+                    html += property.image_url ? '<img src="' + property.image_url + '" alt="Property">' : typeInfo.icon;
                     html += '</div>';
                     html += '<div class="property-content">';
                     html += '<div class="property-header">';
                     html += '<div><div class="property-title">' + (property.title || '') + '</div>';
                     html += '<div class="property-price">' + (property.price || '') + '</div></div>';
-                    html += '<div class="property-type">' + typeDisplay + '</div>';
+                    html += '<div class="property-type">' + typeInfo.icon + ' ' + typeInfo.name + '</div>';
                     html += '</div>';
                     html += '<div class="property-description">' + (property.description || '') + '</div>';
                     html += '<div class="property-details">';
@@ -1413,32 +2163,22 @@
                     
                     html += '</div>';
                     html += '<div class="view-count">👁️ ' + (property.views || 0) + ' lượt xem</div>';
+                    
+                    // Quick action buttons
+                    html += '<div class="property-actions">';
+                    html += '<button class="action-btn contact" onclick="quickContact(' + i + ', event)"><span>📧</span><span>Liên hệ</span></button>';
+                    html += '<button class="action-btn schedule" onclick="quickSchedule(' + i + ', event)"><span>📅</span><span>Xem nhà</span></button>';
+                    html += '<button class="action-btn share" onclick="quickShare(' + i + ', event)"><span>🔗</span><span>Chia sẻ</span></button>';
+                    html += '</div>';
+                    
                     html += '</div></div>';
                 }
 
                 container.innerHTML = html;
                 
-                // Add click handlers using index approach
+                // Add click handlers for viewing details
                 var propertyCards = container.querySelectorAll('.property-card');
                 for (var j = 0; j < propertyCards.length; j++) {
                     (function(card) {
-                        card.onclick = function() {
-                            var index = parseInt(card.getAttribute('data-property-index'));
-                            console.log('📱 Property card clicked, index:', index);
-                            if (!isNaN(index) && allProperties[index]) {
-                                viewPropertyDetail(allProperties[index]);
-                            }
-                        };
-                    })(propertyCards[j]);
-                }
-
-            }).catch(function(error) {
-                console.error('❌ Error loading properties:', error);
-                if (container) {
-                    container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+                        card.onclick = function(e) {
+                            //
