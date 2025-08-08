@@ -525,6 +525,11 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
@@ -566,6 +571,7 @@
                         <option value="chinese">🇨🇳 Trung Hoa</option>
                         <option value="thai">🇹🇭 Thái Lan</option>
                         <option value="american">🇺🇸 Mỹ</option>
+                        <option value="milk_tea">🧋 Trà sữa</option>
                         <option value="other">🌍 Khác</option>
                     </select>
                     <select id="businessFilter">
@@ -625,6 +631,7 @@
                             <option value="chinese">🇨🇳 Trung Hoa</option>
                             <option value="thai">🇹🇭 Thái Lan</option>
                             <option value="american">🇺🇸 Mỹ</option>
+                            <option value="milk_tea">🧋 Trà sữa</option>
                             <option value="other">🌍 Khác</option>
                         </select>
                     </div>
@@ -1122,6 +1129,7 @@
                 'chinese': '🇨🇳 Trung Hoa',
                 'thai': '🇹🇭 Thái Lan',
                 'american': '🇺🇸 Mỹ',
+                'milk_tea': '🧋 Trà sữa',
                 'other': '🌍 Khác'
             };
             
@@ -1217,6 +1225,11 @@
             
             html += '</div>';
             
+            html += '<div class="contact-buttons" style="margin: 30px 0; display: flex; gap: 15px; justify-content: center;">';
+            html += '<button class="btn contact-btn call-btn" onclick="handleCall(\'' + safe(food.phone) + '\')" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); display: flex; align-items: center; gap: 8px; min-width: 140px; justify-content: center;"><span>📞</span> Gọi điện</button>';
+            html += '<button class="btn contact-btn message-btn" onclick="handleMessage(\'' + safe(food.phone) + '\')" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); display: flex; align-items: center; gap: 8px; min-width: 140px; justify-content: center;"><span>💬</span> Nhắn tin</button>';
+            html += '</div>';
+            
             detailContent.innerHTML = html;
             
             var modal = document.getElementById('detailModal');
@@ -1280,6 +1293,7 @@
                     'chinese': '🇨🇳 Trung Hoa',
                     'thai': '🇹🇭 Thái Lan',
                     'american': '🇺🇸 Mỹ',
+                    'milk_tea': '🧋 Trà sữa',
                     'other': '🌍 Khác'
                 };
                 
@@ -1365,6 +1379,22 @@
                     container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
                 }
             });
+        }
+        
+        function handleCall(phone) {
+            if (phone && phone !== 'undefined' && phone !== '') {
+                window.open('tel:' + phone, '_self');
+            } else {
+                alert('Số điện thoại không có sẵn');
+            }
+        }
+        
+        function handleMessage(phone) {
+            if (phone && phone !== 'undefined' && phone !== '') {
+                window.open('sms:' + phone, '_self');
+            } else {
+                alert('Số điện thoại không có sẵn');
+            }
         }
     </script>
 </body>
