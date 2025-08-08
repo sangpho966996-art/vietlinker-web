@@ -1211,4 +1211,105 @@
             }
 
             if (searchTerm) {
-                query = query.or('title.ilike.%' + searchTerm + '%,description.ili
+                query = query.or('title.ilike.%' + searchTerm + '%,description.ilike.%' + searchTerm + '%');
+            }
+
+            if (location) {
+                if (/^\d{5}$/.test(location)) {
+                    query = query.eq('zipcode', location);
+                } else {
+                    query = query.ilike('city', '%' + location + '%');
+                }
+            }
+
+            query.then(function(response) {
+                if (response.error) throw response.error;
+
+                var services = response.data;
+                allServices = services; // Store for later use
+                console.log('✅ Services loaded:', services.length);
+
+                if (!container) return;
+
+                if (services.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><h3>Không tìm thấy dịch vụ nào</h3></div>';
+                    return;
+                }
+
+                // Service type display names
+                var serviceTypes = {
+                    'nail': 'Nail & Spa',
+                    'hair': 'Tóc & Làm đẹp',
+                    'repair': 'Sửa chữa',
+                    'cleaning': 'Vệ sinh & Dọn dẹp',
+                    'moving': 'Chuyển nhà',
+                    'tax': 'Kế toán & Thuế',
+                    'legal': 'Luật & Di trú',
+                    'education': 'Giáo dục & Dạy học',
+                    'health': 'Y tế & Sức khỏe',
+                    'tech': 'IT & Công nghệ',
+                    'other': 'Khác'
+                };
+
+                var html = '';
+                for (var i = 0; i < services.length; i++) {
+                    var service = services[i];
+                    var locationInfo = [];
+                    if (service.city) locationInfo.push(service.city);
+                    if (service.zipcode) locationInfo.push(service.zipcode);
+                    var fullLocation = locationInfo.join(', ');
+                    var typeDisplay = serviceTypes[service.service_type] || service.service_type;
+
+                    // Store index instead of ID to avoid UUID issues
+                    html += '<div class="service-card" data-service-index="' + i + '">';
+                    html += '<div class="service-image">';
+                    html += service.image_url ? '<img src="' + service.image_url + '" alt="Service">' : '🛠️';
+                    html += '</div>';
+                    html += '<div class="service-content">';
+                    html += '<div class="service-header">';
+                    html += '<div><div class="service-title">' + (service.title || '') + '</div></div>';
+                    html += '<div class="service-type">' + typeDisplay + '</div>';
+                    html += '</div>';
+                    html += '<div class="service-description">' + (service.description || '') + '</div>';
+                    html += '<div class="service-details">';
+                    if (service.price) {
+                        html += '<div class="service-detail-item"><span class="icon">💵</span><span>' + service.price + '</span></div>';
+                    }
+                    if (service.location) {
+                        html += '<div class="service-detail-item"><span class="icon">📍</span><span>' + service.location + '</span></div>';
+                    }
+                    if (fullLocation) {
+                        html += '<div class="service-detail-item"><span class="icon">🏙️</span><span>' + fullLocation + '</span></div>';
+                    }
+                    html += '<div class="service-detail-item"><span class="icon">📞</span><span>' + (service.contact || '') + '</span></div>';
+                    html += '</div>';
+                    html += '<div class="view-count">👁️ ' + (service.views || 0) + ' lượt xem</div>';
+                    html += '</div></div>';
+                }
+
+                container.innerHTML = html;
+                
+                // Add click handlers using index approach
+                var serviceCards = container.querySelectorAll('.service-card');
+                for (var j = 0; j < serviceCards.length; j++) {
+                    (function(card) {
+                        card.onclick = function() {
+                            var index = parseInt(card.getAttribute('data-service-index'));
+                            console.log('📱 Service card clicked, index:', index);
+                            if (!isNaN(index) && allServices[index]) {
+                                viewServiceDetail(allServices[index]);
+                            }
+                        };
+                    })(serviceCards[j]);
+                }
+
+            }).catch(function(error) {
+                console.error('❌ Error loading services:', error);
+                if (container) {
+                    container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
