@@ -24,6 +24,24 @@
             padding: 1rem 2rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin: -20px -20px 30px -20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .header-content {
@@ -32,6 +50,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .logo {
@@ -41,12 +61,18 @@
             text-decoration: none;
             font-size: 1.5rem;
             font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo svg {
             width: 40px;
             height: 40px;
             margin-right: 10px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         .user-info {
@@ -63,10 +89,12 @@
             border-radius: 20px;
             text-decoration: none;
             transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
         .btn-logout:hover {
             background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
         }
 
         /* Navigation */
@@ -75,6 +103,7 @@
             padding: 1rem 0;
             margin: -30px -20px 30px -20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-bottom: 3px solid rgba(220,20,60,0.3);
         }
 
         .nav-content {
@@ -91,11 +120,20 @@
             text-decoration: none;
             padding: 0.5rem 1rem;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255,255,255,0.1);
+        .nav-link:hover {
+            background: rgba(220, 20, 60, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            box-shadow: 0 4px 10px rgba(220,20,60,0.3);
         }
 
         /* Container */
@@ -143,6 +181,51 @@
             box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
         }
 
+        /* Floating Post Button */
+        .floating-post-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            z-index: 999;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 4px 20px rgba(220,20,60,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .floating-post-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(220,20,60,0.6);
+        }
+
+        .floating-post-btn::after {
+            content: 'Đăng tin mới';
+            position: absolute;
+            right: 75px;
+            background: #333;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .floating-post-btn:hover::after {
+            opacity: 1;
+        }
+
         /* Stats Cards */
         .stats-grid {
             display: grid;
@@ -158,6 +241,8 @@
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: calc(var(--index) * 0.2s);
         }
 
         .stat-number {
@@ -169,6 +254,71 @@
         .stat-label {
             font-size: 1rem;
             opacity: 0.9;
+        }
+
+        /* Search and Filter Bar */
+        .search-filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .search-input-group {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-group input,
+        .search-input-group select {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .search-input-group input:focus,
+        .search-input-group select:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 0 3px rgba(220,20,60,0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #666;
+        }
+
+        #categoryFilter {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            min-width: 200px;
+        }
+
+        /* Bulk Actions Bar */
+        .bulk-actions-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #e0e0e0;
+        }
+
+        .bulk-actions-bar.active {
+            display: flex;
         }
 
         /* Filter Tabs */
@@ -215,15 +365,28 @@
             border-radius: 10px;
             padding: 1.5rem;
             display: grid;
-            grid-template-columns: auto 1fr auto;
+            grid-template-columns: auto auto 1fr auto;
             gap: 1.5rem;
             align-items: center;
             transition: all 0.3s;
+            animation: fadeInUp 0.6s ease forwards;
+            animation-delay: calc(var(--index) * 0.1s);
         }
 
         .post-card:hover {
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+
+        .post-checkbox {
+            display: flex;
+            align-items: center;
+        }
+
+        .post-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
 
         .post-image {
@@ -313,6 +476,7 @@
 
         .btn-edit:hover {
             background: #ffb300;
+            transform: translateY(-2px);
         }
 
         .btn-delete {
@@ -322,6 +486,7 @@
 
         .btn-delete:hover {
             background: #c82333;
+            transform: translateY(-2px);
         }
 
         .btn-view {
@@ -331,6 +496,7 @@
 
         .btn-view:hover {
             background: #138496;
+            transform: translateY(-2px);
         }
 
         /* Empty State */
@@ -378,6 +544,17 @@
             100% { transform: rotate(360deg); }
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .page-header {
@@ -390,6 +567,11 @@
                 grid-template-columns: 1fr;
             }
 
+            .search-filter-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
             .post-card {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -397,10 +579,25 @@
 
             .post-actions {
                 justify-content: center;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn-action {
+                width: 100%;
+                text-align: center;
             }
 
             .filter-tabs {
                 overflow-x: auto;
+            }
+
+            .floating-post-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
             }
         }
     </style>
@@ -432,6 +629,9 @@
         </div>
     </nav>
 
+    <!-- Floating Post Button -->
+    <a href="post-form.html" class="floating-post-btn">➕</a>
+
     <!-- Main Container -->
     <div class="container">
         <!-- Page Header -->
@@ -444,30 +644,65 @@
 
         <!-- Stats Cards -->
         <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card" style="--index: 0;">
                 <div class="stat-number" id="totalPosts">0</div>
                 <div class="stat-label">Tổng tin đăng</div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <div class="stat-card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); --index: 1;">
                 <div class="stat-number" id="activePosts">0</div>
                 <div class="stat-label">Đang hiển thị</div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+            <div class="stat-card" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); --index: 2;">
                 <div class="stat-number" id="pendingPosts">0</div>
                 <div class="stat-label">Chờ duyệt</div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+            <div class="stat-card" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); --index: 3;">
                 <div class="stat-number" id="totalViews">0</div>
                 <div class="stat-label">Lượt xem</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); --index: 4;">
+                <div class="stat-number" id="avgViews">0</div>
+                <div class="stat-label">Trung bình lượt xem</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%); --index: 5;">
+                <div class="stat-number" id="thisWeekPosts">0</div>
+                <div class="stat-label">Tin đăng tuần này</div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="search-filter-bar">
+            <div class="search-input-group">
+                <input type="text" id="postSearch" placeholder="Tìm kiếm trong tin đăng của bạn...">
+                <span class="input-icon">🔍</span>
+            </div>
+            <select id="categoryFilter">
+                <option value="">Tất cả danh mục</option>
+                <option value="marketplace">🛒 Mua Bán</option>
+                <option value="jobs">💼 Việc Làm</option>
+                <option value="real_estate">🏠 BĐS & Tiệm</option>
+                <option value="services">🔧 Dịch Vụ</option>
+                <option value="classifieds">📋 Rao Vặt</option>
+                <option value="promotions">🎁 Khuyến Mãi</option>
+            </select>
+        </div>
+
+        <!-- Bulk Actions Bar -->
+        <div class="bulk-actions-bar" id="bulkActionsBar">
+            <span id="selectedCount">0 tin đăng được chọn</span>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-action btn-edit" onclick="bulkStatusChange('active')">Kích hoạt</button>
+                <button class="btn-action btn-edit" onclick="bulkStatusChange('inactive')">Ẩn</button>
+                <button class="btn-action btn-delete" onclick="bulkDelete()">Xóa</button>
             </div>
         </div>
 
         <!-- Filter Tabs -->
         <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterPosts('all')">Tất cả</button>
-            <button class="filter-tab" onclick="filterPosts('active')">Đang hiển thị</button>
-            <button class="filter-tab" onclick="filterPosts('pending')">Chờ duyệt</button>
-            <button class="filter-tab" onclick="filterPosts('expired')">Hết hạn</button>
+            <button class="filter-tab active" onclick="filterPostsByStatus('all')">Tất cả</button>
+            <button class="filter-tab" onclick="filterPostsByStatus('active')">Đang hiển thị</button>
+            <button class="filter-tab" onclick="filterPostsByStatus('pending')">Chờ duyệt</button>
+            <button class="filter-tab" onclick="filterPostsByStatus('expired')">Hết hạn</button>
         </div>
 
         <!-- Posts List -->
@@ -498,6 +733,9 @@
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let allPosts = [];
+        let selectedPosts = new Set();
 
         // Check authentication
         async function checkAuth() {
@@ -536,7 +774,7 @@
             try {
                 // Query all category tables for user's posts
                 const tables = ['jobs', 'marketplace', 'services', 'real_estate', 'classifieds', 'promotions'];
-                let allPosts = [];
+                allPosts = [];
                 
                 for (const table of tables) {
                     const { data, error } = await supabase
@@ -560,23 +798,95 @@
                 if (allPosts.length === 0) {
                     emptyState.style.display = 'block';
                 } else {
-                    // Update stats
+                    // Update stats with enhanced calculations
                     document.getElementById('totalPosts').textContent = allPosts.length;
                     document.getElementById('activePosts').textContent = allPosts.filter(p => p.status === 'active').length;
                     document.getElementById('pendingPosts').textContent = allPosts.filter(p => p.status === 'pending').length;
                     document.getElementById('totalViews').textContent = allPosts.reduce((sum, p) => sum + (p.views || 0), 0);
                     
+                    // New enhanced stats
+                    const avgViews = allPosts.length > 0 ? Math.round(allPosts.reduce((sum, p) => sum + (p.views || 0), 0) / allPosts.length) : 0;
+                    document.getElementById('avgViews').textContent = avgViews;
+                    
+                    const thisWeek = allPosts.filter(p => {
+                        const postDate = new Date(p.created_at);
+                        const weekAgo = new Date();
+                        weekAgo.setDate(weekAgo.getDate() - 7);
+                        return postDate >= weekAgo;
+                    }).length;
+                    document.getElementById('thisWeekPosts').textContent = thisWeek;
+                    
                     // Sort posts by date
                     allPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                     
-                    // Render posts
-                    const postsHTML = allPosts.map(post => createPostCard(post)).join('');
-                    postsList.innerHTML = postsHTML;
+                    // Render posts with animation
+                    renderFilteredPosts(allPosts);
+                    
+                    // Setup search and filter functionality
+                    setupSearchAndFilter();
                 }
             } catch (error) {
                 console.error('Error loading posts:', error);
                 loading.style.display = 'none';
                 postsList.innerHTML = '<p style="text-align: center; color: #dc3545;">Lỗi khi tải tin đăng. Vui lòng thử lại.</p>';
+            }
+        }
+
+        // Setup search and filter functionality
+        function setupSearchAndFilter() {
+            const searchInput = document.getElementById('postSearch');
+            const categoryFilter = document.getElementById('categoryFilter');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', filterPosts);
+            }
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', filterPosts);
+            }
+        }
+
+        // Enhanced filter function
+        function filterPosts() {
+            const searchTerm = document.getElementById('postSearch')?.value.toLowerCase() || '';
+            const selectedCategory = document.getElementById('categoryFilter')?.value || '';
+            const activeTab = document.querySelector('.filter-tab.active')?.textContent || 'Tất cả';
+            
+            let filtered = allPosts.filter(post => {
+                const matchesSearch = !searchTerm || 
+                    post.title.toLowerCase().includes(searchTerm) ||
+                    (post.business_name && post.business_name.toLowerCase().includes(searchTerm)) ||
+                    (post.description && post.description.toLowerCase().includes(searchTerm));
+                
+                const matchesCategory = !selectedCategory || post.category === selectedCategory;
+                
+                const matchesStatus = activeTab === 'Tất cả' || 
+                    (activeTab === 'Đang hiển thị' && post.status === 'active') ||
+                    (activeTab === 'Chờ duyệt' && post.status === 'pending') ||
+                    (activeTab === 'Hết hạn' && (post.status === 'expired' || post.status === 'inactive'));
+                
+                return matchesSearch && matchesCategory && matchesStatus;
+            });
+            
+            renderFilteredPosts(filtered);
+        }
+
+        // Render filtered posts
+        function renderFilteredPosts(posts) {
+            const postsList = document.getElementById('postsList');
+            if (posts.length === 0) {
+                postsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <h2 class="empty-title">Không tìm thấy tin đăng</h2>
+                        <p class="empty-description">Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
+                    </div>
+                `;
+            } else {
+                const postsHTML = posts.map((post, index) => {
+                    const cardHTML = createPostCard(post);
+                    return cardHTML.replace('<div class="post-card"', `<div class="post-card" style="--index: ${index}"`);
+                }).join('');
+                postsList.innerHTML = postsHTML;
             }
         }
 
@@ -603,13 +913,15 @@
             const statusClasses = {
                 active: 'status-active',
                 inactive: 'status-inactive',
-                pending: 'status-pending'
+                pending: 'status-pending',
+                expired: 'status-inactive'
             };
 
             const statusLabels = {
                 active: 'Đang hiển thị',
                 inactive: 'Đã ẩn',
-                pending: 'Chờ duyệt'
+                pending: 'Chờ duyệt',
+                expired: 'Hết hạn'
             };
 
             const postDate = new Date(post.created_at).toLocaleDateString('vi-VN');
@@ -617,6 +929,9 @@
 
             return `
                 <div class="post-card">
+                    <div class="post-checkbox">
+                        <input type="checkbox" onchange="togglePostSelection('${post.id}', '${post.category}', this.checked)">
+                    </div>
                     <div class="post-image">
                         ${categoryIcons[post.category] || '📄'}
                     </div>
@@ -643,14 +958,87 @@
             `;
         }
 
-        // Filter posts by status
-        window.filterPosts = function(status) {
+        // Toggle post selection for bulk actions
+        window.togglePostSelection = function(postId, category, isSelected) {
+            const postKey = `${postId}-${category}`;
+            if (isSelected) {
+                selectedPosts.add(postKey);
+            } else {
+                selectedPosts.delete(postKey);
+            }
+            
+            updateBulkActionsBar();
+        }
+
+        // Update bulk actions bar
+        function updateBulkActionsBar() {
+            const bulkActionsBar = document.getElementById('bulkActionsBar');
+            const selectedCount = document.getElementById('selectedCount');
+            
+            if (selectedPosts.size > 0) {
+                bulkActionsBar.classList.add('active');
+                selectedCount.textContent = `${selectedPosts.size} tin đăng được chọn`;
+            } else {
+                bulkActionsBar.classList.remove('active');
+            }
+        }
+
+        // Bulk status change
+        window.bulkStatusChange = async function(newStatus) {
+            if (selectedPosts.size === 0) return;
+            
+            if (confirm(`Bạn có chắc muốn ${newStatus === 'active' ? 'kích hoạt' : 'ẩn'} ${selectedPosts.size} tin đăng?`)) {
+                try {
+                    for (const postKey of selectedPosts) {
+                        const [postId, category] = postKey.split('-');
+                        await supabase
+                            .from(category)
+                            .update({ status: newStatus })
+                            .eq('id', postId);
+                    }
+                    
+                    alert('Đã cập nhật trạng thái thành công!');
+                    selectedPosts.clear();
+                    checkAuth(); // Reload posts
+                } catch (error) {
+                    console.error('Error updating posts:', error);
+                    alert('Lỗi khi cập nhật. Vui lòng thử lại.');
+                }
+            }
+        }
+
+        // Bulk delete
+        window.bulkDelete = async function() {
+            if (selectedPosts.size === 0) return;
+            
+            if (confirm(`Bạn có chắc muốn xóa ${selectedPosts.size} tin đăng? Hành động này không thể hoàn tác.`)) {
+                try {
+                    for (const postKey of selectedPosts) {
+                        const [postId, category] = postKey.split('-');
+                        await supabase
+                            .from(category)
+                            .delete()
+                            .eq('id', postId);
+                    }
+                    
+                    alert('Đã xóa tin thành công!');
+                    selectedPosts.clear();
+                    checkAuth(); // Reload posts
+                } catch (error) {
+                    console.error('Error deleting posts:', error);
+                    alert('Lỗi khi xóa tin. Vui lòng thử lại.');
+                }
+            }
+        }
+
+        // Filter posts by status (updated function name to avoid conflict)
+        window.filterPostsByStatus = function(status) {
             const tabs = document.querySelectorAll('.filter-tab');
             tabs.forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
             
-            // Re-load posts with filter
-            checkAuth(); // This will reload posts
+            // Trigger filter update
+            filterPosts();
         }
 
         // View post
@@ -688,3 +1076,5 @@
         // Initialize on page load
         checkAuth();
     </script> 
+</body>
+</html>
