@@ -341,6 +341,18 @@
             color: white;
         }
 
+        .action-btn.call {
+            background: linear-gradient(135deg, #00c851 0%, #00a846 100%);
+            color: white;
+            text-decoration: none;
+        }
+
+        .action-btn.sms {
+            background: linear-gradient(135deg, #0099ff 0%, #0077cc 100%);
+            color: white;
+            text-decoration: none;
+        }
+
         .action-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -567,6 +579,7 @@
             margin-top: 25px;
             padding-top: 20px;
             border-top: 2px solid #f0f0f0;
+            flex-wrap: wrap;
         }
 
         /* Chat Modal */
@@ -710,6 +723,54 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
+        /* Quick Contact Bar for Mobile */
+        .quick-contact-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 2px solid #e0e0e0;
+            padding: 15px;
+            display: none;
+            gap: 10px;
+            z-index: 1001;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .quick-contact-bar.active {
+            display: flex;
+        }
+
+        .quick-contact-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .quick-contact-btn.call {
+            background: linear-gradient(135deg, #00c851 0%, #00a846 100%);
+        }
+
+        .quick-contact-btn.sms {
+            background: linear-gradient(135deg, #0099ff 0%, #0077cc 100%);
+        }
+
+        .quick-contact-btn:active {
+            transform: scale(0.95);
+        }
+
         .loading {
             text-align: center;
             padding: 50px;
@@ -741,41 +802,207 @@
             }
         }
 
+        /* Enhanced Mobile Responsive */
         @media (max-width: 768px) {
-            .service-card {
-                flex-direction: column;
+            body {
+                padding: 0;
             }
-            
-            .service-image {
-                width: 100%;
-                height: 200px;
+
+            .container {
+                border-radius: 0;
+                margin: 0;
             }
-            
+
+            header {
+                padding: 20px 15px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            nav {
+                padding: 10px 0;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-links {
+                min-width: max-content;
+                padding: 5px 15px;
+                gap: 10px;
+            }
+
+            .nav-links a {
+                padding: 8px 14px;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .actions-bar {
+                padding: 15px;
+                gap: 10px;
+            }
+
             .search-bar {
                 flex-direction: column;
+                width: 100%;
             }
-            
+
             .search-bar input,
-            .search-bar select {
+            .search-bar select,
+            .location-input {
+                width: 100%;
                 min-width: auto;
             }
-            
-            .detail-header {
-                flex-direction: column;
-            }
-            
-            .detail-image {
+
+            .btn {
                 width: 100%;
-                height: 250px;
+                padding: 14px 20px;
+            }
+
+            .service-card {
+                flex-direction: row;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .service-image {
+                width: 100px;
+                height: 100px;
+                flex-shrink: 0;
+            }
+
+            .service-title {
+                font-size: 1.1em;
+                line-height: 1.3;
+            }
+
+            .service-type {
+                font-size: 0.8em;
+                padding: 3px 8px;
+            }
+
+            .service-description {
+                font-size: 0.9em;
+                -webkit-line-clamp: 2;
+            }
+
+            .service-details {
+                gap: 10px;
+            }
+
+            .service-detail-item {
+                font-size: 0.85em;
             }
 
             .service-actions {
-                flex-direction: column;
+                flex-direction: row;
+                gap: 8px;
+                margin-top: 10px;
+                padding-top: 10px;
             }
 
             .action-btn {
+                flex: 1;
+                padding: 10px 8px;
+                font-size: 12px;
+                border-radius: 8px;
+            }
+
+            .action-btn span:last-child {
+                display: none;
+            }
+
+            .detail-header {
+                flex-direction: column;
+            }
+
+            .detail-image {
                 width: 100%;
+                height: 200px;
+            }
+
+            .detail-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .detail-actions .action-btn {
+                width: 100%;
+                padding: 14px;
+                font-size: 16px;
                 justify-content: center;
+            }
+
+            .detail-actions .action-btn span:last-child {
+                display: inline;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20px auto;
+                border-radius: 15px;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 1.4em;
+            }
+
+            .modal-body {
+                padding: 20px;
+                max-height: 75vh;
+            }
+
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            header p {
+                font-size: 0.9em;
+            }
+
+            .service-card {
+                padding: 12px;
+            }
+
+            .service-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .service-title {
+                font-size: 1em;
+            }
+
+            .service-description {
+                display: none;
+            }
+
+            .service-actions {
+                gap: 5px;
+            }
+
+            .action-btn {
+                padding: 8px 5px;
+                font-size: 11px;
             }
         }
     </style>
@@ -1210,6 +1437,7 @@
             window.onclick = function(e) {
                 if (e.target.classList.contains('modal')) {
                     e.target.style.display = 'none';
+                    hideQuickContactBar();
                 }
             };
             
@@ -1378,8 +1606,58 @@
         function closeDetailModal() {
             var modal = document.getElementById('detailModal');
             if (modal) modal.style.display = 'none';
+            hideQuickContactBar();
         }
         window.closeDetailModal = closeDetailModal;
+
+        // Extract phone number from contact string
+        function extractPhoneNumber(contact) {
+            if (!contact) return null;
+            
+            // Remove all non-digit characters except + for international
+            var cleaned = contact.replace(/[^\d+]/g, '');
+            
+            // Check if it looks like a phone number (10+ digits)
+            if (cleaned.length >= 10) {
+                // Format for US phone numbers
+                if (cleaned.length === 10) {
+                    return '+1' + cleaned;
+                } else if (cleaned.length === 11 && cleaned.startsWith('1')) {
+                    return '+' + cleaned;
+                } else if (cleaned.startsWith('+')) {
+                    return cleaned;
+                }
+                return cleaned;
+            }
+            
+            return null;
+        }
+
+        // Show quick contact bar for mobile
+        function showQuickContactBar(phoneNumber) {
+            // Remove existing bar if any
+            var existingBar = document.querySelector('.quick-contact-bar');
+            if (existingBar) {
+                existingBar.remove();
+            }
+            
+            // Create new contact bar
+            var contactBar = document.createElement('div');
+            contactBar.className = 'quick-contact-bar active';
+            contactBar.innerHTML = 
+                '<a href="tel:' + phoneNumber + '" class="quick-contact-btn call">📞 Gọi ngay</a>' +
+                '<a href="sms:' + phoneNumber + '" class="quick-contact-btn sms">💬 Nhắn tin SMS</a>';
+            
+            document.body.appendChild(contactBar);
+        }
+        
+        // Hide quick contact bar when closing modal
+        function hideQuickContactBar() {
+            var contactBar = document.querySelector('.quick-contact-bar');
+            if (contactBar) {
+                contactBar.remove();
+            }
+        }
 
         // View service detail
         function viewServiceDetail(serviceData) {
@@ -1426,6 +1704,9 @@
                 div.textContent = text || '';
                 return div.innerHTML;
             }
+            
+            // Extract phone number from contact field
+            var phoneNumber = extractPhoneNumber(service.contact);
             
             var locationInfo = [];
             if (service.city) locationInfo.push(service.city);
@@ -1488,9 +1769,15 @@
             
             html += '</div>';
             
-            // Action buttons
+            // Action buttons with direct call/SMS
             html += '<div class="detail-actions">';
-            html += '<button class="action-btn chat" onclick="openChat()">💬 Nhắn tin</button>';
+            
+            if (phoneNumber) {
+                html += '<a href="tel:' + phoneNumber + '" class="action-btn call">📞 Gọi ngay</a>';
+                html += '<a href="sms:' + phoneNumber + '" class="action-btn sms">💬 SMS ngay</a>';
+            }
+            
+            html += '<button class="action-btn chat" onclick="openChat()">💬 Chat trong app</button>';
             html += '<button class="action-btn book" onclick="openBooking()">📅 Đặt lịch</button>';
             html += '<button class="action-btn share" onclick="openShare()">🔗 Chia sẻ</button>';
             html += '</div>';
@@ -1500,6 +1787,11 @@
             // Show modal
             var modal = document.getElementById('detailModal');
             if (modal) modal.style.display = 'block';
+            
+            // Show quick contact bar on mobile
+            if (window.innerWidth <= 768 && phoneNumber) {
+                showQuickContactBar(phoneNumber);
+            }
         }
 
         // Chat functions
@@ -1790,9 +2082,9 @@
                     
                     // Quick action buttons
                     html += '<div class="service-actions">';
-                    html += '<button class="action-btn chat" onclick="quickChat(' + i + ', event)">💬 Nhắn tin</button>';
-                    html += '<button class="action-btn book" onclick="quickBook(' + i + ', event)">📅 Đặt lịch</button>';
-                    html += '<button class="action-btn share" onclick="quickShare(' + i + ', event)">🔗 Chia sẻ</button>';
+                    html += '<button class="action-btn chat" onclick="quickChat(' + i + ', event)"><span>💬</span><span>Chat</span></button>';
+                    html += '<button class="action-btn book" onclick="quickBook(' + i + ', event)"><span>📅</span><span>Đặt lịch</span></button>';
+                    html += '<button class="action-btn share" onclick="quickShare(' + i + ', event)"><span>🔗</span><span>Chia sẻ</span></button>';
                     html += '</div>';
                     
                     html += '</div></div>';
@@ -1806,7 +2098,7 @@
                     (function(card) {
                         card.onclick = function(e) {
                             // Don't open detail if clicking on action buttons
-                            if (e.target.classList.contains('action-btn')) return;
+                            if (e.target.classList.contains('action-btn') || e.target.parentElement.classList.contains('action-btn')) return;
                             
                             var index = parseInt(card.getAttribute('data-service-index'));
                             console.log('📱 Service card clicked, index:', index);
