@@ -614,6 +614,10 @@
                         <option value="education">Giáo dục & Dạy học</option>
                         <option value="health">Y tế & Sức khỏe</option>
                         <option value="tech">IT & Công nghệ</option>
+                        <option value="insurance">🛡️ Bảo hiểm</option>
+                        <option value="realtor">🏠 Môi giới BDS</option>
+                        <option value="mortgage">💰 Vay mua nhà</option>
+                        <option value="transport">�� Xe đưa đón</option>
                         <option value="other">Khác</option>
                     </select>
                     <select id="priceFilter">
@@ -668,6 +672,10 @@
                             <option value="education">Giáo dục & Dạy học</option>
                             <option value="health">Y tế & Sức khỏe</option>
                             <option value="tech">IT & Công nghệ</option>
+                            <option value="insurance">🛡️ Bảo hiểm</option>
+                            <option value="realtor">🏠 Môi giới BDS</option>
+                            <option value="mortgage">💰 Vay mua nhà</option>
+                            <option value="transport">�� Xe đưa đón</option>
                             <option value="other">Khác</option>
                         </select>
                     </div>
@@ -1129,6 +1137,10 @@
                 'education': 'Giáo dục & Dạy học',
                 'health': 'Y tế & Sức khỏe',
                 'tech': 'IT & Công nghệ',
+                'insurance': '🛡️ Bảo hiểm',
+                'realtor': '🏠 Môi giới BDS',
+                'mortgage': '💰 Vay mua nhà',
+                'transport': '🚗 Xe đưa đón',
                 'other': 'Khác'
             };
             var typeDisplay = serviceTypes[service.service_type] || service.service_type;
@@ -1248,6 +1260,10 @@
                     'education': 'Giáo dục & Dạy học',
                     'health': 'Y tế & Sức khỏe',
                     'tech': 'IT & Công nghệ',
+                    'insurance': '🛡️ Bảo hiểm',
+                    'realtor': '🏠 Môi giới BDS',
+                    'mortgage': '💰 Vay mua nhà',
+                    'transport': '🚗 Xe đưa đón',
                     'other': 'Khác'
                 };
 
@@ -1283,33 +1299,4 @@
                     }
                     html += '<div class="service-detail-item"><span class="icon">📞</span><span>' + (service.contact || '') + '</span></div>';
                     html += '</div>';
-                    html += '<div class="view-count">👁️ ' + (service.views || 0) + ' lượt xem</div>';
-                    html += '</div></div>';
-                }
-
-                container.innerHTML = html;
-                
-                // Add click handlers using index approach
-                var serviceCards = container.querySelectorAll('.service-card');
-                for (var j = 0; j < serviceCards.length; j++) {
-                    (function(card) {
-                        card.onclick = function() {
-                            var index = parseInt(card.getAttribute('data-service-index'));
-                            console.log('📱 Service card clicked, index:', index);
-                            if (!isNaN(index) && allServices[index]) {
-                                viewServiceDetail(allServices[index]);
-                            }
-                        };
-                    })(serviceCards[j]);
-                }
-
-            }).catch(function(error) {
-                console.error('❌ Error loading services:', error);
-                if (container) {
-                    container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+                    html += '<div class="view-count">👁️ ' + (service.views || 0) +
