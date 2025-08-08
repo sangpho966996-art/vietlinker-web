@@ -351,6 +351,92 @@
             transform: translateY(-2px);
         }
 
+        /* Image Upload Styles */
+        .image-upload-section {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .image-upload-section:hover {
+            border-color: #dc143c;
+        }
+
+        .btn-upload-image {
+            padding: 12px 24px;
+            border: 2px solid #dc143c;
+            background: white;
+            color: #dc143c;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .btn-upload-image:hover {
+            background: #dc143c;
+            color: white;
+        }
+
+        .current-images, .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .image-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 20, 60, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-remove:hover {
+            background: rgba(220, 20, 60, 1);
+        }
+
+        /* Mobile responsive styles for image upload */
+        @media (max-width: 768px) {
+            .image-item {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .btn-upload-image {
+                width: 100%;
+            }
+        }
+
         /* Stats Cards */
         .stats-grid {
             display: grid;
@@ -914,6 +1000,21 @@
                         <label for="editEmail">Email</label>
                         <input type="email" id="editEmail">
                     </div>
+                    <div class="form-group">
+                        <label for="editImages">Hình ảnh</label>
+                        <div class="image-upload-section">
+                            <input type="file" id="editImages" multiple accept="image/*" style="display: none;">
+                            <div class="current-images" id="currentImages">
+                                <!-- Current images will be displayed here -->
+                            </div>
+                            <button type="button" class="btn-upload-image" onclick="document.getElementById('editImages').click()">
+                                📷 Thêm/Thay đổi hình ảnh
+                            </button>
+                            <div class="image-preview" id="editImagePreview">
+                                <!-- New image previews will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-actions">
                         <button type="button" onclick="closeEditModal()" class="btn-cancel">Hủy</button>
                         <button type="submit" class="btn-save">Cập Nhật</button>
@@ -1272,6 +1373,9 @@
                 document.getElementById('editPhone').value = postData.phone || '';
                 document.getElementById('editEmail').value = postData.email || '';
                 
+                // Load current images
+                loadCurrentImages(postData.images || []);
+                
                 // Show the modal
                 document.getElementById('editPostModal').style.display = 'flex';
                 
@@ -1285,6 +1389,114 @@
         window.closeEditModal = function() {
             document.getElementById('editPostModal').style.display = 'none';
             window.currentEditPost = null;
+            // Clear image previews
+            document.getElementById('currentImages').innerHTML = '';
+            document.getElementById('editImagePreview').innerHTML = '';
+            document.getElementById('editImages').value = '';
+        }
+
+        // Load current images for editing
+        function loadCurrentImages(images) {
+            const currentImagesContainer = document.getElementById('currentImages');
+            currentImagesContainer.innerHTML = '';
+            
+            if (images && images.length > 0) {
+                images.forEach((imageUrl, index) => {
+                    const imageItem = document.createElement('div');
+                    imageItem.className = 'image-item';
+                    imageItem.innerHTML = `
+                        <img src="${imageUrl}" alt="Current image ${index + 1}">
+                        <button type="button" class="image-remove" onclick="removeCurrentImage(${index})" title="Xóa ảnh">×</button>
+                    `;
+                    currentImagesContainer.appendChild(imageItem);
+                });
+            }
+        }
+
+        // Remove current image
+        window.removeCurrentImage = function(index) {
+            if (window.currentEditPost && window.currentEditPost.data.images) {
+                window.currentEditPost.data.images.splice(index, 1);
+                loadCurrentImages(window.currentEditPost.data.images);
+            }
+        }
+
+        // Handle new image selection
+        document.addEventListener('DOMContentLoaded', function() {
+            const editImagesInput = document.getElementById('editImages');
+            if (editImagesInput) {
+                editImagesInput.addEventListener('change', function(e) {
+                    const files = Array.from(e.target.files);
+                    previewNewImages(files);
+                });
+            }
+        });
+
+        // Preview new images
+        function previewNewImages(files) {
+            const previewContainer = document.getElementById('editImagePreview');
+            previewContainer.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageItem = document.createElement('div');
+                        imageItem.className = 'image-item';
+                        imageItem.innerHTML = `
+                            <img src="${e.target.result}" alt="New image ${index + 1}">
+                            <button type="button" class="image-remove" onclick="removeNewImage(${index})" title="Xóa ảnh">×</button>
+                        `;
+                        previewContainer.appendChild(imageItem);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Remove new image from preview
+        window.removeNewImage = function(index) {
+            const editImagesInput = document.getElementById('editImages');
+            const files = Array.from(editImagesInput.files);
+            files.splice(index, 1);
+            
+            // Create new FileList (workaround since FileList is read-only)
+            const dt = new DataTransfer();
+            files.forEach(file => dt.items.add(file));
+            editImagesInput.files = dt.files;
+            
+            previewNewImages(files);
+        }
+
+        // Upload images to Supabase storage
+        async function uploadImages(files) {
+            const uploadedUrls = [];
+            
+            for (const file of files) {
+                try {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+                    const filePath = `post-images/${fileName}`;
+                    
+                    const { data, error } = await supabase.storage
+                        .from('images')
+                        .upload(filePath, file);
+                    
+                    if (error) throw error;
+                    
+                    // Get public URL
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('images')
+                        .getPublicUrl(filePath);
+                    
+                    uploadedUrls.push(publicUrl);
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    throw error;
+                }
+            }
+            
+            return uploadedUrls;
         }
 
         // Handle edit form submission
@@ -1299,6 +1511,7 @@
                         return;
                     }
                     
+                    // Prepare form data
                     const formData = {
                         title: document.getElementById('editTitle').value,
                         description: document.getElementById('editDescription').value,
@@ -1307,6 +1520,23 @@
                         email: document.getElementById('editEmail').value,
                         updated_at: new Date().toISOString()
                     };
+
+                    // Handle image uploads
+                    const newImageFiles = document.getElementById('editImages').files;
+                    let finalImages = [...(window.currentEditPost.data.images || [])];
+                    
+                    if (newImageFiles.length > 0) {
+                        try {
+                            const uploadedUrls = await uploadImages(Array.from(newImageFiles));
+                            finalImages = [...finalImages, ...uploadedUrls];
+                        } catch (error) {
+                            console.error('Error uploading images:', error);
+                            alert('Lỗi khi tải ảnh lên. Vui lòng thử lại.');
+                            return;
+                        }
+                    }
+                    
+                    formData.images = finalImages;
                     
                     try {
                         const { error } = await supabase
