@@ -226,6 +226,131 @@
             opacity: 1;
         }
 
+        /* Edit Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #dc143c;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn-cancel {
+            padding: 12px 24px;
+            border: 2px solid #6c757d;
+            background: white;
+            color: #6c757d;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-save {
+            padding: 12px 24px;
+            border: none;
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+        }
+
         /* Stats Cards */
         .stats-grid {
             display: grid;
@@ -599,6 +724,20 @@
                 height: 55px;
                 font-size: 24px;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn-cancel,
+            .btn-save {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -732,6 +871,55 @@
             </div>
 
             <!-- Posts will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <div id="editPostModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sửa Tin Đăng</h2>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editPostForm">
+                    <div class="form-group">
+                        <label for="editTitle">Tiêu đề *</label>
+                        <input type="text" id="editTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescription">Mô tả *</label>
+                        <textarea id="editDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory">Danh mục *</label>
+                        <select id="editCategory" required>
+                            <option value="marketplace">🛒 Mua Bán</option>
+                            <option value="jobs">💼 Việc Làm</option>
+                            <option value="real_estate">🏠 BĐS & Tiệm</option>
+                            <option value="services">🔧 Dịch Vụ</option>
+                            <option value="classifieds">📋 Rao Vặt</option>
+                            <option value="promotions">🎁 Khuyến Mãi</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCity">Thành phố</label>
+                        <input type="text" id="editCity">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPhone">Số điện thoại</label>
+                        <input type="tel" id="editPhone">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" onclick="closeEditModal()" class="btn-cancel">Hủy</button>
+                        <button type="submit" class="btn-save">Cập Nhật</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -1055,7 +1243,7 @@
             window.location.href = `${category}.html?id=${postId}`;
         }
 
-        // Edit post
+        // Edit post - Open inline modal instead of redirecting
         window.editPost = async function(postId, category) {
             console.log('Editing post:', postId, 'in category:', category);
             
@@ -1069,23 +1257,76 @@
                 
                 if (error) throw error;
                 
-                // Store post data in localStorage for the edit form
-                localStorage.setItem('editPostData', JSON.stringify({
-                    ...postData,
+                // Store current edit data
+                window.currentEditPost = {
+                    id: postId,
                     category: category,
-                    mode: 'edit'
-                }));
+                    data: postData
+                };
                 
-                // Navigate to post form in edit mode
-                const editUrl = `post-form.html?mode=edit&id=${postId}&category=${category}`;
-                console.log('Redirecting to:', editUrl);
-                window.location.href = editUrl;
+                // Populate the edit form
+                document.getElementById('editTitle').value = postData.title || '';
+                document.getElementById('editDescription').value = postData.description || '';
+                document.getElementById('editCategory').value = category;
+                document.getElementById('editCity').value = postData.city || '';
+                document.getElementById('editPhone').value = postData.phone || '';
+                document.getElementById('editEmail').value = postData.email || '';
+                
+                // Show the modal
+                document.getElementById('editPostModal').style.display = 'flex';
                 
             } catch (error) {
                 console.error('Error loading post for edit:', error);
                 alert('Lỗi khi tải thông tin tin đăng. Vui lòng thử lại.');
             }
         }
+
+        // Close edit modal
+        window.closeEditModal = function() {
+            document.getElementById('editPostModal').style.display = 'none';
+            window.currentEditPost = null;
+        }
+
+        // Handle edit form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const editForm = document.getElementById('editPostForm');
+            if (editForm) {
+                editForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    if (!window.currentEditPost) {
+                        alert('Lỗi: Không tìm thấy thông tin tin đăng cần sửa.');
+                        return;
+                    }
+                    
+                    const formData = {
+                        title: document.getElementById('editTitle').value,
+                        description: document.getElementById('editDescription').value,
+                        city: document.getElementById('editCity').value,
+                        phone: document.getElementById('editPhone').value,
+                        email: document.getElementById('editEmail').value,
+                        updated_at: new Date().toISOString()
+                    };
+                    
+                    try {
+                        const { error } = await supabase
+                            .from(window.currentEditPost.category)
+                            .update(formData)
+                            .eq('id', window.currentEditPost.id);
+                        
+                        if (error) throw error;
+                        
+                        alert('Đã cập nhật tin đăng thành công!');
+                        closeEditModal();
+                        checkAuth(); // Reload posts
+                        
+                    } catch (error) {
+                        console.error('Error updating post:', error);
+                        alert('Lỗi khi cập nhật tin đăng. Vui lòng thử lại.');
+                    }
+                });
+            }
+        });
 
         // Delete post
         window.deletePost = async function(postId, category) {
