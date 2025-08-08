@@ -1195,7 +1195,7 @@
                     </select>
                 </div>
                 
-                <button class="search-btn-primary" id="searchButton" onclick="performGlobalSearch()">
+                <button class="search-btn-primary" id="searchButton">
                     <span>🔍</span>
                     <span>TÌM KIẾM</span>
                 </button>
@@ -1460,6 +1460,11 @@
         // SIMPLE WORKING SCRIPT - NO COMPLEX FUNCTIONS
         console.log('🚀 VietLinker Starting...');
         
+        // Ensure script is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM Content Loaded - Script Ready');
+        });
+        
         // GLOBAL SEARCH FUNCTION
         function performGlobalSearch() {
             console.log('🔍 Search function called');
@@ -1525,6 +1530,9 @@
                 });
             });
         }
+        
+        // Make function globally accessible
+        window.performGlobalSearch = performGlobalSearch;
         
         // Display search results
         function displayResults(allResults) {
@@ -1627,6 +1635,15 @@
                     if (e.key === 'Enter') {
                         performGlobalSearch();
                     }
+                });
+            }
+            
+            // Search button click
+            var searchButton = document.getElementById('searchButton');
+            if (searchButton) {
+                searchButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    performGlobalSearch();
                 });
             }
             
