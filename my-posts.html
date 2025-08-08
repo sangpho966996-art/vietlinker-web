@@ -1056,9 +1056,35 @@
         }
 
         // Edit post
-        window.editPost = function(postId, category) {
-            // Navigate to post form in edit mode
-            window.location.href = `post-form.html?edit=${postId}&category=${category}`;
+        window.editPost = async function(postId, category) {
+            console.log('Editing post:', postId, 'in category:', category);
+            
+            try {
+                // Get the post data from Supabase
+                const { data: postData, error } = await supabase
+                    .from(category)
+                    .select('*')
+                    .eq('id', postId)
+                    .single();
+                
+                if (error) throw error;
+                
+                // Store post data in localStorage for the edit form
+                localStorage.setItem('editPostData', JSON.stringify({
+                    ...postData,
+                    category: category,
+                    mode: 'edit'
+                }));
+                
+                // Navigate to post form in edit mode
+                const editUrl = `post-form.html?mode=edit&id=${postId}&category=${category}`;
+                console.log('Redirecting to:', editUrl);
+                window.location.href = editUrl;
+                
+            } catch (error) {
+                console.error('Error loading post for edit:', error);
+                alert('Lỗi khi tải thông tin tin đăng. Vui lòng thử lại.');
+            }
         }
 
         // Delete post
