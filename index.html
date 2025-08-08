@@ -2,1092 +2,316 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>VietLinker - Nền Tảng Kết Nối Cộng Đồng Người Việt Tại Mỹ</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            line-height: 1.6;
+            background: #ffffff; min-height: 100vh; line-height: 1.6;
         }
-        
-        /* Header Professional */
+
+        /* Header */
         header {
             background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-        
         header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: shimmer 3s infinite;
         }
-        
         header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
         }
-        
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
+        @keyframes shimmer { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+
         .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.2rem 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 1;
+            max-width: 1400px; margin: 0 auto; padding: 1.2rem 20px;
+            display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;
         }
-        
-        /* Logo Professional */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-            transition: transform 0.3s;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
-        }
-        
-        .logo svg {
-            width: 55px;
-            height: 55px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-        
-        .logo-text {
-            color: white;
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        /* User Actions Professional */
-        .user-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .user-info {
-            display: none;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 15px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-        
-        /* Dropdown Menu */
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 10px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .user-info:hover .user-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            transition: all 0.3s;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .dropdown-item:first-child {
-            border-radius: 12px 12px 0 0;
-        }
-        
-        .dropdown-item:last-child {
-            border-bottom: none;
-            border-radius: 0 0 12px 12px;
-        }
-        
-        .dropdown-item:hover {
-            background: #f8f9fa;
-            color: #dc143c;
-        }
-        
-        .dropdown-item.signout {
-            color: #dc143c;
-            font-weight: 600;
-        }
-        
-        .dropdown-item.signout:hover {
-            background: #dc143c;
-            color: white;
-        }
-        
-        .user-info.active {
-            display: flex;
-        }
-        
+        .logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.3s; }
+        .logo:hover { transform: scale(1.05); }
+        .logo svg { width: 55px; height: 55px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .logo-text { color: white; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+
+        .user-actions { display: flex; gap: 15px; align-items: center; }
+        .user-info { display: none; align-items: center; gap: 12px; background: rgba(255,255,255,0.1);
+            padding: 8px 15px; border-radius: 30px; backdrop-filter: blur(10px); position: relative; }
+        .user-info.active { display: flex; }
         .user-avatar {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #1e3c72;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
+            width: 38px; height: 38px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #1e3c72;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
-        .user-name {
-            color: white;
-            font-weight: 500;
-            margin-right: 5px;
-        }
-        
-        .auth-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .auth-buttons.hidden {
-            display: none;
-        }
-        
-        .btn-auth {
-            padding: 10px 24px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 15px;
-        }
-        
-        .btn-login {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-            backdrop-filter: blur(10px);
-        }
-        
-        .btn-register {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #1e3c72;
-            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
-        }
+        .user-name { color: white; font-weight: 500; margin-right: 5px; }
 
-        /* New Post Button in Header */
+        .user-dropdown {
+            position: absolute; top: 100%; right: 0; margin-top: 10px; background: white; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); min-width: 200px; opacity: 0; visibility: hidden;
+            transform: translateY(-10px); transition: all 0.3s ease; z-index: 1000;
+        }
+        .user-info:hover .user-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item {
+            display: flex; align-items: center; gap: 10px; padding: 14px 20px;
+            color: #333; text-decoration: none; transition: all 0.3s; border-bottom: 1px solid #f0f0f0;
+        }
+        .dropdown-item:first-child { border-radius: 12px 12px 0 0; }
+        .dropdown-item:last-child { border-bottom: none; border-radius: 0 0 12px 12px; }
+        .dropdown-item:hover { background: #f8f9fa; color: #dc143c; }
+        .dropdown-item.signout { color: #dc143c; font-weight: 600; }
+        .dropdown-item.signout:hover { background: #dc143c; color: white; }
+
+        .auth-buttons { display: flex; gap: 12px; }
+        .auth-buttons.hidden { display: none; }
+        .btn-auth { padding: 10px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s; font-size: 15px; }
+        .btn-login { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; backdrop-filter: blur(10px); }
+        .btn-register { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1e3c72; box-shadow: 0 4px 15px rgba(255,215,0,0.3); }
+
         .btn-post {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            padding: 10px 24px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 10px 24px; border-radius: 25px;
+            text-decoration: none; font-weight: 600; transition: all 0.3s; font-size: 15px; display: inline-flex; align-items: center; gap: 8px;
             box-shadow: 0 4px 15px rgba(40,167,69,0.3);
         }
-        
-        .btn-auth:hover, .btn-post:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        }
+        .btn-auth:hover, .btn-post:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
 
         /* Floating Post Button */
         .floating-post-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            font-size: 28px;
-            box-shadow: 0 4px 20px rgba(220,20,60,0.4);
-            transition: all 0.3s ease;
-            z-index: 999;
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; z-index: 999;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: white; font-size: 28px; box-shadow: 0 4px 20px rgba(220,20,60,0.4); transition: all 0.3s ease;
         }
-
-        .floating-post-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(220,20,60,0.6);
-        }
-
+        .floating-post-btn:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(220,20,60,0.6); }
         .floating-post-btn::after {
-            content: 'Đăng tin';
-            position: absolute;
-            right: 75px;
-            background: #333;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            content: 'Đăng tin'; position: absolute; right: 75px; background: #333; color: white; padding: 6px 12px; border-radius: 6px;
+            font-size: 14px; font-weight: 500; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s;
         }
+        .floating-post-btn:hover::after { opacity: 1; }
 
-        .floating-post-btn:hover::after {
-            opacity: 1;
-        }
-        
-        /* Navigation Professional */
+        /* Nav */
         nav {
-            background: #1e3c72;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            background: #1e3c72; box-shadow: 0 2px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
             border-bottom: 3px solid rgba(220,20,60,0.3);
         }
-        
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 5px;
-            padding: 12px 0;
-            align-items: center;
-        }
-        
+        .nav-container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .nav-links { display: flex; gap: 5px; padding: 12px 0; align-items: center; }
         .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-weight: 500;
-            font-size: 15px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: white; text-decoration: none; padding: 10px 18px; border-radius: 10px; transition: all 0.3s; font-weight: 500; font-size: 15px;
+            position: relative; display: flex; align-items: center; gap: 6px;
         }
-        
-        .nav-links a:hover {
-            background: rgba(220, 20, 60, 0.3);
-            transform: translateY(-1px);
-        }
-        
-        .nav-links a.active {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            box-shadow: 0 4px 10px rgba(220,20,60,0.3);
-        }
-        
-        .nav-divider {
-            width: 1px;
-            height: 24px;
-            background: rgba(255,255,255,0.2);
-            margin: 0 10px;
-        }
-        
-        .user-menu {
-            display: none;
-            gap: 5px;
-        }
-        
-        .user-menu.active {
-            display: flex;
-        }
-        
-        .user-menu a {
-            background: rgba(255,215,0,0.15);
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-        
-        .user-menu a:hover {
-            background: rgba(255,215,0,0.25);
-            border-color: #FFD700;
-        }
-        
-        /* NEW Hero Search Section */
+        .nav-links a:hover { background: rgba(220, 20, 60, 0.3); transform: translateY(-1px); }
+        .nav-links a.active { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); box-shadow: 0 4px 10px rgba(220,20,60,0.3); }
+        .nav-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 10px; }
+        .user-menu { display: none; gap: 5px; }
+        .user-menu.active { display: flex; }
+        .user-menu a { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); }
+        .user-menu a:hover { background: rgba(255,215,0,0.25); border-color: #FFD700; }
+
+        /* Hero Search */
         .hero-search {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 60px 20px;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 60px 20px; position: relative; overflow: hidden;
         }
-        
         .hero-search::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            content: ''; position: absolute; inset: 0;
             background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
         }
-        
-        .search-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .search-title {
-            color: white;
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .search-subtitle {
-            color: rgba(255,255,255,0.9);
-            font-size: 18px;
-            margin-bottom: 35px;
-        }
-        
+        .search-container { max-width: 1000px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .search-title { color: white; font-size: 36px; font-weight: 800; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .search-subtitle { color: rgba(255,255,255,0.9); font-size: 18px; margin-bottom: 35px; }
         .mega-search-box {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
+            background: white; border-radius: 15px; padding: 25px; box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            display: flex; gap: 15px; flex-wrap: wrap; align-items: center;
         }
-        
-        .search-input-group {
-            flex: 1;
-            min-width: 200px;
-            position: relative;
+        .search-input-group { flex: 1; min-width: 200px; position: relative; }
+        .search-input-group input, .search-input-group select {
+            width: 100%; padding: 15px 20px; padding-left: 45px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; transition: all 0.3s; background: white;
         }
-        
-        .search-input-group input,
-        .search-input-group select {
-            width: 100%;
-            padding: 15px 20px;
-            padding-left: 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .search-input-group input:focus,
-        .search-input-group select:focus {
-            outline: none;
-            border-color: #dc143c;
-            box-shadow: 0 0 0 3px rgba(220,20,60,0.1);
-        }
-        
-        .search-input-group .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            color: #666;
-        }
-        
-        .location-group {
-            position: relative;
-        }
-        
-        .location-status {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 12px;
-            color: #28a745;
-            display: none;
-        }
-        
-        .location-status.active {
-            display: block;
-        }
-        
+        .search-input-group input:focus, .search-input-group select:focus { outline: none; border-color: #dc143c; box-shadow: 0 0 0 3px rgba(220,20,60,0.1); }
+        .search-input-group .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #666; }
+        .location-group { position: relative; }
+        .location-status { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #28a745; display: none; }
+        .location-status.active { display: block; }
         .search-btn-primary {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(220,20,60,0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color: white; border: none; padding: 18px 40px; border-radius: 10px;
+            font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(220,20,60,0.3);
+            display: flex; align-items: center; gap: 10px;
         }
-        
-        .search-btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(220,20,60,0.4);
-        }
-        
-        .quick-searches {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        
-        .quick-searches span {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-        }
-        
+        .search-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(220,20,60,0.4); }
+        .quick-searches { margin-top: 25px; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+        .quick-searches span { color: rgba(255,255,255,0.8); font-size: 14px; }
         .quick-search-tag {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; transition: all 0.3s;
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
         }
-        
-        .quick-search-tag:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-        
-        /* Search Results Modal */
+        .quick-search-tag:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+
+        /* Search Modal */
         .search-results-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            display: none;
-            backdrop-filter: blur(5px);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; backdrop-filter: blur(5px);
         }
-        
         .search-results-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 1200px;
-            max-height: 80vh;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 92%; max-width: 1200px; max-height: 80vh; background: white; border-radius: 20px; overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        
         .search-results-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%); color: white; padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        
-        .search-results-body {
-            padding: 30px;
-            overflow-y: auto;
-            max-height: calc(80vh - 80px);
-        }
-        
-        .close-search-modal {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .close-search-modal:hover {
-            transform: rotate(90deg);
-        }
-        
-        /* Hero Section Professional */
-        .hero {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 80px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
+        .search-results-body { padding: 20px; overflow-y: auto; max-height: calc(80vh - 64px); }
+        .close-search-modal { background: none; border: none; color: white; font-size: 30px; cursor: pointer; transition: transform 0.3s; }
+        .close-search-modal:hover { transform: rotate(90deg); }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 80px 20px; position: relative; overflow: hidden; }
         .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            content: ''; position: absolute; inset: 0;
             background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dc143c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
         }
-        
-        .hero-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-text h1 {
-            font-size: 52px;
-            line-height: 1.2;
-            color: #1e3c72;
-            margin-bottom: 20px;
-            font-weight: 800;
-            animation: fadeInUp 0.8s ease;
-        }
-        
+        .hero-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+        .hero-text h1 { font-size: 52px; line-height: 1.2; color: #1e3c72; margin-bottom: 20px; font-weight: 800; animation: fadeInUp 0.8s ease; }
         .hero-text h1 span {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        
-        .hero-text p {
-            font-size: 20px;
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            animation: fadeInUp 0.8s ease 0.2s;
-            animation-fill-mode: both;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-            animation: fadeInUp 0.8s ease 0.4s;
-            animation-fill-mode: both;
-        }
-        
-        .btn-hero {
-            padding: 15px 35px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-hero-primary {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            color: white;
-            box-shadow: 0 6px 20px rgba(220,20,60,0.3);
-        }
-        
-        .btn-hero-secondary {
-            background: white;
-            color: #1e3c72;
-            border: 2px solid #1e3c72;
-        }
-        
-        .btn-hero:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .stat-card {
-            text-align: center;
-            animation: fadeInUp 0.8s ease 0.6s;
-            animation-fill-mode: both;
-        }
-        
+        .hero-text p { font-size: 20px; color: #666; margin-bottom: 30px; line-height: 1.6; animation: fadeInUp 0.8s ease 0.2s; animation-fill-mode: both; }
+        .hero-buttons { display: flex; gap: 15px; animation: fadeInUp 0.8s ease 0.4s; animation-fill-mode: both; }
+        .btn-hero { padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-hero-primary { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color: white; box-shadow: 0 6px 20px rgba(220,20,60,0.3); }
+        .btn-hero-secondary { background: white; color: #1e3c72; border: 2px solid #1e3c72; }
+        .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .stat-card { text-align: center; animation: fadeInUp 0.8s ease 0.6s; animation-fill-mode: both; }
         .stat-number {
-            font-size: 36px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 36px; font-weight: 800; background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Categories Section Professional */
-        .categories {
-            padding: 80px 20px;
-            background: white;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title {
-            font-size: 42px;
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-        
-        .section-subtitle {
-            font-size: 18px;
-            color: #666;
-        }
-        
+        .stat-label { color: #666; font-size: 14px; margin-top: 5px; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px);} to { opacity: 1; transform: translateY(0);} }
+
+        /* Categories */
+        .categories { padding: 80px 20px; background: white; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-title { font-size: 42px; color: #1e3c72; margin-bottom: 15px; font-weight: 800; }
+        .section-subtitle { font-size: 18px; color: #666; }
         .categories-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
         }
-        
         .category-card {
-            background: white;
-            border-radius: 20px;
-            padding: 35px 30px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #f0f0f0;
+            background: white; border-radius: 20px; padding: 35px 30px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease; text-decoration: none; color: inherit; position: relative; overflow: hidden; border: 2px solid #f0f0f0;
         }
-        
         .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #dc143c, #FFD700, #1e3c72);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #dc143c, #FFD700, #1e3c72); transform: scaleX(0); transition: transform 0.3s ease;
         }
-        
-        .category-card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .category-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-            border-color: #dc143c;
-        }
-        
+        .category-card:hover::before { transform: scaleX(1); }
+        .category-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); border-color: #dc143c; }
         .category-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, rgba(220,20,60,0.1) 0%, rgba(30,60,114,0.1) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            transition: all 0.3s ease;
+            width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(220,20,60,0.1) 0%, rgba(30,60,114,0.1) 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; transition: all 0.3s ease;
         }
-        
-        .category-card:hover .category-icon {
-            transform: scale(1.1) rotate(5deg);
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-        }
-        
-        .category-title {
-            font-size: 22px;
-            color: #1e3c72;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .category-description {
-            color: #666;
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-        
+        .category-card:hover .category-icon { transform: scale(1.1) rotate(5deg); background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); }
+        .category-title { font-size: 22px; color: #1e3c72; margin-bottom: 10px; font-weight: 700; }
+        .category-description { color: #666; font-size: 15px; line-height: 1.5; margin-bottom: 15px; }
         .category-count {
-            display: inline-block;
-            padding: 6px 18px;
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            color: white;
-            border-radius: 25px;
-            font-size: 13px;
-            font-weight: 600;
+            display: inline-block; padding: 6px 18px; background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color: white; border-radius: 25px; font-size: 13px; font-weight: 600;
         }
-        
-        /* Features Section Professional */
-        .features {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 80px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
+
+        /* Features */
+        .features { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 80px 20px; position: relative; overflow: hidden; }
         .features::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            content: ''; position: absolute; inset: 0;
             background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M50 30c11.046 0 20 8.954 20 20s-8.954 20-20 20-20-8.954-20-20 8.954-20 20-20zm0 10c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
         }
-        
-        .features .section-header {
-            margin-bottom: 60px;
-        }
-        
-        .features .section-title {
-            color: white;
-        }
-        
-        .features .section-subtitle {
-            color: rgba(255,255,255,0.8);
-        }
-        
+        .features .section-header { margin-bottom: 60px; }
+        .features .section-title { color: white; }
+        .features .section-subtitle { color: rgba(255,255,255,0.8); }
         .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            position: relative;
-            z-index: 1;
+            max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; position: relative; z-index: 1;
         }
-        
         .feature {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 40px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease;
         }
-        
-        .feature:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
+        .feature:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .feature-icon {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 25px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            box-shadow: 0 8px 25px rgba(255,215,0,0.3);
+            width: 90px; height: 90px; margin: 0 auto 25px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 8px 25px rgba(255,215,0,0.3);
         }
-        
-        .feature h3 {
-            color: white;
-            font-size: 24px;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-        
-        .feature p {
-            color: rgba(255,255,255,0.9);
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        
-        /* CTA Section */
-        .cta {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            padding: 80px 20px;
-            text-align: center;
-        }
-        
-        .cta-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .cta h2 {
-            font-size: 42px;
-            color: #1e3c72;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-        
-        .cta p {
-            font-size: 20px;
-            color: #666;
-            margin-bottom: 40px;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        /* Footer Professional */
-        footer {
-            background: #1e3c72;
-            color: white;
-            padding: 60px 20px 30px;
-        }
-        
+        .feature h3 { color: white; font-size: 24px; margin-bottom: 15px; font-weight: 700; }
+        .feature p { color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.6; }
+
+        /* CTA */
+        .cta { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 80px 20px; text-align: center; }
+        .cta-content { max-width: 800px; margin: 0 auto; }
+        .cta h2 { font-size: 42px; color: #1e3c72; margin-bottom: 20px; font-weight: 800; }
+        .cta p { font-size: 20px; color: #666; margin-bottom: 40px; }
+        .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
+        /* Footer */
+        footer { background: #1e3c72; color: white; padding: 60px 20px 30px; }
         .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
+            max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px;
         }
-        
-        .footer-brand h3 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .footer-brand p {
-            color: rgba(255,255,255,0.8);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
+        .footer-brand h3 { font-size: 28px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .footer-brand p { color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 20px; }
+        .social-links { display: flex; gap: 15px; }
         .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
+            width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; transition: all 0.3s;
         }
-        
-        .social-link:hover {
-            background: #dc143c;
-            transform: translateY(-3px);
-        }
-        
-        .footer-column h4 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #FFD700;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-column ul li a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-column ul li a:hover {
-            color: #FFD700;
-        }
-        
-        .footer-bottom {
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            color: rgba(255,255,255,0.6);
-        }
-        
-        /* Responsive Design */
+        .social-link:hover { background: #dc143c; transform: translateY(-3px); }
+
+        .footer-column h4 { font-size: 18px; margin-bottom: 20px; color: #FFD700; }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 12px; }
+        .footer-column ul li a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
+        .footer-column ul li a:hover { color: #FFD700; }
+
+        .footer-bottom { padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.6); }
+
+        /* Responsive */
         @media (max-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-buttons { justify-content: center; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
         }
-        
         @media (max-width: 768px) {
-            .hero-text h1 {
-                font-size: 36px;
-            }
-            
-            .search-title {
-                font-size: 28px;
-            }
-            
-            .mega-search-box {
-                flex-direction: column;
-            }
-            
-            .search-input-group {
-                width: 100%;
-            }
-            
-            .search-btn-primary {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .section-title {
-                font-size: 32px;
-            }
-            
-            .nav-links {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .nav-divider {
-                display: none;
-            }
-            
-            .hero-stats {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .social-links {
-                justify-content: center;
-            }
-            
-            .user-name {
-                display: none;
-            }
-
-            .floating-post-btn {
-                width: 55px;
-                height: 55px;
-                bottom: 20px;
-                right: 20px;
-                font-size: 24px;
-            }
-
-            .btn-post {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
+            .header-content { padding: 14px 16px; }
+            .hero-text h1 { font-size: 36px; }
+            .search-title { font-size: 28px; }
+            .mega-search-box { flex-direction: column; padding: 18px; gap: 12px; }
+            .search-input-group { width: 100%; }
+            .search-btn-primary { width: 100%; justify-content: center; padding: 16px 28px; }
+            .section-title { font-size: 32px; }
+            .nav-links { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .nav-divider { display: none; }
+            .hero-stats { grid-template-columns: 1fr; gap: 20px; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .social-links { justify-content: center; }
+            .user-name { display: none; }
+            .floating-post-btn { width: 55px; height: 55px; bottom: 20px; right: 20px; font-size: 24px; }
+            .btn-post { padding: 8px 16px; font-size: 14px; }
+            .search-results-container { width: 95%; max-height: 85vh; }
+            .search-results-header { padding: 14px 18px; }
+            .search-results-body { padding: 16px; }
+            .dropdown-item { padding: 16px 20px; } /* tăng tap target */
+        }
+        @media (max-width: 480px) {
+            .logo-text { font-size: 22px; }
+            .btn-auth, .btn-post { padding: 9px 16px; font-size: 14px; }
+            .quick-search-tag { padding: 8px 12px; font-size: 13px; }
+            .hero { padding: 60px 16px; }
+            .categories { padding: 60px 16px; }
+            .feature { padding: 28px; }
+            .cta { padding: 60px 16px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header Professional -->
     <header>
         <div class="header-content">
             <a href="index.html" class="logo">
@@ -1104,32 +328,21 @@
                 </svg>
                 <span class="logo-text">VietLinker</span>
             </a>
-            
+
             <div class="user-actions">
-                <!-- Nút Đăng tin - LUÔN HIỂN THỊ cho mọi user -->
-                <a href="post-form.html" class="btn-post" id="postButton">
-                    ✍️ Đăng tin
-                </a>
-                
+                <a href="post-form.html" class="btn-post" id="postButton">✍️ Đăng tin</a>
+
                 <div class="user-info" id="userInfo">
                     <div class="user-avatar" id="userAvatar">U</div>
                     <span class="user-name" id="userName">User</span>
-                    <!-- Dropdown Menu -->
                     <div class="user-dropdown">
-                        <a href="profile.html" class="dropdown-item">
-                            👤 Hồ Sơ Cá Nhân
-                        </a>
-                        <a href="my-posts.html" class="dropdown-item">
-                            📝 Quản Lý Tin Đăng
-                        </a>
-                        <a href="post-form.html" class="dropdown-item">
-                            ➕ Đăng Tin Mới
-                        </a>
-                        <a href="#" onclick="signOut()" class="dropdown-item signout">
-                            🚪 Đăng Xuất
-                        </a>
+                        <a href="profile.html" class="dropdown-item">👤 Hồ Sơ Cá Nhân</a>
+                        <a href="my-posts.html" class="dropdown-item">📝 Quản Lý Tin Đăng</a>
+                        <a href="post-form.html" class="dropdown-item">➕ Đăng Tin Mới</a>
+                        <a href="#" onclick="signOut()" class="dropdown-item signout">🚪 Đăng Xuất</a>
                     </div>
                 </div>
+
                 <div class="auth-buttons" id="authButtons">
                     <a href="login.html" class="btn-auth btn-login">Đăng Nhập</a>
                     <a href="register.html" class="btn-auth btn-register">Đăng Ký Ngay</a>
@@ -1137,21 +350,19 @@
             </div>
         </div>
     </header>
-    
-    <!-- Navigation Professional - UPDATED WITH FOOD -->
+
     <nav>
         <div class="nav-container">
             <div class="nav-links">
                 <a href="index.html" class="active">🏠 Trang Chủ</a>
-                
-                <!-- User Menu Items -->
+
                 <div class="user-menu" id="userMenu">
                     <div class="nav-divider"></div>
                     <a href="profile.html">👤 Hồ Sơ</a>
                     <a href="my-posts.html">📝 Tin Đăng</a>
                     <div class="nav-divider"></div>
                 </div>
-                
+
                 <a href="marketplace.html">🛒 Mua Bán</a>
                 <a href="jobs.html">💼 Việc Làm</a>
                 <a href="services.html">🤝 Dịch Vụ</a>
@@ -1162,25 +373,24 @@
             </div>
         </div>
     </nav>
-    
-    <!-- NEW Hero Search Section -->
+
     <section class="hero-search">
         <div class="search-container">
             <h1 class="search-title">🔍 Tìm Mọi Thứ Bạn Cần</h1>
             <p class="search-subtitle">Việc làm • Mua bán • Dịch vụ • Ăn uống • Bất động sản - Tất cả trong một!</p>
-            
+
             <div class="mega-search-box">
                 <div class="search-input-group">
                     <span class="input-icon">🔍</span>
                     <input type="text" id="searchKeyword" placeholder="Tìm gì? (VD: Nail tech, Honda, Phở...)" />
                 </div>
-                
+
                 <div class="search-input-group location-group">
                     <span class="input-icon">📍</span>
                     <input type="text" id="searchLocation" placeholder="Zipcode hoặc Thành phố" />
                     <span class="location-status" id="locationStatus">✓ Đã định vị</span>
                 </div>
-                
+
                 <div class="search-input-group">
                     <span class="input-icon">📂</span>
                     <select id="searchCategory">
@@ -1194,13 +404,12 @@
                         <option value="promotions">🎁 Khuyến mãi</option>
                     </select>
                 </div>
-                
+
                 <button class="search-btn-primary" id="searchButton" onclick="performGlobalSearch()">
-                    <span>🔍</span>
-                    <span>TÌM KIẾM</span>
+                    <span>🔍</span><span>TÌM KIẾM</span>
                 </button>
             </div>
-            
+
             <div class="quick-searches">
                 <span>Tìm nhanh:</span>
                 <a href="#" class="quick-search-tag" data-search="Thợ Nail">Thợ Nail</a>
@@ -1211,61 +420,42 @@
             </div>
         </div>
     </section>
-    
-    <!-- Search Results Modal -->
+
     <div class="search-results-modal" id="searchResultsModal">
         <div class="search-results-container">
             <div class="search-results-header">
                 <h2>Kết quả tìm kiếm</h2>
                 <button class="close-search-modal" id="closeModalBtn" onclick="closeSearchModal()">&times;</button>
             </div>
-            <div class="search-results-body" id="searchResultsBody">
-                <!-- Search results will be displayed here -->
-            </div>
+            <div class="search-results-body" id="searchResultsBody"></div>
         </div>
     </div>
-    
-    <!-- Hero Section Professional -->
+
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Kết Nối <span>Cộng Đồng Việt</span> Tại Hoa Kỳ</h1>
                 <p>Nền tảng số 1 dành cho người Việt - Từ việc làm, mua bán, dịch vụ, ẩm thực đến bất động sản. Tất cả trong một!</p>
-                
                 <div class="hero-buttons">
-                    <a href="register.html" class="btn-hero btn-hero-primary">
-                        🚀 Bắt Đầu Ngay
-                    </a>
-                    <a href="#categories" class="btn-hero btn-hero-secondary">
-                        📖 Khám Phá
-                    </a>
+                    <a href="register.html" class="btn-hero btn-hero-primary">🚀 Bắt Đầu Ngay</a>
+                    <a href="#categories" class="btn-hero btn-hero-secondary">📖 Khám Phá</a>
                 </div>
             </div>
-            
+
             <div class="hero-stats">
-                <div class="stat-card">
-                    <div class="stat-number">50,000+</div>
-                    <div class="stat-label">Thành Viên Tích Cực</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">10,000+</div>
-                    <div class="stat-label">Tin Đăng Mỗi Tháng</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Doanh Nghiệp Việt</div>
-                </div>
+                <div class="stat-card"><div class="stat-number">50,000+</div><div class="stat-label">Thành Viên Tích Cực</div></div>
+                <div class="stat-card"><div class="stat-number">10,000+</div><div class="stat-label">Tin Đăng Mỗi Tháng</div></div>
+                <div class="stat-card"><div class="stat-number">500+</div><div class="stat-label">Doanh Nghiệp Việt</div></div>
             </div>
         </div>
     </section>
-    
-    <!-- Categories Section Professional - UPDATED WITH FOOD -->
+
     <section class="categories" id="categories">
         <div class="section-header">
             <h2 class="section-title">Khám Phá Danh Mục</h2>
             <p class="section-subtitle">Tìm kiếm mọi thứ bạn cần trong cộng đồng người Việt</p>
         </div>
-        
+
         <div class="categories-grid">
             <a href="marketplace.html" class="category-card">
                 <div class="category-icon">🛒</div>
@@ -1273,49 +463,49 @@
                 <p class="category-description">Đồ điện tử, nội thất, xe cộ, thời trang và nhiều hơn nữa</p>
                 <span class="category-count">2,345 tin mới</span>
             </a>
-            
+
             <a href="jobs.html" class="category-card">
                 <div class="category-icon">💼</div>
                 <h3 class="category-title">Việc Làm</h3>
                 <p class="category-description">Cơ hội việc làm từ nhà hàng, nail, IT đến văn phòng</p>
                 <span class="category-count">1,567 việc</span>
             </a>
-            
+
             <a href="services.html" class="category-card">
                 <div class="category-icon">🤝</div>
                 <h3 class="category-title">Dịch Vụ</h3>
                 <p class="category-description">Sửa chữa, làm đẹp, y tế, luật pháp, kế toán</p>
                 <span class="category-count">890 dịch vụ</span>
             </a>
-            
+
             <a href="food.html" class="category-card">
                 <div class="category-icon">🍜</div>
                 <h3 class="category-title">Ăn Uống</h3>
                 <p class="category-description">Nhà hàng Việt, quán ăn, đồ ăn nhà, tiệm bánh, cà phê</p>
                 <span class="category-count">423 nhà hàng</span>
             </a>
-            
+
             <a href="realestate.html" class="category-card">
                 <div class="category-icon">🏠</div>
                 <h3 class="category-title">BĐS & Sang Tiệm</h3>
                 <p class="category-description">Nhà cho thuê, mua bán, sang nhượng cơ sở kinh doanh</p>
                 <span class="category-count">456 bất động sản</span>
             </a>
-            
+
             <a href="classifieds.html" class="category-card">
                 <div class="category-icon">📋</div>
                 <h3 class="category-title">Rao Vặt</h3>
                 <p class="category-description">Tin tức, sự kiện, thông báo từ cộng đồng</p>
                 <span class="category-count">234 tin rao vặt</span>
             </a>
-            
+
             <a href="promotions.html" class="category-card">
                 <div class="category-icon">🎁</div>
                 <h3 class="category-title">Khuyến Mãi</h3>
                 <p class="category-description">Ưu đãi hot từ nhà hàng, tiệm nail, spa và dịch vụ</p>
                 <span class="category-count">125 ưu đãi</span>
             </a>
-            
+
             <a href="profile.html" class="category-card">
                 <div class="category-icon">👤</div>
                 <h3 class="category-title">Hồ Sơ Cá Nhân</h3>
@@ -1324,70 +514,34 @@
             </a>
         </div>
     </section>
-    
-    <!-- Features Section Professional -->
+
     <section class="features">
         <div class="section-header">
             <h2 class="section-title">Tại Sao Chọn VietLinker?</h2>
             <p class="section-subtitle">Nền tảng được tin dùng bởi cộng đồng người Việt khắp nước Mỹ</p>
         </div>
-        
+
         <div class="features-grid">
-            <div class="feature">
-                <div class="feature-icon">🌟</div>
-                <h3>Cộng Đồng Lớn Mạnh</h3>
-                <p>Kết nối với hàng chục ngàn người Việt trên khắp 50 tiểu bang Hoa Kỳ</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <h3>An Toàn & Bảo Mật</h3>
-                <p>Thông tin được mã hóa, xác thực người dùng và kiểm duyệt nội dung chặt chẽ</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">📱</div>
-                <h3>Dễ Dàng Sử Dụng</h3>
-                <p>Giao diện thân thiện, hỗ trợ tiếng Việt, hoạt động mượt mà trên mọi thiết bị</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">💰</div>
-                <h3>Hoàn Toàn Miễn Phí</h3>
-                <p>Đăng tin, tìm kiếm và kết nối không giới hạn mà không mất phí</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🚀</div>
-                <h3>Cập Nhật Realtime</h3>
-                <p>Tin đăng mới liên tục, thông báo tức thì khi có cơ hội phù hợp</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🤝</div>
-                <h3>Hỗ Trợ 24/7</h3>
-                <p>Đội ngũ hỗ trợ tiếng Việt sẵn sàng giúp đỡ bạn mọi lúc</p>
-            </div>
+            <div class="feature"><div class="feature-icon">🌟</div><h3>Cộng Đồng Lớn Mạnh</h3><p>Kết nối với hàng chục ngàn người Việt trên khắp 50 tiểu bang Hoa Kỳ</p></div>
+            <div class="feature"><div class="feature-icon">🔒</div><h3>An Toàn & Bảo Mật</h3><p>Thông tin được mã hóa, xác thực người dùng và kiểm duyệt nội dung chặt chẽ</p></div>
+            <div class="feature"><div class="feature-icon">📱</div><h3>Dễ Dàng Sử Dụng</h3><p>Giao diện thân thiện, hỗ trợ tiếng Việt, hoạt động mượt mà trên mọi thiết bị</p></div>
+            <div class="feature"><div class="feature-icon">💰</div><h3>Hoàn Toàn Miễn Phí</h3><p>Đăng tin, tìm kiếm và kết nối không giới hạn mà không mất phí</p></div>
+            <div class="feature"><div class="feature-icon">🚀</div><h3>Cập Nhật Realtime</h3><p>Tin đăng mới liên tục, thông báo tức thì khi có cơ hội phù hợp</p></div>
+            <div class="feature"><div class="feature-icon">🤝</div><h3>Hỗ Trợ 24/7</h3><p>Đội ngũ hỗ trợ tiếng Việt sẵn sàng giúp đỡ bạn mọi lúc</p></div>
         </div>
     </section>
-    
-    <!-- CTA Section -->
+
     <section class="cta">
         <div class="cta-content">
             <h2>Sẵn Sàng Kết Nối?</h2>
             <p>Tham gia cộng đồng VietLinker ngay hôm nay và khám phá vô vàn cơ hội</p>
             <div class="cta-buttons">
-                <a href="register.html" class="btn-hero btn-hero-primary">
-                    ✨ Đăng Ký Miễn Phí
-                </a>
-                <a href="marketplace.html" class="btn-hero btn-hero-secondary">
-                    🔍 Xem Tin Đăng
-                </a>
+                <a href="register.html" class="btn-hero btn-hero-primary">✨ Đăng Ký Miễn Phí</a>
+                <a href="marketplace.html" class="btn-hero btn-hero-secondary">🔍 Xem Tin Đăng</a>
             </div>
         </div>
     </section>
-    
-    <!-- Footer Professional - UPDATED WITH FOOD -->
+
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
@@ -1409,7 +563,7 @@
                     <a href="#" class="social-link">y</a>
                 </div>
             </div>
-            
+
             <div class="footer-column">
                 <h4>Danh Mục</h4>
                 <ul>
@@ -1420,46 +574,37 @@
                     <li><a href="realestate.html">Bất Động Sản</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-column">
                 <h4>Hỗ Trợ</h4>
                 <ul>
-                    <li><a href="#">Hướng Dẫn</a></li>
-                    <li><a href="#">Câu Hỏi Thường Gặp</a></li>
-                    <li><a href="#">Liên Hệ</a></li>
-                    <li><a href="#">Báo Cáo Vi Phạm</a></li>
+                    <li><a href="contact.html">Liên Hệ</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-column">
                 <h4>Về VietLinker</h4>
                 <ul>
-                    <li><a href="#">Giới Thiệu</a></li>
-                    <li><a href="#">Điều Khoản</a></li>
-                    <li><a href="#">Chính Sách Bảo Mật</a></li>
-                    <li><a href="#">Quảng Cáo</a></li>
+                    <li><a href="about.html">Giới Thiệu</a></li>
+                    <li><a href="terms.html">Điều Khoản</a></li>
+                    <li><a href="privacy.html">Chính Sách Bảo Mật</a></li>
+                    <li><a href="contact.html?topic=ads">Quảng Cáo</a></li>
                 </ul>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
             <p>&copy; 2024 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</p>
         </div>
     </footer>
 
-    <!-- Floating Post Button -->
-    <a href="post-form.html" class="floating-post-btn">
-        ➕
-    </a>
-    
-    <!-- Supabase CDN - LOAD FIRST -->
+    <a href="post-form.html" class="floating-post-btn">➕</a>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
-    
-    <!-- MAIN SCRIPT - SIMPLE AND WORKING (HARDENED) -->
     <script>
         console.log('🚀 VietLinker Starting...');
 
-        // Supabase config (singleton)
+        // Supabase singleton
         const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
         let sbClient = null;
@@ -1474,18 +619,10 @@
             return sbClient;
         }
 
-        // Safe text helpers
-        function esc(str) {
-            return String(str || '').replace(/[&<>"']/g, s => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            }[s]));
-        }
-        function truncate(str, n) {
-            const s = String(str || '');
-            return s.length > n ? s.slice(0, n) + '...' : s;
-        }
+        // Safe helpers
+        function esc(str) { return String(str || '').replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+        function truncate(str, n) { const s = String(str || ''); return s.length > n ? s.slice(0, n) + '...' : s; }
 
-        // Mapping bảng → trang
         const tableToPage = {
             jobs: 'jobs.html',
             marketplace: 'marketplace.html',
@@ -1495,84 +632,52 @@
             classifieds: 'classifieds.html',
             promotions: 'promotions.html'
         };
-
-        // Config filter theo bảng (tránh lỗi cột không tồn tại)
         const filtersByTable = {
-            jobs: { status: true, location: true, keywordCols: ['title', 'description'] },
-            marketplace: { status: true, location: true, keywordCols: ['title', 'description'] },
-            services: { status: true, location: true, keywordCols: ['title', 'description'] },
-            food_dining: { status: true, location: true, keywordCols: ['title', 'description', 'business_name'] },
-            real_estate: { status: true, location: true, keywordCols: ['title', 'description'] },
-            classifieds: { status: false, location: false, keywordCols: ['title', 'description'] },
-            promotions: { status: false, location: false, keywordCols: ['title', 'description'] }
+            jobs: { status: true, location: true, keywordCols: ['title','description'] },
+            marketplace: { status: true, location: true, keywordCols: ['title','description'] },
+            services: { status: true, location: true, keywordCols: ['title','description'] },
+            food_dining: { status: true, location: true, keywordCols: ['title','description','business_name'] },
+            real_estate: { status: true, location: true, keywordCols: ['title','description'] },
+            classifieds: { status: false, location: false, keywordCols: ['title','description'] },
+            promotions: { status: false, location: false, keywordCols: ['title','description'] }
         };
 
-        // GLOBAL SEARCH FUNCTION (Promise.all + error handling)
         async function performGlobalSearch() {
             console.log('🔍 Search function called');
-            
             const keyword = document.getElementById('searchKeyword').value.trim();
             const location = document.getElementById('searchLocation').value.trim();
             const category = document.getElementById('searchCategory').value;
-            
-            console.log('Search params:', { keyword, location, category });
-            
-            if (!keyword && !location && !category) {
-                alert('Vui lòng nhập thông tin tìm kiếm!');
-                return;
-            }
-            
-            // Show modal
+
+            if (!keyword && !location && !category) { alert('Vui lòng nhập thông tin tìm kiếm!'); return; }
+
             const modal = document.getElementById('searchResultsModal');
             const body = document.getElementById('searchResultsBody');
             modal.style.display = 'block';
-            body.innerHTML = '<p style="text-align: center; padding: 40px;">🔍 Đang tìm kiếm...</p>';
-            
-            const supabase = getSupabase();
-            if (!supabase) {
-                body.innerHTML = '<p style="text-align:center;padding:40px;color:#dc143c;">❌ Không tải được Supabase.</p>';
-                return;
-            }
+            body.innerHTML = '<p style="text-align:center;padding:40px;">🔍 Đang tìm kiếm...</p>';
 
-            const tables = category ? [category] : ['jobs', 'marketplace', 'services', 'food_dining', 'real_estate', 'classifieds', 'promotions'];
+            const supabase = getSupabase();
+            if (!supabase) { body.innerHTML = '<p style="text-align:center;padding:40px;color:#dc143c;">❌ Không tải được Supabase.</p>'; return; }
+
+            const tables = category ? [category] : ['jobs','marketplace','services','food_dining','real_estate','classifieds','promotions'];
+
             try {
                 const results = await Promise.all(tables.map(async (table) => {
-                    const cfg = filtersByTable[table] || { status: false, location: false, keywordCols: ['title', 'description'] };
+                    const cfg = filtersByTable[table] || { status:false, location:false, keywordCols:['title','description'] };
                     let query = supabase.from(table).select('*');
-
-                    if (cfg.status) {
-                        query = query.eq('status', 'active');
-                    }
-
+                    if (cfg.status) query = query.eq('status','active');
                     if (keyword) {
-                        // chỉ sử dụng các cột chắc chắn tồn tại theo bảng
-                        const ors = (cfg.keywordCols || ['title', 'description'])
-                            .map(col => `${col}.ilike.%${keyword}%`);
-                        if (ors.length > 0) {
-                            query = query.or(ors.join(','));
-                        }
+                        const ors = (cfg.keywordCols || ['title','description']).map(col => `${col}.ilike.%${keyword}%`);
+                        if (ors.length) query = query.or(ors.join(','));
                     }
-
                     if (cfg.location && location) {
-                        if (/^\d{5}$/.test(location)) {
-                            // nếu zipcode lưu dạng string vẫn ok; nếu là numeric có thể đổi Number(location)
-                            query = query.eq('zipcode', location);
-                        } else {
-                            query = query.ilike('city', `%${location}%`);
-                        }
+                        if (/^\d{5}$/.test(location)) query = query.eq('zipcode', location);
+                        else query = query.ilike('city', `%${location}%`);
                     }
-
                     const { data, error } = await query.limit(10);
-                    if (error) {
-                        console.error(`Search error for ${table}:`, error);
-                        return null;
-                    }
-                    if (data && data.length > 0) {
-                        return { table, data };
-                    }
+                    if (error) { console.error(`Search error for ${table}:`, error); return null; }
+                    if (data?.length) return { table, data };
                     return null;
                 }));
-
                 const allResults = results.filter(Boolean);
                 displayResults(allResults);
             } catch (err) {
@@ -1580,17 +685,13 @@
                 body.innerHTML = '<p style="text-align:center;padding:40px;color:#dc143c;">❌ Có lỗi xảy ra khi tìm kiếm.</p>';
             }
         }
-        
-        // Display search results (escape nội dung)
+
         function displayResults(allResults) {
             const body = document.getElementById('searchResultsBody');
-            
             if (!allResults || allResults.length === 0) {
-                body.innerHTML = '<p style="text-align: center; padding: 40px;">😔 Không tìm thấy kết quả nào.</p>';
-                console.log('✅ Search results displayed (empty)');
+                body.innerHTML = '<p style="text-align:center;padding:40px;">😔 Không tìm thấy kết quả nào.</p>';
                 return;
             }
-
             const tableNames = {
                 jobs: '💼 Việc Làm',
                 marketplace: '🛒 Mua Bán',
@@ -1600,204 +701,122 @@
                 classifieds: '📋 Rao Vặt',
                 promotions: '🎁 Khuyến Mãi'
             };
-
-            let html = '<div style="padding: 20px;">';
-            html += '<h3 style="color: #1e3c72;">🎯 Kết quả tìm kiếm</h3>';
-
+            let html = '<div style="padding: 10px;">';
+            html += '<h3 style="color:#1e3c72;margin-bottom:8px;">🎯 Kết quả tìm kiếm</h3>';
             allResults.forEach((result) => {
                 const sectionTitle = tableNames[result.table] || esc(result.table);
                 const targetPage = tableToPage[result.table] || 'index.html';
-
-                html += '<div style="margin: 20px 0;">';
-                html += '<h4 style="color: #1e3c72; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">';
-                html += sectionTitle + ' (' + result.data.length + ' kết quả)</h4>';
-
+                html += '<div style="margin: 16px 0;">';
+                html += '<h4 style="color:#1e3c72;border-bottom:2px solid #e0e0e0;padding-bottom:8px;">' + sectionTitle + ' (' + result.data.length + ' kết quả)</h4>';
                 result.data.forEach((item) => {
                     const rawTitle = item.title || item.business_name || item.name || 'No title';
                     const rawDesc = item.description || '';
                     const rawCity = item.city || '';
                     const rawPrice = item.price || item.salary || item.price_range || '';
-
                     const safeTitle = esc(rawTitle);
                     const safeDesc = esc(truncate(rawDesc, 100));
                     const safeCity = esc(rawCity);
                     const safePrice = esc(rawPrice);
-
-                    html += '<div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer;"';
-                    html += ' onmouseover="this.style.background=\'#e9ecef\'"';
-                    html += ' onmouseout="this.style.background=\'#f8f9fa\'"';
+                    html += '<div style="background:#f8f9fa;padding:12px;margin:10px 0;border-radius:8px;cursor:pointer;"';
+                    html += ' onmouseover="this.style.background=\'#e9ecef\'" onmouseout="this.style.background=\'#f8f9fa\'"';
                     html += ' onclick="window.location.href=\'' + targetPage + '\'">';
-                    html += '<h5 style="color: #1e3c72; margin: 0 0 8px 0;">' + safeTitle + '</h5>';
-                    if (rawDesc) {
-                        html += '<p style="color: #666; margin: 0 0 8px 0; font-size: 14px;">' + safeDesc + '</p>';
-                    }
-                    html += '<div style="display: flex; gap: 15px; font-size: 13px; color: #999;">';
+                    html += '<h5 style="color:#1e3c72;margin:0 0 6px 0;font-size:16px;">' + safeTitle + '</h5>';
+                    if (rawDesc) html += '<p style="color:#666;margin:0 0 6px 0;font-size:14px;">' + safeDesc + '</p>';
+                    html += '<div style="display:flex;gap:12px;font-size:13px;color:#999;">';
                     if (rawCity) html += '<span>📍 ' + safeCity + '</span>';
                     if (rawPrice) html += '<span>💰 ' + safePrice + '</span>';
                     html += '</div></div>';
                 });
-
                 html += '</div>';
             });
-
             html += '</div>';
             body.innerHTML = html;
-            
-            console.log('✅ Search results displayed');
         }
-        
-        // Close modal function
-        function closeSearchModal() {
-            document.getElementById('searchResultsModal').style.display = 'none';
-        }
-        
-        // Sign out function
+
+        function closeSearchModal() { document.getElementById('searchResultsModal').style.display = 'none'; }
+
         function signOut() {
-            if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                const supabase = getSupabase();
-                if (!supabase) return;
-                supabase.auth.signOut().then(function() {
-                    window.location.reload();
-                }).catch(function(err){
-                    console.error('Sign out error:', err);
-                    window.location.reload();
-                });
-            }
+            if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+            const supabase = getSupabase(); if (!supabase) return;
+            supabase.auth.signOut().then(() => window.location.reload()).catch(err => { console.error('Sign out error:', err); window.location.reload(); });
         }
-        
-        // Initialize when page loads
-        window.addEventListener('load', function() {
+
+        // Auth without 403 on guest
+        async function checkAuth() {
+            const supabase = getSupabase(); if (!supabase) return;
+            const userInfo = document.getElementById('userInfo');
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+
+            const updateUI = (user) => {
+                if (user) {
+                    userInfo.classList.add('active'); authButtons.classList.add('hidden'); userMenu.classList.add('active');
+                    supabase.from('users').select('full_name, name').eq('email', user.email).single()
+                        .then((res) => {
+                            const displayName = res.data?.full_name || res.data?.name || user.email;
+                            document.getElementById('userName').textContent = displayName;
+                            document.getElementById('userAvatar').textContent = (displayName || 'U').charAt(0).toUpperCase();
+                        })
+                        .catch(() => {
+                            document.getElementById('userName').textContent = user.email || 'User';
+                            document.getElementById('userAvatar').textContent = (user.email || 'U').charAt(0).toUpperCase();
+                        });
+                } else {
+                    userInfo.classList.remove('active'); authButtons.classList.remove('hidden'); userMenu.classList.remove('active');
+                }
+            };
+
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (error) console.warn('getSession error:', error);
+            updateUI(session?.user ?? null);
+
+            supabase.auth.onAuthStateChange((_event, sess) => updateUI(sess?.user ?? null));
+        }
+
+        window.addEventListener('load', function () {
             console.log('✅ Page loaded, initializing...');
-            
-            if (typeof window.supabase === 'undefined') {
-                console.error('❌ Supabase not loaded!');
-                return;
-            }
-            // Initialize client once
+            if (typeof window.supabase === 'undefined') { console.error('❌ Supabase not loaded!'); return; }
             getSupabase();
             console.log('✅ Supabase is available');
-            
-            // Enter key events (keydown thay cho keypress)
+
             const searchKeyword = document.getElementById('searchKeyword');
-            if (searchKeyword) {
-                searchKeyword.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
+            if (searchKeyword) searchKeyword.addEventListener('keydown', (e) => { if (e.key === 'Enter') performGlobalSearch(); });
             const searchLocation = document.getElementById('searchLocation');
-            if (searchLocation) {
-                searchLocation.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
-            // Quick search tags
-            document.querySelectorAll('.quick-search-tag').forEach(function(tag) {
-                tag.addEventListener('click', function(e) {
+            if (searchLocation) searchLocation.addEventListener('keydown', (e) => { if (e.key === 'Enter') performGlobalSearch(); });
+
+            document.querySelectorAll('.quick-search-tag').forEach((tag) => {
+                tag.addEventListener('click', (e) => {
                     e.preventDefault();
-                    document.getElementById('searchKeyword').value = this.getAttribute('data-search');
+                    document.getElementById('searchKeyword').value = tag.getAttribute('data-search');
                     performGlobalSearch();
                 });
             });
-            
-            // Click outside modal to close
-            window.addEventListener('click', function(e) {
-                const modal = document.getElementById('searchResultsModal');
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
 
-            // Close with ESC
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSearchModal();
-                }
+            window.addEventListener('click', (e) => {
+                const modal = document.getElementById('searchResultsModal');
+                if (e.target === modal) closeSearchModal();
             });
-            
-            // Check authentication
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSearchModal(); });
+
             checkAuth();
-            
-            // Get user location (with error handling)
-            getUserLocation();
-            
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => { console.log('Location detected:', pos.coords.latitude, pos.coords.longitude); document.getElementById('locationStatus')?.classList.add('active'); },
+                    (err) => { console.warn('Geolocation error:', err); }
+                );
+            }
+
             console.log('✅ VietLinker Ready!');
             console.log('💡 Try searching for: nail, phở, honda, etc.');
         });
-        
-        // Check authentication
-        function checkAuth() {
-            const supabase = getSupabase();
-            if (!supabase) return;
-            
-            supabase.auth.getUser().then(function(result) {
-                const user = result?.data?.user;
-                const userInfo = document.getElementById('userInfo');
-                const authButtons = document.getElementById('authButtons');
-                const userMenu = document.getElementById('userMenu');
-                
-                if (user) {
-                    userInfo.classList.add('active');
-                    authButtons.classList.add('hidden');
-                    userMenu.classList.add('active');
-                    
-                    supabase.from('users')
-                        .select('full_name, name')
-                        .eq('email', user.email)
-                        .single()
-                        .then(function(res) {
-                            if (res.data) {
-                                const displayName = res.data.full_name || res.data.name || user.email;
-                                document.getElementById('userName').textContent = displayName;
-                                document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
-                            } else {
-                                document.getElementById('userName').textContent = user.email;
-                                document.getElementById('userAvatar').textContent = (user.email || 'U').charAt(0).toUpperCase();
-                            }
-                        }).catch(function(err){
-                            console.warn('User profile fetch error:', err);
-                        });
-                } else {
-                    userInfo.classList.remove('active');
-                    authButtons.classList.remove('hidden');
-                    userMenu.classList.remove('active');
-                }
-            }).catch(function(err){
-                console.warn('auth.getUser error:', err);
-            });
-        }
-        
-        // Get user location
-        function getUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    console.log('Location detected:', position.coords.latitude, position.coords.longitude);
-                    const locationStatus = document.getElementById('locationStatus');
-                    if (locationStatus) {
-                        locationStatus.classList.add('active');
-                    }
-                }, function(error) {
-                    console.warn('Geolocation error:', error);
-                });
-            }
-        }
-        
-        // Smooth scroll for anchor links (bỏ href="#" để không chặn link placeholder)
-        document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(function(anchor) {
-            anchor.addEventListener('click', function(e) {
+
+        // Smooth scroll only for real anchors
+        document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach((anchor) => {
+            anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
-                if (targetId) {
-                    const target = document.querySelector(targetId);
-                    if (target) {
-                        e.preventDefault();
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
+                const target = targetId ? document.querySelector(targetId) : null;
+                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
             });
         });
     </script>
