@@ -1,402 +1,467 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giới Thiệu - VietLinker</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Additional styles for About page */
-        .about-hero {
-            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            padding: 80px 20px;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .about-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-        }
-        
-        .about-hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .about-hero p {
-            font-size: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .timeline {
-            position: relative;
-            padding: 40px 0;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #dc143c;
-            transform: translateX(-50%);
-        }
-        
-        .timeline-item {
-            display: flex;
-            justify-content: flex-end;
-            padding-right: 30px;
-            position: relative;
-            margin-bottom: 40px;
-            width: 50%;
-        }
-        
-        .timeline-item:nth-child(even) {
-            align-self: flex-end;
-            justify-content: flex-start;
-            padding-left: 30px;
-            padding-right: 0;
-            margin-left: 50%;
-        }
-        
-        .timeline-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            max-width: 400px;
-        }
-        
-        .timeline-dot {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #dc143c;
-            border: 4px solid white;
-            border-radius: 50%;
-            top: 20px;
-            right: -10px;
-            z-index: 1;
-        }
-        
-        .timeline-item:nth-child(even) .timeline-dot {
-            left: -10px;
-            right: auto;
-        }
-        
-        .value-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .value-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .value-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-        }
-        
-        .team-member {
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .team-avatar {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            color: white;
-        }
-        
-        @media (max-width: 768px) {
-            .timeline::before {
-                left: 30px;
-            }
-            
-            .timeline-item {
-                width: 100%;
-                padding-left: 60px;
-                padding-right: 0;
-            }
-            
-            .timeline-item:nth-child(even) {
-                margin-left: 0;
-                padding-left: 60px;
-            }
-            
-            .timeline-dot {
-                left: 20px !important;
-                right: auto !important;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Về VietLinker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #ffffff; min-height: 100vh; line-height: 1.6;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+      position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    header::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); animation: shimmer 3s infinite;
+    }
+    header::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    }
+    @keyframes shimmer { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    .header-content {
+      max-width: 1400px; margin: 0 auto; padding: 1.2rem 20px;
+      display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;
+    }
+    .logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.3s; }
+    .logo:hover { transform: scale(1.05); }
+    .logo svg { width: 55px; height: 55px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+    .logo-text { color: white; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+
+    .user-actions { display: flex; gap: 15px; align-items: center; }
+    .btn-post {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 10px 24px; border-radius: 25px;
+      text-decoration: none; font-weight: 600; transition: all 0.3s; font-size: 15px; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+    }
+    .btn-post:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    .auth-buttons { display: flex; gap: 12px; }
+    .auth-buttons.hidden { display: none; }
+    .btn-auth {
+      padding: 10px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s; font-size: 15px;
+    }
+    .btn-login { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; backdrop-filter: blur(10px); }
+    .btn-register { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1e3c72; box-shadow: 0 4px 15px rgba(255,215,0,0.3); }
+
+    .user-info {
+      display: none; align-items: center; gap: 12px; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 30px; backdrop-filter: blur(10px); position: relative;
+    }
+    .user-info.active { display: flex; }
+    .user-avatar {
+      width: 38px; height: 38px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #1e3c72;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .user-name { color: white; font-weight: 500; margin-right: 5px; }
+    .user-dropdown {
+      position: absolute; top: 100%; right: 0; margin-top: 10px; background: white; border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2); min-width: 200px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 1000;
+    }
+    .user-info:hover .user-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; color: #333; text-decoration: none; transition: all 0.3s; border-bottom: 1px solid #f0f0f0; }
+    .dropdown-item:last-child { border-bottom: none; border-radius: 0 0 12px 12px; }
+    .dropdown-item:hover { background: #f8f9fa; color: #dc143c; }
+    .dropdown-item.signout { color: #dc143c; font-weight: 600; }
+    .dropdown-item.signout:hover { background: #dc143c; color: white; }
+
+    /* Nav */
+    nav {
+      background: #1e3c72; box-shadow: 0 2px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid rgba(220,20,60,0.3);
+    }
+    .nav-container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+    .nav-links { display: flex; gap: 5px; padding: 12px 0; align-items: center; }
+    .nav-links a {
+      color: white; text-decoration: none; padding: 10px 18px; border-radius: 10px; transition: all 0.3s; font-weight: 500; font-size: 15px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-links a:hover { background: rgba(220, 20, 60, 0.3); transform: translateY(-1px); }
+    .nav-links a.active { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); box-shadow: 0 4px 10px rgba(220,20,60,0.3); }
+    .nav-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 10px; }
+    .user-menu { display: none; gap: 5px; }
+    .user-menu.active { display: flex; }
+    .user-menu a { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); }
+    .user-menu a:hover { background: rgba(255,215,0,0.25); border-color: #FFD700; }
+
+    /* Hero About */
+    .hero-about {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 70px 20px; position: relative; overflow: hidden;
+    }
+    .hero-about::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dc143c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    }
+    .about-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; position: relative; z-index: 1; }
+    .about-title { font-size: 44px; line-height: 1.2; color: #1e3c72; font-weight: 800; margin-bottom: 15px; }
+    .about-title span { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .about-subtitle { color: #666; font-size: 18px; }
+    .about-illustration {
+      background: white; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #f0f0f0;
+    }
+
+    /* Cards */
+    .section { padding: 70px 20px; background: #fff; }
+    .section-narrow { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 40px; }
+    .section-title { font-size: 36px; color: #1e3c72; font-weight: 800; margin-bottom: 10px; }
+    .section-subtitle { color: #666; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .card {
+      background: #fff; border-radius: 16px; padding: 24px; border: 2px solid #f0f0f0; box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+    .card-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;
+      background: linear-gradient(135deg, rgba(220,20,60,0.1) 0%, rgba(30,60,114,0.1) 100%); margin-bottom: 14px; }
+    .card h3 { font-size: 20px; color: #1e3c72; margin-bottom: 8px; }
+    .card p { color: #666; }
+
+    /* Timeline */
+    .timeline {
+      position: relative; margin: 20px auto; max-width: 900px; padding-left: 20px;
+    }
+    .timeline::before {
+      content: ''; position: absolute; left: 16px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #1e3c72, #dc143c); opacity: 0.2;
+    }
+    .tl-item {
+      position: relative; margin: 18px 0; background: #fff; border: 2px solid #f0f0f0; border-radius: 12px; padding: 16px 16px 16px 50px; box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    .tl-item::before {
+      content: ''; position: absolute; left: 8px; top: 20px; width: 16px; height: 16px; border-radius: 50%; background: #dc143c; box-shadow: 0 0 0 6px rgba(220,20,60,0.15);
+    }
+    .tl-title { color: #1e3c72; font-weight: 700; margin-bottom: 6px; }
+    .tl-desc { color: #666; }
+
+    /* CTA */
+    .cta { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 70px 20px; text-align: center; }
+    .cta h2 { font-size: 36px; color: #1e3c72; font-weight: 800; margin-bottom: 10px; }
+    .cta p { color: #666; margin-bottom: 20px; }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-hero {
+      padding: 14px 28px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-hero-primary { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color: #fff; box-shadow: 0 6px 20px rgba(220,20,60,0.3); }
+    .btn-hero-secondary { background: #fff; color: #1e3c72; border: 2px solid #1e3c72; }
+
+    /* Footer */
+    footer { background: #1e3c72; color: white; padding: 60px 20px 30px; }
+    .footer-content {
+      max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px;
+    }
+    .footer-brand h3 { font-size: 28px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+    .footer-brand p { color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 20px; }
+    .social-links { display: flex; gap: 15px; }
+    .social-link { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; transition: all 0.3s; }
+    .social-link:hover { background: #dc143c; transform: translateY(-3px); }
+    .footer-column h4 { font-size: 18px; margin-bottom: 20px; color: #FFD700; }
+    .footer-column ul { list-style: none; }
+    .footer-column ul li { margin-bottom: 12px; }
+    .footer-column ul li a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
+    .footer-column ul li a:hover { color: #FFD700; }
+    .footer-bottom { padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.6); }
+
+    /* Floating Post Button */
+    .floating-post-btn {
+      position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px; background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; font-size: 26px;
+      box-shadow: 0 4px 20px rgba(220,20,60,0.4); transition: all 0.3s ease; z-index: 999;
+    }
+    .floating-post-btn:hover { transform: scale(1.08); box-shadow: 0 6px 30px rgba(220,20,60,0.6); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .about-container { grid-template-columns: 1fr; text-align: center; }
+      .about-illustration { max-width: 640px; margin: 0 auto; }
+      .footer-content { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .header-content { padding: 14px 16px; }
+      .about-title { font-size: 32px; }
+      .section-title { font-size: 28px; }
+      .nav-links { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .nav-divider { display: none; }
+      .footer-content { grid-template-columns: 1fr; text-align: center; }
+      .social-links { justify-content: center; }
+      .user-name { display: none; }
+      .logo-text { font-size: 22px; }
+      .btn-post, .btn-auth { padding: 9px 16px; font-size: 14px; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="navbar-brand" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-                <!-- SVG Logo -->
-                <svg width="45" height="45" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="48" fill="url(#gradient1)" />
-                    <text x="50" y="50" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">VL</text>
-                    <defs>
-                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#1e3c72;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#dc143c;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <circle cx="25" cy="25" r="3" fill="white" opacity="0.8"/>
-                    <circle cx="75" cy="25" r="3" fill="white" opacity="0.8"/>
-                    <circle cx="25" cy="75" r="3" fill="white" opacity="0.8"/>
-                    <circle cx="75" cy="75" r="3" fill="white" opacity="0.8"/>
-                </svg>
-                <span style="font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VietLinker</span>
-            </a>
-            
-            <div class="navbar-menu">
-                <a href="marketplace.html">Chợ Việt</a>
-                <a href="jobs.html">Việc Làm</a>
-                <a href="services.html">Dịch Vụ</a>
-                <a href="food.html">Ẩm Thực</a>
-                <a href="realestate.html">Bất Động Sản</a>
-                <a href="classifieds.html">Rao Vặt</a>
-                <a href="promotions.html">Khuyến Mãi</a>
-            </div>
-            
-            <div class="navbar-actions">
-                <button onclick="window.location.href='post-form.html'" class="btn-post">
-                    ✚ Đăng Tin
-                </button>
-                <div class="user-menu" id="userMenu"></div>
-            </div>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
+          <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+          <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+          <circle cx="75" cy="50" r="8" fill="#FFD700"/>
+          <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
+          <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+          <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+          <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+          <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+        </svg>
+        <span class="logo-text">VietLinker</span>
+      </a>
+
+      <div class="user-actions">
+        <a href="post-form.html" class="btn-post" id="postButton">✍️ Đăng tin</a>
+
+        <div class="user-info" id="userInfo">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span class="user-name" id="userName">User</span>
+          <div class="user-dropdown">
+            <a href="profile.html" class="dropdown-item">👤 Hồ Sơ Cá Nhân</a>
+            <a href="my-posts.html" class="dropdown-item">📝 Quản Lý Tin Đăng</a>
+            <a href="post-form.html" class="dropdown-item">➕ Đăng Tin Mới</a>
+            <a href="#" onclick="signOut()" class="dropdown-item signout">🚪 Đăng Xuất</a>
+          </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="about-hero">
-        <h1>Về VietLinker Digital Marketing</h1>
-        <p>Kết nối cộng đồng người Việt - Xây dựng tương lai cùng nhau</p>
-    </section>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn-auth btn-login">Đăng Nhập</a>
+          <a href="register.html" class="btn-auth btn-register">Đăng Ký Ngay</a>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    <!-- About Content -->
-    <div class="container" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
-        
-        <!-- Mission Section -->
-        <section style="text-align: center; padding: 60px 20px;">
-            <h2 style="font-size: 36px; color: #1e3c72; margin-bottom: 30px;">Sứ Mệnh Của Chúng Tôi</h2>
-            <p style="font-size: 18px; line-height: 1.8; color: #666; max-width: 800px; margin: 0 auto;">
-                VietLinker Digital Marketing ra đời với sứ mệnh kết nối cộng đồng người Việt tại Hoa Kỳ, tạo ra một nền tảng 
-                số toàn diện giúp mọi người dễ dàng tìm kiếm việc làm, mua bán, trao đổi dịch vụ và xây dựng 
-                mối quan hệ kinh doanh bền vững. Đồng thời cung cấp giải pháp Digital Marketing chuyên nghiệp cho doanh nghiệp Việt.
-            </p>
-        </section>
+  <!-- Nav -->
+  <nav>
+    <div class="nav-container">
+      <div class="nav-links">
+        <a href="index.html">🏠 Trang Chủ</a>
+        <div class="user-menu" id="userMenu">
+          <div class="nav-divider"></div>
+          <a href="profile.html">👤 Hồ Sơ</a>
+          <a href="my-posts.html">📝 Tin Đăng</a>
+          <div class="nav-divider"></div>
+        </div>
+        <a href="marketplace.html">🛒 Mua Bán</a>
+        <a href="jobs.html">💼 Việc Làm</a>
+        <a href="services.html">🤝 Dịch Vụ</a>
+        <a href="food.html">🍜 Ăn Uống</a>
+        <a href="realestate.html">🏠 BĐS & Tiệm</a>
+        <a href="classifieds.html">📋 Rao Vặt</a>
+        <a href="promotions.html">🎁 Khuyến Mãi</a>
+        <a href="about.html" class="active">ℹ️ Về VietLinker</a>
+      </div>
+    </div>
+  </nav>
 
-        <!-- Values Section -->
-        <section style="padding: 60px 20px; background: #f8f9fa; border-radius: 20px;">
-            <h2 style="text-align: center; font-size: 36px; color: #1e3c72; margin-bottom: 50px;">Giá Trị Cốt Lõi</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                <div class="value-card">
-                    <div class="value-icon">🤝</div>
-                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Kết Nối</h3>
-                    <p style="color: #666;">Tạo cầu nối vững chắc giữa người Việt khắp nước Mỹ</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">⭐</div>
-                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Chất Lượng</h3>
-                    <p style="color: #666;">Cam kết mang đến dịch vụ tốt nhất cho cộng đồng</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">🔒</div>
-                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Tin Cậy</h3>
-                    <p style="color: #666;">Bảo mật thông tin và xây dựng niềm tin bền vững</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">💡</div>
-                    <h3 style="color: #1e3c72; margin-bottom: 15px;">Đổi Mới</h3>
-                    <p style="color: #666;">Không ngừng cải tiến để phục vụ tốt hơn</p>
-                </div>
-            </div>
-        </section>
+  <!-- Hero About -->
+  <section class="hero-about">
+    <div class="about-container">
+      <div>
+        <h1 class="about-title">Về <span>VietLinker</span></h1>
+        <p class="about-subtitle">Nền tảng kết nối cộng đồng người Việt tại Hoa Kỳ — nơi mọi người dễ dàng tìm việc, mua bán, dịch vụ, ẩm thực và bất động sản.</p>
+      </div>
+      <div class="about-illustration" aria-hidden="true">
+        <svg viewBox="0 0 400 200" width="100%" height="100%">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#1e3c72"/><stop offset="1" stop-color="#dc143c"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="400" height="200" fill="#fff"/>
+          <circle cx="80" cy="100" r="48" fill="url(#g1)" opacity="0.08"/>
+          <circle cx="200" cy="100" r="70" fill="url(#g1)" opacity="0.12"/>
+          <circle cx="320" cy="100" r="48" fill="url(#g1)" opacity="0.08"/>
+          <path d="M60,120 Q80,60 100,120 T140,120" fill="none" stroke="#dc143c" stroke-width="2" opacity="0.4"/>
+          <path d="M180,120 Q200,40 220,120 T260,120" fill="none" stroke="#1e3c72" stroke-width="2" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  </section>
 
-        <!-- Journey Timeline -->
-        <section style="padding: 60px 20px;">
-            <h2 style="text-align: center; font-size: 36px; color: #1e3c72; margin-bottom: 50px;">Hành Trình Phát Triển</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h3 style="color: #dc143c;">2023</h3>
-                        <p>Ý tưởng VietLinker Digital Marketing ra đời từ nhu cầu thực tế của cộng đồng</p>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h3 style="color: #dc143c;">2024</h3>
-                        <p>Phát triển platform và kết nối 10,000+ người dùng đầu tiên</p>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h3 style="color: #dc143c;">2025</h3>
-                        <p>Mở rộng toàn quốc với 50,000+ thành viên tích cực</p>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-            </div>
-        </section>
+  <!-- Sứ mệnh - Giá trị - Số liệu -->
+  <section class="section">
+    <div class="section-narrow">
+      <div class="section-header">
+        <h2 class="section-title">Sứ Mệnh & Giá Trị</h2>
+        <p class="section-subtitle">Chúng tôi xây dựng cộng đồng gắn kết, an toàn và hữu ích cho người Việt tại Mỹ.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon">🌟</div>
+          <h3>Sứ Mệnh</h3>
+          <p>Kết nối người Việt trên 50 tiểu bang thông qua thông tin minh bạch, nhanh chóng và đáng tin cậy.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <h3>Niềm Tin</h3>
+          <p>Chú trọng bảo mật dữ liệu, kiểm duyệt nội dung, và trải nghiệm người dùng an toàn.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚀</div>
+          <h3>Tốc Độ</h3>
+          <p>Đăng tin, tìm kiếm và kết nối tức thì — mọi lúc, mọi nơi trên mọi thiết bị.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Statistics -->
-        <section style="background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%); padding: 60px 20px; border-radius: 20px; color: white; text-align: center;">
-            <h2 style="font-size: 36px; margin-bottom: 50px;">VietLinker Digital Marketing Trong Số Liệu</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
-                <div>
-                    <div style="font-size: 48px; font-weight: bold;">50,000+</div>
-                    <p style="opacity: 0.9;">Thành viên tích cực</p>
-                </div>
-                <div>
-                    <div style="font-size: 48px; font-weight: bold;">10,000+</div>
-                    <p style="opacity: 0.9;">Tin đăng mỗi tháng</p>
-                </div>
-                <div>
-                    <div style="font-size: 48px; font-weight: bold;">500+</div>
-                    <p style="opacity: 0.9;">Doanh nghiệp Việt</p>
-                </div>
-                <div>
-                    <div style="font-size: 48px; font-weight: bold;">50</div>
-                    <p style="opacity: 0.9;">Tiểu bang có mặt</p>
-                </div>
-            </div>
-        </section>
+  <!-- Hành trình -->
+  <section class="section" style="background:#f8f9fa;">
+    <div class="section-narrow">
+      <div class="section-header">
+        <h2 class="section-title">Hành Trình Phát Triển</h2>
+        <p class="section-subtitle">Những cột mốc quan trọng đánh dấu sự trưởng thành của VietLinker.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-title">Ý tưởng ra đời</div>
+          <div class="tl-desc">Với mong muốn đơn giản hóa việc tìm kiếm và kết nối của cộng đồng Việt.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Ra mắt phiên bản đầu tiên</div>
+          <div class="tl-desc">Tập trung vào việc làm, mua bán và dịch vụ phổ biến.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Mở rộng danh mục</div>
+          <div class="tl-desc">Thêm ẩm thực và bất động sản, nâng trải nghiệm toàn diện.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Cộng đồng lớn mạnh</div>
+          <div class="tl-desc">Hàng chục nghìn người dùng và doanh nghiệp Việt tin tưởng lựa chọn.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Team Section -->
-        <section style="padding: 60px 20px;">
-            <h2 style="text-align: center; font-size: 36px; color: #1e3c72; margin-bottom: 50px;">Đội Ngũ Của Chúng Tôi</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
-                <div class="team-member">
-                    <div class="team-avatar">👨‍💼</div>
-                    <h3 style="color: #1e3c72;">Founder & CEO</h3>
-                    <p style="color: #666;">Dẫn dắt tầm nhìn và chiến lược phát triển</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar">👩‍💻</div>
-                    <h3 style="color: #1e3c72;">CTO</h3>
-                    <p style="color: #666;">Phát triển công nghệ và đổi mới sáng tạo</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar">👥</div>
-                    <h3 style="color: #1e3c72;">Community Team</h3>
-                    <p style="color: #666;">Hỗ trợ và kết nối cộng đồng 24/7</p>
-                </div>
-            </div>
-        </section>
+  <!-- Liên hệ -->
+  <section class="cta">
+    <h2>Đồng Hành Cùng VietLinker</h2>
+    <p>Hãy liên hệ nếu bạn muốn hợp tác, góp ý hoặc tham gia phát triển cộng đồng.</p>
+    <div class="cta-actions">
+      <a href="register.html" class="btn-hero btn-hero-primary">✨ Đăng Ký Miễn Phí</a>
+      <a href="contact.html" class="btn-hero btn-hero-secondary">📬 Liên Hệ</a>
+    </div>
+  </section>
 
-        <!-- CTA Section -->
-        <section style="background: #f8f9fa; padding: 60px 20px; border-radius: 20px; text-align: center;">
-            <h2 style="font-size: 36px; color: #1e3c72; margin-bottom: 20px;">Tham Gia Cùng Chúng Tôi</h2>
-            <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
-                Hãy là một phần của cộng đồng người Việt lớn mạnh tại Hoa Kỳ
-            </p>
-            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                <a href="register.html" style="background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color: white; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: 600; display: inline-block;">
-                    Đăng Ký Ngay
-                </a>
-                <a href="contact.html" style="background: white; color: #1e3c72; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: 600; border: 2px solid #1e3c72; display: inline-block;">
-                    Liên Hệ Với Chúng Tôi
-                </a>
-            </div>
-        </section>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>
+          <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+            <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
+            <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+            <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+            <circle cx="75" cy="50" r="8" fill="#FFD700"/>
+            <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
+          </svg>
+          VietLinker
+        </h3>
+        <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ. Mang đến cơ hội, kết nối và phát triển cho cộng đồng.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">f</a>
+          <a href="#" class="social-link">t</a>
+          <a href="#" class="social-link">i</a>
+          <a href="#" class="social-link">y</a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Danh Mục</h4>
+        <ul>
+          <li><a href="marketplace.html">Mua Bán</a></li>
+          <li><a href="jobs.html">Việc Làm</a></li>
+          <li><a href="services.html">Dịch Vụ</a></li>
+          <li><a href="food.html">Ăn Uống</a></li>
+          <li><a href="realestate.html">Bất Động Sản</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Hỗ Trợ</h4>
+        <ul>
+          <li><a href="contact.html">Liên Hệ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Về VietLinker</h4>
+        <ul>
+          <li><a href="about.html">Giới Thiệu</a></li>
+          <li><a href="terms.html">Điều Khoản</a></li>
+          <li><a href="privacy.html">Chính Sách Bảo Mật</a></li>
+          <li><a href="contact.html?topic=ads">Quảng Cáo</a></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                        <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="48" fill="white" opacity="0.9"/>
-                            <text x="50" y="50" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1e3c72" text-anchor="middle" dominant-baseline="central">VL</text>
-                        </svg>
-                        <span style="font-size: 24px; font-weight: 700; color: white;">VietLinker Digital Marketing</span>
-                    </div>
-                    <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ</p>
-                    <p>Giải pháp Marketing số toàn diện</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Danh Mục</h4>
-                    <a href="marketplace.html">Chợ Việt</a>
-                    <a href="jobs.html">Việc Làm</a>
-                    <a href="services.html">Dịch Vụ</a>
-                    <a href="food.html">Ẩm Thực</a>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Thông Tin</h4>
-                    <a href="about.html">Giới Thiệu</a>
-                    <a href="contact.html">Liên Hệ</a>
-                    <a href="privacy.html">Chính Sách Bảo Mật</a>
-                    <a href="terms.html">Điều Khoản Sử Dụng</a>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Kết Nối</h4>
-                    <p>📧 support@vietlinker.info</p>
-                    <p>📱 (469) xxx-xxxx</p>
-                    <p>📍 Carrollton, TX 75007</p>
-                </div>
-            </div>
-            
-            <div class="footer-links">
-                <a href="privacy.html">Chính Sách Bảo Mật</a>
-                <a href="terms.html">Điều Khoản</a>
-                <a href="about.html">Giới Thiệu</a>
-                <a href="contact.html">Liên Hệ</a>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 VietLinker Digital Marketing. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <div class="footer-bottom">
+      <p>&copy; 2024 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</p>
+    </div>
+  </footer>
 
-    <script src="script.js"></script>
+  <!-- Floating Post Button -->
+  <a href="post-form.html" class="floating-post-btn" aria-label="Đăng tin">➕</a>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+  <script>
+    // Supabase singleton
+    const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+    let sbClient = null;
+    function getSupabase() {
+      if (!sbClient) {
+        if (typeof window.supabase === 'undefined') { console.error('❌ Supabase not loaded!'); return null; }
+        sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+      return sbClient;
+    }
+
+    function signOut() {
+      if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+      const supabase = getSupabase(); if (!supabase) return;
+      supabase.auth.signOut().then(() => window.location.reload()).catch(() => window.location.reload());
+    }
+
+    async function checkAuth() {
+      const supabase = getSupabase(); if (!supabase) return;
+
+      const userInfo = document.getElementById('userInfo');
+      const authButtons = document.getElementById('authButtons');
+      const userMenu = document.getElementById('userMenu');
+
+      const updateUI = (user) => {
+        if (user) {
+          userInfo.classList.add('active'); authButtons.classList.add('hidden'); userMenu?.classList.add('active');
+          supabase.from('users').select('full_name,name').eq('email', user.email).single()
+            .then((res) => {
+              const displayName = res.data?.full_name || res.data?.name || user.email;
+              document.getElementById('userName').textContent = displayName;
+              document.getElementById('userAvatar').textContent = (displayName || 'U').charAt(0).toUpperCase();
+            })
+            .catch(() => {
+              document.getElementById('userName').textContent = user.email || 'User';
+              document.getElementById('userAvatar').textContent = (user.email || 'U').charAt(0).toUpperCase();
+            });
+        } else {
+          userInfo.classList.remove('active'); authButtons.classList.remove('hidden'); userMenu?.classList.remove('active');
+        }
+      };
+
+      const { data: { session } } = await supabase.auth.getSession();
+      updateUI(session?.user ?? null);
+      supabase.auth.onAuthStateChange((_evt, sess) => updateUI(sess?.user ?? null));
+    }
+
+    window.addEventListener('load', () => {
+      getSupabase();
+      checkAuth();
+    });
+  </script>
 </body>
 </html>
