@@ -1299,4 +1299,12 @@
                     }
                     html += '<div class="service-detail-item"><span class="icon">📞</span><span>' + (service.contact || '') + '</span></div>';
                     html += '</div>';
-                    html += '<div class="view-count">👁️ ' + (service.views || 0) +
+                    html += '<div class="view-count">👁️ ' + (service.views || 0) + ' lượt xem</div>';
+                    html += '</div></div>';
+                }
+
+                container.innerHTML = html;
+                
+                // Add click handlers using index approach
+                var serviceCards = container.querySelectorAll('.service-card');
+                for (var j = 0; j <
