@@ -1,1730 +1,456 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VietLinker - Nền Tảng Kết Nối Cộng Đồng Người Việt Tại Mỹ</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-        
-        /* Header Professional */
-        header {
-            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: shimmer 3s infinite;
-        }
-        
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        }
-        
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.2rem 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Logo Professional */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-            transition: transform 0.3s;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
-        }
-        
-        .logo svg {
-            width: 55px;
-            height: 55px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-        
-        .logo-text {
-            color: white;
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        /* User Actions Professional */
-        .user-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .user-info {
-            display: none;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 15px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-        
-        /* Dropdown Menu */
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 10px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .user-info:hover .user-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            transition: all 0.3s;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .dropdown-item:first-child {
-            border-radius: 12px 12px 0 0;
-        }
-        
-        .dropdown-item:last-child {
-            border-bottom: none;
-            border-radius: 0 0 12px 12px;
-        }
-        
-        .dropdown-item:hover {
-            background: #f8f9fa;
-            color: #dc143c;
-        }
-        
-        .dropdown-item.signout {
-            color: #dc143c;
-            font-weight: 600;
-        }
-        
-        .dropdown-item.signout:hover {
-            background: #dc143c;
-            color: white;
-        }
-        
-        .user-info.active {
-            display: flex;
-        }
-        
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #1e3c72;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .user-name {
-            color: white;
-            font-weight: 500;
-            margin-right: 5px;
-        }
-        
-        .auth-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .auth-buttons.hidden {
-            display: none;
-        }
-        
-        .btn-auth {
-            padding: 10px 24px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 15px;
-        }
-        
-        .btn-login {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-            backdrop-filter: blur(10px);
-        }
-        
-        .btn-register {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #1e3c72;
-            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VietLinker - Kết nối Cộng Đồng Việt tại Hoa Kỳ</title>
+  <meta name="description" content="VietLinker: Mua bán, việc làm, dịch vụ, ăn uống, bất động sản, rao vặt của cộng đồng người Việt tại Hoa Kỳ" />
 
-        /* New Post Button in Header */
-        .btn-post {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            padding: 10px 24px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
-        }
-        
-        .btn-auth:hover, .btn-post:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        }
+  <!-- Styles (rút gọn, tập trung phần tìm kiếm + modal + tiện ích) -->
+  <style>
+    :root {
+      --primary: #1e3c72;
+      --accent: #dc143c;
+      --gold: #FFD700;
+      --text: #222;
+      --muted: #666;
+      --bg: #f6f7fb;
+      --white: #fff;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); background: var(--bg); }
 
-        /* Floating Post Button */
-        .floating-post-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            font-size: 28px;
-            box-shadow: 0 4px 20px rgba(220,20,60,0.4);
-            transition: all 0.3s ease;
-            z-index: 999;
-        }
+    header { background: var(--white); position: sticky; top: 0; z-index: 30; box-shadow: var(--shadow); }
+    .header-content {
+      max-width: 1280px; margin: 0 auto; padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--primary); font-weight: 800; font-size: 20px; }
+    .user-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-post {
+      background: linear-gradient(135deg, var(--accent) 0%, #b91c3c 100%); color: #fff; border: 0;
+      padding: 10px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; box-shadow: 0 6px 20px rgba(220,20,60,0.25);
+    }
+    .auth-buttons { display: flex; gap: 10px; }
+    .btn-auth { text-decoration: none; font-weight: 700; border-radius: 999px; padding: 8px 14px; border: 2px solid var(--primary); color: var(--primary); background: #fff; }
+    .btn-register { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        .floating-post-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(220,20,60,0.6);
-        }
+    nav { background: #ffffff; border-top: 1px solid #eee; }
+    .nav-container { max-width: 1280px; margin: 0 auto; padding: 10px 20px; }
+    .nav-links { display: flex; gap: 12px; overflow-x: auto; }
+    .nav-links a { text-decoration: none; color: var(--text); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
+    .nav-links a.active { background: #eef2ff; color: var(--primary); font-weight: 700; }
 
-        .floating-post-btn::after {
-            content: 'Đăng tin';
-            position: absolute;
-            right: 75px;
-            background: #333;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
+    /* Search section */
+    .search { background: #fff; border-bottom: 1px solid #eee; }
+    .search-inner { max-width: 1280px; margin: 0 auto; padding: 16px 20px; }
+    .mega-search-box {
+      display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; background: #f9fafb; padding: 12px; border-radius: 14px; border: 1px solid #eee;
+    }
+    .search-input-group {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; min-height: 44px;
+    }
+    .search-input-group input, .search-input-group select {
+      border: 0; outline: 0; font-size: 14px; min-width: 220px; background: transparent;
+    }
+    .search-btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #2a5298 100%); color: white; border: 0; font-weight: 800;
+      padding: 10px 20px; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    }
+    .quick-searches { margin-top: 10px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .quick-search-tag { text-decoration: none; font-size: 13px; background: #fff; border: 1px solid #eee; padding: 6px 10px; border-radius: 999px; color: var(--text); }
 
-        .floating-post-btn:hover::after {
-            opacity: 1;
-        }
-        
-        /* Navigation Professional */
-        nav {
-            background: #1e3c72;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 3px solid rgba(220,20,60,0.3);
-        }
-        
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 5px;
-            padding: 12px 0;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-weight: 500;
-            font-size: 15px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .nav-links a:hover {
-            background: rgba(220, 20, 60, 0.3);
-            transform: translateY(-1px);
-        }
-        
-        .nav-links a.active {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            box-shadow: 0 4px 10px rgba(220,20,60,0.3);
-        }
-        
-        .nav-divider {
-            width: 1px;
-            height: 24px;
-            background: rgba(255,255,255,0.2);
-            margin: 0 10px;
-        }
-        
-        .user-menu {
-            display: none;
-            gap: 5px;
-        }
-        
-        .user-menu.active {
-            display: flex;
-        }
-        
-        .user-menu a {
-            background: rgba(255,215,0,0.15);
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-        
-        .user-menu a:hover {
-            background: rgba(255,215,0,0.25);
-            border-color: #FFD700;
-        }
-        
-        /* NEW Hero Search Section */
-        .hero-search {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 60px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-search::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-        }
-        
-        .search-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .search-title {
-            color: white;
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .search-subtitle {
-            color: rgba(255,255,255,0.9);
-            font-size: 18px;
-            margin-bottom: 35px;
-        }
-        
-        .mega-search-box {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .search-input-group {
-            flex: 1;
-            min-width: 200px;
-            position: relative;
-        }
-        
-        .search-input-group input,
-        .search-input-group select {
-            width: 100%;
-            padding: 15px 20px;
-            padding-left: 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .search-input-group input:focus,
-        .search-input-group select:focus {
-            outline: none;
-            border-color: #dc143c;
-            box-shadow: 0 0 0 3px rgba(220,20,60,0.1);
-        }
-        
-        .search-input-group .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            color: #666;
-        }
-        
-        .location-group {
-            position: relative;
-        }
-        
-        .location-status {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 12px;
-            color: #28a745;
-            display: none;
-        }
-        
-        .location-status.active {
-            display: block;
-        }
-        
-        .search-btn-primary {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(220,20,60,0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .search-btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(220,20,60,0.4);
-        }
-        
-        .quick-searches {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        
-        .quick-searches span {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-        }
-        
-        .quick-search-tag {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .quick-search-tag:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-        
-        /* Search Results Modal */
-        .search-results-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            display: none;
-            backdrop-filter: blur(5px);
-        }
-        
-        .search-results-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 1200px;
-            max-height: 80vh;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        
-        .search-results-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .search-results-body {
-            padding: 30px;
-            overflow-y: auto;
-            max-height: calc(80vh - 80px);
-        }
-        
-        .close-search-modal {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .close-search-modal:hover {
-            transform: rotate(90deg);
-        }
-        
-        /* Hero Section Professional */
-        .hero {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 80px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dc143c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-        }
-        
-        .hero-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-text h1 {
-            font-size: 52px;
-            line-height: 1.2;
-            color: #1e3c72;
-            margin-bottom: 20px;
-            font-weight: 800;
-            animation: fadeInUp 0.8s ease;
-        }
-        
-        .hero-text h1 span {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .hero-text p {
-            font-size: 20px;
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            animation: fadeInUp 0.8s ease 0.2s;
-            animation-fill-mode: both;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-            animation: fadeInUp 0.8s ease 0.4s;
-            animation-fill-mode: both;
-        }
-        
-        .btn-hero {
-            padding: 15px 35px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-hero-primary {
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            color: white;
-            box-shadow: 0 6px 20px rgba(220,20,60,0.3);
-        }
-        
-        .btn-hero-secondary {
-            background: white;
-            color: #1e3c72;
-            border: 2px solid #1e3c72;
-        }
-        
-        .btn-hero:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .stat-card {
-            text-align: center;
-            animation: fadeInUp 0.8s ease 0.6s;
-            animation-fill-mode: both;
-        }
-        
-        .stat-number {
-            font-size: 36px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Categories Section Professional */
-        .categories {
-            padding: 80px 20px;
-            background: white;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title {
-            font-size: 42px;
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-        
-        .section-subtitle {
-            font-size: 18px;
-            color: #666;
-        }
-        
-        .categories-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        
-        .category-card {
-            background: white;
-            border-radius: 20px;
-            padding: 35px 30px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #f0f0f0;
-        }
-        
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #dc143c, #FFD700, #1e3c72);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .category-card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .category-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-            border-color: #dc143c;
-        }
-        
-        .category-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, rgba(220,20,60,0.1) 0%, rgba(30,60,114,0.1) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            transition: all 0.3s ease;
-        }
-        
-        .category-card:hover .category-icon {
-            transform: scale(1.1) rotate(5deg);
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-        }
-        
-        .category-title {
-            font-size: 22px;
-            color: #1e3c72;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .category-description {
-            color: #666;
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-        
-        .category-count {
-            display: inline-block;
-            padding: 6px 18px;
-            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
-            color: white;
-            border-radius: 25px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
-        /* Features Section Professional */
-        .features {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 80px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .features::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M50 30c11.046 0 20 8.954 20 20s-8.954 20-20 20-20-8.954-20-20 8.954-20 20-20zm0 10c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-        }
-        
-        .features .section-header {
-            margin-bottom: 60px;
-        }
-        
-        .features .section-title {
-            color: white;
-        }
-        
-        .features .section-subtitle {
-            color: rgba(255,255,255,0.8);
-        }
-        
-        .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .feature {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .feature:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .feature-icon {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 25px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            box-shadow: 0 8px 25px rgba(255,215,0,0.3);
-        }
-        
-        .feature h3 {
-            color: white;
-            font-size: 24px;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-        
-        .feature p {
-            color: rgba(255,255,255,0.9);
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        
-        /* CTA Section */
-        .cta {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            padding: 80px 20px;
-            text-align: center;
-        }
-        
-        .cta-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .cta h2 {
-            font-size: 42px;
-            color: #1e3c72;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-        
-        .cta p {
-            font-size: 20px;
-            color: #666;
-            margin-bottom: 40px;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        /* Footer Professional */
-        footer {
-            background: #1e3c72;
-            color: white;
-            padding: 60px 20px 30px;
-        }
-        
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-brand h3 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .footer-brand p {
-            color: rgba(255,255,255,0.8);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s;
-        }
-        
-        .social-link:hover {
-            background: #dc143c;
-            transform: translateY(-3px);
-        }
-        
-        .footer-column h4 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #FFD700;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-column ul li a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-column ul li a:hover {
-            color: #FFD700;
-        }
-        
-        .footer-bottom {
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            color: rgba(255,255,255,0.6);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .hero-text h1 {
-                font-size: 36px;
-            }
-            
-            .search-title {
-                font-size: 28px;
-            }
-            
-            .mega-search-box {
-                flex-direction: column;
-            }
-            
-            .search-input-group {
-                width: 100%;
-            }
-            
-            .search-btn-primary {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .section-title {
-                font-size: 32px;
-            }
-            
-            .nav-links {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .nav-divider {
-                display: none;
-            }
-            
-            .hero-stats {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .social-links {
-                justify-content: center;
-            }
-            
-            .user-name {
-                display: none;
-            }
+    /* Modal */
+    .search-results-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: none; z-index: 50; padding: 20px;
+    }
+    .search-results-content {
+      background: #fff; max-width: 900px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);
+      display: grid; grid-template-rows: auto 1fr; height: calc(100vh - 40px);
+    }
+    .search-results-header {
+      display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #eee;
+      position: sticky; top: 0; background: #fff; z-index: 1;
+    }
+    .close-search-modal { background: transparent; border: 0; font-size: 28px; line-height: 1; cursor: pointer; color: var(--muted); }
+    .search-results-body { overflow: auto; padding: 16px; }
 
-            .floating-post-btn {
-                width: 55px;
-                height: 55px;
-                bottom: 20px;
-                right: 20px;
-                font-size: 24px;
-            }
+    /* Helpers */
+    .hidden { display: none !important; }
+    .user-info { display: none; align-items: center; gap: 8px; position: relative; }
+    .user-info.active { display: inline-flex; }
+    .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #eef2ff; color: var(--primary); display: grid; place-items: center; font-weight: 800; }
+    .user-menu { display: none; }
+    .user-menu.active { display: inline-flex; gap: 10px; }
+    .nav-divider { width: 1px; height: 20px; background: #eee; }
 
-            .btn-post {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-        }
-    </style>
+    /* Simple sections to keep page complete */
+    .section { padding: 40px 20px; max-width: 1280px; margin: 0 auto; }
+    .hero { background: linear-gradient(135deg, #f8fafc 0%, #fff 100%); }
+    .section h2 { margin: 0 0 6px; color: var(--primary); }
+    .muted { color: var(--muted); }
+    footer { margin-top: 40px; background: var(--primary); color: #fff; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 24px 20px; display: grid; gap: 8px; }
+    .floating-post-btn {
+      position: fixed; right: 20px; bottom: 20px; width: 58px; height: 58px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, #b91c3c 100%); color: #fff; display: grid; place-items: center; text-decoration: none;
+      font-size: 22px; box-shadow: 0 10px 30px rgba(220,20,60,0.35); z-index: 40;
+    }
+    @media (max-width: 768px) {
+      .search-input-group input, .search-input-group select { min-width: 0; width: 100%; }
+      .search-btn-primary { width: 100%; justify-content: center; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header Professional -->
-    <header>
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
-                    <circle cx="50" cy="25" r="8" fill="#dc143c"/>
-                    <circle cx="25" cy="50" r="8" fill="#FFD700"/>
-                    <circle cx="75" cy="50" r="8" fill="#FFD700"/>
-                    <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
-                    <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
-                    <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
-                    <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
-                    <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
-                </svg>
-                <span class="logo-text">VietLinker</span>
-            </a>
-            
-            <div class="user-actions">
-                <!-- Nút Đăng tin - LUÔN HIỂN THỊ cho mọi user -->
-                <a href="post-form.html" class="btn-post" id="postButton">
-                    ✍️ Đăng tin
-                </a>
-                
-                <div class="user-info" id="userInfo">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <span class="user-name" id="userName">User</span>
-                    <!-- Dropdown Menu -->
-                    <div class="user-dropdown">
-                        <a href="profile.html" class="dropdown-item">
-                            👤 Hồ Sơ Cá Nhân
-                        </a>
-                        <a href="my-posts.html" class="dropdown-item">
-                            📝 Quản Lý Tin Đăng
-                        </a>
-                        <a href="post-form.html" class="dropdown-item">
-                            ➕ Đăng Tin Mới
-                        </a>
-                        <a href="#" onclick="signOut()" class="dropdown-item signout">
-                            🚪 Đăng Xuất
-                        </a>
-                    </div>
-                </div>
-                <div class="auth-buttons" id="authButtons">
-                    <a href="login.html" class="btn-auth btn-login">Đăng Nhập</a>
-                    <a href="register.html" class="btn-auth btn-register">Đăng Ký Ngay</a>
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Navigation Professional - UPDATED WITH FOOD -->
-    <nav>
-        <div class="nav-container">
-            <div class="nav-links">
-                <a href="index.html" class="active">🏠 Trang Chủ</a>
-                
-                <!-- User Menu Items -->
-                <div class="user-menu" id="userMenu">
-                    <div class="nav-divider"></div>
-                    <a href="profile.html">👤 Hồ Sơ</a>
-                    <a href="my-posts.html">📝 Tin Đăng</a>
-                    <div class="nav-divider"></div>
-                </div>
-                
-                <a href="marketplace.html">🛒 Mua Bán</a>
-                <a href="jobs.html">💼 Việc Làm</a>
-                <a href="services.html">🤝 Dịch Vụ</a>
-                <a href="food.html">🍜 Ăn Uống</a>
-                <a href="realestate.html">🏠 BĐS & Tiệm</a>
-                <a href="classifieds.html">📋 Rao Vặt</a>
-                <a href="promotions.html">🎁 Khuyến Mãi</a>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- NEW Hero Search Section -->
-    <section class="hero-search">
-        <div class="search-container">
-            <h1 class="search-title">🔍 Tìm Mọi Thứ Bạn Cần</h1>
-            <p class="search-subtitle">Việc làm • Mua bán • Dịch vụ • Ăn uống • Bất động sản - Tất cả trong một!</p>
-            
-            <div class="mega-search-box">
-                <div class="search-input-group">
-                    <span class="input-icon">🔍</span>
-                    <input type="text" id="searchKeyword" placeholder="Tìm gì? (VD: Nail tech, Honda, Phở...)" />
-                </div>
-                
-                <div class="search-input-group location-group">
-                    <span class="input-icon">📍</span>
-                    <input type="text" id="searchLocation" placeholder="Zipcode hoặc Thành phố" />
-                    <span class="location-status" id="locationStatus">✓ Đã định vị</span>
-                </div>
-                
-                <div class="search-input-group">
-                    <span class="input-icon">📂</span>
-                    <select id="searchCategory">
-                        <option value="">Tất cả danh mục</option>
-                        <option value="jobs">💼 Việc làm</option>
-                        <option value="marketplace">🛒 Mua bán</option>
-                        <option value="services">🤝 Dịch vụ</option>
-                        <option value="food_dining">🍜 Ăn uống</option>
-                        <option value="real_estate">🏠 Bất động sản</option>
-                        <option value="classifieds">📋 Rao vặt</option>
-                        <option value="promotions">🎁 Khuyến mãi</option>
-                    </select>
-                </div>
-                
-                <button class="search-btn-primary" id="searchButton" onclick="performGlobalSearch()">
-                    <span>🔍</span>
-                    <span>TÌM KIẾM</span>
-                </button>
-            </div>
-            
-            <div class="quick-searches">
-                <span>Tìm nhanh:</span>
-                <a href="#" class="quick-search-tag" data-search="Thợ Nail">Thợ Nail</a>
-                <a href="#" class="quick-search-tag" data-search="Phòng cho thuê">Phòng cho thuê</a>
-                <a href="#" class="quick-search-tag" data-search="Honda Civic">Honda Civic</a>
-                <a href="#" class="quick-search-tag" data-search="Phở">Phở</a>
-                <a href="#" class="quick-search-tag" data-search="Tiệm nail">Tiệm nail</a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Search Results Modal -->
-    <div class="search-results-modal" id="searchResultsModal">
-        <div class="search-results-container">
-            <div class="search-results-header">
-                <h2>Kết quả tìm kiếm</h2>
-                <button class="close-search-modal" id="closeModalBtn" onclick="closeSearchModal()">&times;</button>
-            </div>
-            <div class="search-results-body" id="searchResultsBody">
-                <!-- Search results will be displayed here -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- Hero Section Professional -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Kết Nối <span>Cộng Đồng Việt</span> Tại Hoa Kỳ</h1>
-                <p>Nền tảng số 1 dành cho người Việt - Từ việc làm, mua bán, dịch vụ, ẩm thực đến bất động sản. Tất cả trong một!</p>
-                
-                <div class="hero-buttons">
-                    <a href="register.html" class="btn-hero btn-hero-primary">
-                        🚀 Bắt Đầu Ngay
-                    </a>
-                    <a href="#categories" class="btn-hero btn-hero-secondary">
-                        📖 Khám Phá
-                    </a>
-                </div>
-            </div>
-            
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <div class="stat-number">50,000+</div>
-                    <div class="stat-label">Thành Viên Tích Cực</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">10,000+</div>
-                    <div class="stat-label">Tin Đăng Mỗi Tháng</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Doanh Nghiệp Việt</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Categories Section Professional - UPDATED WITH FOOD -->
-    <section class="categories" id="categories">
-        <div class="section-header">
-            <h2 class="section-title">Khám Phá Danh Mục</h2>
-            <p class="section-subtitle">Tìm kiếm mọi thứ bạn cần trong cộng đồng người Việt</p>
-        </div>
-        
-        <div class="categories-grid">
-            <a href="marketplace.html" class="category-card">
-                <div class="category-icon">🛒</div>
-                <h3 class="category-title">Mua Bán</h3>
-                <p class="category-description">Đồ điện tử, nội thất, xe cộ, thời trang và nhiều hơn nữa</p>
-                <span class="category-count">2,345 tin mới</span>
-            </a>
-            
-            <a href="jobs.html" class="category-card">
-                <div class="category-icon">💼</div>
-                <h3 class="category-title">Việc Làm</h3>
-                <p class="category-description">Cơ hội việc làm từ nhà hàng, nail, IT đến văn phòng</p>
-                <span class="category-count">1,567 việc</span>
-            </a>
-            
-            <a href="services.html" class="category-card">
-                <div class="category-icon">🤝</div>
-                <h3 class="category-title">Dịch Vụ</h3>
-                <p class="category-description">Sửa chữa, làm đẹp, y tế, luật pháp, kế toán</p>
-                <span class="category-count">890 dịch vụ</span>
-            </a>
-            
-            <a href="food.html" class="category-card">
-                <div class="category-icon">🍜</div>
-                <h3 class="category-title">Ăn Uống</h3>
-                <p class="category-description">Nhà hàng Việt, quán ăn, đồ ăn nhà, tiệm bánh, cà phê</p>
-                <span class="category-count">423 nhà hàng</span>
-            </a>
-            
-            <a href="realestate.html" class="category-card">
-                <div class="category-icon">🏠</div>
-                <h3 class="category-title">BĐS & Sang Tiệm</h3>
-                <p class="category-description">Nhà cho thuê, mua bán, sang nhượng cơ sở kinh doanh</p>
-                <span class="category-count">456 bất động sản</span>
-            </a>
-            
-            <a href="classifieds.html" class="category-card">
-                <div class="category-icon">📋</div>
-                <h3 class="category-title">Rao Vặt</h3>
-                <p class="category-description">Tin tức, sự kiện, thông báo từ cộng đồng</p>
-                <span class="category-count">234 tin rao vặt</span>
-            </a>
-            
-            <a href="promotions.html" class="category-card">
-                <div class="category-icon">🎁</div>
-                <h3 class="category-title">Khuyến Mãi</h3>
-                <p class="category-description">Ưu đãi hot từ nhà hàng, tiệm nail, spa và dịch vụ</p>
-                <span class="category-count">125 ưu đãi</span>
-            </a>
-            
-            <a href="profile.html" class="category-card">
-                <div class="category-icon">👤</div>
-                <h3 class="category-title">Hồ Sơ Cá Nhân</h3>
-                <p class="category-description">Quản lý thông tin, tin đăng và cài đặt tài khoản</p>
-                <span class="category-count">Tài khoản của bạn</span>
-            </a>
-        </div>
-    </section>
-    
-    <!-- Features Section Professional -->
-    <section class="features">
-        <div class="section-header">
-            <h2 class="section-title">Tại Sao Chọn VietLinker?</h2>
-            <p class="section-subtitle">Nền tảng được tin dùng bởi cộng đồng người Việt khắp nước Mỹ</p>
-        </div>
-        
-        <div class="features-grid">
-            <div class="feature">
-                <div class="feature-icon">🌟</div>
-                <h3>Cộng Đồng Lớn Mạnh</h3>
-                <p>Kết nối với hàng chục ngàn người Việt trên khắp 50 tiểu bang Hoa Kỳ</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <h3>An Toàn & Bảo Mật</h3>
-                <p>Thông tin được mã hóa, xác thực người dùng và kiểm duyệt nội dung chặt chẽ</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">📱</div>
-                <h3>Dễ Dàng Sử Dụng</h3>
-                <p>Giao diện thân thiện, hỗ trợ tiếng Việt, hoạt động mượt mà trên mọi thiết bị</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">💰</div>
-                <h3>Hoàn Toàn Miễn Phí</h3>
-                <p>Đăng tin, tìm kiếm và kết nối không giới hạn mà không mất phí</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🚀</div>
-                <h3>Cập Nhật Realtime</h3>
-                <p>Tin đăng mới liên tục, thông báo tức thì khi có cơ hội phù hợp</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🤝</div>
-                <h3>Hỗ Trợ 24/7</h3>
-                <p>Đội ngũ hỗ trợ tiếng Việt sẵn sàng giúp đỡ bạn mọi lúc</p>
-            </div>
-        </div>
-    </section>
-    
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="cta-content">
-            <h2>Sẵn Sàng Kết Nối?</h2>
-            <p>Tham gia cộng đồng VietLinker ngay hôm nay và khám phá vô vàn cơ hội</p>
-            <div class="cta-buttons">
-                <a href="register.html" class="btn-hero btn-hero-primary">
-                    ✨ Đăng Ký Miễn Phí
-                </a>
-                <a href="marketplace.html" class="btn-hero btn-hero-secondary">
-                    🔍 Xem Tin Đăng
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer Professional - UPDATED WITH FOOD -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3>
-                    <svg width="30" height="30" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
-                        <circle cx="50" cy="25" r="8" fill="#dc143c"/>
-                        <circle cx="25" cy="50" r="8" fill="#FFD700"/>
-                        <circle cx="75" cy="50" r="8" fill="#FFD700"/>
-                        <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
-                    </svg>
-                    VietLinker
-                </h3>
-                <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ. Mang đến cơ hội, kết nối và phát triển cho cộng đồng.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">f</a>
-                    <a href="#" class="social-link">t</a>
-                    <a href="#" class="social-link">i</a>
-                    <a href="#" class="social-link">y</a>
-                </div>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Danh Mục</h4>
-                <ul>
-                    <li><a href="marketplace.html">Mua Bán</a></li>
-                    <li><a href="jobs.html">Việc Làm</a></li>
-                    <li><a href="services.html">Dịch Vụ</a></li>
-                    <li><a href="food.html">Ăn Uống</a></li>
-                    <li><a href="realestate.html">Bất Động Sản</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Hỗ Trợ</h4>
-                <ul>
-                    <li><a href="#">Hướng Dẫn</a></li>
-                    <li><a href="#">Câu Hỏi Thường Gặp</a></li>
-                    <li><a href="#">Liên Hệ</a></li>
-                    <li><a href="#">Báo Cáo Vi Phạm</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Về VietLinker</h4>
-                <ul>
-                    <li><a href="#">Giới Thiệu</a></li>
-                    <li><a href="#">Điều Khoản</a></li>
-                    <li><a href="#">Chính Sách Bảo Mật</a></li>
-                    <li><a href="#">Quảng Cáo</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2024 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</p>
-        </div>
-    </footer>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html" aria-label="VietLinker">
+        <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="45" fill="#1e3c72" opacity="0.1"/>
+          <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+          <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+        </svg>
+        <span>VietLinker</span>
+      </a>
 
-    <!-- Floating Post Button -->
-    <a href="post-form.html" class="floating-post-btn">
-        ➕
-    </a>
-    
-    <!-- Supabase CDN - LOAD FIRST -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
-    
-    <!-- MAIN SCRIPT - SIMPLE AND WORKING -->
-    <script>
-        // SIMPLE WORKING SCRIPT - NO COMPLEX FUNCTIONS
-        console.log('🚀 VietLinker Starting...');
-        
-        // GLOBAL SEARCH FUNCTION
-        function performGlobalSearch() {
-            console.log('🔍 Search function called');
-            
-            var keyword = document.getElementById('searchKeyword').value;
-            var location = document.getElementById('searchLocation').value;
-            var category = document.getElementById('searchCategory').value;
-            
-            console.log('Search params:', { keyword: keyword, location: location, category: category });
-            
-            if (!keyword && !location && !category) {
-                alert('Vui lòng nhập thông tin tìm kiếm!');
-                return;
-            }
-            
-            // Show modal
-            var modal = document.getElementById('searchResultsModal');
-            var body = document.getElementById('searchResultsBody');
-            modal.style.display = 'block';
-            body.innerHTML = '<p style="text-align: center; padding: 40px;">🔍 Đang tìm kiếm...</p>';
-            
-            // Create Supabase client
-            var supabase = window.supabase.createClient(
-                'https://wwlmvcsozavqfvwlxkrt.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
-            );
-            
-            // Search tables
-            var tables = category ? [category] : ['jobs', 'marketplace', 'services', 'food_dining', 'real_estate', 'classifieds'];
-            var allResults = [];
-            var completed = 0;
-            
-            tables.forEach(function(table) {
-                var query = supabase.from(table).select('*').eq('status', 'active');
-                
-                if (keyword) {
-                    if (table === 'food_dining') {
-                        query = query.or('title.ilike.%' + keyword + '%,description.ilike.%' + keyword + '%,business_name.ilike.%' + keyword + '%');
-                    } else {
-                        query = query.or('title.ilike.%' + keyword + '%,description.ilike.%' + keyword + '%');
-                    }
-                }
-                
-                if (location) {
-                    if (/^\d{5}$/.test(location)) {
-                        query = query.eq('zipcode', location);
-                    } else {
-                        query = query.ilike('city', '%' + location + '%');
-                    }
-                }
-                
-                query.limit(10).then(function(result) {
-                    completed++;
-                    
-                    if (result.data && result.data.length > 0) {
-                        allResults.push({ table: table, data: result.data });
-                    }
-                    
-                    // When all searches complete
-                    if (completed === tables.length) {
-                        displayResults(allResults);
-                    }
-                });
-            });
-        }
-        
-        // Display search results
-        function displayResults(allResults) {
-            var body = document.getElementById('searchResultsBody');
-            
-            if (allResults.length === 0) {
-                body.innerHTML = '<p style="text-align: center; padding: 40px;">😔 Không tìm thấy kết quả nào.</p>';
-            } else {
-                var html = '<div style="padding: 20px;">';
-                html += '<h3 style="color: #1e3c72;">🎯 Kết quả tìm kiếm</h3>';
-                
-                var tableNames = {
-                    'jobs': '💼 Việc Làm',
-                    'marketplace': '🛒 Mua Bán',
-                    'services': '🤝 Dịch Vụ',
-                    'food_dining': '🍜 Ăn Uống',
-                    'real_estate': '🏠 Bất Động Sản',
-                    'classifieds': '📋 Rao Vặt',
-                    'promotions': '🎁 Khuyến Mãi'
-                };
-                
-                allResults.forEach(function(result) {
-                    html += '<div style="margin: 20px 0;">';
-                    html += '<h4 style="color: #1e3c72; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">';
-                    html += tableNames[result.table] + ' (' + result.data.length + ' kết quả)</h4>';
-                    
-                    result.data.forEach(function(item) {
-                        var title = item.title || item.business_name || item.name || 'No title';
-                        var desc = item.description || '';
-                        var city = item.city || '';
-                        var price = item.price || item.salary || item.price_range || '';
-                        
-                        html += '<div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer;"';
-                        html += ' onmouseover="this.style.background=\'#e9ecef\'"';
-                        html += ' onmouseout="this.style.background=\'#f8f9fa\'"';
-                        html += ' onclick="window.location.href=\'' + result.table.replace('_', '') + '.html\'">';
-                        html += '<h5 style="color: #1e3c72; margin: 0 0 8px 0;">' + title + '</h5>';
-                        if (desc) {
-                            html += '<p style="color: #666; margin: 0 0 8px 0; font-size: 14px;">' + desc.substring(0, 100) + '...</p>';
-                        }
-                        html += '<div style="display: flex; gap: 15px; font-size: 13px; color: #999;">';
-                        if (city) html += '<span>📍 ' + city + '</span>';
-                        if (price) html += '<span>💰 ' + price + '</span>';
-                        html += '</div></div>';
-                    });
-                    
-                    html += '</div>';
-                });
-                
-                html += '</div>';
-                body.innerHTML = html;
-            }
-            
-            console.log('✅ Search results displayed');
-        }
-        
-        // Close modal function
-        function closeSearchModal() {
-            document.getElementById('searchResultsModal').style.display = 'none';
-        }
-        
-        // Sign out function
-        function signOut() {
-            if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                var supabase = window.supabase.createClient(
-                    'https://wwlmvcsozavqfvwlxkrt.supabase.co',
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
-                );
-                supabase.auth.signOut().then(function() {
-                    window.location.reload();
-                });
-            }
-        }
-        
-        // Initialize when page loads
-        window.addEventListener('load', function() {
-            console.log('✅ Page loaded, initializing...');
-            
-            // Check if Supabase loaded
-            if (typeof window.supabase === 'undefined') {
-                console.error('❌ Supabase not loaded!');
-                return;
-            }
-            
-            console.log('✅ Supabase is available');
-            
-            // Add event listeners for Enter key
-            var searchKeyword = document.getElementById('searchKeyword');
-            if (searchKeyword) {
-                searchKeyword.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
-            var searchLocation = document.getElementById('searchLocation');
-            if (searchLocation) {
-                searchLocation.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        performGlobalSearch();
-                    }
-                });
-            }
-            
-            // Quick search tags
-            document.querySelectorAll('.quick-search-tag').forEach(function(tag) {
-                tag.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById('searchKeyword').value = this.getAttribute('data-search');
-                    performGlobalSearch();
-                });
-            });
-            
-            // Click outside modal to close
-            window.addEventListener('click', function(e) {
-                var modal = document.getElementById('searchResultsModal');
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-            
-            // Check authentication
-            checkAuth();
-            
-            // Get user location
-            getUserLocation();
-            
-            console.log('✅ VietLinker Ready!');
-            console.log('💡 Try searching for: nail, phở, honda, etc.');
+      <div class="user-actions">
+        <a href="post-form.html" class="btn-post">✍️ Đăng tin</a>
+
+        <div class="user-info" id="userInfo">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span class="user-name" id="userName">User</span>
+        </div>
+
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn-auth btn-login">Đăng Nhập</a>
+          <a href="register.html" class="btn-auth btn-register">Đăng Ký Ngay</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-container">
+      <div class="nav-links">
+        <a href="index.html" class="active">🏠 Trang Chủ</a>
+
+        <div class="user-menu" id="userMenu">
+          <div class="nav-divider"></div>
+          <a href="profile.html">👤 Hồ Sơ</a>
+          <a href="my-posts.html">📝 Tin Đăng</a>
+          <div class="nav-divider"></div>
+        </div>
+
+        <a href="marketplace.html">🛒 Mua Bán</a>
+        <a href="jobs.html">💼 Việc Làm</a>
+        <a href="services.html">🤝 Dịch Vụ</a>
+        <a href="food.html">🍜 Ăn Uống</a>
+        <a href="realestate.html">🏠 BĐS & Tiệm</a>
+        <a href="classifieds.html">📋 Rao Vặt</a>
+        <a href="promotions.html">🎁 Khuyến Mãi</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Search -->
+  <section class="search" aria-label="Tìm kiếm">
+    <div class="search-inner">
+      <div class="mega-search-box">
+        <div class="search-input-group">
+          <span class="input-icon" aria-hidden="true">🔎</span>
+          <input type="text" id="searchKeyword" placeholder="Từ khóa (ví dụ: nail, phở, Honda)" aria-label="Từ khóa">
+        </div>
+
+        <div class="search-input-group location-group">
+          <span class="input-icon" aria-hidden="true">📍</span>
+          <input type="text" id="searchLocation" placeholder="Zipcode hoặc Thành phố" aria-label="Khu vực">
+        </div>
+
+        <div class="search-input-group">
+          <span class="input-icon" aria-hidden="true">📂</span>
+          <select id="searchCategory" aria-label="Danh mục">
+            <option value="">Tất cả danh mục</option>
+            <option value="jobs">💼 Việc làm</option>
+            <option value="marketplace">🛒 Mua bán</option>
+            <option value="services">🤝 Dịch vụ</option>
+            <option value="food_dining">🍜 Ăn uống</option>
+            <option value="real_estate">🏠 Bất động sản</option>
+            <option value="classifieds">📋 Rao vặt</option>
+            <option value="promotions">🎁 Khuyến mãi</option>
+          </select>
+        </div>
+
+        <button class="search-btn-primary" id="searchButton" type="button">
+          <span>🔍</span><span>TÌM KIẾM</span>
+        </button>
+      </div>
+
+      <div class="quick-searches">
+        <span>Tìm nhanh:</span>
+        <a href="#" class="quick-search-tag" data-search="Thợ Nail">Thợ Nail</a>
+        <a href="#" class="quick-search-tag" data-search="Phòng cho thuê">Phòng cho thuê</a>
+        <a href="#" class="quick-search-tag" data-search="Honda Civic">Honda Civic</a>
+        <a href="#" class="quick-search-tag" data-search="Phở">Phở</a>
+        <a href="#" class="quick-search-tag" data-search="Tiệm nail">Tiệm nail</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Results Modal -->
+  <div id="searchResultsModal" class="search-results-modal" role="dialog" aria-modal="true" aria-labelledby="searchResultsTitle">
+    <div class="search-results-content">
+      <div class="search-results-header">
+        <h3 id="searchResultsTitle" style="margin:0;color:var(--primary);">Kết quả tìm kiếm</h3>
+        <button class="close-search-modal" id="closeModalBtn" aria-label="Đóng">&times;</button>
+      </div>
+      <div class="search-results-body" id="searchResultsBody"></div>
+    </div>
+  </div>
+
+  <!-- Simple sections to keep page complete -->
+  <section class="section hero">
+    <h2>Kết Nối Cộng Đồng Việt tại Hoa Kỳ</h2>
+    <p class="muted">Từ mua bán, việc làm, dịch vụ, ẩm thực đến bất động sản - Tất cả trong một!</p>
+  </section>
+
+  <section class="section">
+    <h2>Danh mục nổi bật</h2>
+    <p class="muted">Việc Làm, Dịch Vụ, Ăn Uống, BĐS & Tiệm, Rao Vặt, Khuyến Mãi</p>
+  </section>
+
+  <section class="section">
+    <h2>Tại sao chọn VietLinker?</h2>
+    <p class="muted">An toàn, miễn phí, dễ dùng, cập nhật liên tục, cộng đồng lớn mạnh.</p>
+  </section>
+
+  <section class="section" style="text-align:center;">
+    <h2>Sẵn sàng kết nối?</h2>
+    <p class="muted">Tham gia cộng đồng VietLinker ngay hôm nay và khám phá cơ hội</p>
+    <div style="display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <a href="register.html" class="btn-post" style="box-shadow:none;">✨ Đăng Ký Miễn Phí</a>
+      <a href="marketplace.html" class="btn-auth btn-login" style="border-color:var(--primary);">🔍 Xem Tin Đăng</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>&copy; 2024 VietLinker. Tất cả quyền được bảo lưu. Made with ❤️ for Vietnamese Community</div>
+    </div>
+  </footer>
+
+  <!-- Floating Post Button -->
+  <a href="post-form.html" class="floating-post-btn" title="Đăng tin">✍️</a>
+
+  <!-- Supabase UMD -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+  <script>
+    // Cấu hình Supabase (THAY bằng thông tin của bạn)
+    const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+    const supabase = (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY)
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    // Helpers
+    function getEl(id) { return document.getElementById(id); }
+    function openModal() { const m = getEl('searchResultsModal'); if (m) m.style.display = 'block'; }
+    function closeModal() { const m = getEl('searchResultsModal'); if (m) m.style.display = 'none'; }
+    getEl('closeModalBtn')?.addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => { const m = getEl('searchResultsModal'); if (e.target === m) closeModal(); });
+
+    // Safe element factory
+    function el(tag, props = {}, ...children) {
+      const node = document.createElement(tag);
+      Object.entries(props).forEach(([k, v]) => {
+        if (k === 'class') node.className = v;
+        else if (k === 'text') node.textContent = v ?? '';
+        else if (k.startsWith('aria-')) node.setAttribute(k, v);
+        else if (v !== undefined && v !== null) node.setAttribute(k, v);
+      });
+      children.forEach(child => {
+        if (child == null) return;
+        if (child instanceof Node) node.appendChild(child);
+        else node.appendChild(document.createTextNode(String(child)));
+      });
+      return node;
+    }
+
+    // Render results safely
+    function renderResults(groups) {
+      const body = getEl('searchResultsBody');
+      if (!body) return;
+      body.innerHTML = '';
+
+      if (!groups || groups.length === 0) {
+        body.appendChild(el('div', { style: 'text-align:center;padding:40px;' }, '😔 Không tìm thấy kết quả nào.'));
+        return;
+      }
+
+      const nameMap = {
+        jobs: '💼 Việc Làm',
+        marketplace: '🛒 Mua Bán',
+        services: '🤝 Dịch Vụ',
+        food_dining: '🍜 Ăn Uống',
+        real_estate: '🏠 Bất Động Sản',
+        classifieds: '📋 Rao Vặt',
+        promotions: '🎁 Khuyến Mãi'
+      };
+
+      const wrap = el('div');
+      groups.forEach(group => {
+        const title = el('h4', { style: 'margin:10px 0;color:var(--primary);' }, `${nameMap[group.table] || group.table} (${group.data.length})`);
+        wrap.appendChild(title);
+
+        group.data.forEach(item => {
+          const card = el('div', { style: 'background:#f8f9fa;padding:12px;border-radius:12px;margin:8px 0;border:1px solid #eee;' });
+          const h = el('div', { style: 'font-weight:700;color:#1e3c72;' }, item.title || item.name || '(Không tiêu đề)');
+          const meta = el('div', { style: 'display:flex;gap:12px;color:#888;font-size:13px;margin:4px 0;' });
+          if (item.city) meta.appendChild(el('span', { text: `📍 ${item.city}` }));
+          if (item.zipcode) meta.appendChild(el('span', { text: `🏷️ ${item.zipcode}` }));
+          if (item.price || item.price_range) meta.appendChild(el('span', { text: `💰 ${item.price || item.price_range}` }));
+          const descText = (item.description || '').toString();
+          const desc = el('div', { style: 'color:#444;font-size:14px;' }, descText.length > 160 ? descText.slice(0, 160) + '…' : descText);
+
+          card.append(h, meta, desc);
+          wrap.appendChild(card);
         });
-        
-        // Check authentication
-        function checkAuth() {
-            if (typeof window.supabase === 'undefined') return;
-            
-            var supabase = window.supabase.createClient(
-                'https://wwlmvcsozavqfvwlxkrt.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ'
-            );
-            
-            supabase.auth.getUser().then(function(result) {
-                var user = result.data.user;
-                var userInfo = document.getElementById('userInfo');
-                var authButtons = document.getElementById('authButtons');
-                var userMenu = document.getElementById('userMenu');
-                
-                if (user) {
-                    // User is logged in
-                    userInfo.classList.add('active');
-                    authButtons.classList.add('hidden');
-                    userMenu.classList.add('active');
-                    
-                    // Get user details
-                    supabase.from('users')
-                        .select('full_name, name')
-                        .eq('email', user.email)
-                        .single()
-                        .then(function(result) {
-                            if (result.data) {
-                                var displayName = result.data.full_name || result.data.name || user.email;
-                                document.getElementById('userName').textContent = displayName;
-                                document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
-                            }
-                        });
-                } else {
-                    // User is not logged in
-                    userInfo.classList.remove('active');
-                    authButtons.classList.remove('hidden');
-                    userMenu.classList.remove('active');
-                }
-            });
+      });
+
+      body.appendChild(wrap);
+    }
+
+    async function performGlobalSearch() {
+      const kwEl = getEl('searchKeyword');
+      const lcEl = getEl('searchLocation');
+      const catEl = getEl('searchCategory');
+
+      const keyword = kwEl?.value?.trim() || '';
+      const location = lcEl?.value?.trim() || '';
+      const category = catEl?.value || '';
+
+      if (!keyword && !location && !category) {
+        alert('Vui lòng nhập thông tin tìm kiếm!');
+        return;
+      }
+
+      openModal();
+      const body = getEl('searchResultsBody');
+      if (body) body.innerHTML = '<div style="text-align:center;padding:40px;">🔍 Đang tìm kiếm...</div>';
+      if (!supabase) {
+        // No Supabase: mock result
+        const mock = [{ table: category || 'marketplace', data: [{ title: 'Kết quả mẫu', city: 'San Jose, CA', price: '$100', description: 'Ví dụ minh hoạ khi chưa cấu hình Supabase.' }] }];
+        renderResults(mock);
+        return;
+      }
+
+      const allTables = ['jobs', 'marketplace', 'services', 'food_dining', 'real_estate', 'classifieds', 'promotions'];
+      const tables = category ? [category] : allTables;
+
+      const groups = [];
+      await Promise.all(tables.map(async (table) => {
+        let q = supabase.from(table).select('title,name,description,city,zipcode,price,price_range').limit(10);
+
+        if (keyword) {
+          // Tìm trong title + description
+          q = q.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%`);
         }
-        
-        // Get user location
-        function getUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    console.log('Location detected:', position.coords.latitude, position.coords.longitude);
-                    var locationStatus = document.getElementById('locationStatus');
-                    if (locationStatus) {
-                        locationStatus.classList.add('active');
-                    }
-                });
-            }
+        if (location) {
+          if (/^\d{5}$/.test(location)) {
+            q = q.eq('zipcode', location);
+          } else {
+            q = q.ilike('city', `%${location}%`);
+          }
         }
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                var targetId = this.getAttribute('href');
-                if (targetId && targetId !== '#') {
-                    var target = document.querySelector(targetId);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
+
+        const { data, error } = await q;
+        if (!error && data && data.length) groups.push({ table, data });
+      }));
+
+      if (groups.length === 0) {
+        renderResults([]);
+      } else {
+        renderResults(groups);
+      }
+    }
+
+    async function checkAuth() {
+      if (!supabase) return;
+      const { data } = await supabase.auth.getUser();
+      const user = data?.user;
+      const userInfo = getEl('userInfo');
+      const authButtons = getEl('authButtons');
+      const userMenu = getEl('userMenu');
+
+      if (user) {
+        userInfo?.classList.add('active');
+        authButtons?.classList.add('hidden');
+        userMenu?.classList.add('active');
+
+        // Ví dụ lấy tên hiển thị
+        let displayName = user.email;
+        // Nếu có bảng users, có thể load thêm tên
+        try {
+          const { data: u } = await supabase.from('users').select('full_name,name').eq('email', user.email).single();
+          if (u) displayName = u.full_name || u.name || displayName;
+        } catch {}
+        const nameEl = getEl('userName'); if (nameEl) nameEl.textContent = displayName;
+        const avaEl = getEl('userAvatar'); if (avaEl) avaEl.textContent = (displayName || 'U').charAt(0).toUpperCase();
+      } else {
+        userInfo?.classList.remove('active');
+        authButtons?.classList.remove('hidden');
+        userMenu?.classList.remove('active');
+      }
+    }
+
+    async function signOut() {
+      if (!supabase) return;
+      if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+      await supabase.auth.signOut();
+      location.reload();
+    }
+
+    function getUserLocation() {
+      if (!('geolocation' in navigator)) return;
+      // Geolocation yêu cầu HTTPS (trừ localhost)
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          console.log('Location:', pos.coords.latitude, pos.coords.longitude);
+        },
+        (err) => {
+          console.log('Geolocation error:', err?.message);
+        },
+        { enableHighAccuracy: false, timeout: 5000 }
+      );
+    }
+
+    // Wire up events
+    window.addEventListener('load', () => {
+      console.log('✅ VietLinker Ready');
+      getEl('searchButton')?.addEventListener('click', performGlobalSearch);
+      getEl('searchKeyword')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') performGlobalSearch(); });
+      getEl('searchLocation')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') performGlobalSearch(); });
+      document.querySelectorAll('.quick-search-tag').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          const kw = a.getAttribute('data-search') || '';
+          const elKw = getEl('searchKeyword'); if (elKw) elKw.value = kw;
+          performGlobalSearch();
         });
-    </script>
+      });
+
+      // init auth & location
+      checkAuth();
+      getUserLocation();
+    });
+
+    // Expose signOut (nếu được dùng bởi menu)
+    window.signOut = signOut;
+  </script>
 </body>
 </html>
