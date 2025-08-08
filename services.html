@@ -200,6 +200,12 @@
             box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
         }
 
+        .btn-secondary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
         .services-container {
             display: grid;
             gap: 20px;
@@ -214,6 +220,7 @@
             cursor: pointer;
             display: flex;
             gap: 20px;
+            position: relative;
         }
 
         .service-card:hover {
@@ -264,6 +271,9 @@
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .service-description {
@@ -294,6 +304,46 @@
 
         .service-detail-item .icon {
             color: #dc143c;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .action-btn.chat {
+            background: linear-gradient(135deg, #00b4d8 0%, #0077be 100%);
+            color: white;
+        }
+
+        .action-btn.book {
+            background: linear-gradient(135deg, #06ffa5 0%, #00d68f 100%);
+            color: white;
+        }
+
+        .action-btn.share {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .view-count {
@@ -511,6 +561,155 @@
             font-size: 18px;
         }
 
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        /* Chat Modal */
+        .chat-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+
+        .message.sent {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .message.received {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        /* Booking Modal */
+        .booking-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .calendar-day {
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .calendar-day:hover {
+            border-color: #dc143c;
+            background: #fff5f5;
+        }
+
+        .calendar-day.selected {
+            background: #dc143c;
+            color: white;
+            border-color: #dc143c;
+        }
+
+        .calendar-day.disabled {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover {
+            border-color: #dc143c;
+            background: #fff5f5;
+        }
+
+        .time-slot.selected {
+            background: #dc143c;
+            color: white;
+            border-color: #dc143c;
+        }
+
+        /* Share Modal */
+        .share-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .share-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .share-btn.facebook {
+            background: #1877f2;
+        }
+
+        .share-btn.zalo {
+            background: #0068ff;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
         .loading {
             text-align: center;
             padding: 50px;
@@ -569,13 +768,22 @@
                 width: 100%;
                 height: 250px;
             }
+
+            .service-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🤝 Dịch Vụ</h1>
+            <h1>🛠️ Dịch Vụ</h1>
             <p>Tìm kiếm dịch vụ từ cộng đồng người Việt</p>
         </header>
 
@@ -585,9 +793,8 @@
                 <a href="jobs.html">Việc làm</a>
                 <a href="marketplace.html">Mua bán</a>
                 <a href="services.html" class="active">Dịch vụ</a>
-                <a href="food.html">🍜 Ẩm thực</a>
                 <a href="realestate.html">Bất động sản</a>
-                <a href="classifieds.html">📰 Rao vặt</a>
+                <a href="promotions.html">Khuyến mãi</a>
             </div>
             <div class="user-info">
                 <span id="userEmail">Chưa đăng nhập</span>
@@ -604,21 +811,21 @@
                     </div>
                     <select id="typeFilter">
                         <option value="">Tất cả loại dịch vụ</option>
-                        <option value="nail">Nail & Spa</option>
-                        <option value="hair">Tóc & Làm đẹp</option>
-                        <option value="repair">Sửa chữa</option>
-                        <option value="cleaning">Vệ sinh & Dọn dẹp</option>
-                        <option value="moving">Chuyển nhà</option>
-                        <option value="tax">Kế toán & Thuế</option>
-                        <option value="legal">Luật & Di trú</option>
-                        <option value="education">Giáo dục & Dạy học</option>
-                        <option value="health">Y tế & Sức khỏe</option>
-                        <option value="tech">IT & Công nghệ</option>
+                        <option value="nail">💅 Nail & Spa</option>
+                        <option value="hair">💇 Tóc & Làm đẹp</option>
+                        <option value="repair">🔧 Sửa chữa</option>
+                        <option value="cleaning">🧹 Vệ sinh & Dọn dẹp</option>
+                        <option value="moving">📦 Chuyển nhà</option>
+                        <option value="transport">🚗 Vận chuyển & Đưa đón</option>
                         <option value="insurance">🛡️ Bảo hiểm</option>
-                        <option value="realtor">🏠 Môi giới BDS</option>
-                        <option value="mortgage">💰 Vay mua nhà</option>
-                        <option value="transport">�� Xe đưa đón</option>
-                        <option value="other">Khác</option>
+                        <option value="realtor">🏠 Realtor/Địa ốc</option>
+                        <option value="mortgage">💰 Mortgage/Vay mua nhà</option>
+                        <option value="tax">📊 Kế toán & Thuế</option>
+                        <option value="legal">⚖️ Luật & Di trú</option>
+                        <option value="education">📚 Giáo dục & Dạy học</option>
+                        <option value="health">🏥 Y tế & Sức khỏe</option>
+                        <option value="tech">💻 IT & Công nghệ</option>
+                        <option value="other">📌 Khác</option>
                     </select>
                     <select id="priceFilter">
                         <option value="">Tất cả mức giá</option>
@@ -643,7 +850,7 @@
     <div id="serviceModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>�� Đăng Dịch Vụ</h2>
+                <h2>📝 Đăng Dịch Vụ</h2>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -662,21 +869,21 @@
                         <label for="service_type">Loại dịch vụ *</label>
                         <select id="service_type" required>
                             <option value="">Chọn loại</option>
-                            <option value="nail">Nail & Spa</option>
-                            <option value="hair">Tóc & Làm đẹp</option>
-                            <option value="repair">Sửa chữa</option>
-                            <option value="cleaning">Vệ sinh & Dọn dẹp</option>
-                            <option value="moving">Chuyển nhà</option>
-                            <option value="tax">Kế toán & Thuế</option>
-                            <option value="legal">Luật & Di trú</option>
-                            <option value="education">Giáo dục & Dạy học</option>
-                            <option value="health">Y tế & Sức khỏe</option>
-                            <option value="tech">IT & Công nghệ</option>
+                            <option value="nail">💅 Nail & Spa</option>
+                            <option value="hair">💇 Tóc & Làm đẹp</option>
+                            <option value="repair">🔧 Sửa chữa</option>
+                            <option value="cleaning">🧹 Vệ sinh & Dọn dẹp</option>
+                            <option value="moving">📦 Chuyển nhà</option>
+                            <option value="transport">🚗 Vận chuyển & Đưa đón</option>
                             <option value="insurance">🛡️ Bảo hiểm</option>
-                            <option value="realtor">🏠 Môi giới BDS</option>
-                            <option value="mortgage">💰 Vay mua nhà</option>
-                            <option value="transport">�� Xe đưa đón</option>
-                            <option value="other">Khác</option>
+                            <option value="realtor">🏠 Realtor/Địa ốc</option>
+                            <option value="mortgage">💰 Mortgage/Vay mua nhà</option>
+                            <option value="tax">📊 Kế toán & Thuế</option>
+                            <option value="legal">⚖️ Luật & Di trú</option>
+                            <option value="education">📚 Giáo dục & Dạy học</option>
+                            <option value="health">🏥 Y tế & Sức khỏe</option>
+                            <option value="tech">💻 IT & Công nghệ</option>
+                            <option value="other">📌 Khác</option>
                         </select>
                     </div>
 
@@ -709,7 +916,7 @@
                         <label>Hình ảnh dịch vụ</label>
                         <div class="upload-area" id="uploadArea">
                             <div id="uploadText">
-                                �� Kéo thả hoặc click để chọn hình ảnh<br>
+                                📷 Kéo thả hoặc click để chọn hình ảnh<br>
                                 <small>PNG, JPG, GIF (tối đa 5MB)</small>
                             </div>
                             <div id="uploadPreview" class="upload-preview" style="display: none;"></div>
@@ -730,11 +937,87 @@
     <div id="detailModal" class="modal detail-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>�� Chi Tiết Dịch Vụ</h2>
+                <h2>📋 Chi Tiết Dịch Vụ</h2>
                 <button class="close-modal" onclick="closeDetailModal()">&times;</button>
             </div>
             <div class="modal-body" id="detailContent">
                 <!-- Content sẽ được load động -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal chat-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💬 Nhắn tin</h2>
+                <button class="close-modal" onclick="closeChatModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be loaded here -->
+                </div>
+                <div class="chat-input-group">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Nhập tin nhắn...">
+                    <button class="btn btn-secondary" onclick="sendMessage()">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📅 Đặt lịch hẹn</h2>
+                <button class="close-modal" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Chọn ngày:</label>
+                    <div class="booking-calendar" id="bookingCalendar">
+                        <!-- Calendar will be generated here -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Chọn giờ:</label>
+                    <div class="time-slots" id="timeSlots">
+                        <!-- Time slots will be generated here -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bookingNote">Ghi chú:</label>
+                    <textarea id="bookingNote" placeholder="Thêm ghi chú cho lịch hẹn..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn" style="background: #999" onclick="closeBookingModal()">Hủy</button>
+                    <button type="button" class="btn" onclick="confirmBooking()">Xác nhận đặt lịch</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔗 Chia sẻ dịch vụ</h2>
+                <button class="close-modal" onclick="closeShareModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="text-align: center; margin-bottom: 20px;">Chia sẻ dịch vụ này với bạn bè:</p>
+                <div class="share-buttons">
+                    <button class="share-btn facebook" onclick="shareToFacebook()">
+                        <span>📘</span> Facebook
+                    </button>
+                    <button class="share-btn zalo" onclick="shareToZalo()">
+                        <span>💬</span> Zalo
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Link chia sẻ:</label>
+                    <input type="text" id="shareLink" readonly>
+                </div>
             </div>
         </div>
     </div>
@@ -747,11 +1030,33 @@
         var supabase;
         var currentUser = null;
         var selectedFile = null;
-        var allServices = []; // Store all services data
+        var allServices = [];
+        var currentService = null;
+        var selectedDate = null;
+        var selectedTime = null;
         
         // Supabase config
         var SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
         var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
+
+        // Service types with icons
+        var serviceTypes = {
+            'nail': { name: 'Nail & Spa', icon: '💅' },
+            'hair': { name: 'Tóc & Làm đẹp', icon: '💇' },
+            'repair': { name: 'Sửa chữa', icon: '🔧' },
+            'cleaning': { name: 'Vệ sinh & Dọn dẹp', icon: '🧹' },
+            'moving': { name: 'Chuyển nhà', icon: '📦' },
+            'transport': { name: 'Vận chuyển & Đưa đón', icon: '🚗' },
+            'insurance': { name: 'Bảo hiểm', icon: '🛡️' },
+            'realtor': { name: 'Realtor/Địa ốc', icon: '🏠' },
+            'mortgage': { name: 'Mortgage/Vay mua nhà', icon: '💰' },
+            'tax': { name: 'Kế toán & Thuế', icon: '📊' },
+            'legal': { name: 'Luật & Di trú', icon: '⚖️' },
+            'education': { name: 'Giáo dục & Dạy học', icon: '📚' },
+            'health': { name: 'Y tế & Sức khỏe', icon: '🏥' },
+            'tech': { name: 'IT & Công nghệ', icon: '💻' },
+            'other': { name: 'Khác', icon: '📌' }
+        };
 
         // Initialize app
         function initializeApp() {
@@ -768,6 +1073,8 @@
                 setupEvents();
                 checkAuth();
                 loadServices();
+                initializeCalendar();
+                initializeTimeSlots();
             } else {
                 console.log('⏳ Waiting for Supabase...');
                 setTimeout(initializeApp, 500);
@@ -822,7 +1129,7 @@
         
         // Handle file selection
         function handleFileSelect(file) {
-            console.log('�� Processing file:', file.name);
+            console.log('📷 Processing file:', file.name);
             
             if (file.size > 5 * 1024 * 1024) {
                 alert('File quá lớn! Tối đa 5MB.');
@@ -968,7 +1275,7 @@
 
         // Handle form submission
         function handleSubmit() {
-            console.log('�� Form submitted');
+            console.log('📝 Form submitted');
             
             if (!currentUser) {
                 alert('Vui lòng đăng nhập!');
@@ -1025,9 +1332,9 @@
             });
         }
 
-        // Upload image - Using marketplace bucket with services folder
+        // Upload image
         function uploadImage(file) {
-            console.log('�� Uploading image...');
+            console.log('📤 Uploading image...');
             
             var fileName = 'service_' + Date.now() + '_' + Math.random().toString(36).substring(2) + '.' + file.name.split('.').pop();
             
@@ -1072,7 +1379,7 @@
         }
         window.closeDetailModal = closeDetailModal;
 
-        // View service detail - Using index approach to avoid UUID issues
+        // View service detail
         function viewServiceDetail(serviceData) {
             console.log('👁️ Viewing service detail:', serviceData);
             
@@ -1080,6 +1387,8 @@
                 console.error('❌ No service data provided');
                 return;
             }
+            
+            currentService = serviceData;
             
             // Update view count
             var newViews = (serviceData.views || 0) + 1;
@@ -1098,14 +1407,13 @@
                 })
                 .catch(function(error) {
                     console.error('⚠️ Could not update view count:', error);
-                    // Still show the detail even if view update fails
                     displayServiceDetail(serviceData);
                 });
         }
         
         // Display service detail in modal
         function displayServiceDetail(service) {
-            console.log('�� Displaying service detail');
+            console.log('📋 Displaying service detail');
             
             var detailContent = document.getElementById('detailContent');
             if (!detailContent) return;
@@ -1125,33 +1433,15 @@
             var createdDate = new Date(service.created_at);
             var formattedDate = createdDate.toLocaleDateString('vi-VN');
             
-            // Get display name for service type
-            var serviceTypes = {
-                'nail': 'Nail & Spa',
-                'hair': 'Tóc & Làm đẹp',
-                'repair': 'Sửa chữa',
-                'cleaning': 'Vệ sinh & Dọn dẹp',
-                'moving': 'Chuyển nhà',
-                'tax': 'Kế toán & Thuế',
-                'legal': 'Luật & Di trú',
-                'education': 'Giáo dục & Dạy học',
-                'health': 'Y tế & Sức khỏe',
-                'tech': 'IT & Công nghệ',
-                'insurance': '🛡️ Bảo hiểm',
-                'realtor': '🏠 Môi giới BDS',
-                'mortgage': '💰 Vay mua nhà',
-                'transport': '🚗 Xe đưa đón',
-                'other': 'Khác'
-            };
-            var typeDisplay = serviceTypes[service.service_type] || service.service_type;
+            var typeInfo = serviceTypes[service.service_type] || { name: service.service_type, icon: '📌' };
             
             var html = '<div class="detail-header">';
             html += '<div class="detail-image">';
-            html += service.image_url ? '<img src="' + safe(service.image_url) + '" alt="Service">' : '🛠️';
+            html += service.image_url ? '<img src="' + safe(service.image_url) + '" alt="Service">' : typeInfo.icon;
             html += '</div>';
             html += '<div class="detail-info">';
             html += '<h3>' + safe(service.title) + '</h3>';
-            html += '<div class="detail-type">' + safe(typeDisplay) + '</div>';
+            html += '<div class="detail-type">' + typeInfo.icon + ' ' + safe(typeInfo.name) + '</div>';
             html += '</div></div>';
             
             html += '<div class="detail-description">' + safe(service.description) + '</div>';
@@ -1196,6 +1486,13 @@
             
             html += '</div>';
             
+            // Action buttons
+            html += '<div class="detail-actions">';
+            html += '<button class="action-btn chat" onclick="openChat()">💬 Nhắn tin</button>';
+            html += '<button class="action-btn book" onclick="openBooking()">📅 Đặt lịch</button>';
+            html += '<button class="action-btn share" onclick="openShare()">🔗 Chia sẻ</button>';
+            html += '</div>';
+            
             detailContent.innerHTML = html;
             
             // Show modal
@@ -1203,8 +1500,195 @@
             if (modal) modal.style.display = 'block';
         }
 
+        // Chat functions
+        function openChat() {
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để nhắn tin!');
+                return;
+            }
+            
+            document.getElementById('chatModal').style.display = 'block';
+            loadChatMessages();
+        }
+        window.openChat = openChat;
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+        window.closeChatModal = closeChatModal;
+
+        function loadChatMessages() {
+            var messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML = '<div class="message received">Xin chào! Tôi có thể giúp gì cho bạn?</div>';
+        }
+
+        function sendMessage() {
+            var input = document.getElementById('chatInput');
+            var message = input.value.trim();
+            
+            if (!message) return;
+            
+            var messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML += '<div class="message sent">' + message + '</div>';
+            
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Simulate response
+            setTimeout(function() {
+                messagesContainer.innerHTML += '<div class="message received">Cảm ơn bạn đã liên hệ. Tôi sẽ phản hồi sớm nhất!</div>';
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+        window.sendMessage = sendMessage;
+
+        // Booking functions
+        function openBooking() {
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để đặt lịch!');
+                return;
+            }
+            
+            document.getElementById('bookingModal').style.display = 'block';
+            initializeCalendar();
+            initializeTimeSlots();
+        }
+        window.openBooking = openBooking;
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            selectedDate = null;
+            selectedTime = null;
+        }
+        window.closeBookingModal = closeBookingModal;
+
+        function initializeCalendar() {
+            var calendarContainer = document.getElementById('bookingCalendar');
+            if (!calendarContainer) return;
+            
+            var html = '';
+            var today = new Date();
+            
+            // Generate next 14 days
+            for (var i = 0; i < 14; i++) {
+                var date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                var day = date.getDate();
+                var disabled = i === 0 ? 'disabled' : '';
+                
+                html += '<div class="calendar-day ' + disabled + '" data-date="' + date.toISOString() + '" onclick="selectDate(this)">' + day + '</div>';
+            }
+            
+            calendarContainer.innerHTML = html;
+        }
+
+        function selectDate(element) {
+            if (element.classList.contains('disabled')) return;
+            
+            // Remove previous selection
+            var days = document.querySelectorAll('.calendar-day');
+            for (var i = 0; i < days.length; i++) {
+                days[i].classList.remove('selected');
+            }
+            
+            element.classList.add('selected');
+            selectedDate = element.getAttribute('data-date');
+        }
+        window.selectDate = selectDate;
+
+        function initializeTimeSlots() {
+            var slotsContainer = document.getElementById('timeSlots');
+            if (!slotsContainer) return;
+            
+            var times = ['9:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
+            var html = '';
+            
+            for (var i = 0; i < times.length; i++) {
+                html += '<div class="time-slot" onclick="selectTime(this)">' + times[i] + '</div>';
+            }
+            
+            slotsContainer.innerHTML = html;
+        }
+
+        function selectTime(element) {
+            // Remove previous selection
+            var slots = document.querySelectorAll('.time-slot');
+            for (var i = 0; i < slots.length; i++) {
+                slots[i].classList.remove('selected');
+            }
+            
+            element.classList.add('selected');
+            selectedTime = element.textContent;
+        }
+        window.selectTime = selectTime;
+
+        function confirmBooking() {
+            if (!selectedDate || !selectedTime) {
+                alert('Vui lòng chọn ngày và giờ!');
+                return;
+            }
+            
+            var note = document.getElementById('bookingNote').value;
+            
+            // Save booking to database
+            supabase
+                .from('bookings')
+                .insert([{
+                    service_id: currentService.id,
+                    user_id: currentUser.id,
+                    provider_id: currentService.user_id,
+                    date: selectedDate,
+                    time: selectedTime,
+                    note: note,
+                    status: 'pending'
+                }])
+                .then(function(response) {
+                    if (response.error) throw response.error;
+                    
+                    alert('Đặt lịch thành công! Chúng tôi sẽ liên hệ xác nhận.');
+                    closeBookingModal();
+                    
+                    // Send notification email (would be implemented server-side)
+                    console.log('📧 Sending notification email...');
+                })
+                .catch(function(error) {
+                    console.error('❌ Booking error:', error);
+                    alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                });
+        }
+        window.confirmBooking = confirmBooking;
+
+        // Share functions
+        function openShare() {
+            document.getElementById('shareModal').style.display = 'block';
+            
+            var shareLink = window.location.origin + '/services.html?id=' + currentService.id;
+            document.getElementById('shareLink').value = shareLink;
+        }
+        window.openShare = openShare;
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+        window.closeShareModal = closeShareModal;
+
+        function shareToFacebook() {
+            var url = encodeURIComponent(window.location.href);
+            var text = encodeURIComponent(currentService.title + ' - VietLinker');
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + url + '&quote=' + text, '_blank');
+        }
+        window.shareToFacebook = shareToFacebook;
+
+        function shareToZalo() {
+            var url = encodeURIComponent(window.location.href);
+            var text = encodeURIComponent(currentService.title + ' - VietLinker');
+            window.open('https://zalo.me/share/?url=' + url + '&text=' + text, '_blank');
+        }
+        window.shareToZalo = shareToZalo;
+
         // Load services
-        function loadServices(serviceType, searchTerm, location, price) {
+        function loadServices(serviceType, searchTerm, location, priceRange) {
             console.log('📥 Loading services...');
             
             var container = document.getElementById('servicesContainer');
@@ -1238,7 +1722,27 @@
                 if (response.error) throw response.error;
 
                 var services = response.data;
-                allServices = services; // Store for later use
+                
+                // Filter by price if specified
+                if (priceRange) {
+                    services = services.filter(function(service) {
+                        if (!service.price) return false;
+                        
+                        var priceNum = parseFloat(service.price.replace(/[^0-9.-]+/g, ''));
+                        if (isNaN(priceNum)) return false;
+                        
+                        switch(priceRange) {
+                            case 'under-50': return priceNum < 50;
+                            case '50-100': return priceNum >= 50 && priceNum <= 100;
+                            case '100-200': return priceNum >= 100 && priceNum <= 200;
+                            case '200-500': return priceNum >= 200 && priceNum <= 500;
+                            case 'above-500': return priceNum > 500;
+                            default: return true;
+                        }
+                    });
+                }
+                
+                allServices = services;
                 console.log('✅ Services loaded:', services.length);
 
                 if (!container) return;
@@ -1248,25 +1752,6 @@
                     return;
                 }
 
-                // Service type display names
-                var serviceTypes = {
-                    'nail': 'Nail & Spa',
-                    'hair': 'Tóc & Làm đẹp',
-                    'repair': 'Sửa chữa',
-                    'cleaning': 'Vệ sinh & Dọn dẹp',
-                    'moving': 'Chuyển nhà',
-                    'tax': 'Kế toán & Thuế',
-                    'legal': 'Luật & Di trú',
-                    'education': 'Giáo dục & Dạy học',
-                    'health': 'Y tế & Sức khỏe',
-                    'tech': 'IT & Công nghệ',
-                    'insurance': '🛡️ Bảo hiểm',
-                    'realtor': '🏠 Môi giới BDS',
-                    'mortgage': '💰 Vay mua nhà',
-                    'transport': '🚗 Xe đưa đón',
-                    'other': 'Khác'
-                };
-
                 var html = '';
                 for (var i = 0; i < services.length; i++) {
                     var service = services[i];
@@ -1274,17 +1759,17 @@
                     if (service.city) locationInfo.push(service.city);
                     if (service.zipcode) locationInfo.push(service.zipcode);
                     var fullLocation = locationInfo.join(', ');
-                    var typeDisplay = serviceTypes[service.service_type] || service.service_type;
+                    
+                    var typeInfo = serviceTypes[service.service_type] || { name: service.service_type, icon: '📌' };
 
-                    // Store index instead of ID to avoid UUID issues
                     html += '<div class="service-card" data-service-index="' + i + '">';
                     html += '<div class="service-image">';
-                    html += service.image_url ? '<img src="' + service.image_url + '" alt="Service">' : '🛠️';
+                    html += service.image_url ? '<img src="' + service.image_url + '" alt="Service">' : typeInfo.icon;
                     html += '</div>';
                     html += '<div class="service-content">';
                     html += '<div class="service-header">';
                     html += '<div><div class="service-title">' + (service.title || '') + '</div></div>';
-                    html += '<div class="service-type">' + typeDisplay + '</div>';
+                    html += '<div class="service-type">' + typeInfo.icon + ' ' + typeInfo.name + '</div>';
                     html += '</div>';
                     html += '<div class="service-description">' + (service.description || '') + '</div>';
                     html += '<div class="service-details">';
@@ -1300,11 +1785,96 @@
                     html += '<div class="service-detail-item"><span class="icon">📞</span><span>' + (service.contact || '') + '</span></div>';
                     html += '</div>';
                     html += '<div class="view-count">👁️ ' + (service.views || 0) + ' lượt xem</div>';
+                    
+                    // Quick action buttons
+                    html += '<div class="service-actions">';
+                    html += '<button class="action-btn chat" onclick="quickChat(' + i + ', event)">💬 Nhắn tin</button>';
+                    html += '<button class="action-btn book" onclick="quickBook(' + i + ', event)">📅 Đặt lịch</button>';
+                    html += '<button class="action-btn share" onclick="quickShare(' + i + ', event)">🔗 Chia sẻ</button>';
+                    html += '</div>';
+                    
                     html += '</div></div>';
                 }
 
                 container.innerHTML = html;
                 
-                // Add click handlers using index approach
+                // Add click handlers for viewing details
                 var serviceCards = container.querySelectorAll('.service-card');
-                for (var j = 0; j <
+                for (var j = 0; j < serviceCards.length; j++) {
+                    (function(card) {
+                        card.onclick = function(e) {
+                            // Don't open detail if clicking on action buttons
+                            if (e.target.classList.contains('action-btn')) return;
+                            
+                            var index = parseInt(card.getAttribute('data-service-index'));
+                            console.log('📱 Service card clicked, index:', index);
+                            if (!isNaN(index) && allServices[index]) {
+                                viewServiceDetail(allServices[index]);
+                            }
+                        };
+                    })(serviceCards[j]);
+                }
+
+            }).catch(function(error) {
+                console.error('❌ Error loading services:', error);
+                if (container) {
+                    container.innerHTML = '<div class="empty-state">Lỗi khi tải dữ liệu</div>';
+                }
+            });
+        }
+
+        // Quick action functions
+        function quickChat(index, event) {
+            event.stopPropagation();
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để nhắn tin!');
+                return;
+            }
+            currentService = allServices[index];
+            openChat();
+        }
+        window.quickChat = quickChat;
+
+        function quickBook(index, event) {
+            event.stopPropagation();
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để đặt lịch!');
+                return;
+            }
+            currentService = allServices[index];
+            openBooking();
+        }
+        window.quickBook = quickBook;
+
+        function quickShare(index, event) {
+            event.stopPropagation();
+            currentService = allServices[index];
+            openShare();
+        }
+        window.quickShare = quickShare;
+
+        // Check for service ID in URL parameters
+        function checkUrlParams() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var serviceId = urlParams.get('id');
+            
+            if (serviceId) {
+                // Load specific service
+                supabase
+                    .from('services')
+                    .select('*')
+                    .eq('id', serviceId)
+                    .single()
+                    .then(function(response) {
+                        if (!response.error && response.data) {
+                            viewServiceDetail(response.data);
+                        }
+                    });
+            }
+        }
+
+        // Initialize URL params check
+        setTimeout(checkUrlParams, 1000);
+    </script>
+</body>
+</html>
