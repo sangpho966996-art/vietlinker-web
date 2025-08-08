@@ -1460,9 +1460,11 @@
         // SIMPLE WORKING SCRIPT - NO COMPLEX FUNCTIONS
         console.log('🚀 VietLinker Starting...');
         
-        // GLOBAL SEARCH FUNCTION
-        function performGlobalSearch() {
+        // GLOBAL SEARCH FUNCTION - Ensure it's available in global scope
+        window.performGlobalSearch = function performGlobalSearch() {
             console.log('🔍 Search function called');
+            
+            try {
             
             var keyword = document.getElementById('searchKeyword').value;
             var location = document.getElementById('searchLocation').value;
@@ -1472,6 +1474,13 @@
             
             if (!keyword && !location && !category) {
                 alert('Vui lòng nhập thông tin tìm kiếm!');
+                return;
+            }
+            
+            // Check if Supabase is loaded
+            if (!window.supabase) {
+                console.error('❌ Supabase library not loaded');
+                alert('Hệ thống đang khởi động. Vui lòng thử lại sau ít phút!');
                 return;
             }
             
@@ -1524,6 +1533,11 @@
                     }
                 });
             });
+            
+            } catch (error) {
+                console.error('❌ Error in performGlobalSearch:', error);
+                alert('Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại!');
+            }
         }
         
         // Display search results
@@ -1581,13 +1595,13 @@
             console.log('✅ Search results displayed');
         }
         
-        // Close modal function
-        function closeSearchModal() {
+        // Close modal function - Ensure it's available in global scope
+        window.closeSearchModal = function closeSearchModal() {
             document.getElementById('searchResultsModal').style.display = 'none';
         }
         
-        // Sign out function
-        function signOut() {
+        // Sign out function - Ensure it's available in global scope
+        window.signOut = function signOut() {
             if (confirm('Bạn có chắc muốn đăng xuất?')) {
                 var supabase = window.supabase.createClient(
                     'https://wwlmvcsozavqfvwlxkrt.supabase.co',
@@ -1725,6 +1739,59 @@
                 }
             });
         });
+        
+        // Alternative approach: Add event listeners (better practice than onclick)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search button event listener
+            var searchButton = document.getElementById('searchButton');
+            if (searchButton) {
+                searchButton.addEventListener('click', window.performGlobalSearch);
+            }
+            
+            // Close modal button event listener
+            var closeModalBtn = document.getElementById('closeModalBtn');
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', window.closeSearchModal);
+            }
+            
+            // Sign out links event listeners
+            document.querySelectorAll('a[onclick*="signOut"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.signOut();
+                });
+            });
+            
+            // Add Enter key support for search inputs
+            ['searchKeyword', 'searchLocation'].forEach(function(id) {
+                var element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            window.performGlobalSearch();
+                        }
+                    });
+                }
+            });
+            
+            // Quick search tags
+            document.querySelectorAll('.quick-search-tag').forEach(function(tag) {
+                tag.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var searchKeyword = document.getElementById('searchKeyword');
+                    if (searchKeyword) {
+                        searchKeyword.value = this.getAttribute('data-search');
+                        window.performGlobalSearch();
+                    }
+                });
+            });
+        });
+        
+        // Debug: Check if functions are properly loaded
+        console.log('🔍 performGlobalSearch function available:', typeof window.performGlobalSearch);
+        console.log('✖️ closeSearchModal function available:', typeof window.closeSearchModal);
+        console.log('🚪 signOut function available:', typeof window.signOut);
+        
     </script>
 </body>
 </html>
