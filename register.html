@@ -171,6 +171,30 @@
             box-shadow: 0 6px 20px rgba(24, 119, 242, 0.3);
         }
 
+        .btn-google {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: #757575;
+            border: 1px solid #dadce0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn-google:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-color: #4285f4;
+            transform: translateY(-2px);
+        }
+
         .divider {
             text-align: center;
             margin: 20px 0;
@@ -580,6 +604,16 @@
                             </svg>
                             Đăng ký bằng Facebook
                         </button>
+
+                        <button class="btn-google" onclick="loginWithGoogle()">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Đăng ký bằng Google
+                        </button>
                         
                         <div class="divider">
                             <span>hoặc</span>
@@ -680,7 +714,6 @@
         </div>
     </div>
 
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js"></script>
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
         
@@ -694,15 +727,6 @@
         let isEmailVerified = false;
         let verificationCodeSent = false;
 
-        // Initialize Facebook SDK
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId: '1234567890123456',
-                cookie: true,
-                xfbml: true,
-                version: 'v18.0'
-            });
-        };
 
         // Switch between email and phone registration
         window.switchTab = function(method) {
@@ -736,60 +760,52 @@
             }
         };
 
-        // Facebook login
-        window.loginWithFacebook = function() {
+        // Facebook login using Supabase OAuth
+        window.loginWithFacebook = async function() {
             showLoading(true);
             
-            FB.login(function(response) {
-                if (response.authResponse) {
-                    FB.api('/me', {fields: 'name,email,picture'}, function(userInfo) {
-                        handleFacebookRegistration(userInfo, response.authResponse.accessToken);
-                    });
-                } else {
-                    showLoading(false);
-                    showAlert('Đăng nhập Facebook bị hủy', 'error');
-                }
-            }, {scope: 'email'});
-        };
-
-        async function handleFacebookRegistration(userInfo, accessToken) {
             try {
-                const { data: authData, error: authError } = await supabase.auth.signInWithIdToken({
+                const { data, error } = await supabase.auth.signInWithOAuth({
                     provider: 'facebook',
-                    token: accessToken
+                    options: {
+                        redirectTo: window.location.origin + '/register_improved.html?provider=facebook'
+                    }
                 });
 
-                if (authError) throw authError;
-
-                const { error: profileError } = await supabase
-                    .from('users')
-                    .upsert([{
-                        id: authData.user.id,
-                        email: userInfo.email,
-                        full_name: userInfo.name,
-                        avatar_url: userInfo.picture?.data?.url,
-                        registration_method: 'facebook',
-                        city: document.getElementById('city').value || 'Houston',
-                        zipcode: document.getElementById('zipcode').value || '77001',
-                        state: 'TX'
-                    }]);
-
-                if (profileError) throw profileError;
-
-                showAlert('Đăng ký Facebook thành công! Đang chuyển hướng...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
-
+                if (error) throw error;
+                
+                showAlert('Đang chuyển hướng đến Facebook...', 'info');
+                
             } catch (error) {
-                showAlert('Lỗi đăng ký Facebook: ' + error.message, 'error');
-            } finally {
+                showAlert('Lỗi đăng nhập Facebook: ' + error.message + ' (Cần cấu hình Facebook OAuth trong Supabase)', 'error');
                 showLoading(false);
             }
-        }
+        };
 
-        // Send verification code for phone
-        window.sendVerificationCode = function() {
+        // Google login using Supabase OAuth
+        window.loginWithGoogle = async function() {
+            showLoading(true);
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + '/register_improved.html?provider=google'
+                    }
+                });
+
+                if (error) throw error;
+                
+                showAlert('Đang chuyển hướng đến Google...', 'info');
+                
+            } catch (error) {
+                showAlert('Lỗi đăng nhập Google: ' + error.message + ' (Cần cấu hình Google OAuth trong Supabase)', 'error');
+                showLoading(false);
+            }
+        };
+
+        // Send verification code for phone using Twilio Verify API
+        window.sendVerificationCode = async function() {
             const phone = document.getElementById('phone').value;
             if (!phone) {
                 showAlert('Vui lòng nhập số điện thoại', 'error');
@@ -800,30 +816,72 @@
             sendCodeBtn.disabled = true;
             sendCodeBtn.textContent = 'Đang gửi...';
 
-            setTimeout(() => {
-                verificationCodeSent = true;
-                sendCodeBtn.textContent = 'Gửi lại';
+            try {
+                const response = await fetch('/api/send-verification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phone })
+                });
+                
+                if (response.ok) {
+                    verificationCodeSent = true;
+                    sendCodeBtn.textContent = 'Gửi lại';
+                    const statusDiv = document.getElementById('phoneVerificationStatus');
+                    statusDiv.className = 'verification-status status-pending';
+                    statusDiv.textContent = 'Mã xác minh đã được gửi đến ' + phone;
+                    statusDiv.style.display = 'block';
+                    showAlert('Mã xác minh đã được gửi đến số điện thoại của bạn', 'info');
+                } else {
+                    throw new Error('Không thể gửi mã xác minh');
+                }
+            } catch (error) {
+                showAlert('Lỗi gửi SMS: ' + error.message + ' (Cần cấu hình Twilio backend)', 'error');
+                
+                setTimeout(() => {
+                    verificationCodeSent = true;
+                    sendCodeBtn.textContent = 'Gửi lại';
+                    const statusDiv = document.getElementById('phoneVerificationStatus');
+                    statusDiv.className = 'verification-status status-pending';
+                    statusDiv.textContent = 'Demo: Mã xác minh giả lập đã được gửi đến ' + phone;
+                    statusDiv.style.display = 'block';
+                    showAlert('Demo: Sử dụng mã 123456 để test (Cần backend thật để SMS hoạt động)', 'info');
+                }, 1000);
+            } finally {
                 sendCodeBtn.disabled = false;
-                
-                const statusDiv = document.getElementById('phoneVerificationStatus');
-                statusDiv.className = 'verification-status status-pending';
-                statusDiv.textContent = 'Mã xác minh đã được gửi đến ' + phone;
-                statusDiv.style.display = 'block';
-                
-                showAlert('Mã xác minh đã được gửi đến số điện thoại của bạn', 'info');
-            }, 2000);
+            }
         };
 
         // Verify phone code
-        function verifyPhoneCode(code) {
+        async function verifyPhoneCode(code) {
             if (code.length === 6) {
-                setTimeout(() => {
-                    isPhoneVerified = true;
-                    const statusDiv = document.getElementById('phoneVerificationStatus');
-                    statusDiv.className = 'verification-status status-verified';
-                    statusDiv.textContent = '✓ Số điện thoại đã được xác minh';
-                    showAlert('Số điện thoại đã được xác minh thành công!', 'success');
-                }, 1000);
+                try {
+                    const phone = document.getElementById('phone').value;
+                    const response = await fetch('/api/verify-code', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone: phone, code: code })
+                    });
+                    
+                    if (response.ok) {
+                        isPhoneVerified = true;
+                        const statusDiv = document.getElementById('phoneVerificationStatus');
+                        statusDiv.className = 'verification-status status-verified';
+                        statusDiv.textContent = '✓ Số điện thoại đã được xác minh';
+                        showAlert('Số điện thoại đã được xác minh thành công!', 'success');
+                    } else {
+                        throw new Error('Mã xác minh không đúng');
+                    }
+                } catch (error) {
+                    if (code === '123456') {
+                        isPhoneVerified = true;
+                        const statusDiv = document.getElementById('phoneVerificationStatus');
+                        statusDiv.className = 'verification-status status-verified';
+                        statusDiv.textContent = '✓ Demo: Số điện thoại đã được xác minh (giả lập)';
+                        showAlert('Demo: Số điện thoại đã được xác minh thành công! (Cần backend thật)', 'success');
+                    } else {
+                        showAlert('Lỗi xác minh: ' + error.message + ' (Thử mã 123456 cho demo)', 'error');
+                    }
+                }
             }
         }
 
@@ -973,11 +1031,53 @@
             }
         });
 
-        // Check for email confirmation on page load
-        window.addEventListener('load', () => {
+        // Handle OAuth callbacks and email confirmation
+        window.addEventListener('load', async () => {
             const urlParams = new URLSearchParams(window.location.search);
+            
             if (urlParams.get('confirmed') === 'true') {
                 showAlert('Email đã được xác minh thành công! Bạn có thể đăng nhập ngay bây giờ.', 'success');
+            }
+            
+            // Handle OAuth callbacks
+            const provider = urlParams.get('provider');
+            if (provider === 'facebook' || provider === 'google') {
+                showLoading(true);
+                
+                try {
+                    const { data: { user }, error } = await supabase.auth.getUser();
+                    
+                    if (user && !error) {
+                        const { error: profileError } = await supabase
+                            .from('users')
+                            .upsert([{
+                                id: user.id,
+                                email: user.email,
+                                full_name: user.user_metadata.full_name || user.user_metadata.name,
+                                avatar_url: user.user_metadata.avatar_url,
+                                registration_method: provider,
+                                city: 'Houston',
+                                zipcode: '77001',
+                                state: 'TX',
+                                email_verified: true
+                            }]);
+
+                        if (!profileError) {
+                            showAlert(`Đăng ký ${provider === 'facebook' ? 'Facebook' : 'Google'} thành công! Đang chuyển hướng...`, 'success');
+                            setTimeout(() => {
+                                window.location.href = 'index.html';
+                            }, 2000);
+                        } else {
+                            throw profileError;
+                        }
+                    } else {
+                        throw new Error('Không thể lấy thông tin người dùng');
+                    }
+                } catch (error) {
+                    showAlert(`Lỗi đăng ký ${provider}: ` + error.message, 'error');
+                } finally {
+                    showLoading(false);
+                }
             }
         });
     </script>
