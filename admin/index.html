@@ -846,9 +846,9 @@
         // Wait for Supabase to load
         console.log('🚀 Admin Dashboard Loading...');
         
-        // Initialize Supabase (SỬA LẠI THÔNG TIN NÀY)
-        const SUPABASE_URL = 'https://your-project.supabase.co';
-        const SUPABASE_ANON_KEY = 'your-anon-key';
+        // Initialize Supabase - ĐÃ CẬP NHẬT
+        const SUPABASE_URL = 'https://wwlmvcsozavqfvwlxkrt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
         
         // Khởi tạo Supabase client
         let supabase;
@@ -898,9 +898,14 @@
                     
                     if (!session) {
                         console.log('❌ No session found, redirecting to login...');
-                        // window.location.href = '/login.html';
-                        // For demo: show warning instead of redirect
-                        showToast('Vui lòng đăng nhập để sử dụng Admin Dashboard', 'error');
+                        document.getElementById('view').innerHTML = `
+                            <div style="text-align: center; padding: 100px 20px;">
+                                <h1 style="color: #dc143c; font-size: 48px;">🔒</h1>
+                                <h2 style="color: #1e3c72;">Vui lòng đăng nhập</h2>
+                                <p style="color: #666; margin: 20px 0;">Bạn cần đăng nhập để truy cập Admin Dashboard</p>
+                                <a href="/login.html" style="display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: 600;">Đăng nhập</a>
+                            </div>
+                        `;
                         return null;
                     }
                     
@@ -912,20 +917,68 @@
                     
                     if (error || !user) {
                         console.error('Error fetching user:', error);
-                        showToast('Lỗi khi tải thông tin người dùng', 'error');
+                        document.getElementById('view').innerHTML = `
+                            <div style="text-align: center; padding: 100px 20px;">
+                                <h1 style="color: #dc143c; font-size: 48px;">❌</h1>
+                                <h2 style="color: #1e3c72;">Lỗi tải thông tin người dùng</h2>
+                                <p style="color: #666; margin: 20px 0;">Không thể tải thông tin tài khoản của bạn</p>
+                            </div>
+                        `;
                         return null;
                     }
                     
-                    if (!['admin', 'superadmin'].includes(user.role)) {
-                        console.log('❌ User is not admin');
-                        showToast('Bạn không có quyền truy cập Admin', 'error');
-                        // window.location.href = '/404.html';
+                    // KIỂM TRA QUYỀN ADMIN
+                    if (!user.role || user.role === 'user') {
+                        console.log('❌ User is NOT admin, role:', user.role);
+                        document.getElementById('view').innerHTML = `
+                            <div style="text-align: center; padding: 100px 20px;">
+                                <h1 style="color: #dc143c; font-size: 72px;">⛔</h1>
+                                <h2 style="color: #dc143c; font-size: 36px;">TRUY CẬP BỊ TỪ CHỐI</h2>
+                                <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 20px; margin: 30px auto; max-width: 600px;">
+                                    <p style="color: #856404; font-size: 18px; margin: 10px 0;">
+                                        <strong>Tài khoản của bạn:</strong> ${user.email}
+                                    </p>
+                                    <p style="color: #856404; font-size: 18px; margin: 10px 0;">
+                                        <strong>Quyền hiện tại:</strong> <span style="background: #dc3545; color: white; padding: 2px 10px; border-radius: 15px;">${user.role || 'user'}</span>
+                                    </p>
+                                    <p style="color: #856404; font-size: 18px; margin: 10px 0;">
+                                        <strong>Quyền cần có:</strong> <span style="background: #28a745; color: white; padding: 2px 10px; border-radius: 15px;">admin</span> hoặc <span style="background: #28a745; color: white; padding: 2px 10px; border-radius: 15px;">superadmin</span>
+                                    </p>
+                                </div>
+                                <p style="color: #666; margin: 30px 0; font-size: 16px;">
+                                    ⚠️ Chỉ tài khoản Admin mới có thể truy cập trang này.<br>
+                                    Nếu bạn cần quyền Admin, vui lòng liên hệ quản trị viên.
+                                </p>
+                                <div style="margin-top: 30px;">
+                                    <a href="/" style="display: inline-block; margin: 10px; padding: 12px 30px; background: #6c757d; color: white; text-decoration: none; border-radius: 25px; font-weight: 600;">← Về trang chủ</a>
+                                    <a href="/profile.html" style="display: inline-block; margin: 10px; padding: 12px 30px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: 600;">Xem Profile</a>
+                                </div>
+                            </div>
+                        `;
                         return null;
                     }
                     
+                    if (!['admin', 'superadmin', 'moderator'].includes(user.role)) {
+                        console.log('❌ Invalid role for admin access:', user.role);
+                        document.getElementById('view').innerHTML = `
+                            <div style="text-align: center; padding: 100px 20px;">
+                                <h1 style="color: #dc143c; font-size: 72px;">🚫</h1>
+                                <h2 style="color: #dc143c;">Quyền không hợp lệ</h2>
+                                <p>Role của bạn: <strong>${user.role}</strong></p>
+                                <p>Chỉ admin, superadmin và moderator mới vào được trang này.</p>
+                            </div>
+                        `;
+                        return null;
+                    }
+                    
+                    // USER LÀ ADMIN - CHO VÀO
                     currentUser = user;
                     updateUserDisplay(user);
-                    console.log('✅ Admin authenticated:', user.email);
+                    console.log('✅ Admin authenticated:', user.email, 'Role:', user.role);
+                    
+                    // Hiển thị thông báo quyền admin
+                    document.querySelector('.admin-badge').style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                    
                     return user;
                 } catch (err) {
                     console.error('Auth guard error:', err);
