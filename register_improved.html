@@ -1188,6 +1188,8 @@
             console.log('Hash parameters:', { hasHashToken, hasHashError });
             console.log('Referrer analysis:', { isOAuthReferrer, referrer: document.referrer });
             console.log('Universal callback detected:', isOAuthCallback);
+            console.log('Detection timestamp:', new Date().toISOString());
+            console.log('Current environment:', window.location.hostname);
             
             if (isOAuthCallback) {
                 console.log('=== Universal OAuth Callback Processing ===');
