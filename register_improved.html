@@ -1079,9 +1079,9 @@
                 session = sessionResult.session;
                 sessionError = sessionResult.error;
                 
-                // If no session found, wait and retry (OAuth might still be processing)
-                if (!session && !sessionError && sessionCheckAttempts < maxSessionChecks) {
-                    console.log('No session found, waiting 2 seconds and retrying...');
+                // If no session found, wait and retry with extended attempts for universal compatibility
+                while (!session && !sessionError && sessionCheckAttempts < maxSessionChecks) {
+                    console.log(`No session found, waiting 2 seconds and retrying... (attempt ${sessionCheckAttempts}/${maxSessionChecks})`);
                     await new Promise(resolve => setTimeout(resolve, 2000));
                     
                     const retryResult = await checkSession();
@@ -1173,17 +1173,30 @@
             const hasHashToken = hashParams.has('access_token');
             const hasHashError = hashParams.has('error');
             
-            console.log('=== OAuth URL Parameter Detection ===');
-            console.log('URL parameters:', { provider, hasOAuthCode, hasOAuthState, hasOAuthError });
-            console.log('Hash parameters:', { hasHashToken, hasHashError });
+            // Universal OAuth callback detection with referrer analysis
+            const isOAuthReferrer = document.referrer.includes('accounts.google.com') || 
+                                   document.referrer.includes('facebook.com') ||
+                                   document.referrer.includes('supabase.co/auth');
             
-            // Check if this looks like an OAuth callback
+            // Check if this looks like an OAuth callback (enhanced universal detection)
             const isOAuthCallback = provider === 'facebook' || provider === 'google' || 
                                   hasOAuthCode || hasOAuthState || hasHashToken || 
-                                  hasOAuthError || hasHashError;
+                                  hasOAuthError || hasHashError || isOAuthReferrer;
+            
+            console.log('=== Universal OAuth Callback Detection ===');
+            console.log('URL parameters:', { provider, hasOAuthCode, hasOAuthState, hasOAuthError });
+            console.log('Hash parameters:', { hasHashToken, hasHashError });
+            console.log('Referrer analysis:', { isOAuthReferrer, referrer: document.referrer });
+            console.log('Universal callback detected:', isOAuthCallback);
             
             if (isOAuthCallback) {
-                console.log('OAuth callback detected via URL/hash parameters');
+                console.log('=== Universal OAuth Callback Processing ===');
+                console.log('Callback detected via:', {
+                    urlParams: provider || hasOAuthCode || hasOAuthState,
+                    hashParams: hasHashToken,
+                    referrer: isOAuthReferrer,
+                    errors: hasOAuthError || hasHashError
+                });
                 
                 if (hasOAuthError || hasHashError) {
                     const errorMsg = urlParams.get('error') || hashParams.get('error') || 'Unknown OAuth error';
