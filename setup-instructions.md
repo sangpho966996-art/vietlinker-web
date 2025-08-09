@@ -43,7 +43,14 @@
 ### 4. Email Confirmation Settings
 1. Go to Authentication → Settings
 2. Enable "Enable email confirmations"
-3. Set "Email confirmation redirect URL" to: `https://yourdomain.com/email-confirmed.html`
+3. Enable "Enable email OTP" (for email-first verification flow)
+4. Set "Email confirmation redirect URL" to: `https://yourdomain.com/email-confirmed.html`
+5. Add redirect URLs for email verification:
+   ```
+   https://deploy-preview-4--famous-pasca-610e24.netlify.app/register_improved.html
+   https://vietlinker.info/register_improved.html
+   http://localhost:3000/register_improved.html
+   ```
 
 ## SMS Verification Backend (Required)
 
@@ -274,10 +281,19 @@ CREATE INDEX IF NOT EXISTS idx_users_verification_status ON users(phone_verified
 ## Troubleshooting Common Issues
 
 ### Email Verification Issues
+- **400 Error on Email Signup**: Check Supabase Authentication settings
+  - Go to Authentication → Settings → Enable "Enable email confirmations"
+  - Verify SMTP configuration is set up (or use Supabase's built-in email service)
+  - Check that Site URL and redirect URLs are properly configured
+- **Email OTP Configuration**: For email-first verification flow
+  - Go to Authentication → Settings → Enable "Enable email OTP"
+  - Configure email templates for OTP verification
+  - Set appropriate redirect URLs for email verification
 - Check Supabase email template configuration
 - Verify redirect URLs are correctly set
 - Check spam folders for verification emails
 - Ensure email confirmation is enabled
+- **Debug Email Sending**: Check browser console for 400 errors from Supabase auth endpoints
 
 ### SMS Verification Issues
 - Verify Twilio credentials are correct

@@ -346,6 +346,49 @@
             font-weight: 500;
         }
 
+        .form-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .verification-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .verification-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .btn-verify {
+            padding: 12px 20px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-verify:hover {
+            background: #2a4a8a;
+            transform: translateY(-1px);
+        }
+
+        .btn-verify:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .status-pending {
             background: #fff3cd;
             color: #856404;
@@ -621,12 +664,16 @@
                     </div>
                 </div>
 
-                <form id="registerForm">
+                <form id="registerForm" class="form-disabled">
                     <div class="verification-section email-verification active" id="emailVerification">
-                        <h4 style="margin-bottom: 10px; color: #1e3c72;">📧 Xác minh Email</h4>
+                        <h4 style="margin-bottom: 10px; color: #1e3c72;">📧 Xác minh Email (Bước 1)</h4>
                         <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
-                            Chúng tôi sẽ gửi email xác minh đến địa chỉ của bạn
+                            Trước tiên, chúng tôi cần xác minh địa chỉ email của bạn
                         </p>
+                        <div class="verification-input">
+                            <input type="email" id="emailForVerification" placeholder="Nhập email của bạn" required>
+                            <button type="button" class="btn-verify" onclick="sendEmailVerification()" id="sendEmailBtn">Gửi Email Xác Minh</button>
+                        </div>
                         <div id="emailVerificationStatus" class="verification-status" style="display: none;"></div>
                     </div>
 
@@ -700,7 +747,7 @@
                         <span>Tôi đồng ý với <a href="#" onclick="showTerms()">Điều khoản sử dụng</a> và <a href="#" onclick="showPrivacy()">Chính sách bảo mật</a></span>
                     </label>
 
-                    <button type="submit" class="btn-register" id="submitBtn">Đăng Ký</button>
+                    <button type="submit" class="btn-register" id="submitBtn" disabled>Hoàn Tất Đăng Ký</button>
                 </form>
 
                 <div class="login-link">
@@ -808,6 +855,47 @@
                 
             } catch (error) {
                 showAlert('Lỗi đăng nhập Google: ' + error.message + ' (Cần cấu hình Google OAuth trong Supabase)', 'error');
+                showLoading(false);
+            }
+        };
+
+        // Send email verification (Step 1 of registration)
+        window.sendEmailVerification = async function() {
+            const email = document.getElementById('emailForVerification').value;
+            if (!email) {
+                showAlert('Vui lòng nhập địa chỉ email', 'error');
+                return;
+            }
+
+            const sendEmailBtn = document.getElementById('sendEmailBtn');
+            sendEmailBtn.disabled = true;
+            sendEmailBtn.textContent = 'Đang gửi...';
+            showLoading(true);
+
+            try {
+                const { data, error } = await supabase.auth.signInWithOtp({
+                    email: email,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/register_improved.html?email_verified=true&email=' + encodeURIComponent(email)
+                    }
+                });
+
+                if (error) throw error;
+
+                const statusDiv = document.getElementById('emailVerificationStatus');
+                statusDiv.className = 'verification-status status-pending';
+                statusDiv.textContent = '📧 Email xác minh đã được gửi. Vui lòng kiểm tra hộp thư và click vào link xác minh.';
+                statusDiv.style.display = 'block';
+                
+                document.getElementById('email').value = email;
+                
+                showAlert('Email xác minh đã được gửi! Vui lòng kiểm tra hộp thư của bạn.', 'success');
+                
+            } catch (error) {
+                showAlert('Lỗi gửi email xác minh: ' + error.message, 'error');
+            } finally {
+                sendEmailBtn.disabled = false;
+                sendEmailBtn.textContent = 'Gửi Email Xác Minh';
                 showLoading(false);
             }
         };
@@ -973,6 +1061,11 @@
                 return;
             }
 
+            if (currentRegistrationMethod === 'email' && !isEmailVerified) {
+                showAlert('Vui lòng xác minh email trước khi đăng ký!', 'error');
+                return;
+            }
+
             if (currentRegistrationMethod === 'phone' && !isPhoneVerified) {
                 showAlert('Vui lòng xác minh số điện thoại trước khi đăng ký!', 'error');
                 return;
@@ -990,10 +1083,7 @@
 
                 const { data: authData, error: authError } = await supabase.auth.signUp({
                     email: email,
-                    password: password,
-                    options: {
-                        emailRedirectTo: window.location.origin + '/email-confirmed.html'
-                    }
+                    password: password
                 });
 
                 if (authError) throw authError;
@@ -1016,19 +1106,10 @@
 
                 if (profileError) throw profileError;
 
-                if (currentRegistrationMethod === 'email') {
-                    const statusDiv = document.getElementById('emailVerificationStatus');
-                    statusDiv.className = 'verification-status status-pending';
-                    statusDiv.textContent = '📧 Email xác minh đã được gửi. Vui lòng kiểm tra hộp thư của bạn.';
-                    statusDiv.style.display = 'block';
-                    
-                    showAlert('Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản.', 'success');
-                } else {
-                    showAlert('Đăng ký thành công! Đang chuyển hướng...', 'success');
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000);
-                }
+                showAlert('Đăng ký thành công! Đang chuyển hướng...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
                 
             } catch (error) {
                 showAlert('Lỗi: ' + error.message, 'error');
@@ -1043,8 +1124,22 @@
         window.addEventListener('load', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             
-            if (urlParams.get('confirmed') === 'true') {
-                showAlert('Email đã được xác minh thành công! Bạn có thể đăng nhập ngay bây giờ.', 'success');
+            if (urlParams.get('confirmed') === 'true' || urlParams.get('email_verified') === 'true') {
+                const verifiedEmail = urlParams.get('email');
+                if (verifiedEmail) {
+                    document.getElementById('email').value = decodeURIComponent(verifiedEmail);
+                    document.getElementById('emailForVerification').value = decodeURIComponent(verifiedEmail);
+                }
+                isEmailVerified = true;
+                document.getElementById('registerForm').classList.remove('form-disabled');
+                document.getElementById('submitBtn').disabled = false;
+                
+                const statusDiv = document.getElementById('emailVerificationStatus');
+                statusDiv.className = 'verification-status status-verified';
+                statusDiv.textContent = '✅ Email đã được xác minh thành công!';
+                statusDiv.style.display = 'block';
+                
+                showAlert('Email đã được xác minh thành công! Bây giờ bạn có thể hoàn tất đăng ký.', 'success');
             }
             
             // Enhanced OAuth callback handling with cross-domain detection
