@@ -178,21 +178,38 @@ TWILIO_VERIFY_SID=your_verify_service_sid
 
 ### 6. Troubleshooting OAuth Issues
 - **Problem**: "Page not found" after Google OAuth
-- **Solution**: The updated OAuth code now uses dynamic redirectTo that automatically works on any domain
+- **Root Cause**: OAuth state parameter contains wrong site_url causing Supabase to redirect to incorrect domain
+- **Solution**: Enhanced session-based detection with comprehensive logging and fallback handling
 - **One-time setup**: Just ensure all your domains are in the "Additional Redirect URLs" list
 - **No more manual Site URL changes needed** for different environments
 
 **If OAuth still fails:**
 1. **Check Redirect URLs**: Ensure your current domain is in the "Additional Redirect URLs" list
 2. **Verify Google Cloud Console**: Ensure callback URL is `https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback`
-3. **Check browser console**: Look for any CORS or authentication errors
+3. **Check browser console**: Look for OAuth debugging logs and any CORS or authentication errors
 4. **Test session detection**: The page should automatically detect successful OAuth sessions
+5. **Monitor OAuth flow**: Use browser developer tools to track the complete OAuth redirect chain
+
+**Enhanced OAuth Debugging:**
+- Comprehensive console logging tracks each step of the OAuth process
+- Session-based detection works even when OAuth state redirects to wrong domain
+- URL parameter detection catches OAuth callbacks with `code` and `state` parameters
+- Timing adjustments allow Supabase to process OAuth callbacks before checking user status
+- Fallback error handling provides clear feedback when OAuth fails
 
 **Dynamic OAuth Flow:**
 - Code automatically detects current domain (production, deploy preview, localhost)
 - Uses `window.location.origin` to build correct redirect URL
 - Works on any environment without configuration changes
-- Fallback session-based detection ensures registration completes even if redirect fails
+- Enhanced session-based detection ensures registration completes even if redirect fails
+- Multiple detection methods (session, URL parameters, timing) provide robust fallback handling
+
+**Testing OAuth Flow:**
+1. Open browser developer tools and go to Console tab
+2. Navigate to registration page and click Google OAuth button
+3. Complete Google authentication
+4. Monitor console logs for OAuth debugging information
+5. Verify successful registration or identify specific error points
 
 ## Database Schema Updates
 

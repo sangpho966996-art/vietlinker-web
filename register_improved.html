@@ -1049,21 +1049,28 @@
             
             // Handle OAuth callbacks - check for active session regardless of URL parameters
             try {
+                console.log('Checking for OAuth session...');
                 const { data: { session }, error } = await supabase.auth.getSession();
+                console.log('Session check result:', { session: !!session, user: !!session?.user, error });
                 
                 if (session && session.user && !error) {
+                    console.log('Active session found, checking for existing user...');
                     // Check if this is a new OAuth registration (no existing user record)
-                    const { data: existingUser } = await supabase
+                    const { data: existingUser, error: userError } = await supabase
                         .from('users')
                         .select('id')
                         .eq('id', session.user.id)
                         .single();
                     
-                    if (!existingUser) {
+                    console.log('Existing user check:', { existingUser: !!existingUser, userError });
+                    
+                    if (!existingUser && !userError) {
+                        console.log('New OAuth user detected, creating profile...');
                         showLoading(true);
                         
                         // Determine provider from user metadata
                         const provider = session.user.app_metadata?.provider || 'unknown';
+                        console.log('OAuth provider:', provider);
                         
                         const { error: profileError } = await supabase
                             .from('users')
@@ -1080,28 +1087,50 @@
                             }]);
 
                         if (!profileError) {
+                            console.log('OAuth registration successful');
                             showAlert(`Đăng ký ${provider === 'facebook' ? 'Facebook' : 'Google'} thành công! Đang chuyển hướng...`, 'success');
                             setTimeout(() => {
                                 window.location.href = 'index.html';
                             }, 2000);
                         } else {
+                            console.error('Profile creation error:', profileError);
                             throw profileError;
                         }
                         
                         showLoading(false);
+                    } else if (existingUser) {
+                        console.log('Existing user found, redirecting to main page...');
+                        showAlert('Đăng nhập thành công! Đang chuyển hướng...', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
                     }
+                } else {
+                    console.log('No active session found');
                 }
             } catch (error) {
                 console.error('OAuth session check error:', error);
+                showAlert('Lỗi xử lý đăng nhập OAuth: ' + error.message, 'error');
             }
             
-            // Legacy OAuth callback handling (for URL parameters)
+            // Enhanced OAuth callback handling (for URL parameters)
             const provider = urlParams.get('provider');
-            if (provider === 'facebook' || provider === 'google') {
+            const hasOAuthCode = urlParams.has('code');
+            const hasOAuthState = urlParams.has('state');
+            
+            console.log('URL parameters:', { provider, hasOAuthCode, hasOAuthState });
+            
+            // Check if this looks like an OAuth callback
+            if (provider === 'facebook' || provider === 'google' || hasOAuthCode || hasOAuthState) {
+                console.log('OAuth callback detected via URL parameters');
                 showLoading(true);
                 
                 try {
+                    // Wait a moment for Supabase to process the OAuth callback
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
                     const { data: { user }, error } = await supabase.auth.getUser();
+                    console.log('User fetch result:', { user: !!user, error });
                     
                     if (user && !error) {
                         const { error: profileError } = await supabase
@@ -1111,7 +1140,7 @@
                                 email: user.email,
                                 full_name: user.user_metadata.full_name || user.user_metadata.name,
                                 avatar_url: user.user_metadata.avatar_url,
-                                registration_method: provider,
+                                registration_method: provider || 'oauth',
                                 city: 'Houston',
                                 zipcode: '77001',
                                 state: 'TX',
@@ -1119,18 +1148,21 @@
                             }]);
 
                         if (!profileError) {
+                            console.log('OAuth registration via URL params successful');
                             showAlert(`Đăng ký ${provider === 'facebook' ? 'Facebook' : 'Google'} thành công! Đang chuyển hướng...`, 'success');
                             setTimeout(() => {
                                 window.location.href = 'index.html';
                             }, 2000);
                         } else {
+                            console.error('Profile creation error:', profileError);
                             throw profileError;
                         }
                     } else {
                         throw new Error('Không thể lấy thông tin người dùng');
                     }
                 } catch (error) {
-                    showAlert(`Lỗi đăng ký ${provider}: ` + error.message, 'error');
+                    console.error('OAuth URL parameter handling error:', error);
+                    showAlert(`Lỗi đăng ký ${provider || 'OAuth'}: ` + error.message, 'error');
                 } finally {
                     showLoading(false);
                 }
