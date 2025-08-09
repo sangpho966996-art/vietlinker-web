@@ -135,16 +135,50 @@ TWILIO_VERIFY_SID=your_verify_service_sid
 1. Go to APIs & Services → Credentials
 2. Create OAuth 2.0 Client ID
 3. Application type: Web application
-4. Add authorized redirect URIs:
+4. **CRITICAL**: Add authorized redirect URIs (this must match exactly):
    ```
-   https://[your-project-ref].supabase.co/auth/v1/callback
+   https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback
+   ```
+5. Add authorized JavaScript origins (for your domains):
+   ```
+   https://deploy-preview-4--famous-pasca-610e24.netlify.app
+   https://yourdomain.com
+   http://localhost:3000
    ```
 
-### 3. Configure OAuth Consent Screen
+### 3. Supabase Site URL Configuration (IMPORTANT)
+1. Go to Supabase Dashboard → Authentication → URL Configuration
+2. Set Site URL to your main domain (where users should be redirected after OAuth):
+   ```
+   https://deploy-preview-4--famous-pasca-610e24.netlify.app
+   ```
+3. Add additional allowed origins in "Additional Redirect URLs":
+   ```
+   https://deploy-preview-4--famous-pasca-610e24.netlify.app/**
+   https://yourdomain.com/**
+   http://localhost:3000/**
+   ```
+
+### 4. Configure OAuth Consent Screen
 1. Go to OAuth consent screen
 2. Fill in required information
-3. Add scopes: email, profile
+3. Add scopes: email, profile, openid
 4. Add test users if in development
+
+### 5. OAuth Flow Explanation
+- When user clicks "Login with Google", Supabase redirects to Google OAuth
+- Google authenticates user and redirects back to: `https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback`
+- Supabase processes the OAuth response and redirects user to the configured Site URL
+- The register_improved.html page detects the OAuth session and completes registration
+
+### 6. Troubleshooting OAuth 404 Errors
+- **Problem**: "Page not found" after Google OAuth
+- **Cause**: Incorrect redirect URL configuration or missing Site URL
+- **Solution**: 
+  1. Ensure Google Cloud Console has correct callback URL: `https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback`
+  2. Set Supabase Site URL to your domain (not a custom redirect path)
+  3. Remove custom `redirectTo` options from `signInWithOAuth()` calls
+  4. Let Supabase handle OAuth flow automatically
 
 ## Database Schema Updates
 
