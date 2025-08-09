@@ -766,10 +766,7 @@
             
             try {
                 const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'facebook',
-                    options: {
-                        redirectTo: window.location.origin + '/register_improved.html?provider=facebook'
-                    }
+                    provider: 'facebook'
                 });
 
                 if (error) throw error;
@@ -788,10 +785,7 @@
             
             try {
                 const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: window.location.origin + '/register_improved.html?provider=google'
-                    }
+                    provider: 'google'
                 });
 
                 if (error) throw error;
