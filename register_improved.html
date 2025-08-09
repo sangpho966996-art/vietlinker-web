@@ -1033,7 +1033,55 @@
                 showAlert('Email đã được xác minh thành công! Bạn có thể đăng nhập ngay bây giờ.', 'success');
             }
             
-            // Handle OAuth callbacks
+            // Handle OAuth callbacks - check for active session regardless of URL parameters
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                
+                if (session && session.user && !error) {
+                    // Check if this is a new OAuth registration (no existing user record)
+                    const { data: existingUser } = await supabase
+                        .from('users')
+                        .select('id')
+                        .eq('id', session.user.id)
+                        .single();
+                    
+                    if (!existingUser) {
+                        showLoading(true);
+                        
+                        // Determine provider from user metadata
+                        const provider = session.user.app_metadata?.provider || 'unknown';
+                        
+                        const { error: profileError } = await supabase
+                            .from('users')
+                            .upsert([{
+                                id: session.user.id,
+                                email: session.user.email,
+                                full_name: session.user.user_metadata.full_name || session.user.user_metadata.name,
+                                avatar_url: session.user.user_metadata.avatar_url,
+                                registration_method: provider,
+                                city: 'Houston',
+                                zipcode: '77001',
+                                state: 'TX',
+                                email_verified: true
+                            }]);
+
+                        if (!profileError) {
+                            showAlert(`Đăng ký ${provider === 'facebook' ? 'Facebook' : 'Google'} thành công! Đang chuyển hướng...`, 'success');
+                            setTimeout(() => {
+                                window.location.href = 'index.html';
+                            }, 2000);
+                        } else {
+                            throw profileError;
+                        }
+                        
+                        showLoading(false);
+                    }
+                }
+            } catch (error) {
+                console.error('OAuth session check error:', error);
+            }
+            
+            // Legacy OAuth callback handling (for URL parameters)
             const provider = urlParams.get('provider');
             if (provider === 'facebook' || provider === 'google') {
                 showLoading(true);

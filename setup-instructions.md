@@ -146,18 +146,33 @@ TWILIO_VERIFY_SID=your_verify_service_sid
    http://localhost:3000
    ```
 
-### 3. Supabase Site URL Configuration (IMPORTANT)
+### 3. Supabase Site URL Configuration (CRITICAL - MUST FIX FOR OAUTH TO WORK)
 1. Go to Supabase Dashboard → Authentication → URL Configuration
-2. Set Site URL to your main domain (where users should be redirected after OAuth):
+2. **IMPORTANT**: Set Site URL to match the domain you're testing on:
+   
+   **For Deploy Preview Testing:**
    ```
    https://deploy-preview-4--famous-pasca-610e24.netlify.app
    ```
+   
+   **For Production:**
+   ```
+   https://yourdomain.com
+   ```
+   
+   **For Local Development:**
+   ```
+   http://localhost:3000
+   ```
+
 3. Add additional allowed origins in "Additional Redirect URLs":
    ```
    https://deploy-preview-4--famous-pasca-610e24.netlify.app/**
    https://yourdomain.com/**
    http://localhost:3000/**
    ```
+
+**⚠️ CRITICAL**: The Site URL MUST match the domain you're testing on. If you're testing on the deploy preview, the Site URL must be set to the deploy preview URL. If it's set to a different domain (like `https://vietlinker.info`), you'll get a "Page not found" error after OAuth authentication.
 
 ### 4. Configure OAuth Consent Screen
 1. Go to OAuth consent screen
@@ -173,12 +188,22 @@ TWILIO_VERIFY_SID=your_verify_service_sid
 
 ### 6. Troubleshooting OAuth 404 Errors
 - **Problem**: "Page not found" after Google OAuth
-- **Cause**: Incorrect redirect URL configuration or missing Site URL
-- **Solution**: 
-  1. Ensure Google Cloud Console has correct callback URL: `https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback`
-  2. Set Supabase Site URL to your domain (not a custom redirect path)
-  3. Remove custom `redirectTo` options from `signInWithOAuth()` calls
-  4. Let Supabase handle OAuth flow automatically
+- **Most Common Cause**: Supabase Site URL doesn't match the domain you're testing on
+- **Diagnostic Steps**: 
+  1. **Check the OAuth URL**: When you click Google login, look at the URL - it should contain `site_url` parameter
+  2. **Verify Site URL matches**: The `site_url` in the OAuth URL should match your current testing domain
+- **Solution Steps**: 
+  1. **Check Supabase Site URL**: Go to Supabase Dashboard → Authentication → URL Configuration
+  2. **Verify Site URL matches your testing domain**:
+     - If testing on `https://deploy-preview-4--famous-pasca-610e24.netlify.app`, Site URL must be `https://deploy-preview-4--famous-pasca-610e24.netlify.app`
+     - If testing on `https://yourdomain.com`, Site URL must be `https://yourdomain.com`
+     - If testing locally, Site URL must be `http://localhost:3000` (or your local port)
+  3. **Update Site URL** to match your current testing domain
+  4. **Test OAuth again** - the 404 error should be resolved
+  5. Ensure Google Cloud Console has correct callback URL: `https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback`
+  6. Remove custom `redirectTo` options from `signInWithOAuth()` calls (already done)
+
+**Example**: If you see `site_url: "https://vietlinker.info"` in the OAuth URL but you're testing on deploy preview, that's the problem - update Supabase Site URL to match your testing domain.
 
 ## Database Schema Updates
 
