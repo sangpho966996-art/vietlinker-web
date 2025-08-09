@@ -281,19 +281,94 @@ CREATE INDEX IF NOT EXISTS idx_users_verification_status ON users(phone_verified
 ## Troubleshooting Common Issues
 
 ### Email Verification Issues
+
+#### **CRITICAL: API Success But No Email Delivery**
+If Supabase API calls succeed (no 400 errors) but users don't receive verification emails:
+
+1. **Check Supabase Email Service Configuration**:
+   - Go to Supabase Dashboard → Settings → API
+   - Verify that email service is properly configured
+   - Check if custom SMTP is required for your project tier
+
+2. **Verify Email Templates**:
+   - Go to Authentication → Email Templates
+   - Ensure "Magic Link" template is configured (used by signInWithOtp)
+   - Template must include `{{ .ConfirmationURL }}` variable
+   - Test template with preview function
+
+3. **Check Email Provider Restrictions**:
+   - Gmail/Yahoo may block emails from new domains
+   - Check Supabase email delivery logs in dashboard
+   - Consider using custom SMTP (SendGrid, Mailgun, etc.)
+
+4. **Domain Authentication**:
+   - Verify sender domain is authenticated
+   - Check SPF/DKIM records if using custom domain
+   - Ensure "From" email address is verified
+
+#### **Step-by-Step Debugging**:
+
+1. **Supabase Dashboard Checks**:
+   ```
+   Authentication → Settings:
+   ✅ Enable email confirmations: ON
+   ✅ Enable email OTP: ON
+   ✅ Confirm email change: ON
+   ✅ Secure email change: ON
+   ```
+
+2. **Email Template Configuration**:
+   ```
+   Authentication → Email Templates → Magic Link:
+   Subject: Xác minh email VietLinker
+   Body: <a href="{{ .ConfirmationURL }}">Xác minh email</a>
+   ```
+
+3. **SMTP Configuration** (if built-in service fails):
+   ```
+   Settings → API → SMTP Settings:
+   - Host: smtp.sendgrid.net
+   - Port: 587
+   - Username: apikey
+   - Password: [SendGrid API Key]
+   ```
+
+4. **Test Email Delivery**:
+   - Use Supabase SQL Editor to check auth.users table
+   - Look for email_confirmed_at field
+   - Check Supabase logs for email delivery errors
+
+#### **Common Issues & Solutions**:
+
 - **400 Error on Email Signup**: Check Supabase Authentication settings
   - Go to Authentication → Settings → Enable "Enable email confirmations"
   - Verify SMTP configuration is set up (or use Supabase's built-in email service)
   - Check that Site URL and redirect URLs are properly configured
+
 - **Email OTP Configuration**: For email-first verification flow
   - Go to Authentication → Settings → Enable "Enable email OTP"
   - Configure email templates for OTP verification
   - Set appropriate redirect URLs for email verification
-- Check Supabase email template configuration
-- Verify redirect URLs are correctly set
-- Check spam folders for verification emails
-- Ensure email confirmation is enabled
+
+- **Emails Going to Spam**: 
+  - Check sender reputation
+  - Configure SPF/DKIM records
+  - Use reputable SMTP service
+
+- **Rate Limiting**: 
+  - Supabase may limit email sending frequency
+  - Check project usage limits
+  - Implement proper error handling for rate limits
+
 - **Debug Email Sending**: Check browser console for 400 errors from Supabase auth endpoints
+
+#### **Production Email Setup Checklist**:
+- [ ] Custom SMTP configured (recommended for production)
+- [ ] Domain authentication (SPF/DKIM) set up
+- [ ] Email templates customized and tested
+- [ ] Sender email address verified
+- [ ] Rate limiting and error handling implemented
+- [ ] Email delivery monitoring set up
 
 ### SMS Verification Issues
 - Verify Twilio credentials are correct

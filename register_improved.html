@@ -1044,6 +1044,45 @@
             alert('Chính sách bảo mật sẽ được hiển thị ở đây');
         };
 
+        // Debug email verification with detailed logging
+        window.debugEmailVerification = async function() {
+            const email = document.getElementById('emailForVerification').value;
+            console.log('=== EMAIL VERIFICATION DEBUG ===');
+            console.log('Email:', email);
+            console.log('Supabase URL:', SUPABASE_URL);
+            
+            try {
+                // Check Supabase configuration
+                const { data: config, error: configError } = await supabase.auth.getSession();
+                console.log('Supabase session check:', { data: config, error: configError });
+                
+                // Attempt email verification
+                const { data, error } = await supabase.auth.signInWithOtp({
+                    email: email,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/register_improved.html?email_verified=true&email=' + encodeURIComponent(email)
+                    }
+                });
+                
+                console.log('=== SUPABASE EMAIL OTP RESPONSE ===');
+                console.log('Success data:', data);
+                console.log('Error details:', error);
+                
+                if (error) {
+                    console.log('Error code:', error.status);
+                    console.log('Error message:', error.message);
+                    showAlert('Debug: ' + error.message, 'error');
+                } else {
+                    console.log('API call successful - check Supabase dashboard for email delivery logs');
+                    showAlert('Debug: API call successful. Check email and Supabase logs.', 'info');
+                }
+                
+            } catch (err) {
+                console.log('Caught exception:', err);
+                showAlert('Debug exception: ' + err.message, 'error');
+            }
+        };
+
         // Handle registration
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
