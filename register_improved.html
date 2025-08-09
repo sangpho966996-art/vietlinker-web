@@ -676,8 +676,8 @@
                             <button type="button" onclick="debugEmailVerification()" class="btn-verify" style="margin-top: 10px; background: #6c757d;">
                                 🔍 Debug Email
                             </button>
-                            <button type="button" onclick="testAlternativeEmailMethod()" class="btn-verify" style="margin-top: 10px; background: #17a2b8;">
-                                🧪 Test Alternative
+                            <button type="button" onclick="testSendGridDomainAuth()" class="btn-verify" style="margin-top: 10px; background: #17a2b8;">
+                                🧪 Test Domain Auth
                             </button>
                         </div>
                         <div id="emailVerificationStatus" class="verification-status" style="display: none;"></div>
@@ -1055,13 +1055,23 @@
             alert('Chính sách bảo mật sẽ được hiển thị ở đây');
         };
 
-        // Debug email verification with detailed logging
+        // Debug email verification with detailed logging and domain authentication checks
         window.debugEmailVerification = async function() {
             const email = document.getElementById('emailForVerification').value;
             console.log('=== EMAIL VERIFICATION DEBUG ===');
             console.log('Email:', email);
             console.log('Supabase URL:', SUPABASE_URL);
             console.log('Supabase Anon Key:', SUPABASE_ANON_KEY.substring(0, 20) + '...');
+            console.log('SendGrid domain: em312.vietlinker.info');
+            console.log('Expected sender: account@vietlinker.info');
+
+            // Check if this is a 500 error related to SendGrid domain authentication
+            console.log('=== DOMAIN AUTHENTICATION CHECK ===');
+            console.log('Common 500 error cause: SendGrid domain authentication failure');
+            console.log('Required DNS records for em312.vietlinker.info:');
+            console.log('- SPF (TXT): v=spf1 include:sendgrid.net ~all');
+            console.log('- DKIM (CNAME): s1._domainkey and s2._domainkey records');
+            console.log('- Domain verification (CNAME): em312.vietlinker.info');
             
             try {
                 // Check Supabase configuration
@@ -1090,15 +1100,12 @@
                     console.log('Error name:', error.name);
                     console.log('Full error object:', JSON.stringify(error, null, 2));
                     
-                    if (error.status === 500) {
-                        console.log('=== 500 ERROR ANALYSIS ===');
-                        console.log('This indicates a server-side issue with email sending');
-                        console.log('Possible causes:');
-                        console.log('1. SendGrid SMTP not fully configured');
-                        console.log('2. Missing external_email_enabled setting');
-                        console.log('3. SendGrid API key issues');
-                        console.log('4. Rate limiting configuration');
-                        showAlert('Debug: 500 Server Error - ' + error.message + '. Check SendGrid SMTP configuration.', 'error');
+                    if (error.status === 500 || error.message.includes('Error sending confirmation email')) {
+                        console.error('=== 500 ERROR DIAGNOSIS ===');
+                        console.error('This is likely a SendGrid domain authentication issue');
+                        console.error('Check SendGrid dashboard: Settings → Sender Authentication → Domain Authentication');
+                        console.error('Verify em312.vietlinker.info is authenticated with proper DNS records');
+                        showAlert('500 Error: Likely SendGrid domain authentication issue. Check DNS records for em312.vietlinker.info', 'error');
                     } else if (error.status === 429) {
                         console.log('=== 429 RATE LIMIT ANALYSIS ===');
                         console.log('Still using built-in email service instead of SendGrid');
@@ -1115,39 +1122,69 @@
             } catch (err) {
                 console.log('Caught exception:', err);
                 console.log('Exception details:', JSON.stringify(err, null, 2));
-                showAlert('Debug exception: ' + err.message, 'error');
+                if (err.message.includes('500') || err.message.includes('Error sending confirmation email')) {
+                    console.error('=== NETWORK ERROR DIAGNOSIS ===');
+                    console.error('500 server error indicates SendGrid domain authentication failure');
+                    console.error('Solution: Configure DNS records for em312.vietlinker.info in SendGrid');
+                    showAlert('Network 500 Error: SendGrid domain authentication required. Check setup-instructions.md', 'error');
+                } else {
+                    showAlert('Debug exception: ' + err.message, 'error');
+                }
             }
         };
 
-        window.testAlternativeEmailMethod = async function() {
-            console.log('=== TESTING ALTERNATIVE EMAIL METHOD ===');
-            const email = document.getElementById('emailForVerification').value;
-            console.log('Testing with signUp method instead of signInWithOtp');
+        // Test SendGrid domain authentication status
+        window.testSendGridDomainAuth = async function() {
+            console.log('=== TESTING SENDGRID DOMAIN AUTHENTICATION ===');
             
+            const email = document.getElementById('emailForVerification').value;
+            if (!email) {
+                showAlert('Vui lòng nhập email để test', 'error');
+                return;
+            }
+
+            console.log('Testing email delivery pipeline...');
+            console.log('Step 1: Supabase → SendGrid SMTP');
+            console.log('Step 2: SendGrid domain authentication check');
+            console.log('Step 3: SendGrid → Recipient inbox');
+
             try {
+                console.log('Testing with signup method (alternative to OTP)...');
                 const { data, error } = await supabase.auth.signUp({
                     email: email,
-                    password: 'temporary123!',
+                    password: 'TempPassword123!',
                     options: {
-                        emailRedirectTo: window.location.origin + '/register_improved.html?email_verified=true&email=' + encodeURIComponent(email)
+                        emailRedirectTo: window.location.origin + '/email-confirmed.html'
                     }
                 });
-                
-                console.log('=== SIGNUP METHOD RESPONSE ===');
-                console.log('Success data:', data);
-                console.log('Error details:', error);
-                
+
+                console.log('SignUp method result:', { data, error });
+
                 if (error) {
-                    console.log('SignUp error:', error.message);
-                    showAlert('Alternative method error: ' + error.message, 'error');
+                    console.error('SignUp method error:', error);
+                    
+                    if (error.status === 500) {
+                        console.error('=== SENDGRID DOMAIN AUTH FAILURE ===');
+                        console.error('500 error confirms SendGrid domain authentication issue');
+                        console.error('Required actions:');
+                        console.error('1. Access SendGrid dashboard');
+                        console.error('2. Go to Settings → Sender Authentication → Domain Authentication');
+                        console.error('3. Verify em312.vietlinker.info domain');
+                        console.error('4. Add required DNS records to domain registrar');
+                        console.error('5. Wait for DNS propagation (up to 48 hours)');
+                        showAlert('500 Error: SendGrid domain em312.vietlinker.info requires DNS authentication. See console for details.', 'error');
+                    } else {
+                        showAlert('SignUp Error: ' + error.message, 'error');
+                    }
                 } else {
-                    console.log('SignUp method successful!');
-                    showAlert('Alternative method: Email sent successfully!', 'success');
+                    console.log('SignUp method success - but check if email actually arrives');
+                    console.log('Next steps: Check recipient inbox and spam folder');
+                    console.log('If no email arrives despite success, domain authentication is still the issue');
+                    showAlert('SignUp successful - check inbox for email (may take 5-10 minutes)', 'info');
                 }
-                
             } catch (error) {
-                console.error('Alternative method error:', error);
-                showAlert('Alternative method error: ' + error.message, 'error');
+                console.error('SignUp method exception:', error);
+                showAlert('SignUp Exception: ' + error.message, 'error');
             }
         };
 

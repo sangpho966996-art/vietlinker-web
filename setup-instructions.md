@@ -280,6 +280,94 @@ CREATE INDEX IF NOT EXISTS idx_users_verification_status ON users(phone_verified
 
 ## Troubleshooting Common Issues
 
+### Critical: 500 "Error sending confirmation email" Issues
+
+#### Root Cause
+The most common cause of 500 "Error sending confirmation email" errors is **SendGrid domain authentication failure**. Even if SMTP settings are correct in Supabase, emails will fail if the sending domain is not properly authenticated with SendGrid.
+
+#### Symptoms
+- API returns 500 status code with "Error sending confirmation email"
+- Supabase configuration appears correct (`external_email_enabled: true`, rate limits set properly)
+- SMTP settings are configured but emails still fail
+
+#### Solution: SendGrid Domain Authentication
+
+**Step 1: Access SendGrid Dashboard**
+1. Log into SendGrid dashboard
+2. Go to Settings → Sender Authentication → Domain Authentication
+3. Check if `em312.vietlinker.info` is listed and verified
+
+**Step 2: Configure DNS Records**
+If domain is not authenticated, you need to add these DNS records to your domain registrar:
+
+```dns
+# SPF Record (TXT)
+Name: em312.vietlinker.info
+Type: TXT
+Value: v=spf1 include:sendgrid.net ~all
+
+# DKIM Records (CNAME) - SendGrid will provide specific values
+Name: s1._domainkey.em312.vietlinker.info
+Type: CNAME
+Value: s1.domainkey.u[XXXXX].wl[XXX].sendgrid.net
+
+Name: s2._domainkey.em312.vietlinker.info
+Type: CNAME
+Value: s2.domainkey.u[XXXXX].wl[XXX].sendgrid.net
+
+# Domain Verification (CNAME)
+Name: em312.vietlinker.info
+Type: CNAME
+Value: u[XXXXX].wl[XXX].sendgrid.net
+```
+
+**Step 3: Verify Domain Authentication**
+1. After adding DNS records, return to SendGrid dashboard
+2. Click "Verify" next to your domain
+3. Wait for DNS propagation (can take up to 48 hours)
+4. Domain status should change to "Verified"
+
+**Step 4: Test Email Delivery**
+1. Once domain is verified, test email verification again
+2. Check SendGrid Activity dashboard for delivery status
+3. Verify emails arrive in recipient inboxes
+
+#### Alternative Solutions
+If domain authentication doesn't resolve the issue:
+
+1. **Check SendGrid Account Status**
+   - Verify SendGrid account is active and in good standing
+   - Check for any account suspensions or restrictions
+
+2. **Verify API Key Permissions**
+   - Ensure SendGrid API key has "Mail Send" permissions
+   - Regenerate API key if necessary
+
+3. **Check Rate Limiting**
+   - Verify SendGrid account limits haven't been exceeded
+   - Check for any temporary restrictions
+
+4. **Test with Different Email Provider**
+   - Try sending to different email providers (Gmail, Yahoo, Outlook)
+   - Check if issue is provider-specific
+
+#### Debugging Steps
+1. **Check Supabase Auth Logs**
+   - Go to Supabase Dashboard → Authentication → Logs
+   - Look for detailed error messages from SendGrid
+
+2. **Monitor SendGrid Activity**
+   - Check SendGrid Dashboard → Activity
+   - Verify if emails are being processed by SendGrid
+
+3. **Test Email Sending from SendGrid**
+   - Use SendGrid's test email feature
+   - Confirm basic SMTP connectivity
+
+#### Reference
+This solution is based on GitHub discussion: https://github.com/supabase/supabase/discussions/[issue-number]
+Multiple users reported identical 500 errors resolved by proper domain authentication.
+
 ### Email Verification Issues
 
 #### **"Email rate limit exceeded" Error**
