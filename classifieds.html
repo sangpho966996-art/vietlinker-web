@@ -6,9 +6,11 @@
   <title>Rao Vặt - VietLinker</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 0; background: #fff; }
-    header { background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%); color: #fff; padding: 14px 16px; }
+    header { background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%); color: #fff; padding: 14px 16px; position:relative; overflow:hidden; }
+    header::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%); animation: shimmer 6s linear infinite; }
+    @keyframes shimmer { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
     .logo-text { font-weight: 800; font-size: 22px; }
-    .header-row { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .header-row { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; position:relative; z-index:1; }
     .user-actions { display:flex; align-items:center; gap:10px; }
     .btn-post { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color:#fff; text-decoration:none; padding:8px 14px; border-radius:999px; font-weight:700; }
     .auth-buttons a { background: rgba(255,255,255,0.15); color:#fff; text-decoration:none; padding:8px 12px; border-radius:10px; }
@@ -17,35 +19,43 @@
     .user-info.active { display:flex; }
     .user-avatar { width:34px; height:34px; border-radius:50%; background:#FFD700; color:#1e3c72; display:flex; align-items:center; justify-content:center; font-weight:800; }
     .user-name { font-weight:600; }
-    .hero { background: #1e3c72; color: #fff; padding: 20px; }
+    /* Hero Search Section (match index.html style) */
+    .hero-search { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 40px 20px; position: relative; overflow: hidden; }
+    .hero-search::before { content:''; position:absolute; inset:0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat; }
+    .search-container { max-width: 1000px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+    .search-title { color:#fff; font-size:32px; font-weight:800; margin-bottom:10px; text-shadow:0 2px 10px rgba(0,0,0,0.2); }
+    .search-subtitle { color:rgba(255,255,255,0.9); font-size:16px; margin-bottom:20px; }
+    .mega-search-box { background:#fff; border-radius:15px; padding:20px; box-shadow:0 15px 50px rgba(0,0,0,0.25); display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .search-input-group { flex:1; min-width:180px; position:relative; }
+    .search-input-group input, .search-input-group select { width:100%; padding:12px 15px 12px 40px; border:2px solid #e0e0e0; border-radius:10px; font-size:15px; background:#fff; }
+    .search-input-group input:focus, .search-input-group select:focus { outline:none; border-color:#dc143c; box-shadow:0 0 0 3px rgba(220,20,60,0.1); }
+    .search-input-group .input-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:18px; color:#666; }
+    .search-btn-primary { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color:#fff; border:none; padding:14px 24px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:0 6px 20px rgba(220,20,60,0.3); }
     .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
     .loading { text-align: center; padding: 40px; color: #666; }
     .empty { text-align: center; padding: 60px 16px; color: #999; }
 
     /* Nav */
-    nav { background:#1e3c72; position:sticky; top:0; z-index:30; border-bottom:3px solid rgba(220,20,60,0.25); }
+    nav { background:#1e3c72; position:sticky; top:0; z-index:30; border-bottom:3px solid rgba(220,20,60,0.25); box-shadow:0 2px 14px rgba(0,0,0,0.12); }
     .nav-links { display:flex; gap:8px; padding:10px 0; overflow:auto; }
     .nav-links a { color:#fff; text-decoration:none; padding:8px 12px; border-radius:10px; white-space:nowrap; font-weight:500; }
     .nav-links a.active { background:linear-gradient(135deg, #dc143c, #b91c3c); }
 
-    /* Search */
-    .search-row { background:#fff; margin-top:-12px; padding:16px; border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,0.1); display:grid; grid-template-columns: 1fr 1fr 1fr auto; gap:10px; }
-    .search-input { position:relative; }
-    .search-input input, .search-input select { width:100%; padding:12px 12px 12px 36px; border:1px solid #e5e7eb; border-radius:10px; font-size:14px; }
-    .search-input .icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:0.6; }
     .btn-primary { background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color:#fff; border:none; border-radius:10px; padding:12px 18px; font-weight:700; cursor:pointer; }
 
     /* Filter pills */
     .filters { margin-top:16px; display:flex; gap:8px; overflow:auto; padding-bottom:8px; }
     .pill { border:1px solid #e5e7eb; background:#f8fafc; color:#374151; padding:8px 14px; border-radius:999px; cursor:pointer; white-space:nowrap; }
-    .pill.active { background:#dc143c; color:#fff; border-color:#dc143c; }
+    .pill.active { background:linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color:#fff; border-color:#dc143c; box-shadow:0 4px 10px rgba(220,20,60,0.25); }
 
     /* Grid */
     .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px; }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } .search-row { grid-template-columns: 1fr; } }
 
-    .card { border:1px solid #e5e7eb; border-radius:14px; overflow:hidden; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,0.06); cursor:pointer; }
+    .card { border:1px solid #e5e7eb; border-radius:14px; overflow:hidden; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,0.06); cursor:pointer; position:relative; }
+    .card::before { content:''; position:absolute; left:0; right:0; top:0; height:4px; background:linear-gradient(90deg, #dc143c, #FFD700, #1e3c72); transform:scaleX(0); transform-origin:left; transition:transform .25s ease; }
+    .card:hover::before { transform:scaleX(1); }
     .card .thumb { height:180px; background:linear-gradient(135deg, rgba(220,20,60,0.08), rgba(30,60,114,0.08)); display:flex; align-items:center; justify-content:center; font-size:42px; position:relative; }
     .card .thumb img { width:100%; height:100%; object-fit:cover; }
     .badge { position:absolute; left:10px; top:10px; background:#dc143c; color:#fff; padding:4px 10px; border-radius:999px; font-size:12px; }
@@ -58,7 +68,7 @@
     .qa button { border:none; border-radius:8px; padding:8px; background:#f3f4f6; color:#374151; cursor:pointer; }
 
     /* Floating button */
-    .fab { position:fixed; right:20px; bottom:20px; width:56px; height:56px; border-radius:50%; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color:#fff; border:none; font-size:24px; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+    .fab { position:fixed; right:20px; bottom:20px; width:56px; height:56px; border-radius:50%; background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%); color:#fff; border:none; font-size:24px; cursor:pointer; box-shadow:0 8px 24px rgba(220,20,60,0.35); }
 
     /* Modal */
     .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:50; }
@@ -87,7 +97,20 @@
 <body>
   <header>
     <div class="header-row">
-      <span class="logo-text">VietLinker • Rao Vặt</span>
+      <span style="display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 100 100" width="42" height="42" aria-hidden="true">
+          <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
+          <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+          <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+          <circle cx="75" cy="50" r="8" fill="#FFD700"/>
+          <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
+          <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+          <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+          <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+          <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+        </svg>
+        <span class="logo-text">VietLinker • Rao Vặt</span>
+      </span>
       <div class="user-actions">
         <a href="#" class="btn-post" id="postNow">✍️ Đăng tin</a>
         <div class="user-info" id="userInfo">
@@ -105,22 +128,49 @@
   <nav>
     <div class="container">
       <div class="nav-links">
-        <a href="index.html">Trang chủ</a>
-        <a href="marketplace.html">Mua Bán</a>
-        <a href="jobs.html">Việc Làm</a>
-        <a href="services.html">Dịch Vụ</a>
-        <a href="food.html">Ăn Uống</a>
-        <a href="realestate.html">BĐS & Tiệm</a>
-        <a href="classifieds.html" class="active">Rao Vặt</a>
-        <a href="promotions.html">Khuyến Mãi</a>
+        <a href="index.html">🏠 Trang Chủ</a>
+        <a href="marketplace.html">🛒 Mua Bán</a>
+        <a href="jobs.html">💼 Việc Làm</a>
+        <a href="services.html">🤝 Dịch Vụ</a>
+        <a href="food.html">🍜 Ăn Uống</a>
+        <a href="realestate.html">🏠 BĐS & Tiệm</a>
+        <a href="classifieds.html" class="active">📋 Rao Vặt</a>
+        <a href="promotions.html">🎁 Khuyến Mãi</a>
       </div>
     </div>
   </nav>
 
-  <section class="hero">
-    <div class="container">
-      <h1>📢 Rao Vặt Cộng Đồng</h1>
-      <p>Tìm kiếm • Đăng tin • Kết nối trong cộng đồng người Việt</p>
+  <section class="hero-search">
+    <div class="search-container">
+      <h1 class="search-title">📢 Rao Vặt Cộng Đồng</h1>
+      <p class="search-subtitle">Tìm kiếm • Đăng tin • Kết nối trong cộng đồng người Việt</p>
+      <div class="mega-search-box">
+        <div class="search-input-group">
+          <span class="input-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Tìm gì? (VD: iPhone, xe đạp, thú cưng...)" />
+        </div>
+        <div class="search-input-group">
+          <span class="input-icon">📍</span>
+          <input type="text" id="locationInput" placeholder="Zipcode hoặc Thành phố" />
+        </div>
+        <div class="search-input-group">
+          <span class="input-icon">📂</span>
+          <select id="categoryFilter">
+            <option value="">Tất cả danh mục</option>
+            <option value="vehicle">🚗 Xe cộ</option>
+            <option value="electronics">📱 Điện tử</option>
+            <option value="furniture">🪑 Nội thất</option>
+            <option value="clothes">👕 Quần áo</option>
+            <option value="baby">👶 Mẹ & Bé</option>
+            <option value="pet">🐕 Thú cưng</option>
+            <option value="books">📚 Sách báo</option>
+            <option value="sports">⚽ Thể thao</option>
+            <option value="tools">🔧 Dụng cụ</option>
+            <option value="other">📦 Khác</option>
+          </select>
+        </div>
+        <button class="search-btn-primary" id="searchBtn">🔍 TÌM KIẾM</button>
+      </div>
     </div>
   </section>
 
@@ -143,28 +193,6 @@
   </div>
 
   <main class="container">
-    <div class="search-row">
-      <div class="search-input"><span class="icon">🔍</span><input id="searchInput" type="text" placeholder="Từ khóa" /></div>
-      <div class="search-input"><span class="icon">📍</span><input id="locationInput" type="text" placeholder="Zipcode hoặc Thành phố" /></div>
-      <div class="search-input">
-        <span class="icon">📂</span>
-        <select id="categoryFilter">
-          <option value="">Tất cả danh mục</option>
-          <option value="vehicle">Xe cộ</option>
-          <option value="electronics">Điện tử</option>
-          <option value="furniture">Nội thất</option>
-          <option value="clothes">Quần áo</option>
-          <option value="baby">Mẹ & Bé</option>
-          <option value="pet">Thú cưng</option>
-          <option value="books">Sách báo</option>
-          <option value="sports">Thể thao</option>
-          <option value="tools">Dụng cụ</option>
-          <option value="other">Khác</option>
-        </select>
-      </div>
-      <div><button class="btn-primary" id="searchBtn">TÌM KIẾM</button></div>
-    </div>
-
     <div class="filters" id="typeFilters">
       <button class="pill active" data-type="all">Tất cả</button>
       <button class="pill" data-type="sell">Cần bán</button>
@@ -388,6 +416,11 @@
       }));
       // modals
       document.querySelectorAll('.close').forEach(btn => btn.addEventListener('click', () => closeModal(btn.getAttribute('data-close'))));
+      // click outside to close
+      document.addEventListener('click', (e) => {
+        const modals = ['postModal','detailModal'];
+        modals.forEach(id => { const m = document.getElementById(id); if (m && e.target === m) closeModal(id); });
+      });
       document.getElementById('postBtn').addEventListener('click', showPostModal);
       const postNow = document.getElementById('postNow'); if (postNow) postNow.addEventListener('click', (e) => { e.preventDefault(); showPostModal(); });
       // upload
