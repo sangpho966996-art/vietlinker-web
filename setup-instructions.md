@@ -366,6 +366,117 @@ If Supabase API calls succeed (no 400 errors) but users don't receive verificati
 
 Since Supabase's built-in email service has rate limits and may not deliver emails reliably, setting up custom SMTP is the best solution:
 
+---
+
+## 🇻🇳 **HƯỚNG DẪN TIẾNG VIỆT: Cấu Hình SendGrid SMTP**
+
+### **Bước 1: Tạo Tài Khoản SendGrid (Miễn Phí)**
+
+1. **Truy cập SendGrid**:
+   - Vào trang web: https://sendgrid.com/
+   - Click nút **"Start for Free"** hoặc **"Get Started"**
+
+2. **Đăng Ký Tài Khoản**:
+   - Điền thông tin cá nhân (họ tên, email, mật khẩu)
+   - Chọn **"I'm a developer"** khi được hỏi về vai trò
+   - Chọn **"Transactional Email"** khi được hỏi về mục đích sử dụng
+   - Click **"Create Account"**
+
+3. **Xác Minh Email**:
+   - Kiểm tra email của bạn (có thể trong thư mục spam)
+   - Click vào link xác minh từ SendGrid
+   - Đăng nhập vào tài khoản SendGrid
+
+### **Bước 2: Tạo API Key**
+
+1. **Vào Settings**:
+   - Sau khi đăng nhập, click **"Settings"** ở sidebar bên trái
+   - Click **"API Keys"**
+
+2. **Tạo API Key Mới**:
+   - Click nút **"Create API Key"**
+   - Đặt tên cho API Key: `VietLinker Email Service`
+   - Chọn **"Restricted Access"**
+
+3. **Cấp Quyền**:
+   - Tìm mục **"Mail Send"**
+   - Chọn **"Full Access"** cho Mail Send
+   - Click **"Create & View"**
+
+4. **Lưu API Key**:
+   - **QUAN TRỌNG**: Copy API Key và lưu vào notepad
+   - API Key chỉ hiển thị 1 lần duy nhất
+   - Ví dụ: `SG.abc123xyz...`
+
+### **Bước 3: Cấu Hình SMTP Trong Supabase**
+
+1. **Vào Supabase Dashboard**:
+   - Truy cập: https://supabase.com/dashboard
+   - Chọn project VietLinker của bạn
+
+2. **Vào Email Settings**:
+   - Click **"Authentication"** ở sidebar
+   - Click **"Emails"**
+   - Click tab **"SMTP Settings"**
+
+3. **Bật Custom SMTP**:
+   - Bật toggle **"Enable Custom SMTP"**
+   - Điền thông tin như sau:
+
+   ```
+   Host: smtp.sendgrid.net
+   Port: 587
+   Username: apikey
+   Password: [Dán API Key từ bước 2]
+   Sender name: VietLinker
+   Sender email: noreply@vietlinker.info
+   ```
+
+4. **Lưu Cấu Hình**:
+   - Click **"Save"** hoặc **"Update"**
+   - Đợi thông báo thành công
+
+### **Bước 4: Test Email Verification**
+
+1. **Mở Deploy Preview**:
+   - Vào: https://deploy-preview-4--famous-pasca-610e24.netlify.app/register_improved.html
+
+2. **Test Gửi Email**:
+   - Nhập email: `sangpho966996@gmail.com`
+   - Click **"Gửi Email Xác Minh"**
+   - Kiểm tra inbox và spam folder
+
+3. **Kiểm Tra Kết Quả**:
+   - Email sẽ đến trong 1-2 phút
+   - Click vào link xác minh trong email
+   - Form đăng ký sẽ được kích hoạt
+
+### **🔧 Debug Nếu Có Lỗi**
+
+Nếu vẫn không nhận được email:
+
+1. **Kiểm tra API Key**:
+   - Đảm bảo copy đúng API Key từ SendGrid
+   - Không có khoảng trắng thừa
+
+2. **Kiểm tra Email Templates**:
+   - Vào Authentication → Emails → Templates
+   - Đảm bảo template "Confirm signup" có `{{ .ConfirmationURL }}`
+
+3. **Debug Function**:
+   - Mở browser console (F12)
+   - Chạy: `debugEmailVerification()`
+   - Xem log chi tiết
+
+### **💡 Lưu Ý Quan Trọng**
+
+- **Free Tier**: SendGrid cho phép 100 emails/ngày miễn phí
+- **Production**: Nên upgrade plan khi có nhiều user
+- **Domain Authentication**: Nên setup domain authentication cho tỷ lệ delivery cao hơn
+- **Monitoring**: Theo dõi email delivery stats trong SendGrid dashboard
+
+---
+
 ##### **Option 1: SendGrid SMTP Setup**
 
 1. **Create SendGrid Account**:
