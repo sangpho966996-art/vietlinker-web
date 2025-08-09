@@ -1047,14 +1047,57 @@
                 showAlert('Email đã được xác minh thành công! Bạn có thể đăng nhập ngay bây giờ.', 'success');
             }
             
-            // Handle OAuth callbacks - check for active session regardless of URL parameters
+            // Enhanced OAuth callback handling with cross-domain detection
             try {
-                console.log('Checking for OAuth session...');
-                const { data: { session }, error } = await supabase.auth.getSession();
-                console.log('Session check result:', { session: !!session, user: !!session?.user, error });
+                console.log('=== Enhanced OAuth Session Detection ===');
+                console.log('Current domain:', window.location.origin);
+                console.log('Current URL:', window.location.href);
                 
-                if (session && session.user && !error) {
-                    console.log('Active session found, checking for existing user...');
+                // Check for active session with retry mechanism
+                let sessionCheckAttempts = 0;
+                const maxSessionChecks = 3;
+                let session = null;
+                let sessionError = null;
+                
+                const checkSession = async () => {
+                    sessionCheckAttempts++;
+                    console.log(`Session check attempt ${sessionCheckAttempts}/${maxSessionChecks}...`);
+                    
+                    const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+                    console.log('Session check result:', { 
+                        session: !!currentSession, 
+                        user: !!currentSession?.user, 
+                        error,
+                        attempt: sessionCheckAttempts 
+                    });
+                    
+                    return { session: currentSession, error };
+                };
+                
+                // Initial session check
+                const sessionResult = await checkSession();
+                session = sessionResult.session;
+                sessionError = sessionResult.error;
+                
+                // If no session found, wait and retry (OAuth might still be processing)
+                if (!session && !sessionError && sessionCheckAttempts < maxSessionChecks) {
+                    console.log('No session found, waiting 2 seconds and retrying...');
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    const retryResult = await checkSession();
+                    session = retryResult.session;
+                    sessionError = retryResult.error;
+                }
+                
+                if (session && session.user && !sessionError) {
+                    console.log('Active OAuth session found!');
+                    console.log('User metadata:', {
+                        id: session.user.id,
+                        email: session.user.email,
+                        provider: session.user.app_metadata?.provider,
+                        name: session.user.user_metadata?.full_name || session.user.user_metadata?.name
+                    });
+                    
                     // Check if this is a new OAuth registration (no existing user record)
                     const { data: existingUser, error: userError } = await supabase
                         .from('users')
@@ -1064,12 +1107,12 @@
                     
                     console.log('Existing user check:', { existingUser: !!existingUser, userError });
                     
-                    if (!existingUser && !userError) {
+                    if (!existingUser && userError?.code === 'PGRST116') {
                         console.log('New OAuth user detected, creating profile...');
                         showLoading(true);
                         
                         // Determine provider from user metadata
-                        const provider = session.user.app_metadata?.provider || 'unknown';
+                        const provider = session.user.app_metadata?.provider || 'oauth';
                         console.log('OAuth provider:', provider);
                         
                         const { error: profileError } = await supabase
@@ -1104,61 +1147,108 @@
                         setTimeout(() => {
                             window.location.href = 'index.html';
                         }, 1500);
+                    } else if (userError && userError.code !== 'PGRST116') {
+                        console.error('Database error checking user:', userError);
+                        showAlert('Lỗi kiểm tra thông tin người dùng: ' + userError.message, 'error');
                     }
                 } else {
-                    console.log('No active session found');
+                    console.log('No active OAuth session found');
+                    if (sessionError) {
+                        console.error('Session error:', sessionError);
+                    }
                 }
             } catch (error) {
                 console.error('OAuth session check error:', error);
                 showAlert('Lỗi xử lý đăng nhập OAuth: ' + error.message, 'error');
             }
             
-            // Enhanced OAuth callback handling (for URL parameters)
+            // Enhanced OAuth callback handling (for URL parameters and hash fragments)
             const provider = urlParams.get('provider');
             const hasOAuthCode = urlParams.has('code');
             const hasOAuthState = urlParams.has('state');
+            const hasOAuthError = urlParams.has('error');
             
-            console.log('URL parameters:', { provider, hasOAuthCode, hasOAuthState });
+            // Also check hash fragments (some OAuth flows use hash)
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            const hasHashToken = hashParams.has('access_token');
+            const hasHashError = hashParams.has('error');
+            
+            console.log('=== OAuth URL Parameter Detection ===');
+            console.log('URL parameters:', { provider, hasOAuthCode, hasOAuthState, hasOAuthError });
+            console.log('Hash parameters:', { hasHashToken, hasHashError });
             
             // Check if this looks like an OAuth callback
-            if (provider === 'facebook' || provider === 'google' || hasOAuthCode || hasOAuthState) {
-                console.log('OAuth callback detected via URL parameters');
+            const isOAuthCallback = provider === 'facebook' || provider === 'google' || 
+                                  hasOAuthCode || hasOAuthState || hasHashToken || 
+                                  hasOAuthError || hasHashError;
+            
+            if (isOAuthCallback) {
+                console.log('OAuth callback detected via URL/hash parameters');
+                
+                if (hasOAuthError || hasHashError) {
+                    const errorMsg = urlParams.get('error') || hashParams.get('error') || 'Unknown OAuth error';
+                    console.error('OAuth error detected:', errorMsg);
+                    showAlert(`Lỗi OAuth: ${errorMsg}`, 'error');
+                    return;
+                }
+                
                 showLoading(true);
                 
                 try {
-                    // Wait a moment for Supabase to process the OAuth callback
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    // Wait for Supabase to process the OAuth callback
+                    console.log('Waiting for Supabase to process OAuth callback...');
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                     
                     const { data: { user }, error } = await supabase.auth.getUser();
-                    console.log('User fetch result:', { user: !!user, error });
+                    console.log('OAuth user fetch result:', { user: !!user, error });
                     
                     if (user && !error) {
-                        const { error: profileError } = await supabase
+                        console.log('OAuth user authenticated successfully');
+                        
+                        // Check if user already exists in database
+                        const { data: existingUser, error: userError } = await supabase
                             .from('users')
-                            .upsert([{
-                                id: user.id,
-                                email: user.email,
-                                full_name: user.user_metadata.full_name || user.user_metadata.name,
-                                avatar_url: user.user_metadata.avatar_url,
-                                registration_method: provider || 'oauth',
-                                city: 'Houston',
-                                zipcode: '77001',
-                                state: 'TX',
-                                email_verified: true
-                            }]);
+                            .select('id')
+                            .eq('id', user.id)
+                            .single();
+                        
+                        if (!existingUser && userError?.code === 'PGRST116') {
+                            console.log('Creating new user profile from OAuth...');
+                            
+                            const { error: profileError } = await supabase
+                                .from('users')
+                                .upsert([{
+                                    id: user.id,
+                                    email: user.email,
+                                    full_name: user.user_metadata.full_name || user.user_metadata.name,
+                                    avatar_url: user.user_metadata.avatar_url,
+                                    registration_method: provider || user.app_metadata?.provider || 'oauth',
+                                    city: 'Houston',
+                                    zipcode: '77001',
+                                    state: 'TX',
+                                    email_verified: true
+                                }]);
 
-                        if (!profileError) {
-                            console.log('OAuth registration via URL params successful');
-                            showAlert(`Đăng ký ${provider === 'facebook' ? 'Facebook' : 'Google'} thành công! Đang chuyển hướng...`, 'success');
+                            if (!profileError) {
+                                console.log('OAuth registration via URL params successful');
+                                showAlert(`Đăng ký ${provider === 'facebook' ? 'Facebook' : 'Google'} thành công! Đang chuyển hướng...`, 'success');
+                                setTimeout(() => {
+                                    window.location.href = 'index.html';
+                                }, 2000);
+                            } else {
+                                console.error('Profile creation error:', profileError);
+                                throw profileError;
+                            }
+                        } else if (existingUser) {
+                            console.log('Existing OAuth user, redirecting...');
+                            showAlert('Đăng nhập thành công! Đang chuyển hướng...', 'success');
                             setTimeout(() => {
                                 window.location.href = 'index.html';
-                            }, 2000);
-                        } else {
-                            console.error('Profile creation error:', profileError);
-                            throw profileError;
+                            }, 1500);
                         }
                     } else {
-                        throw new Error('Không thể lấy thông tin người dùng');
+                        console.error('Failed to get OAuth user:', error);
+                        throw new Error('Không thể lấy thông tin người dùng OAuth');
                     }
                 } catch (error) {
                     console.error('OAuth URL parameter handling error:', error);
@@ -1166,6 +1256,8 @@
                 } finally {
                     showLoading(false);
                 }
+            } else {
+                console.log('No OAuth callback parameters detected');
             }
         });
     </script>
