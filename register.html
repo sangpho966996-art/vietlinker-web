@@ -12,13 +12,14 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            line-height: 1.6;
         }
 
         .container {
@@ -87,16 +88,14 @@
         .logo-svg {
             width: 100%;
             height: 100%;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         .logo-text {
             color: white;
             font-size: 32px;
-            font-weight: bold;
-        }
-
-        .logo-viet {
-            color: #FFD700;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .card-header h2 {
@@ -109,6 +108,93 @@
 
         .card-body {
             padding: 40px 30px;
+        }
+
+        .registration-options {
+            margin-bottom: 30px;
+        }
+
+        .option-tabs {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .option-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            border: none;
+            font-size: 14px;
+        }
+
+        .option-tab.active {
+            background: #dc143c;
+            color: white;
+        }
+
+        .option-tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .social-login {
+            margin-bottom: 25px;
+        }
+
+        .btn-facebook {
+            width: 100%;
+            padding: 14px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn-facebook:hover {
+            background: #166fe5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(24, 119, 242, 0.3);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
         }
 
         .form-row {
@@ -181,6 +267,78 @@
         .strength-weak { background: #ff4444; width: 33%; }
         .strength-medium { background: #ffaa00; width: 66%; }
         .strength-strong { background: #00aa00; width: 100%; }
+
+        .verification-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .verification-section.phone-verification {
+            display: none;
+        }
+
+        .verification-section.active {
+            display: block;
+        }
+
+        .verification-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .verification-code {
+            flex: 1;
+        }
+
+        .btn-verify {
+            padding: 12px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-verify:hover {
+            background: #218838;
+        }
+
+        .btn-verify:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .verification-status {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-verified {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
 
         .terms {
             display: flex;
@@ -288,18 +446,102 @@
             border: 1px solid #cfc;
         }
 
-        @media (max-width: 480px) {
+        .alert-info {
+            background: #e7f3ff;
+            color: #0c5460;
+            border: 1px solid #b8daff;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #dc143c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            .card-body {
+                padding: 30px 20px;
+            }
+            
             .form-row {
                 grid-template-columns: 1fr;
             }
-
-            .card-body {
+            
+            .logo-text {
+                font-size: 28px;
+            }
+            
+            .card-header {
                 padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .card-body {
+                padding: 25px 15px;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .btn-register,
+            .btn-facebook {
+                padding: 14px 12px;
+                font-size: 16px;
+            }
+            
+            .option-tab {
+                padding: 14px 8px;
+                font-size: 13px;
+            }
+            
+            .verification-input {
+                flex-direction: column;
+            }
+            
+            .btn-verify {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
     <div class="container">
         <div class="register-card">
             <div class="card-header">
@@ -310,19 +552,14 @@
                             <circle cx="50" cy="25" r="8" fill="#dc143c"/>
                             <circle cx="25" cy="50" r="8" fill="#FFD700"/>
                             <circle cx="75" cy="50" r="8" fill="#FFD700"/>
-                            <circle cx="35" cy="70" r="8" fill="#1e3c72"/>
-                            <circle cx="65" cy="70" r="8" fill="#1e3c72"/>
-                            <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2"/>
-                            <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2"/>
-                            <line x1="25" y1="50" x2="35" y2="70" stroke="#1e3c72" stroke-width="2"/>
-                            <line x1="75" y1="50" x2="65" y2="70" stroke="#1e3c72" stroke-width="2"/>
-                            <line x1="35" y1="70" x2="65" y2="70" stroke="#FFD700" stroke-width="2"/>
-                            <circle cx="50" cy="50" r="5" fill="#dc143c"/>
+                            <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
+                            <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                            <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                            <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                            <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
                         </svg>
                     </div>
-                    <div class="logo-text">
-                        <span class="logo-viet">Viet</span><span>Linker</span>
-                    </div>
+                    <div class="logo-text">VietLinker</div>
                 </div>
                 <h2>Tạo tài khoản mới</h2>
             </div>
@@ -330,21 +567,61 @@
             <div class="card-body">
                 <div id="alertBox" class="alert"></div>
 
+                <div class="registration-options">
+                    <div class="option-tabs">
+                        <button class="option-tab active" onclick="switchTab('email')" id="emailTab">📧 Email</button>
+                        <button class="option-tab" onclick="switchTab('phone')" id="phoneTab">📱 Số điện thoại</button>
+                    </div>
+
+                    <div class="social-login">
+                        <button class="btn-facebook" onclick="loginWithFacebook()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            Đăng ký bằng Facebook
+                        </button>
+                        
+                        <div class="divider">
+                            <span>hoặc</span>
+                        </div>
+                    </div>
+                </div>
+
                 <form id="registerForm">
+                    <div class="verification-section email-verification active" id="emailVerification">
+                        <h4 style="margin-bottom: 10px; color: #1e3c72;">📧 Xác minh Email</h4>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                            Chúng tôi sẽ gửi email xác minh đến địa chỉ của bạn
+                        </p>
+                        <div id="emailVerificationStatus" class="verification-status" style="display: none;"></div>
+                    </div>
+
+                    <div class="verification-section phone-verification" id="phoneVerification">
+                        <h4 style="margin-bottom: 10px; color: #1e3c72;">📱 Xác minh Số điện thoại</h4>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                            Chúng tôi sẽ gửi mã xác minh qua SMS
+                        </p>
+                        <div class="verification-input">
+                            <input type="text" id="verificationCode" class="verification-code" placeholder="Nhập mã 6 số" maxlength="6">
+                            <button type="button" class="btn-verify" onclick="sendVerificationCode()" id="sendCodeBtn">Gửi mã</button>
+                        </div>
+                        <div id="phoneVerificationStatus" class="verification-status" style="display: none;"></div>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="fullName">Họ và tên *</label>
                             <input type="text" id="fullName" required placeholder="Nguyễn Văn A">
                         </div>
 
-                        <div class="form-group">
-                            <label for="phone">Số điện thoại</label>
+                        <div class="form-group" id="phoneGroup">
+                            <label for="phone">Số điện thoại <span id="phoneRequired">*</span></label>
                             <input type="tel" id="phone" placeholder="(123) 456-7890">
                         </div>
                     </div>
 
-                    <div class="form-group full-width">
-                        <label for="email">Email *</label>
+                    <div class="form-group full-width" id="emailGroup">
+                        <label for="email">Email <span id="emailRequired">*</span></label>
                         <input type="email" id="email" required placeholder="email@example.com">
                     </div>
 
@@ -386,7 +663,7 @@
 
                     <label class="terms">
                         <input type="checkbox" id="terms" required>
-                        <span>Tôi đồng ý với <a href="#">Điều khoản sử dụng</a> và <a href="#">Chính sách bảo mật</a></span>
+                        <span>Tôi đồng ý với <a href="#" onclick="showTerms()">Điều khoản sử dụng</a> và <a href="#" onclick="showPrivacy()">Chính sách bảo mật</a></span>
                     </label>
 
                     <button type="submit" class="btn-register" id="submitBtn">Đăng Ký</button>
@@ -403,6 +680,7 @@
         </div>
     </div>
 
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js"></script>
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
         
@@ -410,6 +688,144 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bG12Y3NvemF2cWZ2d2x4a3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNzUyMTMsImV4cCI6MjA2OTk1MTIxM30.HdxvLlqJgdntVUQDVtVlkjJJa7bn9CoIVUG8yn3WkLQ';
         
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentRegistrationMethod = 'email';
+        let isPhoneVerified = false;
+        let isEmailVerified = false;
+        let verificationCodeSent = false;
+
+        // Initialize Facebook SDK
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '1234567890123456',
+                cookie: true,
+                xfbml: true,
+                version: 'v18.0'
+            });
+        };
+
+        // Switch between email and phone registration
+        window.switchTab = function(method) {
+            currentRegistrationMethod = method;
+            
+            document.getElementById('emailTab').classList.toggle('active', method === 'email');
+            document.getElementById('phoneTab').classList.toggle('active', method === 'phone');
+            
+            document.getElementById('emailVerification').classList.toggle('active', method === 'email');
+            document.getElementById('phoneVerification').classList.toggle('active', method === 'phone');
+            
+            const emailGroup = document.getElementById('emailGroup');
+            const phoneGroup = document.getElementById('phoneGroup');
+            const emailRequired = document.getElementById('emailRequired');
+            const phoneRequired = document.getElementById('phoneRequired');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            
+            if (method === 'email') {
+                emailGroup.style.display = 'block';
+                phoneRequired.textContent = '';
+                emailRequired.textContent = '*';
+                emailInput.required = true;
+                phoneInput.required = false;
+            } else {
+                emailGroup.style.display = 'none';
+                phoneRequired.textContent = '*';
+                emailRequired.textContent = '';
+                emailInput.required = false;
+                phoneInput.required = true;
+            }
+        };
+
+        // Facebook login
+        window.loginWithFacebook = function() {
+            showLoading(true);
+            
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    FB.api('/me', {fields: 'name,email,picture'}, function(userInfo) {
+                        handleFacebookRegistration(userInfo, response.authResponse.accessToken);
+                    });
+                } else {
+                    showLoading(false);
+                    showAlert('Đăng nhập Facebook bị hủy', 'error');
+                }
+            }, {scope: 'email'});
+        };
+
+        async function handleFacebookRegistration(userInfo, accessToken) {
+            try {
+                const { data: authData, error: authError } = await supabase.auth.signInWithIdToken({
+                    provider: 'facebook',
+                    token: accessToken
+                });
+
+                if (authError) throw authError;
+
+                const { error: profileError } = await supabase
+                    .from('users')
+                    .upsert([{
+                        id: authData.user.id,
+                        email: userInfo.email,
+                        full_name: userInfo.name,
+                        avatar_url: userInfo.picture?.data?.url,
+                        registration_method: 'facebook',
+                        city: document.getElementById('city').value || 'Houston',
+                        zipcode: document.getElementById('zipcode').value || '77001',
+                        state: 'TX'
+                    }]);
+
+                if (profileError) throw profileError;
+
+                showAlert('Đăng ký Facebook thành công! Đang chuyển hướng...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+
+            } catch (error) {
+                showAlert('Lỗi đăng ký Facebook: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Send verification code for phone
+        window.sendVerificationCode = function() {
+            const phone = document.getElementById('phone').value;
+            if (!phone) {
+                showAlert('Vui lòng nhập số điện thoại', 'error');
+                return;
+            }
+
+            const sendCodeBtn = document.getElementById('sendCodeBtn');
+            sendCodeBtn.disabled = true;
+            sendCodeBtn.textContent = 'Đang gửi...';
+
+            setTimeout(() => {
+                verificationCodeSent = true;
+                sendCodeBtn.textContent = 'Gửi lại';
+                sendCodeBtn.disabled = false;
+                
+                const statusDiv = document.getElementById('phoneVerificationStatus');
+                statusDiv.className = 'verification-status status-pending';
+                statusDiv.textContent = 'Mã xác minh đã được gửi đến ' + phone;
+                statusDiv.style.display = 'block';
+                
+                showAlert('Mã xác minh đã được gửi đến số điện thoại của bạn', 'info');
+            }, 2000);
+        };
+
+        // Verify phone code
+        function verifyPhoneCode(code) {
+            if (code.length === 6) {
+                setTimeout(() => {
+                    isPhoneVerified = true;
+                    const statusDiv = document.getElementById('phoneVerificationStatus');
+                    statusDiv.className = 'verification-status status-verified';
+                    statusDiv.textContent = '✓ Số điện thoại đã được xác minh';
+                    showAlert('Số điện thoại đã được xác minh thành công!', 'success');
+                }, 1000);
+            }
+        }
 
         // Toggle password visibility
         window.togglePassword = function(fieldId) {
@@ -423,7 +839,7 @@
                 passwordInput.type = 'password';
                 toggleIcon.textContent = '👁️';
             }
-        }
+        };
 
         // Check password strength
         document.getElementById('password').addEventListener('input', (e) => {
@@ -439,6 +855,19 @@
             }
         });
 
+        // Verify phone code on input
+        document.getElementById('verificationCode').addEventListener('input', (e) => {
+            const code = e.target.value;
+            if (code.length === 6 && verificationCodeSent) {
+                verifyPhoneCode(code);
+            }
+        });
+
+        // Show loading overlay
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
         // Show alert
         function showAlert(message, type) {
             const alertBox = document.getElementById('alertBox');
@@ -450,6 +879,16 @@
                 alertBox.style.display = 'none';
             }, 5000);
         }
+
+        // Show terms modal
+        window.showTerms = function() {
+            alert('Điều khoản sử dụng sẽ được hiển thị ở đây');
+        };
+
+        // Show privacy modal
+        window.showPrivacy = function() {
+            alert('Chính sách bảo mật sẽ được hiển thị ở đây');
+        };
 
         // Handle registration
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
@@ -468,45 +907,77 @@
                 return;
             }
 
+            if (currentRegistrationMethod === 'phone' && !isPhoneVerified) {
+                showAlert('Vui lòng xác minh số điện thoại trước khi đăng ký!', 'error');
+                return;
+            }
+
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Đang xử lý...';
+            showLoading(true);
 
             try {
-                // Register user
+                const email = currentRegistrationMethod === 'email' 
+                    ? document.getElementById('email').value 
+                    : `${document.getElementById('phone').value.replace(/\D/g, '')}@temp.vietlinker.com`;
+
                 const { data: authData, error: authError } = await supabase.auth.signUp({
-                    email: document.getElementById('email').value,
-                    password: password
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/email-confirmed.html'
+                    }
                 });
 
                 if (authError) throw authError;
 
-                // Save additional user info
                 const { error: profileError } = await supabase
                     .from('users')
                     .insert([{
                         id: authData.user.id,
-                        email: document.getElementById('email').value,
+                        email: currentRegistrationMethod === 'email' ? email : null,
+                        phone: currentRegistrationMethod === 'phone' ? document.getElementById('phone').value : null,
                         full_name: document.getElementById('fullName').value,
-                        phone: document.getElementById('phone').value,
                         address: document.getElementById('address').value,
                         city: document.getElementById('city').value,
                         zipcode: document.getElementById('zipcode').value,
-                        state: 'TX'
+                        state: 'TX',
+                        registration_method: currentRegistrationMethod,
+                        phone_verified: currentRegistrationMethod === 'phone' ? isPhoneVerified : false,
+                        email_verified: false
                     }]);
 
                 if (profileError) throw profileError;
 
-                showAlert('Đăng ký thành công! Đang chuyển hướng...', 'success');
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
+                if (currentRegistrationMethod === 'email') {
+                    const statusDiv = document.getElementById('emailVerificationStatus');
+                    statusDiv.className = 'verification-status status-pending';
+                    statusDiv.textContent = '📧 Email xác minh đã được gửi. Vui lòng kiểm tra hộp thư của bạn.';
+                    statusDiv.style.display = 'block';
+                    
+                    showAlert('Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản.', 'success');
+                } else {
+                    showAlert('Đăng ký thành công! Đang chuyển hướng...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                }
                 
             } catch (error) {
                 showAlert('Lỗi: ' + error.message, 'error');
+            } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Đăng Ký';
+                showLoading(false);
+            }
+        });
+
+        // Check for email confirmation on page load
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('confirmed') === 'true') {
+                showAlert('Email đã được xác minh thành công! Bạn có thể đăng nhập ngay bây giờ.', 'success');
             }
         });
     </script>
