@@ -146,33 +146,23 @@ TWILIO_VERIFY_SID=your_verify_service_sid
    http://localhost:3000
    ```
 
-### 3. Supabase Site URL Configuration (CRITICAL - MUST FIX FOR OAUTH TO WORK)
+### 3. Supabase Site URL Configuration (SIMPLIFIED - ONE-TIME SETUP)
 1. Go to Supabase Dashboard → Authentication → URL Configuration
-2. **IMPORTANT**: Set Site URL to match the domain you're testing on:
-   
-   **For Deploy Preview Testing:**
+2. **Set Site URL to your main production domain:**
    ```
-   https://deploy-preview-4--famous-pasca-610e24.netlify.app
-   ```
-   
-   **For Production:**
-   ```
-   https://yourdomain.com
-   ```
-   
-   **For Local Development:**
-   ```
-   http://localhost:3000
+   https://vietlinker.info
    ```
 
-3. Add additional allowed origins in "Additional Redirect URLs":
+3. **Add ALL your environments to "Additional Redirect URLs":**
    ```
-   https://deploy-preview-4--famous-pasca-610e24.netlify.app/**
-   https://yourdomain.com/**
+   https://vietlinker.info/**
+   https://deploy-preview-*--famous-pasca-610e24.netlify.app/**
+   https://famous-pasca-610e24.netlify.app/**
    http://localhost:3000/**
+   http://localhost:8080/**
    ```
 
-**⚠️ CRITICAL**: The Site URL MUST match the domain you're testing on. If you're testing on the deploy preview, the Site URL must be set to the deploy preview URL. If it's set to a different domain (like `https://vietlinker.info`), you'll get a "Page not found" error after OAuth authentication.
+**✅ ADVANTAGE**: With the updated OAuth code using dynamic redirectTo, you only need to configure this ONCE. The code automatically detects the current domain and redirects appropriately, so OAuth works on production, deploy previews, and local development without changing Site URL.
 
 ### 4. Configure OAuth Consent Screen
 1. Go to OAuth consent screen
@@ -186,24 +176,23 @@ TWILIO_VERIFY_SID=your_verify_service_sid
 - Supabase processes the OAuth response and redirects user to the configured Site URL
 - The register_improved.html page detects the OAuth session and completes registration
 
-### 6. Troubleshooting OAuth 404 Errors
+### 6. Troubleshooting OAuth Issues
 - **Problem**: "Page not found" after Google OAuth
-- **Most Common Cause**: Supabase Site URL doesn't match the domain you're testing on
-- **Diagnostic Steps**: 
-  1. **Check the OAuth URL**: When you click Google login, look at the URL - it should contain `site_url` parameter
-  2. **Verify Site URL matches**: The `site_url` in the OAuth URL should match your current testing domain
-- **Solution Steps**: 
-  1. **Check Supabase Site URL**: Go to Supabase Dashboard → Authentication → URL Configuration
-  2. **Verify Site URL matches your testing domain**:
-     - If testing on `https://deploy-preview-4--famous-pasca-610e24.netlify.app`, Site URL must be `https://deploy-preview-4--famous-pasca-610e24.netlify.app`
-     - If testing on `https://yourdomain.com`, Site URL must be `https://yourdomain.com`
-     - If testing locally, Site URL must be `http://localhost:3000` (or your local port)
-  3. **Update Site URL** to match your current testing domain
-  4. **Test OAuth again** - the 404 error should be resolved
-  5. Ensure Google Cloud Console has correct callback URL: `https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback`
-  6. Remove custom `redirectTo` options from `signInWithOAuth()` calls (already done)
+- **Solution**: The updated OAuth code now uses dynamic redirectTo that automatically works on any domain
+- **One-time setup**: Just ensure all your domains are in the "Additional Redirect URLs" list
+- **No more manual Site URL changes needed** for different environments
 
-**Example**: If you see `site_url: "https://vietlinker.info"` in the OAuth URL but you're testing on deploy preview, that's the problem - update Supabase Site URL to match your testing domain.
+**If OAuth still fails:**
+1. **Check Redirect URLs**: Ensure your current domain is in the "Additional Redirect URLs" list
+2. **Verify Google Cloud Console**: Ensure callback URL is `https://wwlmvcsozavqfvwlxkrt.supabase.co/auth/v1/callback`
+3. **Check browser console**: Look for any CORS or authentication errors
+4. **Test session detection**: The page should automatically detect successful OAuth sessions
+
+**Dynamic OAuth Flow:**
+- Code automatically detects current domain (production, deploy preview, localhost)
+- Uses `window.location.origin` to build correct redirect URL
+- Works on any environment without configuration changes
+- Fallback session-based detection ensures registration completes even if redirect fails
 
 ## Database Schema Updates
 

@@ -760,13 +760,20 @@
             }
         };
 
-        // Facebook login using Supabase OAuth
+        // Facebook login using Supabase OAuth with dynamic redirect
         window.loginWithFacebook = async function() {
             showLoading(true);
             
             try {
+                // Use current domain for redirect to work on any environment
+                const currentDomain = window.location.origin;
+                const redirectUrl = `${currentDomain}/register_improved.html?provider=facebook`;
+                
                 const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'facebook'
+                    provider: 'facebook',
+                    options: {
+                        redirectTo: redirectUrl
+                    }
                 });
 
                 if (error) throw error;
@@ -779,13 +786,20 @@
             }
         };
 
-        // Google login using Supabase OAuth
+        // Google login using Supabase OAuth with dynamic redirect
         window.loginWithGoogle = async function() {
             showLoading(true);
             
             try {
+                // Use current domain for redirect to work on any environment
+                const currentDomain = window.location.origin;
+                const redirectUrl = `${currentDomain}/register_improved.html?provider=google`;
+                
                 const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google'
+                    provider: 'google',
+                    options: {
+                        redirectTo: redirectUrl
+                    }
                 });
 
                 if (error) throw error;
