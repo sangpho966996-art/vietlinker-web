@@ -2,229 +2,952 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chính Sách Bảo Mật - VietLinker</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chính Sách Bảo Mật - VietLinker Digital Marketing LLC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo svg {
+            width: 55px;
+            height: 55px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-home {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1e3c72;
+            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Navigation */
+        nav {
+            background: #1e3c72;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid rgba(220,20,60,0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            padding: 12px 0;
+            align-items: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-links::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 15px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(220, 20, 60, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.active {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            box-shadow: 0 4px 10px rgba(220,20,60,0.3);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .privacy-card {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .privacy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #dc143c, #FFD700, #1e3c72);
+        }
+
+        h1 {
+            color: #1e3c72;
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .update-date {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, rgba(220,20,60,0.1) 0%, rgba(30,60,114,0.1) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border-left: 4px solid #dc143c;
+        }
+
+        .important-notice h3 {
+            color: #dc143c;
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #1e3c72;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #dc143c, #FFD700);
+        }
+
+        h3 {
+            color: #dc143c;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        ul li {
+            color: #444;
+            line-height: 1.8;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '🔒';
+            position: absolute;
+            left: 0;
+            font-size: 16px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .highlight-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .highlight-box p {
+            color: #155724;
+            margin: 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .warning-box p {
+            color: #856404;
+            margin: 0;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .contact-box h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .contact-info {
+            display: grid;
+            gap: 10px;
+        }
+
+        .contact-info p {
+            margin: 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .right-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .right-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #dc143c;
+        }
+
+        .right-card h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .action-buttons button {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0 10px;
+        }
+
+        .btn-print {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+        }
+
+        .action-buttons button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #dc143c, #FFD700, #1e3c72);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #FFD700;
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .privacy-card {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                padding: 10px 0;
+            }
+
+            .nav-links a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .data-table {
+                font-size: 14px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px;
+            }
+
+            .action-buttons button {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+
+            .rights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="navbar-brand">
-                <img src="logo.png" alt="VietLinker Logo">
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
+                    <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+                    <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+                    <circle cx="75" cy="50" r="8" fill="#FFD700"/>
+                    <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
+                    <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                    <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                    <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                    <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                </svg>
+                <span class="logo-text">VietLinker</span>
             </a>
-            
-            <div class="navbar-menu">
-                <a href="marketplace.html">Chợ Việt</a>
-                <a href="jobs.html">Việc Làm</a>
-                <a href="services.html">Dịch Vụ</a>
-                <a href="food.html">Ẩm Thực</a>
-                <a href="realestate.html">Bất Động Sản</a>
-                <a href="classifieds.html">Rao Vặt</a>
-                <a href="promotions.html">Khuyến Mãi</a>
+
+            <div class="nav-buttons">
+                <a href="index.html" class="btn btn-home">🏠 Trang Chủ</a>
+                <a href="register.html" class="btn btn-register">📝 Đăng Ký</a>
             </div>
-            
-            <div class="navbar-actions">
-                <button onclick="window.location.href='post-form.html'" class="btn-post">
-                    ✚ Đăng Tin
-                </button>
-                <div class="user-menu" id="userMenu"></div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="index.html">🏠 Trang Chủ</a>
+                <a href="marketplace.html">🛒 Mua Bán</a>
+                <a href="jobs.html">💼 Việc Làm</a>
+                <a href="services.html">🤝 Dịch Vụ</a>
+                <a href="food.html">🍜 Ăn Uống</a>
+                <a href="realestate.html">🏠 BĐS & Tiệm</a>
+                <a href="classifieds.html">📋 Rao Vặt</a>
+                <a href="promotions.html">🎁 Khuyến Mãi</a>
             </div>
         </div>
     </nav>
 
-    <!-- Privacy Policy Content -->
-    <div class="container" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
-        <div style="background: white; border-radius: 12px; padding: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <h1 style="color: #1e3c72; margin-bottom: 30px; text-align: center;">Chính Sách Bảo Mật</h1>
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="privacy-card">
+            <h1>🔒 Chính Sách Bảo Mật</h1>
             
-            <div style="color: #666; margin-bottom: 30px; text-align: center;">
+            <div class="update-date">
+                <p><strong>Có hiệu lực từ: Tháng 1, 2025</strong></p>
                 <p>Cập nhật lần cuối: Tháng 1, 2025</p>
             </div>
 
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">1. Giới Thiệu</h2>
-                <p style="line-height: 1.8; color: #444;">
-                    VietLinker Digital Marketing cam kết bảo vệ quyền riêng tư và thông tin cá nhân của người dùng. 
-                    Chính sách bảo mật này giải thích cách chúng tôi thu thập, sử dụng, và bảo vệ 
-                    thông tin của bạn khi sử dụng nền tảng VietLinker.info.
+            <div class="important-notice">
+                <h3>🛡️ Cam Kết Bảo Mật</h3>
+                <p>
+                    <strong>VietLinker Digital Marketing LLC</strong> cam kết bảo vệ quyền riêng tư và 
+                    thông tin cá nhân của bạn. Chính sách này giải thích cách chúng tôi thu thập, 
+                    sử dụng, và bảo vệ dữ liệu của bạn theo các tiêu chuẩn cao nhất.
+                </p>
+            </div>
+
+            <section class="section">
+                <h2>1. Giới Thiệu</h2>
+                <p>
+                    <strong>VietLinker Digital Marketing LLC</strong> ("chúng tôi", "của chúng tôi") 
+                    vận hành website VietLinker.info và các dịch vụ liên quan. Chính sách bảo mật này 
+                    áp dụng cho tất cả thông tin được thu thập thông qua nền tảng của chúng tôi.
+                </p>
+                <p>
+                    Chúng tôi tuân thủ các quy định về bảo mật dữ liệu của Hoa Kỳ, bao gồm 
+                    California Consumer Privacy Act (CCPA) và các luật liên quan khác.
                 </p>
             </section>
 
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">2. Thông Tin Chúng Tôi Thu Thập</h2>
-                <h3 style="color: #dc143c; margin-top: 20px; margin-bottom: 10px;">2.1 Thông tin bạn cung cấp:</h3>
-                <ul style="line-height: 1.8; color: #444;">
-                    <li>Họ tên, email, số điện thoại khi đăng ký tài khoản</li>
-                    <li>Địa chỉ, mã bưu chính để xác định khu vực</li>
-                    <li>Thông tin trong các bài đăng (việc làm, dịch vụ, rao vặt, v.v.)</li>
-                    <li>Hình ảnh và nội dung bạn tải lên</li>
+            <section class="section">
+                <h2>2. Thông Tin Chúng Tôi Thu Thập</h2>
+                
+                <h3>2.1 Thông tin bạn cung cấp trực tiếp:</h3>
+                <ul>
+                    <li>Thông tin tài khoản: Họ tên, email, số điện thoại, mật khẩu</li>
+                    <li>Thông tin hồ sơ: Ảnh đại diện, tiểu sử, nghề nghiệp</li>
+                    <li>Thông tin vị trí: Địa chỉ, thành phố, tiểu bang, mã ZIP</li>
+                    <li>Nội dung đăng tải: Tin rao vặt, hình ảnh, mô tả sản phẩm/dịch vụ</li>
+                    <li>Thông tin giao dịch: Lịch sử mua bán, đánh giá, nhận xét</li>
                 </ul>
                 
-                <h3 style="color: #dc143c; margin-top: 20px; margin-bottom: 10px;">2.2 Thông tin tự động thu thập:</h3>
-                <ul style="line-height: 1.8; color: #444;">
-                    <li>Địa chỉ IP và thông tin trình duyệt</li>
-                    <li>Thời gian và tần suất truy cập</li>
-                    <li>Các trang bạn xem và tương tác</li>
-                    <li>Thông tin thiết bị (loại thiết bị, hệ điều hành)</li>
+                <h3>2.2 Thông tin tự động thu thập:</h3>
+                <ul>
+                    <li>Thông tin thiết bị: Loại thiết bị, hệ điều hành, trình duyệt</li>
+                    <li>Địa chỉ IP và vị trí địa lý ước tính</li>
+                    <li>Cookies và công nghệ theo dõi tương tự</li>
+                    <li>Nhật ký hoạt động: Trang xem, thời gian truy cập, tương tác</li>
+                    <li>Thông tin từ bên thứ ba: Google Analytics, Facebook Pixel</li>
                 </ul>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Loại Dữ Liệu</th>
+                            <th>Mục Đích Thu Thập</th>
+                            <th>Thời Gian Lưu Trữ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Thông tin tài khoản</td>
+                            <td>Xác thực, liên hệ</td>
+                            <td>Đến khi xóa tài khoản</td>
+                        </tr>
+                        <tr>
+                            <td>Nội dung đăng tải</td>
+                            <td>Cung cấp dịch vụ</td>
+                            <td>90 ngày sau khi xóa</td>
+                        </tr>
+                        <tr>
+                            <td>Nhật ký hoạt động</td>
+                            <td>Phân tích, bảo mật</td>
+                            <td>12 tháng</td>
+                        </tr>
+                        <tr>
+                            <td>Cookies</td>
+                            <td>Trải nghiệm người dùng</td>
+                            <td>30 ngày</td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
 
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">3. Cách Chúng Tôi Sử Dụng Thông Tin</h2>
-                <p style="line-height: 1.8; color: #444;">Chúng tôi sử dụng thông tin thu thập để:</p>
-                <ul style="line-height: 1.8; color: #444;">
-                    <li>Cung cấp và cải thiện dịch vụ của VietLinker Digital Marketing</li>
-                    <li>Xác thực tài khoản và bảo mật</li>
+            <section class="section">
+                <h2>3. Cách Chúng Tôi Sử Dụng Thông Tin</h2>
+                <p>Chúng tôi sử dụng thông tin thu thập cho các mục đích sau:</p>
+                <ul>
+                    <li>Cung cấp, vận hành và cải thiện dịch vụ</li>
+                    <li>Xác thực danh tính và bảo mật tài khoản</li>
                     <li>Kết nối người mua và người bán trong cộng đồng</li>
-                    <li>Gửi thông báo về tin đăng và cập nhật hệ thống</li>
-                    <li>Phân tích xu hướng sử dụng để cải thiện trải nghiệm</li>
+                    <li>Gửi thông báo về hoạt động tài khoản</li>
+                    <li>Phân tích xu hướng và cải thiện trải nghiệm</li>
                     <li>Ngăn chặn gian lận và hoạt động bất hợp pháp</li>
+                    <li>Tuân thủ nghĩa vụ pháp lý</li>
+                    <li>Marketing và quảng cáo (với sự đồng ý của bạn)</li>
                 </ul>
-            </section>
 
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">4. Chia Sẻ Thông Tin</h2>
-                <p style="line-height: 1.8; color: #444;">
-                    <strong>Chúng tôi KHÔNG bán thông tin cá nhân của bạn.</strong> 
-                    Thông tin chỉ được chia sẻ trong các trường hợp:
-                </p>
-                <ul style="line-height: 1.8; color: #444;">
-                    <li>Khi bạn đăng tin công khai trên nền tảng</li>
-                    <li>Với sự đồng ý rõ ràng của bạn</li>
-                    <li>Để tuân thủ yêu cầu pháp lý</li>
-                    <li>Với các đối tác công nghệ (Supabase) để vận hành dịch vụ</li>
-                </ul>
-            </section>
-
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">5. Bảo Mật Thông Tin</h2>
-                <p style="line-height: 1.8; color: #444;">
-                    Chúng tôi áp dụng các biện pháp bảo mật tiêu chuẩn công nghiệp:
-                </p>
-                <ul style="line-height: 1.8; color: #444;">
-                    <li>Mã hóa SSL/TLS cho mọi kết nối</li>
-                    <li>Mã hóa mật khẩu với bcrypt</li>
-                    <li>Lưu trữ an toàn trên Supabase Cloud</li>
-                    <li>Giới hạn quyền truy cập dữ liệu</li>
-                    <li>Backup định kỳ và khôi phục dữ liệu</li>
-                </ul>
-            </section>
-
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">6. Quyền Của Bạn</h2>
-                <p style="line-height: 1.8; color: #444;">Bạn có quyền:</p>
-                <ul style="line-height: 1.8; color: #444;">
-                    <li>Truy cập và xem thông tin cá nhân của mình</li>
-                    <li>Chỉnh sửa hoặc cập nhật thông tin</li>
-                    <li>Xóa tài khoản và dữ liệu liên quan</li>
-                    <li>Từ chối nhận email marketing</li>
-                    <li>Yêu cầu sao chép dữ liệu của bạn</li>
-                </ul>
-            </section>
-
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">7. Cookies và Công Nghệ Theo Dõi</h2>
-                <p style="line-height: 1.8; color: #444;">
-                    VietLinker Digital Marketing sử dụng cookies để:
-                </p>
-                <ul style="line-height: 1.8; color: #444;">
-                    <li>Duy trì phiên đăng nhập</li>
-                    <li>Lưu tùy chọn ngôn ngữ và khu vực</li>
-                    <li>Phân tích lưu lượng truy cập</li>
-                    <li>Cải thiện trải nghiệm người dùng</li>
-                </ul>
-                <p style="line-height: 1.8; color: #444;">
-                    Bạn có thể tắt cookies trong cài đặt trình duyệt, nhưng một số tính năng có thể bị ảnh hưởng.
-                </p>
-            </section>
-
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">8. Trẻ Em Dưới 13 Tuổi</h2>
-                <p style="line-height: 1.8; color: #444;">
-                    VietLinker Digital Marketing không dành cho trẻ em dưới 13 tuổi. Chúng tôi không cố ý thu thập 
-                    thông tin từ trẻ em dưới 13 tuổi. Nếu phát hiện, chúng tôi sẽ xóa ngay lập tức.
-                </p>
-            </section>
-
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">9. Thay Đổi Chính Sách</h2>
-                <p style="line-height: 1.8; color: #444;">
-                    Chúng tôi có thể cập nhật chính sách này theo thời gian. Mọi thay đổi sẽ được 
-                    thông báo trên website và qua email cho người dùng đã đăng ký.
-                </p>
-            </section>
-
-            <section style="margin-bottom: 30px;">
-                <h2 style="color: #1e3c72; margin-bottom: 15px;">10. Liên Hệ</h2>
-                <p style="line-height: 1.8; color: #444;">
-                    Nếu có bất kỳ câu hỏi nào về chính sách bảo mật, vui lòng liên hệ:
-                </p>
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 15px;">
-                    <p style="margin: 5px 0;"><strong>VietLinker Digital Marketing Support Team</strong></p>
-                    <p style="margin: 5px 0;">📧 Email: support@vietlinker.info</p>
-                    <p style="margin: 5px 0;">📱 Phone: (469) xxx-xxxx</p>
-                    <p style="margin: 5px 0;">📍 Address: Carrollton, TX 75007</p>
+                <div class="highlight-box">
+                    <p>
+                        <strong>✅ Cam kết:</strong> Chúng tôi KHÔNG bao giờ bán thông tin cá nhân 
+                        của bạn cho bên thứ ba vì mục đích thương mại.
+                    </p>
                 </div>
             </section>
 
-            <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e0e0e0;">
-                <p style="color: #666;">
-                    Bằng việc sử dụng VietLinker Digital Marketing, bạn đồng ý với Chính Sách Bảo Mật này.
+            <section class="section">
+                <h2>4. Chia Sẻ Thông Tin</h2>
+                <p>
+                    Thông tin của bạn chỉ được chia sẻ trong các trường hợp sau:
                 </p>
+                <ul>
+                    <li><strong>Với sự đồng ý của bạn:</strong> Khi bạn cho phép rõ ràng</li>
+                    <li><strong>Công khai:</strong> Thông tin trong tin đăng công khai</li>
+                    <li><strong>Đối tác dịch vụ:</strong> Supabase (database), Vercel (hosting)</li>
+                    <li><strong>Yêu cầu pháp lý:</strong> Theo lệnh tòa án hoặc cơ quan chức năng</li>
+                    <li><strong>Bảo vệ quyền lợi:</strong> Để bảo vệ quyền, tài sản hoặc an toàn</li>
+                    <li><strong>Chuyển nhượng kinh doanh:</strong> Trong trường hợp sáp nhập hoặc mua lại</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>5. Bảo Mật Thông Tin</h2>
+                <p>
+                    Chúng tôi áp dụng các biện pháp bảo mật tiêu chuẩn công nghiệp:
+                </p>
+                <ul>
+                    <li>Mã hóa SSL/TLS cho mọi kết nối</li>
+                    <li>Mã hóa mật khẩu với bcrypt (salt rounds: 10)</li>
+                    <li>Xác thực hai yếu tố (2FA) tùy chọn</li>
+                    <li>Firewall và monitoring 24/7</li>
+                    <li>Backup dữ liệu định kỳ</li>
+                    <li>Kiểm tra bảo mật định kỳ</li>
+                    <li>Giới hạn quyền truy cập nhân viên</li>
+                </ul>
+
+                <div class="warning-box">
+                    <p>
+                        <strong>⚠️ Lưu ý:</strong> Không có hệ thống nào an toàn 100%. 
+                        Hãy sử dụng mật khẩu mạnh và không chia sẻ thông tin đăng nhập.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>6. Quyền Của Bạn</h2>
+                <p>
+                    Theo luật bảo mật dữ liệu, bạn có các quyền sau:
+                </p>
+                
+                <div class="rights-grid">
+                    <div class="right-card">
+                        <h4>📋 Quyền Truy Cập</h4>
+                        <p>Xem tất cả thông tin cá nhân chúng tôi lưu trữ về bạn</p>
+                    </div>
+                    <div class="right-card">
+                        <h4>✏️ Quyền Chỉnh Sửa</h4>
+                        <p>Cập nhật hoặc sửa đổi thông tin không chính xác</p>
+                    </div>
+                    <div class="right-card">
+                        <h4>🗑️ Quyền Xóa</h4>
+                        <p>Yêu cầu xóa tài khoản và dữ liệu cá nhân</p>
+                    </div>
+                    <div class="right-card">
+                        <h4>📤 Quyền Di Chuyển</h4>
+                        <p>Nhận bản sao dữ liệu ở định dạng có thể đọc được</p>
+                    </div>
+                    <div class="right-card">
+                        <h4>🚫 Quyền Phản Đối</h4>
+                        <p>Từ chối xử lý dữ liệu cho mục đích marketing</p>
+                    </div>
+                    <div class="right-card">
+                        <h4>⏸️ Quyền Hạn Chế</h4>
+                        <p>Yêu cầu hạn chế xử lý trong một số trường hợp</p>
+                    </div>
+                </div>
+
+                <p>
+                    Để thực hiện các quyền này, vui lòng liên hệ 
+                    <strong class="company-email">privacy@vietlinker.com</strong>
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>7. Cookies và Công Nghệ Theo Dõi</h2>
+                <p>
+                    Chúng tôi sử dụng cookies và công nghệ tương tự để:
+                </p>
+                <ul>
+                    <li>Duy trì phiên đăng nhập của bạn</li>
+                    <li>Ghi nhớ tùy chọn và cài đặt</li>
+                    <li>Phân tích lưu lượng truy cập</li>
+                    <li>Cá nhân hóa nội dung và quảng cáo</li>
+                    <li>Đo lường hiệu quả marketing</li>
+                </ul>
+
+                <p>
+                    <strong>Quản lý Cookies:</strong> Bạn có thể kiểm soát cookies thông qua 
+                    cài đặt trình duyệt. Tuy nhiên, vô hiệu hóa cookies có thể ảnh hưởng 
+                    đến trải nghiệm sử dụng.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>8. Trẻ Em</h2>
+                <p>
+                    Dịch vụ của chúng tôi không dành cho người dưới 13 tuổi. 
+                    Chúng tôi không cố ý thu thập thông tin từ trẻ em dưới 13 tuổi. 
+                    Nếu phát hiện, chúng tôi sẽ xóa ngay lập tức.
+                </p>
+                <p>
+                    Người dùng từ 13-18 tuổi cần có sự đồng ý của phụ huynh hoặc 
+                    người giám hộ khi sử dụng dịch vụ.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>9. Liên Kết Bên Thứ Ba</h2>
+                <p>
+                    Website của chúng tôi có thể chứa liên kết đến các trang web khác. 
+                    Chúng tôi không chịu trách nhiệm về chính sách bảo mật của các 
+                    trang web này. Vui lòng đọc kỹ chính sách bảo mật của họ.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>10. Truyền Dữ Liệu Quốc Tế</h2>
+                <p>
+                    Dữ liệu của bạn được lưu trữ tại Hoa Kỳ và có thể được xử lý 
+                    ở các quốc gia khác. Bằng việc sử dụng dịch vụ, bạn đồng ý với 
+                    việc truyền dữ liệu này.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>11. Thay Đổi Chính Sách</h2>
+                <p>
+                    Chúng tôi có thể cập nhật chính sách này theo thời gian. 
+                    Thay đổi quan trọng sẽ được thông báo qua email hoặc thông báo 
+                    trên website. Ngày "Cập nhật lần cuối" sẽ được điều chỉnh tương ứng.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>12. Liên Hệ</h2>
+                <p>
+                    Nếu có bất kỳ câu hỏi hoặc quan ngại về chính sách bảo mật, 
+                    vui lòng liên hệ với chúng tôi:
+                </p>
+                
+                <div class="contact-box">
+                    <h4>VietLinker Digital Marketing LLC - Privacy Team</h4>
+                    <div class="contact-info">
+                        <p>📧 Email: <span class="company-email">privacy@vietlinker.info</span></p>
+                        <p>📱 Phone: <span class="company-phone">(469) 731-0825</span></p>
+                        <p>📍 Address: <span class="company-address">1920 Beltline Rd, Carrollton, TX 75006</span></p>
+                        <p>🌐 Website: www.vietlinker.info</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="action-buttons">
+                <button class="btn-print" onclick="window.print()">
+                    🖨️ In Chính Sách
+                </button>
+                <button class="btn-accept" onclick="acceptPrivacy()">
+                    ✓ Tôi Đã Đọc và Hiểu Rõ
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="logo.png" alt="VietLinker Logo">
-                    </div>
-                    <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ</p>
-                    <p>Digital Marketing Solutions</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Danh Mục</h4>
-                    <a href="marketplace.html">Chợ Việt</a>
-                    <a href="jobs.html">Việc Làm</a>
-                    <a href="services.html">Dịch Vụ</a>
-                    <a href="food.html">Ẩm Thực</a>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Thông Tin</h4>
-                    <a href="about.html">Giới Thiệu</a>
-                    <a href="contact.html">Liên Hệ</a>
-                    <a href="privacy.html">Chính Sách Bảo Mật</a>
-                    <a href="terms.html">Điều Khoản Sử Dụng</a>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Kết Nối</h4>
-                    <p>📧 support@vietlinker.info</p>
-                    <p>📱 (469) xxx-xxxx</p>
-                    <p>📍 Carrollton, TX 75007</p>
-                </div>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>VietLinker Digital Marketing LLC</h4>
+                <p>Nền tảng kết nối cộng đồng người Việt tại Mỹ</p>
+                <p>Giải pháp Marketing toàn diện cho doanh nghiệp</p>
             </div>
             
-            <div class="footer-links">
-                <a href="privacy.html">Chính Sách Bảo Mật</a>
-                <a href="terms.html">Điều Khoản</a>
+            <div class="footer-section">
+                <h4>Danh Mục Chính</h4>
+                <a href="marketplace.html">🛒 Chợ Việt Nam</a>
+                <a href="jobs.html">💼 Việc Làm</a>
+                <a href="services.html">🤝 Dịch Vụ</a>
+                <a href="food.html">🍜 Ẩm Thực</a>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Thông Tin</h4>
                 <a href="about.html">Giới Thiệu</a>
                 <a href="contact.html">Liên Hệ</a>
+                <a href="privacy.html">Chính Sách Bảo Mật</a>
+                <a href="terms.html">Điều Khoản Sử Dụng</a>
             </div>
             
-            <div class="footer-bottom">
-                <p>&copy; 2025 VietLinker. All rights reserved.</p>
+            <div class="footer-section footer-contact-section">
+                <h4>Kết Nối Với Chúng Tôi</h4>
+                <p>📧 <span class="company-email">support@vietlinker.com</span></p>
+                <p>📱 <span class="company-phone">(469) 731-0825</span></p>
+                <p>📍 <span class="company-address-short">Carrollton, TX 75006</span></p>
+                <p>⏰ <span class="company-hours">Mon-Fri: 9AM-6PM CST</span></p>
             </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2025 VietLinker Digital Marketing LLC. All Rights Reserved.</p>
+            <p>A Limited Liability Company registered in Texas, USA</p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Include config file -->
+    <script src="config.js"></script>
+    <script>
+        function acceptPrivacy() {
+            // Store acceptance in localStorage
+            localStorage.setItem('privacyAccepted', new Date().toISOString());
+            alert('Cảm ơn bạn đã đọc chính sách bảo mật của chúng tôi!');
+            
+            // Redirect to home or previous page
+            if (document.referrer && !document.referrer.includes('privacy.html')) {
+                window.location.href = document.referrer;
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Update company info if config.js is loaded
+        if (typeof COMPANY_CONFIG !== 'undefined') {
+            // Update all elements with company info
+            document.querySelectorAll('.company-email').forEach(el => {
+                el.textContent = COMPANY_CONFIG.contact.emails.privacy || COMPANY_CONFIG.contact.mainEmail;
+            });
+            
+            document.querySelectorAll('.company-phone').forEach(el => {
+                el.textContent = COMPANY_CONFIG.contact.mainPhone;
+            });
+            
+            document.querySelectorAll('.company-address').forEach(el => {
+                el.textContent = COMPANY_CONFIG.contact.address.full;
+            });
+            
+            document.querySelectorAll('.company-address-short').forEach(el => {
+                el.textContent = `${COMPANY_CONFIG.contact.address.city}, ${COMPANY_CONFIG.contact.address.state} ${COMPANY_CONFIG.contact.address.zipCode}`;
+            });
+            
+            document.querySelectorAll('.company-hours').forEach(el => {
+                el.textContent = COMPANY_CONFIG.contact.businessHours.weekdays;
+            });
+            
+            document.querySelectorAll('.copyright').forEach(el => {
+                el.textContent = COMPANY_CONFIG.messages.copyright;
+            });
+        }
+    </script>
 </body>
 </html>
