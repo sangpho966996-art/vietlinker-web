@@ -673,6 +673,12 @@
                         <div class="verification-input">
                             <input type="email" id="emailForVerification" placeholder="Nhập email của bạn" required>
                             <button type="button" class="btn-verify" onclick="sendEmailVerification()" id="sendEmailBtn">Gửi Email Xác Minh</button>
+                            <button type="button" onclick="debugEmailVerification()" class="btn-verify" style="margin-top: 10px; background: #6c757d;">
+                                🔍 Debug Email
+                            </button>
+                            <button type="button" onclick="testAlternativeEmailMethod()" class="btn-verify" style="margin-top: 10px; background: #17a2b8;">
+                                🧪 Test Alternative
+                            </button>
                         </div>
                         <div id="emailVerificationStatus" class="verification-status" style="display: none;"></div>
                     </div>
@@ -1050,11 +1056,16 @@
             console.log('=== EMAIL VERIFICATION DEBUG ===');
             console.log('Email:', email);
             console.log('Supabase URL:', SUPABASE_URL);
+            console.log('Supabase Anon Key:', SUPABASE_ANON_KEY.substring(0, 20) + '...');
             
             try {
                 // Check Supabase configuration
                 const { data: config, error: configError } = await supabase.auth.getSession();
                 console.log('Supabase session check:', { data: config, error: configError });
+                
+                console.log('=== ATTEMPTING EMAIL VERIFICATION ===');
+                console.log('Using signInWithOtp method');
+                console.log('Redirect URL:', window.location.origin + '/register_improved.html?email_verified=true&email=' + encodeURIComponent(email));
                 
                 // Attempt email verification
                 const { data, error } = await supabase.auth.signInWithOtp({
@@ -1069,17 +1080,69 @@
                 console.log('Error details:', error);
                 
                 if (error) {
-                    console.log('Error code:', error.status);
+                    console.log('Error code:', error.status || 'unknown');
                     console.log('Error message:', error.message);
-                    showAlert('Debug: ' + error.message, 'error');
+                    console.log('Error name:', error.name);
+                    console.log('Full error object:', JSON.stringify(error, null, 2));
+                    
+                    if (error.status === 500) {
+                        console.log('=== 500 ERROR ANALYSIS ===');
+                        console.log('This indicates a server-side issue with email sending');
+                        console.log('Possible causes:');
+                        console.log('1. SendGrid SMTP not fully configured');
+                        console.log('2. Missing external_email_enabled setting');
+                        console.log('3. SendGrid API key issues');
+                        console.log('4. Rate limiting configuration');
+                        showAlert('Debug: 500 Server Error - ' + error.message + '. Check SendGrid SMTP configuration.', 'error');
+                    } else if (error.status === 429) {
+                        console.log('=== 429 RATE LIMIT ANALYSIS ===');
+                        console.log('Still using built-in email service instead of SendGrid');
+                        showAlert('Debug: Rate limit exceeded - ' + error.message + '. SendGrid SMTP may not be active.', 'error');
+                    } else {
+                        showAlert('Debug: ' + error.message, 'error');
+                    }
                 } else {
-                    console.log('API call successful - check Supabase dashboard for email delivery logs');
-                    showAlert('Debug: API call successful. Check email and Supabase logs.', 'info');
+                    console.log('=== SUCCESS ===');
+                    console.log('Email verification request successful!');
+                    showAlert('Debug: Email verification request sent successfully! Check your inbox.', 'success');
                 }
                 
             } catch (err) {
                 console.log('Caught exception:', err);
+                console.log('Exception details:', JSON.stringify(err, null, 2));
                 showAlert('Debug exception: ' + err.message, 'error');
+            }
+        };
+
+        window.testAlternativeEmailMethod = async function() {
+            console.log('=== TESTING ALTERNATIVE EMAIL METHOD ===');
+            const email = document.getElementById('emailForVerification').value;
+            console.log('Testing with signUp method instead of signInWithOtp');
+            
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: 'temporary123!',
+                    options: {
+                        emailRedirectTo: window.location.origin + '/register_improved.html?email_verified=true&email=' + encodeURIComponent(email)
+                    }
+                });
+                
+                console.log('=== SIGNUP METHOD RESPONSE ===');
+                console.log('Success data:', data);
+                console.log('Error details:', error);
+                
+                if (error) {
+                    console.log('SignUp error:', error.message);
+                    showAlert('Alternative method error: ' + error.message, 'error');
+                } else {
+                    console.log('SignUp method successful!');
+                    showAlert('Alternative method: Email sent successfully!', 'success');
+                }
+                
+            } catch (error) {
+                console.error('Alternative method error:', error);
+                showAlert('Alternative method error: ' + error.message, 'error');
             }
         };
 
