@@ -1,1 +1,1601 @@
-
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - VietLinker</title>
+    
+    <!-- Reuse ALL styles from main index.html -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Header Professional - EXACT COPY from index.html */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #dc143c 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo svg {
+            width: 55px;
+            height: 55px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .logo-text {
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1e3c72;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .user-name {
+            color: white;
+            font-weight: 500;
+        }
+        
+        .admin-badge {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1e3c72;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        /* Admin Layout Specific */
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 90px);
+            background: #f8f9fa;
+        }
+        
+        /* Admin Sidebar */
+        .admin-sidebar {
+            width: 260px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .admin-brand {
+            padding: 25px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-nav {
+            flex: 1;
+            padding: 20px 0;
+        }
+        
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 25px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 15px;
+        }
+        
+        .admin-nav a:hover {
+            background: rgba(220,20,60,0.08);
+            color: #dc143c;
+        }
+        
+        .admin-nav a.active {
+            background: rgba(220,20,60,0.08);
+            color: #dc143c;
+            border-left: 4px solid;
+            border-image: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%) 1;
+        }
+        
+        .admin-nav a.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+        }
+        
+        .btn-logout {
+            margin: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(220,20,60,0.3);
+        }
+        
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220,20,60,0.4);
+        }
+        
+        /* Main Content Area */
+        #view {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        /* Dashboard Components - Matching index.html style */
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-title {
+            font-size: 36px;
+            color: #1e3c72;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .dashboard-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .kpi-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 2px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #dc143c, #FFD700, #1e3c72);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .kpi-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .kpi-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(220,20,60,0.1) 0%, rgba(30,60,114,0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        
+        .kpi-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .kpi-change {
+            margin-top: 10px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .kpi-change.positive {
+            color: #28a745;
+        }
+        
+        .kpi-change.negative {
+            color: #dc143c;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            border: 2px solid #f0f0f0;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 20px;
+            color: #1e3c72;
+            font-weight: 700;
+        }
+        
+        .chart-filters {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chart-filter {
+            padding: 6px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .chart-filter.active {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* Table Styles */
+        .admin-table-container {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 2px solid #f0f0f0;
+            overflow: hidden;
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .table-title {
+            font-size: 22px;
+            color: #1e3c72;
+            font-weight: 700;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn-primary {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(220,20,60,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220,20,60,0.4);
+        }
+        
+        .btn-secondary {
+            padding: 10px 24px;
+            background: white;
+            color: #1e3c72;
+            border: 2px solid #1e3c72;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn-secondary:hover {
+            background: #1e3c72;
+            color: white;
+        }
+        
+        .search-box {
+            padding: 10px 20px;
+            padding-left: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            width: 300px;
+            transition: all 0.3s;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") 12px center no-repeat;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 0 3px rgba(220,20,60,0.1);
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .admin-table thead {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .admin-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e3c72;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .admin-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .admin-table tbody tr {
+            transition: all 0.3s;
+        }
+        
+        .admin-table tbody tr:hover {
+            background: rgba(220,20,60,0.03);
+        }
+        
+        /* Status Badges */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .badge-success {
+            background: rgba(40,167,69,0.1);
+            color: #28a745;
+        }
+        
+        .badge-warning {
+            background: rgba(255,193,7,0.1);
+            color: #ffc107;
+        }
+        
+        .badge-danger {
+            background: rgba(220,53,69,0.1);
+            color: #dc3545;
+        }
+        
+        .badge-info {
+            background: rgba(23,162,184,0.1);
+            color: #17a2b8;
+        }
+        
+        .badge-primary {
+            background: rgba(220,20,60,0.1);
+            color: #dc143c;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-action:hover {
+            background: #f8f9fa;
+            border-color: #dc143c;
+            color: #dc143c;
+        }
+        
+        .btn-action.approve {
+            color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .btn-action.reject {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .pagination button:hover {
+            background: #f8f9fa;
+            border-color: #dc143c;
+        }
+        
+        .pagination button.active {
+            background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
+            color: white;
+            border: none;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: #1e3c72;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f8f9fa;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            background: #dc143c;
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s;
+            z-index: 3000;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .toast.error {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+        
+        .toast.info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+        
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: #666;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #dc143c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 24px;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .empty-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+                z-index: 1500;
+                transition: left 0.3s;
+            }
+            
+            .admin-sidebar.open {
+                left: 0;
+            }
+            
+            #view {
+                padding: 20px;
+            }
+            
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .admin-table {
+                font-size: 12px;
+            }
+            
+            .admin-table th,
+            .admin-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - EXACT COPY from index.html -->
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="white" opacity="0.95"/>
+                    <circle cx="50" cy="25" r="8" fill="#dc143c"/>
+                    <circle cx="25" cy="50" r="8" fill="#FFD700"/>
+                    <circle cx="75" cy="50" r="8" fill="#FFD700"/>
+                    <circle cx="50" cy="75" r="8" fill="#1e3c72"/>
+                    <line x1="50" y1="25" x2="25" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                    <line x1="50" y1="25" x2="75" y2="50" stroke="#dc143c" stroke-width="2" opacity="0.5"/>
+                    <line x1="25" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                    <line x1="75" y1="50" x2="50" y2="75" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+                </svg>
+                <span class="logo-text">VietLinker Admin</span>
+            </a>
+            
+            <div class="user-info">
+                <div class="user-avatar" id="adminAvatar">A</div>
+                <span class="user-name" id="adminName">Admin</span>
+                <span class="admin-badge" id="adminRole">Admin</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Admin Layout -->
+    <main class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="admin-brand">
+                ⚙️ Admin Panel
+            </div>
+            <nav class="admin-nav">
+                <a href="#overview" class="active">📊 Tổng quan</a>
+                <a href="#users">👥 Người dùng</a>
+                <a href="#content">📝 Bài đăng</a>
+                <a href="#reports">🚩 Báo cáo</a>
+                <a href="#promotions">🎁 Khuyến mãi & Ads</a>
+                <a href="#settings">⚙️ Cài đặt</a>
+                <a href="#audit">🧾 Audit Log</a>
+            </nav>
+            <button id="signout" class="btn-logout">🚪 Đăng xuất</button>
+        </aside>
+        
+        <!-- Main Content -->
+        <section id="view">
+            <!-- Content will be loaded here -->
+            <div class="loading">
+                <div class="spinner"></div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Toast Container -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- Modal Container -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Modal Title</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script>
+        // Wait for Supabase to load
+        console.log('🚀 Admin Dashboard Loading...');
+        
+        // Initialize Supabase (SỬA LẠI THÔNG TIN NÀY)
+        const SUPABASE_URL = 'https://your-project.supabase.co';
+        const SUPABASE_ANON_KEY = 'your-anon-key';
+        
+        // Khởi tạo Supabase client
+        let supabase;
+        
+        // Đợi Supabase load xong
+        if (typeof window.supabase !== 'undefined') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase initialized');
+        } else {
+            console.error('❌ Supabase not loaded. Retrying...');
+            // Retry after DOM loaded
+            window.addEventListener('DOMContentLoaded', function() {
+                if (typeof window.supabase !== 'undefined') {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    console.log('✅ Supabase initialized after retry');
+                    initializeApp();
+                } else {
+                    console.error('❌ Supabase failed to load. Please check CDN.');
+                }
+            });
+        }
+        
+        // Global state
+        let currentUser = null;
+        
+        // Main initialization function
+        function initializeApp() {
+            // Auth Guard
+            async function guardAdmin() {
+                try {
+                    console.log('🔐 Checking authentication...');
+                    
+                    // FOR TESTING: Skip auth check if no Supabase configured
+                    if (SUPABASE_URL === 'https://your-project.supabase.co') {
+                        console.warn('⚠️ Using demo mode - No Supabase configured');
+                        currentUser = {
+                            id: 'demo-admin',
+                            email: 'admin@vietlinker.com',
+                            full_name: 'Demo Admin',
+                            role: 'admin'
+                        };
+                        updateUserDisplay(currentUser);
+                        return currentUser;
+                    }
+                    
+                    const { data: { session } } = await supabase.auth.getSession();
+                    
+                    if (!session) {
+                        console.log('❌ No session found, redirecting to login...');
+                        // window.location.href = '/login.html';
+                        // For demo: show warning instead of redirect
+                        showToast('Vui lòng đăng nhập để sử dụng Admin Dashboard', 'error');
+                        return null;
+                    }
+                    
+                    const { data: user, error } = await supabase
+                        .from('users')
+                        .select('id, email, full_name, role')
+                        .eq('id', session.user.id)
+                        .single();
+                    
+                    if (error || !user) {
+                        console.error('Error fetching user:', error);
+                        showToast('Lỗi khi tải thông tin người dùng', 'error');
+                        return null;
+                    }
+                    
+                    if (!['admin', 'superadmin'].includes(user.role)) {
+                        console.log('❌ User is not admin');
+                        showToast('Bạn không có quyền truy cập Admin', 'error');
+                        // window.location.href = '/404.html';
+                        return null;
+                    }
+                    
+                    currentUser = user;
+                    updateUserDisplay(user);
+                    console.log('✅ Admin authenticated:', user.email);
+                    return user;
+                } catch (err) {
+                    console.error('Auth guard error:', err);
+                    showToast('Lỗi xác thực: ' + err.message, 'error');
+                    return null;
+                }
+            }
+        
+        // Update user display
+        function updateUserDisplay(user) {
+            if (!user) return;
+            
+            const avatar = document.getElementById('adminAvatar');
+            const name = document.getElementById('adminName');
+            const role = document.getElementById('adminRole');
+            
+            if (avatar) avatar.textContent = user.full_name ? user.full_name[0].toUpperCase() : 'A';
+            if (name) name.textContent = user.full_name || user.email;
+            if (role) role.textContent = user.role === 'superadmin' ? 'Super Admin' : 'Admin';
+        }
+        
+        // Toast notifications
+        window.showToast = function(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.className = `toast ${type} show`;
+            toast.innerHTML = `
+                ${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'} ${message}
+            `;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        };
+        
+        // Modal functions
+        window.openModal = function(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+        };
+        
+        window.closeModal = function() {
+            document.getElementById('modal').classList.remove('active');
+        };
+            
+            // Router definition
+            const routes = {
+                overview: async () => {
+                    const container = document.getElementById('view');
+                    container.innerHTML = await renderOverview();
+                    // Draw chart after render
+                    setTimeout(drawChart, 100);
+                },
+                users: async () => {
+                    const container = document.getElementById('view');
+                    container.innerHTML = await renderUsers();
+                },
+                content: async () => {
+                    const container = document.getElementById('view');
+                    container.innerHTML = await renderContent();
+                },
+                reports: async () => {
+                    const container = document.getElementById('view');
+                    container.innerHTML = await renderReports();
+                },
+                promotions: async () => {
+                    const container = document.getElementById('view');
+                    container.innerHTML = await renderPromotions();
+                },
+                settings: async () => {
+                    const container = document.getElementById('view');
+                    container.innerHTML = await renderSettings();
+                },
+                audit: async () => {
+                    const container = document.getElementById('view');
+                    container.innerHTML = await renderAudit();
+                }
+            };
+        
+        // Overview Component
+        async function renderOverview() {
+            // Simulated KPI data (replace with actual Supabase queries)
+            const kpis = {
+                totalUsers: 50234,
+                newUsers7Days: 342,
+                totalPosts: 10456,
+                pendingPosts: 23,
+                openReports: 5,
+                monthlyRevenue: 125000
+            };
+            
+            return `
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">📊 Tổng quan Dashboard</h1>
+                    <p class="dashboard-subtitle">Xin chào ${currentUser?.full_name || 'Admin'}! Đây là tổng quan hoạt động hôm nay.</p>
+                </div>
+                
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">👥</div>
+                        <div class="kpi-value">${kpis.totalUsers.toLocaleString()}</div>
+                        <div class="kpi-label">Tổng người dùng</div>
+                        <div class="kpi-change positive">
+                            ↑ ${kpis.newUsers7Days} người mới (7 ngày)
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📝</div>
+                        <div class="kpi-value">${kpis.totalPosts.toLocaleString()}</div>
+                        <div class="kpi-label">Tổng bài đăng</div>
+                        <div class="kpi-change positive">
+                            ↑ 12% so với tháng trước
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">⏳</div>
+                        <div class="kpi-value">${kpis.pendingPosts}</div>
+                        <div class="kpi-label">Bài chờ duyệt</div>
+                        <div class="kpi-change negative">
+                            Cần xử lý ngay
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🚩</div>
+                        <div class="kpi-value">${kpis.openReports}</div>
+                        <div class="kpi-label">Báo cáo chưa xử lý</div>
+                        <div class="kpi-change">
+                            Trung bình 2h xử lý
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">📈 Lượt đăng bài 7 ngày qua</h3>
+                        <div class="chart-filters">
+                            <button class="chart-filter active">7 ngày</button>
+                            <button class="chart-filter">30 ngày</button>
+                            <button class="chart-filter">90 ngày</button>
+                        </div>
+                    </div>
+                    <canvas id="postsChart" width="400" height="150"></canvas>
+                </div>
+                
+                <div class="admin-table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">⚡ Hoạt động gần đây</h3>
+                    </div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Người dùng</th>
+                                <th>Hành động</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2 phút trước</td>
+                                <td>user123@gmail.com</td>
+                                <td><span class="badge badge-success">Đăng bài mới</span></td>
+                                <td>Tuyển thợ nail tại Houston</td>
+                            </tr>
+                            <tr>
+                                <td>5 phút trước</td>
+                                <td>shop456@gmail.com</td>
+                                <td><span class="badge badge-info">Cập nhật</span></td>
+                                <td>Sửa giá sản phẩm Honda Civic 2020</td>
+                            </tr>
+                            <tr>
+                                <td>10 phút trước</td>
+                                <td>admin@vietlinker.com</td>
+                                <td><span class="badge badge-warning">Duyệt bài</span></td>
+                                <td>Approved: Cho thuê nhà Dallas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        // Users Component
+        async function renderUsers() {
+            return `
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">👥 Quản lý người dùng</h1>
+                    <p class="dashboard-subtitle">Quản lý tài khoản và phân quyền người dùng</p>
+                </div>
+                
+                <div class="admin-table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Danh sách người dùng</h3>
+                        <div class="table-actions">
+                            <input type="text" class="search-box" placeholder="Tìm kiếm người dùng...">
+                            <select class="btn-secondary" style="padding: 10px 20px;">
+                                <option>Tất cả role</option>
+                                <option>User</option>
+                                <option>Business</option>
+                                <option>Moderator</option>
+                                <option>Admin</option>
+                            </select>
+                            <button class="btn-primary">+ Thêm mới</button>
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Tên</th>
+                                <th>Role</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#001</td>
+                                <td>user1@gmail.com</td>
+                                <td>Nguyễn Văn A</td>
+                                <td><span class="badge badge-info">User</span></td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td>2024-01-15</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action">Edit</button>
+                                        <button class="btn-action">Lock</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#002</td>
+                                <td>business@nail.com</td>
+                                <td>Tiệm Nail Vàng</td>
+                                <td><span class="badge badge-primary">Business</span></td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td>2024-01-10</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action">Edit</button>
+                                        <button class="btn-action">View</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination">
+                        <button>← Trước</button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>...</button>
+                        <button>10</button>
+                        <button>Sau →</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Content Component
+        async function renderContent() {
+            return `
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">📝 Quản lý bài đăng</h1>
+                    <p class="dashboard-subtitle">Duyệt và quản lý nội dung từ người dùng</p>
+                </div>
+                
+                <div class="admin-table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Bài đăng chờ duyệt</h3>
+                        <div class="table-actions">
+                            <select class="btn-secondary" style="padding: 10px 20px;">
+                                <option>Tất cả danh mục</option>
+                                <option>Việc làm</option>
+                                <option>Mua bán</option>
+                                <option>Dịch vụ</option>
+                                <option>Bất động sản</option>
+                            </select>
+                            <select class="btn-secondary" style="padding: 10px 20px;">
+                                <option>Pending</option>
+                                <option>Approved</option>
+                                <option>Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tiêu đề</th>
+                                <th>Danh mục</th>
+                                <th>Người đăng</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày đăng</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#P001</td>
+                                <td>Tuyển thợ nail có kinh nghiệm</td>
+                                <td><span class="badge badge-info">Việc làm</span></td>
+                                <td>nail_salon@gmail.com</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td>2024-01-20</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action approve">✓ Duyệt</button>
+                                        <button class="btn-action reject">✗ Từ chối</button>
+                                        <button class="btn-action">👁 Xem</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#P002</td>
+                                <td>Honda Civic 2020 giá tốt</td>
+                                <td><span class="badge badge-primary">Mua bán</span></td>
+                                <td>user456@gmail.com</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td>2024-01-20</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action approve">✓ Duyệt</button>
+                                        <button class="btn-action reject">✗ Từ chối</button>
+                                        <button class="btn-action">👁 Xem</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        // Reports Component
+        async function renderReports() {
+            return `
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">🚩 Quản lý báo cáo</h1>
+                    <p class="dashboard-subtitle">Xử lý các báo cáo vi phạm từ người dùng</p>
+                </div>
+                
+                <div class="admin-table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Báo cáo chưa xử lý</h3>
+                        <div class="table-actions">
+                            <select class="btn-secondary" style="padding: 10px 20px;">
+                                <option>Tất cả trạng thái</option>
+                                <option>Open</option>
+                                <option>Reviewing</option>
+                                <option>Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Loại vi phạm</th>
+                                <th>Bài bị báo cáo</th>
+                                <th>Người báo cáo</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#R001</td>
+                                <td>Spam</td>
+                                <td>Quảng cáo lừa đảo</td>
+                                <td>user789@gmail.com</td>
+                                <td><span class="badge badge-danger">Open</span></td>
+                                <td>2024-01-20</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action">Xử lý</button>
+                                        <button class="btn-action">Đóng</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        // Promotions Component
+        async function renderPromotions() {
+            return `
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">🎁 Khuyến mãi & Quảng cáo</h1>
+                    <p class="dashboard-subtitle">Quản lý chương trình khuyến mãi và banner quảng cáo</p>
+                </div>
+                
+                <div class="admin-table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Chương trình khuyến mãi</h3>
+                        <div class="table-actions">
+                            <button class="btn-primary">+ Tạo khuyến mãi</button>
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên chương trình</th>
+                                <th>Loại</th>
+                                <th>Bắt đầu</th>
+                                <th>Kết thúc</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#PR001</td>
+                                <td>Giảm giá Tết 2024</td>
+                                <td>Banner</td>
+                                <td>2024-01-15</td>
+                                <td>2024-02-15</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action">Edit</button>
+                                        <button class="btn-action">Pause</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        // Settings Component
+        async function renderSettings() {
+            return `
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">⚙️ Cài đặt hệ thống</h1>
+                    <p class="dashboard-subtitle">Cấu hình chung cho website</p>
+                </div>
+                
+                <div class="admin-table-container">
+                    <h3 class="table-title">Cài đặt chung</h3>
+                    <div style="padding: 30px;">
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3c72;">
+                                Tên website
+                            </label>
+                            <input type="text" value="VietLinker" class="search-box" style="width: 100%; max-width: 500px;">
+                        </div>
+                        
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3c72;">
+                                SEO Description
+                            </label>
+                            <textarea class="search-box" style="width: 100%; max-width: 500px; height: 100px; padding: 12px 20px; resize: vertical;">
+Nền tảng kết nối cộng đồng người Việt tại Mỹ
+                            </textarea>
+                        </div>
+                        
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3c72;">
+                                Cho phép đăng ký mới
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                <input type="checkbox" checked style="width: 20px; height: 20px;">
+                                <span>Bật đăng ký người dùng mới</span>
+                            </label>
+                        </div>
+                        
+                        <button class="btn-primary">💾 Lưu cài đặt</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Audit Component
+        async function renderAudit() {
+            return `
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">🧾 Audit Log</h1>
+                    <p class="dashboard-subtitle">Lịch sử hoạt động của admin</p>
+                </div>
+                
+                <div class="admin-table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Lịch sử hoạt động</h3>
+                        <div class="table-actions">
+                            <button class="btn-secondary">📥 Export CSV</button>
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Admin</th>
+                                <th>Hành động</th>
+                                <th>Đối tượng</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-01-20 14:30</td>
+                                <td>admin@vietlinker.com</td>
+                                <td>UPDATE_USER_ROLE</td>
+                                <td>users #123</td>
+                                <td>Changed role from 'user' to 'business'</td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-20 14:25</td>
+                                <td>admin@vietlinker.com</td>
+                                <td>APPROVE_POST</td>
+                                <td>posts #456</td>
+                                <td>Approved: Honda Civic for sale</td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-20 14:20</td>
+                                <td>superadmin@vietlinker.com</td>
+                                <td>UPDATE_SETTINGS</td>
+                                <td>site_settings</td>
+                                <td>Updated SEO description</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination">
+                        <button>← Trước</button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>Sau →</button>
+                    </div>
+                </div>
+            `;
+        }
+            
+            // Handle route changes
+            function handleRoute() {
+                const hash = window.location.hash.slice(1) || 'overview';
+                const route = routes[hash] || routes.overview;
+                
+                // Update active nav
+                document.querySelectorAll('.admin-nav a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${hash}`) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // Load route
+                route().catch(err => {
+                    console.error('Route error:', err);
+                    showToast('Lỗi khi tải trang: ' + err.message, 'error');
+                });
+            }
+            
+            // Draw simple chart
+            function drawChart() {
+                const canvas = document.getElementById('postsChart');
+                if (canvas && canvas.getContext) {
+                    const ctx = canvas.getContext('2d');
+                    const width = canvas.width;
+                    const height = canvas.height;
+                    
+                    // Clear canvas
+                    ctx.clearRect(0, 0, width, height);
+                    
+                    // Sample data points
+                    const data = [65, 80, 70, 90, 85, 95, 88];
+                    const maxVal = Math.max(...data);
+                    const padding = 40;
+                    const chartWidth = width - padding * 2;
+                    const chartHeight = height - padding * 2;
+                    
+                    // Draw axes
+                    ctx.strokeStyle = '#e0e0e0';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, padding);
+                    ctx.lineTo(padding, height - padding);
+                    ctx.lineTo(width - padding, height - padding);
+                    ctx.stroke();
+                    
+                    // Draw line chart
+                    ctx.strokeStyle = '#dc143c';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    
+                    data.forEach((value, index) => {
+                        const x = padding + (chartWidth / (data.length - 1)) * index;
+                        const y = height - padding - (value / maxVal) * chartHeight;
+                        
+                        if (index === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                        
+                        // Draw point
+                        ctx.fillStyle = '#dc143c';
+                        ctx.beginPath();
+                        ctx.arc(x, y, 5, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                    
+                    ctx.stroke();
+                    
+                    // Draw labels
+                    ctx.fillStyle = '#666';
+                    ctx.font = '12px sans-serif';
+                    const days = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+                    days.forEach((day, index) => {
+                        const x = padding + (chartWidth / (days.length - 1)) * index;
+                        ctx.fillText(day, x - 10, height - padding + 20);
+                    });
+                }
+            }
+            
+            // Sign out handler
+            document.getElementById('signout').addEventListener('click', async () => {
+                if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                    if (supabase) {
+                        await supabase.auth.signOut();
+                    }
+                    window.location.href = '/';
+                }
+            });
+            
+            // Initialize the app
+            async function init() {
+                console.log('🎯 Initializing Admin Dashboard...');
+                
+                try {
+                    const user = await guardAdmin();
+                    if (user || SUPABASE_URL === 'https://your-project.supabase.co') {
+                        console.log('✅ Loading dashboard...');
+                        handleRoute();
+                        window.addEventListener('hashchange', handleRoute);
+                        
+                        // Show welcome message
+                        showToast(`Chào mừng ${user?.full_name || 'Admin'} đến với Dashboard!`, 'success');
+                    }
+                } catch (err) {
+                    console.error('Init error:', err);
+                    showToast('Lỗi khởi động: ' + err.message, 'error');
+                }
+            }
+            
+            // Start app
+            init();
+        }
+        
+        // Start initialization when Supabase is ready
+        if (typeof window.supabase !== 'undefined') {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>
