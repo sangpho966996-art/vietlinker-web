@@ -362,13 +362,100 @@ If Supabase API calls succeed (no 400 errors) but users don't receive verificati
 
 - **Debug Email Sending**: Check browser console for 400 errors from Supabase auth endpoints
 
+#### **SOLUTION: Custom SMTP Setup (Recommended)**
+
+Since Supabase's built-in email service has rate limits and may not deliver emails reliably, setting up custom SMTP is the best solution:
+
+##### **Option 1: SendGrid SMTP Setup**
+
+1. **Create SendGrid Account**:
+   - Go to https://sendgrid.com/
+   - Sign up for free account (100 emails/day free tier)
+   - Verify your account via email
+
+2. **Create API Key**:
+   - Go to Settings → API Keys
+   - Click "Create API Key"
+   - Choose "Restricted Access"
+   - Give permissions: Mail Send (Full Access)
+   - Copy the API key (save it securely)
+
+3. **Configure Supabase SMTP**:
+   - Go to Supabase Dashboard → Authentication → Emails → SMTP Settings
+   - Enable "Enable Custom SMTP"
+   - Configure settings:
+     ```
+     Host: smtp.sendgrid.net
+     Port: 587
+     Username: apikey
+     Password: [Your SendGrid API Key]
+     Sender name: VietLinker
+     Sender email: noreply@vietlinker.info
+     ```
+
+4. **Domain Authentication** (Optional but recommended):
+   - In SendGrid: Settings → Sender Authentication
+   - Authenticate your domain (vietlinker.info)
+   - Add DNS records as instructed
+
+##### **Option 2: Gmail SMTP Setup** (For testing only)
+
+1. **Enable 2-Factor Authentication** on your Gmail account
+2. **Create App Password**:
+   - Go to Google Account settings
+   - Security → 2-Step Verification → App passwords
+   - Generate password for "Mail"
+
+3. **Configure Supabase SMTP**:
+   ```
+   Host: smtp.gmail.com
+   Port: 587
+   Username: your-gmail@gmail.com
+   Password: [App Password from step 2]
+   Sender name: VietLinker
+   Sender email: your-gmail@gmail.com
+   ```
+
+##### **Option 3: Mailgun SMTP Setup**
+
+1. **Create Mailgun Account**: https://www.mailgun.com/
+2. **Get SMTP Credentials** from dashboard
+3. **Configure Supabase SMTP**:
+   ```
+   Host: smtp.mailgun.org
+   Port: 587
+   Username: [Mailgun SMTP username]
+   Password: [Mailgun SMTP password]
+   ```
+
+##### **Testing SMTP Configuration**
+
+After configuring custom SMTP:
+
+1. **Test Email Sending**:
+   - Go to deploy preview: https://deploy-preview-4--famous-pasca-610e24.netlify.app/register_improved.html
+   - Enter your email address
+   - Click "Gửi Email Xác Minh"
+   - Check your inbox (and spam folder)
+
+2. **Debug Function**:
+   - Open browser console
+   - Run: `debugEmailVerification()`
+   - Check for detailed logging
+
+3. **Verify Email Delivery**:
+   - Email should arrive within 1-2 minutes
+   - Click verification link to test complete flow
+   - Registration form should be enabled after verification
+
 #### **Production Email Setup Checklist**:
-- [ ] Custom SMTP configured (recommended for production)
+- [ ] Custom SMTP configured (SendGrid/Mailgun recommended)
 - [ ] Domain authentication (SPF/DKIM) set up
 - [ ] Email templates customized and tested
 - [ ] Sender email address verified
 - [ ] Rate limiting and error handling implemented
 - [ ] Email delivery monitoring set up
+- [ ] Test email verification flow end-to-end
 
 ### SMS Verification Issues
 - Verify Twilio credentials are correct
