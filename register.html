@@ -664,7 +664,7 @@
                     </div>
                 </div>
 
-                <form id="registerForm" class="form-disabled">
+                <form id="registerForm">
                     <div class="verification-section email-verification active" id="emailVerification">
                         <h4 style="margin-bottom: 10px; color: #1e3c72;">📧 Xác minh Email (Bước 1)</h4>
                         <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
@@ -1170,7 +1170,6 @@
                     document.getElementById('emailForVerification').value = decodeURIComponent(verifiedEmail);
                 }
                 isEmailVerified = true;
-                document.getElementById('registerForm').classList.remove('form-disabled');
                 document.getElementById('submitBtn').disabled = false;
                 
                 const statusDiv = document.getElementById('emailVerificationStatus');
