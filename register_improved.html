@@ -879,8 +879,10 @@
             showLoading(true);
 
             try {
-                const { data, error } = await supabase.auth.signInWithOtp({
+                // Use signup method instead of OTP since it works with SendGrid SMTP
+                const { data, error } = await supabase.auth.signUp({
                     email: email,
+                    password: 'temporary123!',
                     options: {
                         emailRedirectTo: window.location.origin + '/register_improved.html?email_verified=true&email=' + encodeURIComponent(email)
                     }
@@ -890,12 +892,15 @@
 
                 const statusDiv = document.getElementById('emailVerificationStatus');
                 statusDiv.className = 'verification-status status-pending';
-                statusDiv.textContent = '📧 Email xác minh đã được gửi. Vui lòng kiểm tra hộp thư và click vào link xác minh.';
+                statusDiv.textContent = '📧 Email xác minh đã được gửi qua SendGrid SMTP. Vui lòng kiểm tra hộp thư và click vào link xác minh.';
                 statusDiv.style.display = 'block';
                 
                 document.getElementById('email').value = email;
                 
-                showAlert('Email xác minh đã được gửi! Vui lòng kiểm tra hộp thư của bạn.', 'success');
+                // Store email for later use
+                localStorage.setItem('pendingVerificationEmail', email);
+                
+                showAlert('Email xác minh đã được gửi qua SendGrid! Vui lòng kiểm tra hộp thư của bạn.', 'success');
                 
             } catch (error) {
                 showAlert('Lỗi gửi email xác minh: ' + error.message, 'error');
