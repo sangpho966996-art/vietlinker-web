@@ -1,0 +1,229 @@
+# Setup Instructions for VietLinker Authentication
+
+## Supabase Configuration Required
+
+### 1. Email Templates
+1. Go to Supabase Dashboard → Authentication → Email Templates
+2. Configure "Confirm signup" template:
+   ```html
+   <h2>Xác nhận đăng ký VietLinker</h2>
+   <p>Chào {{ .Name }},</p>
+   <p>Cảm ơn bạn đã đăng ký VietLinker! Vui lòng nhấp vào liên kết bên dưới để xác nhận email của bạn:</p>
+   <p><a href="{{ .ConfirmationURL }}">Xác nhận Email</a></p>
+   <p>Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.</p>
+   <p>Trân trọng,<br>Đội ngũ VietLinker</p>
+   ```
+
+### 2. Redirect URLs
+1. Go to Authentication → URL Configuration
+2. Add these URLs to "Redirect URLs":
+   ```
+   http://localhost:3000/email-confirmed.html
+   http://localhost:8080/email-confirmed.html
+   https://yourdomain.com/email-confirmed.html
+   http://localhost:3000/register_improved.html
+   http://localhost:8080/register_improved.html
+   https://yourdomain.com/register_improved.html
+   ```
+
+### 3. OAuth Providers Configuration
+
+#### Facebook OAuth Setup:
+1. Go to Authentication → Providers → Facebook
+2. Enable Facebook provider
+3. Add your Facebook App ID and App Secret
+4. Configure redirect URL: `https://[your-project-ref].supabase.co/auth/v1/callback`
+
+#### Google OAuth Setup:
+1. Go to Authentication → Providers → Google
+2. Enable Google provider
+3. Add your Google Client ID and Client Secret
+4. Configure redirect URL: `https://[your-project-ref].supabase.co/auth/v1/callback`
+
+### 4. Email Confirmation Settings
+1. Go to Authentication → Settings
+2. Enable "Enable email confirmations"
+3. Set "Email confirmation redirect URL" to: `https://yourdomain.com/email-confirmed.html`
+
+## SMS Verification Backend (Required)
+
+### Twilio Setup
+1. **Create Twilio Account**: Sign up at https://www.twilio.com/
+2. **Get Credentials**:
+   - Account SID
+   - Auth Token
+   - Create a Verify Service and get Service SID
+
+### Backend API Endpoints Needed
+
+#### 1. Send Verification Code Endpoint
+```javascript
+// POST /api/send-verification
+app.post('/api/send-verification', async (req, res) => {
+  const { phone } = req.body;
+  
+  try {
+    const verification = await client.verify.v2.services(TWILIO_VERIFY_SID)
+      .verifications
+      .create({ to: phone, channel: 'sms' });
+    
+    res.json({ success: true, sid: verification.sid });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+```
+
+#### 2. Verify Code Endpoint
+```javascript
+// POST /api/verify-code
+app.post('/api/verify-code', async (req, res) => {
+  const { phone, code } = req.body;
+  
+  try {
+    const verification = await client.verify.v2.services(TWILIO_VERIFY_SID)
+      .verificationChecks
+      .create({ to: phone, code: code });
+    
+    if (verification.status === 'approved') {
+      res.json({ success: true, verified: true });
+    } else {
+      res.status(400).json({ error: 'Invalid verification code' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+```
+
+### Environment Variables
+```bash
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_VERIFY_SID=your_verify_service_sid
+```
+
+## Facebook App Configuration
+
+### 1. Create Facebook App
+1. Go to https://developers.facebook.com/
+2. Create a new app
+3. Add "Facebook Login" product
+
+### 2. Configure Facebook Login
+1. Go to Facebook Login → Settings
+2. Add Valid OAuth Redirect URIs:
+   ```
+   https://[your-project-ref].supabase.co/auth/v1/callback
+   ```
+3. Enable "Client OAuth Login"
+4. Enable "Web OAuth Login"
+
+### 3. App Settings
+1. Go to Settings → Basic
+2. Note down App ID and App Secret
+3. Add these to Supabase Facebook OAuth settings
+
+## Google OAuth Configuration
+
+### 1. Create Google Cloud Project
+1. Go to https://console.cloud.google.com/
+2. Create a new project or select existing one
+3. Enable Google+ API (or Google Identity API)
+
+### 2. Create OAuth 2.0 Credentials
+1. Go to APIs & Services → Credentials
+2. Create OAuth 2.0 Client ID
+3. Application type: Web application
+4. Add authorized redirect URIs:
+   ```
+   https://[your-project-ref].supabase.co/auth/v1/callback
+   ```
+
+### 3. Configure OAuth Consent Screen
+1. Go to OAuth consent screen
+2. Fill in required information
+3. Add scopes: email, profile
+4. Add test users if in development
+
+## Database Schema Updates
+
+### Users Table Modifications
+```sql
+-- Add new columns to users table
+ALTER TABLE users ADD COLUMN IF NOT EXISTS registration_method VARCHAR(20);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_verified BOOLEAN DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_level VARCHAR(20) DEFAULT 'basic';
+
+-- Create index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_users_registration_method ON users(registration_method);
+CREATE INDEX IF NOT EXISTS idx_users_verification_status ON users(phone_verified, email_verified);
+```
+
+## Testing Configuration
+
+### Local Development
+1. Use ngrok or similar tool to expose local server:
+   ```bash
+   ngrok http 3000
+   ```
+2. Update Supabase redirect URLs with ngrok URL
+3. Test all authentication flows
+
+### Production Deployment
+1. Update all redirect URLs to production domain
+2. Configure SSL certificates
+3. Set up proper CORS headers
+4. Test all authentication flows in production
+
+## Security Considerations
+
+### API Security
+- Implement rate limiting for SMS endpoints
+- Use HTTPS for all authentication endpoints
+- Validate and sanitize all input data
+- Implement proper error handling
+
+### Data Protection
+- Encrypt sensitive user data
+- Implement proper session management
+- Use secure cookie settings
+- Regular security audits
+
+## Monitoring and Logging
+
+### Authentication Metrics
+- Track successful/failed login attempts
+- Monitor SMS verification success rates
+- Log OAuth callback errors
+- Track user registration completion rates
+
+### Error Monitoring
+- Set up error tracking (Sentry, LogRocket, etc.)
+- Monitor API endpoint performance
+- Track authentication flow abandonment
+- Alert on unusual authentication patterns
+
+## Troubleshooting Common Issues
+
+### Email Verification Issues
+- Check Supabase email template configuration
+- Verify redirect URLs are correctly set
+- Check spam folders for verification emails
+- Ensure email confirmation is enabled
+
+### SMS Verification Issues
+- Verify Twilio credentials are correct
+- Check phone number format (+1 for US numbers)
+- Monitor Twilio console for delivery status
+- Implement fallback for international numbers
+
+### OAuth Issues
+- Verify app credentials in provider dashboards
+- Check redirect URI configuration
+- Monitor OAuth provider status pages
+- Test with different browsers/devices
+
+This setup guide provides comprehensive instructions for implementing all authentication features in the VietLinker platform.
