@@ -282,6 +282,29 @@ CREATE INDEX IF NOT EXISTS idx_users_verification_status ON users(phone_verified
 
 ### Email Verification Issues
 
+#### **"Email rate limit exceeded" Error**
+If experiencing "429 email rate limit exceeded" errors, the issue is Supabase's restrictive rate limiting configuration:
+
+**Problem**: Default Supabase rate limits are too restrictive:
+- `rate_limit_email_sent: 2` (only 2 emails allowed per period)
+- `smtp_max_frequency: 60` (60-second minimum intervals between emails)
+
+**Solution**: Update Supabase rate limits via Management API:
+
+```bash
+curl -H "Authorization: Bearer YOUR_SUPABASE_TOKEN" \
+     -H "Content-Type: application/json" \
+     -X PATCH \
+     "https://api.supabase.com/v1/projects/YOUR_PROJECT_ID/config/auth" \
+     -d '{"rate_limit_email_sent": 10, "smtp_max_frequency": 10}'
+```
+
+**Recommended production values**:
+- `rate_limit_email_sent: 10` (allows 10 emails per period)
+- `smtp_max_frequency: 10` (10-second intervals between emails)
+
+This resolves 429 errors for both `signInWithOtp` and `signUp` email methods, even when using custom SMTP like SendGrid.
+
 #### **CRITICAL: API Success But No Email Delivery**
 If Supabase API calls succeed (no 400 errors) but users don't receive verification emails:
 
